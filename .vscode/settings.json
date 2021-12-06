@@ -1,0 +1,18 @@
+{
+    "files.exclude": {
+        "**/.git": false,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/Thumbs.db": true,
+        ".*": true,
+        "artisan": true,
+        "composer.lock": true,
+        "phpunit.xml": true,
+        "server.php": true,
+        "webpack.mix.js": true,
+        "yarn.lock": true
+    },
+    "explorerExclude.backup": null
+}
