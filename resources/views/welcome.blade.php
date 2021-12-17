@@ -1,18 +1,8 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+@extends('layouts.base')
 
-        <title>FITASC SPORTING ROMANIA</title>
+@push('content')
+    
+        <img style="width: 80%;"src="{{asset('img/under-construction-girl.png')}}" alt="">
 
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+@endpush    
 
-        <!-- Styles -->
-    </head>
-    <body style="background-color:#223035;">
-
-    <p style="text-align:center; transform: translateY(4rem);"><img src={{url("img/under-construction-girl.png")}} alt="underconstruction"></p>
-    </body>
-</html>
