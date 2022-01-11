@@ -1,0 +1,7 @@
+.bodycontent {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    height: 100%;
+    background-image: linear-gradient(to left top, rgba(255, 254, 251, 0), #fffefb), url(../img/grup.jpeg);
+    background-size: cover;
+    background-position: center; }

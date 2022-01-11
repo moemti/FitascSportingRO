@@ -13,26 +13,25 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
+
+
+
 Route::get('/', function () {
-    return view('welcome');
+    return view('modules.pages.welcome');
 })->name('welcome');
-Route::get('/competitii', function () {
-    return view('modules.pages.competitii');
-})->name('competitii');
 
-Route::get('/lasamente', function () {
-    return view('modules.pages.clasamente');
-})->name('clasamente');
 
-Route::get('/regulamente', function () {
-    return view('modules.pages.regulamente');
-})->name('regulamente');
+Route::get('/competitii', 'App\Http\Controllers\CompetitiiController@getList');
 
-Route::get('/poligoane', function () {
-    return view('modules.pages.poligoane');
-})->name('poligoane');
 
-Route::get('antrenamente', function () {
-    return view('modules.pages.antrenamente');
-})->name('antrenamente');
+Route::get('/clasamente', 'App\Http\Controllers\ClasamenteController@getClasamente');
+
+//Route::POST('/competition', 'App\Http\Controllers\CompetitiiController@getItemAjax');
+Route::GET('/clasament/{id}', 'App\Http\Controllers\CompetitiiController@getClasament');
+
+Route::get('/poligon/{id}', 'App\Http\Controllers\NavigationController@getPoligon');
+
+
+Route::get('{page}', 'App\Http\Controllers\NavigationController@getPage'); 
 

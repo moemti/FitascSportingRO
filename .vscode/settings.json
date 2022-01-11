@@ -12,7 +12,8 @@
         "phpunit.xml": true,
         "server.php": true,
         "webpack.mix.js": true,
-        "yarn.lock": true
+        "yarn.lock": false,
+        "**/*.php": false
     },
     "explorerExclude.backup": null
 }

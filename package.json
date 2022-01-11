@@ -8,26 +8,27 @@
         "hot": "mix watch --hot",
         "prod": "npm run production",
         "production": "mix --production",
-
-        "watch:sass": "node-sass public/sass/main.scss public/css/style.css -w",
+        "watch:sass": "(node-sass public/sass/main.scss public/css/style.css -w) & (node-sass public/sass/pages/clasamente.scss public/css/pages/clasamente.css -w) & (node-sass public/sass/pages/poligoane.scss public/css/pages/poligoane.css -w) & (node-sass public/sass/pages/competitii.scss public/css/pages/competitii.css -w)",
+        "watch:sass2": "node-sass public/sass/pages/clasamente.scss public/css/pages/clasamente.css -w",
         "devserver": "live-server",
-        "start": "npm-run-all --parallel devserver watch:sass",
-    
+        "start": "npm-run-all --parallel watch:sass watch:sass2",
         "compile:sass": "node-sass public/sass/main.scss public/css/style.comp.css",
         "prefix:css": "postcss --use autoprefixer -b 'last 10 versions' public/css/style.comp.css -o public/css/style.prefix.css",
         "compress:css": "node-sass public/css/style.prefix.css public/css/style.css --output-style compressed",
         "build:css": "npm-run-all compile:sass prefix:css compress:css"
     },
     "devDependencies": {
+        "autoprefixer": "^7.1.4",
         "axios": "^0.21",
+        "concat": "^1.0.3",
         "laravel-mix": "^6.0.6",
         "lodash": "^4.17.19",
-        "postcss": "^8.1.14",
-
-        "autoprefixer": "^7.1.4",
-        "concat": "^1.0.3",
         "node-sass": "^4.5.3",
         "npm-run-all": "^4.1.1",
+        "postcss": "^8.1.14",
         "postcss-cli": "^4.1.1"
+    },
+    "dependencies": {
+        "jquery": "^3.6.0"
     }
 }

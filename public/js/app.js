@@ -1,5 +1,7 @@
 
 
+
+
 window.onload = function (){
     let s = document.getElementById('loaderRight').style;
     s.opacity = '0';
