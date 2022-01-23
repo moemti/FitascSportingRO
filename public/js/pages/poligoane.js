@@ -41,7 +41,7 @@
         
                 createwidget: function (row, column, value, htmlElement) {
                     var imgurl = APP_URL + '/img/detail.png';
-                    var img = '<img class="curPointer" style="margin-top: 1px;" height="90%"src="' + imgurl + '"/>';
+                    var img = '<img class="curPointer" style="margin-top: 1px;" height="50%"src="' + imgurl + '"/>';
                     var button = $("<div style='border:none;'>" + img + "<div class='buttonValue curPointer' data='" + value + "'>" + '' + "</div></div>");
                     $(htmlElement).append(button);
                     button.jqxButton({ template: "none", height: '100%', width: '100%' });
