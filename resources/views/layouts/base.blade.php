@@ -27,7 +27,6 @@
         <link rel="stylesheet" href={{asset("css/style.css")}}>
         <link href={{asset("icons/css/uicons-regular-rounded.css")}} rel="stylesheet">
   
-        
 
         @stack('scripts')
         
@@ -37,10 +36,7 @@
         @stack('scripts_body')
         <div class="bodycontent">
             <header class="header">
-                    <div class="header__logo-box">
-                    
-                            <!-- <img src="{{asset('img/logo.png')}}" alt="trillo logo" class="header__logo">     -->
-                    </div>   
+                
                     <div class="header__title">
                         <h1 >
                             Sporting Romania
@@ -50,11 +46,9 @@
                     <div class="header__userlogin">
                     
                         @include('modules.userloginheader')
-                    
-
                     </div>
                     
-                     @include('modules.navigation')
+                    @include('modules.navigation')
                     
 
             </header>
@@ -65,7 +59,7 @@
                 </div> 
 
                 <div class="content">
-                <span onclick="history.back()" class=' fi fi-rr-angle-double-small-left btn_back'></span>
+                    
                     @stack('content')
                 </div>
                 
@@ -89,6 +83,6 @@
 
         <div id="loaderLeft">&nbsp;</div>
         <div id="loaderRight">&nbsp;</div>
-
+        <!-- <span onclick="history.back()" class=' fi fi-rr-angle-double-small-left btn_back'></span> -->
     </body>
 </html>

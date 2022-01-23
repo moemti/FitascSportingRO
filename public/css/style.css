@@ -66,7 +66,6 @@ html {
 body {
   box-sizing: border-box;
   padding: 0;
-  background-color: #fffefb;
   height: 100%;
   font-family: "Lato", sans-serif; }
   @media only screen and (max-width: 56.25em) {
@@ -89,9 +88,9 @@ body {
 
 .bodycontent {
   display: grid;
-  grid-template-rows: auto 1fr auto;
+  grid-template-rows: 15vh 1fr auto;
   height: 100%;
-  background-image: linear-gradient(to left top, rgba(255, 254, 251, 0.8), #fffefb), url(../img/grup.jpeg);
+  background-image: linear-gradient(to top, #503000, #fffefb);
   background-size: cover;
   background-position: center; }
 
@@ -107,6 +106,8 @@ body {
 .content {
   align-content: center;
   justify-content: center;
+  height: fit-content;
+  height: -webkit-fill-available;
   width: 100%; }
   @media only screen and (max-width: 37.5em) {
     .content {
@@ -144,12 +145,12 @@ body {
   height: 100%; }
   @media only screen and (max-width: 37.5em) {
     .page_content {
-      padding: .5rem; } }
+      padding: 1rem; } }
   .page_content h1 {
     color: #1d1000;
     font-size: 2.5rem;
     font-weight: 300;
-    padding-left: 3rem;
+    padding-left: 2rem;
     padding-bottom: 2rem;
     letter-spacing: 0.5rem;
     text-shadow: 1px 1px 1px rgba(250, 77, 14, 0.4); }
@@ -211,6 +212,12 @@ body {
 
 .ident3 {
   margin-left: 3rem; }
+
+.clRedFont {
+  color: red !important; }
+
+.curPointer {
+  cursor: pointer !important; }
 
 body {
   font-family: "Lato", sans-serif;
@@ -874,9 +881,10 @@ body {
   background-image: linear-gradient(to left top, rgba(242, 227, 118, 0.45), rgba(255, 254, 251, 0.95));
   background-size: cover;
   background-position: center;
-  height: 20vh;
+  height: 15vh;
   display: grid;
-  grid-template-columns: repeat(12, 1fr); }
+  grid-template-rows: 50% auto 30%;
+  grid-template-columns: 15% auto 10%; }
   @media only screen and (max-width: 37.5em) {
     .header {
       height: 15vh; } }
@@ -890,8 +898,8 @@ body {
     bottom: 0;
     filter: opacity(10%); }
   .header__title {
-    grid-row: 3/span 1;
-    grid-column: 3/span 6;
+    grid-row: 2/span 1;
+    grid-column: 2/span 1;
     align-items: center;
     padding-left: 2rem;
     transform: translateY(-2rem); }
@@ -912,17 +920,19 @@ body {
           line-height: 3rem; } }
   .header__userlogin {
     grid-row: 1/span 1;
-    grid-column: 8/-1;
+    grid-column: 3/-1;
     align-content: center;
     text-align: right;
     align-items: right;
     color: #fa4d0e;
     justify-content: right;
     padding-top: 2rem;
-    padding-right: 5rem; }
+    padding-right: 5rem;
+    font-size: 3rem; }
     @media only screen and (max-width: 37.5em) {
       .header__userlogin {
-        padding-right: 3rem; } }
+        padding-right: 3rem;
+        font-size: 2rem; } }
   .header .loginheader_container {
     display: flex;
     justify-content: right;
@@ -932,7 +942,7 @@ body {
     -webkit-flex: 1 0 200px;
     flex: 1 0 200px; }
   .header .navigation {
-    grid-row: 6/span 1;
+    grid-row: 3/span 1;
     grid-column: 1/-1;
     height: auto;
     display: grid;
@@ -1039,13 +1049,14 @@ smart-scroll-bar .smart-thumb {
   text-align: left;
   font-family: "Lato", sans-serif;
   width: 100%;
-  padding: 0;
+  padding: 2rem;
   padding-left: 3rem;
   background-color: radial-gradient(rgba(255, 254, 251, 0.6), rgba(255, 254, 251, 0.2)); }
   @media only screen and (max-width: 37.5em) {
     .page_content_detail {
-      padding: 0;
-      padding-left: 0.5rem; } }
+      padding: 0.5rem;
+      padding-left: 0.5rem;
+      padding-right: 0.5rem; } }
   .page_content_detail label {
     color: #503000;
     padding: 0.3rem;
@@ -1094,6 +1105,93 @@ smart-scroll-bar .smart-thumb {
   min-width: 100%;
   background-color: lightcoral; }
 
+#jqxGrid .jqx-grid-column-header {
+  font-weight: 300;
+  font-size: 1.4rem;
+  background-color: rgba(255, 254, 251, 0.5);
+  font-family: "Lato", sans-serif; }
+
+#jqxGrid .jqx-grid-cell {
+  color: #1d1000;
+  font-size: 1.2rem;
+  font-weight: 300;
+  font-family: "Lato", sans-serif; }
+
+.specialtext {
+  color: orange !important; }
+
+.description {
+  color: whitesmoke !important; }
+
+.sellformat {
+  color: red !important; }
+
+.buyformat {
+  color: greenyellow !important; }
+
+.booleanvalue {
+  color: mistyrose !important;
+  background-color: aquamarine;
+  pointer-events: none;
+  visibility: hidden; }
+
+.quoteonthewire input {
+  background-color: whitesmoke;
+  color: gray !important; }
+
+.quoterequested input {
+  background-color: #e7563c;
+  color: white !important; }
+
+.jqx-grid-cell {
+  border-color: black !important;
+  border-right: none;
+  border-bottom-width: 2px; }
+
+.jqx-grid-cell .jqx-grid-cell-left-align {
+  margin-top: 10px !important; }
+
+.jqx-grid-statusbar {
+  background-color: #161616 !important; }
+
+.jqx-grid-statusbar span {
+  color: #94c6ff;
+  font-size: 12px; }
+
+.page_content_master {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr; }
+  .page_content_master_header {
+    grid-row: 1/span 1; }
+  .page_content_master_content {
+    grid-row: 2/span 1; }
+  .page_content_master input {
+    color: #503000;
+    border-style: none;
+    background-color: rgba(255, 254, 251, 0);
+    font-size: 1.7rem;
+    padding: 0.3rem;
+    border-radius: 3px;
+    font-weight: 300;
+    font-family: "Lato", sans-serif; }
+  .page_content_master .row {
+    margin: 0;
+    align-self: flex-start;
+    width: 100%; }
+  .page_content_master h2 {
+    padding-top: 2rem;
+    padding-left: 3rem; }
+  .page_content_master a {
+    background-color: rgba(255, 254, 251, 0);
+    color: #c50202;
+    text-decoration: none;
+    padding: 0.3rem;
+    border-radius: 4px; }
+    .page_content_master a__medium {
+      font-size: 2rem;
+      font-weight: 300; }
+
 .navigation {
   border-bottom: 5px solid #fa4d0e; }
   @media only screen and (max-width: 37.5em) {
@@ -1109,7 +1207,7 @@ smart-scroll-bar .smart-thumb {
     top: 3rem;
     left: 3rem;
     border-radius: 50%;
-    z-index: 2000;
+    z-index: 3000;
     box-shadow: 0 1rem 3rem rgba(250, 77, 14, 0.1);
     text-align: center;
     cursor: pointer;
@@ -1129,7 +1227,7 @@ smart-scroll-bar .smart-thumb {
     top: 3.5rem;
     left: 3.5rem;
     background-image: radial-gradient(#1d1000, #fa4d0e);
-    z-index: 1000;
+    z-index: 2000;
     transition: transform 0.8s cubic-bezier(0.36, 1.15, 0.78, 0.9);
     display: none; }
     @media only screen and (max-width: 37.5em) {
@@ -1144,7 +1242,7 @@ smart-scroll-bar .smart-thumb {
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 1500;
+    z-index: 2500;
     display: none;
     opacity: 0;
     width: 0;

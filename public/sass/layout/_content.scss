@@ -93,12 +93,13 @@ smart-scroll-bar .smart-thumb
     font-family: "Lato", sans-serif;
     width: 100%;
   //  display: flex;
-    padding: 0;
+    padding: 2rem;
     padding-left: 3rem;
 
     @include respond(phone) {
-        padding: 0;
+        padding: 0.5rem;
         padding-left: 0.5rem;
+        padding-right: 0.5rem;
     }
    // box-shadow: 0 4px 8px 0 rgba(85, 1, 1, 0.2), 0 6px 20px 0 rgba(180, 0, 0, 0.19);
 
@@ -170,4 +171,116 @@ smart-scroll-bar .smart-thumb
     min-width: 100%;
     background-color: lightcoral;
 }
+/////////////////
 
+#jqxGrid .jqx-grid-column-header {
+    font-weight: 300;
+    font-size: 1.4rem;
+    background-color: rgba($color-secondary-ultralight, 0.5);
+    font-family: "Lato", sans-serif;
+}
+#jqxGrid .jqx-grid-cell {
+    color: rgba($color-primary-dark, 1);
+    font-size: 1.2rem;
+    font-weight: 300;
+    font-family: "Lato", sans-serif;
+}
+.specialtext {
+    color: orange !important;
+}
+.description {
+    color: whitesmoke !important;
+}
+.sellformat {
+    color: red !important;
+}
+.buyformat {
+    color: greenyellow !important;
+}
+.booleanvalue {
+    color: mistyrose !important;
+    background-color: aquamarine;
+    pointer-events: none;
+    visibility: hidden;
+}
+.quoteonthewire input {
+    background-color: whitesmoke;
+    color: gray !important;
+}
+.quoterequested input {
+    background-color: rgb(231, 86, 60);
+    color: white !important;
+}
+.jqx-grid-cell {
+    border-color: black !important;
+    border-right: none;
+    border-bottom-width: 2px;
+}
+.jqx-grid-cell .jqx-grid-cell-left-align {
+    margin-top: 10px !important;
+}
+.jqx-grid-statusbar {
+    background-color: rgb(22, 22, 22) !important;
+}
+.jqx-grid-statusbar span {
+    color: rgb(148, 198, 255);
+    font-size: 12px;
+}
+
+
+//////////@at-root
+.page_content_master {
+
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+    
+    &_header{
+        grid-row: 1/span 1;
+      
+
+    }
+    &_content{
+
+        grid-row: 2/span 1;
+    }
+
+
+    input{
+        color: $color-primary;
+        border-style: none;
+        background-color: rgba($color-secondary-ultralight, 0);
+      
+        font-size: 1.7rem;
+        padding: 0.3rem;
+        border-radius: 3px;
+        font-weight: 300;
+        font-family: "Lato", sans-serif;
+    }
+    .row{
+        margin: 0;
+        align-self: flex-start;
+       // display: grid;
+        width: 100%;
+    }
+
+    h2{
+        padding-top: 2rem;
+        padding-left: 3rem;
+    }
+    a{
+        background-color: rgba($color-secondary-ultralight, 0);
+        color: rgba($color-link, 1);
+        text-decoration: none;
+        padding: 0.3rem;
+        border-radius: 4px;
+
+        &__medium{
+            font-size: 2rem;
+            font-weight: 300;
+        }
+        
+
+    }
+    
+}

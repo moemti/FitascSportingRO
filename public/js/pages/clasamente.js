@@ -2,47 +2,64 @@
 
 	if (window.innerWidth > 900){
 		clClasament = [
-			{ label: 'Loc', dataField: 'Position', width: '5%' },
-			{ label: 'Sportiv', dataField: 'Person', width: '55%' },
-			{ label: 'Categorie', dataField: 'Category', width: '10%' },
-			{ label: 'Team', dataField: 'Team', width: '20%' },
-			{ label: 'Procent', dataField: 'Procent', width: '10%' },
+			{ text: 'Loc', dataField: 'Position', width: '5%' },
+			{ text: 'Sportiv', dataField: 'Person', width: '55%' },
+			{ text: 'Categorie', dataField: 'Category', width: '10%' },
+			{ text: 'Team', dataField: 'Team', width: '20%' },
+			{ text: 'Procent', dataField: 'Procent', width: '10%' },
 		]
 	}else{
 		clClasament = [
-			{ label: 'Loc', dataField: 'Position', width: '5%' },
-			{ label: 'Sportiv', dataField: 'Person', width: '55%' },
-			{ label: 'Categorie', dataField: 'Category', width: '10%' },
-			{ label: 'Procent', dataField: 'Procent', width: '20%' },
+			{ text: '', dataField: 'Position', width: '5%' },
+			{ text: 'Sportiv', dataField: 'Person', width: '55%' },
+			{ text: 'Cat', dataField: 'Category', width: '10%' },
+			{ text: 'Procent', dataField: 'Procent', width: '25%' },
 		]
 	}
 
 
-	Smart('#gridclasament2021', class {
-		get properties() {
-			return {
-				dataSource: new Smart.DataAdapter(
-				{
-					dataSource: dsClasament2021,
-					dataFields:
+
+
+	$(function () {
+	
+		// prepare the data
+		var source =
+		{
+			datatype: "array",
+			localdata: dsClasament2021,
+			dataFields:
 					[
-						'Position: number',
-						'Person: string',
-						'Category: string',
-						'Team: string',
-						'Procent: number'
+						{ name: 'Position', type: 'number' },
+						{ name: 'Person', type: 'string' },
+						{ name: 'Category', type: 'string' },
+						{ name: 'Team', type: 'string'},
+						{ name: 'Procent', type: 'number' }
+			
 					]
-				}),
-				sorting: {
-					enabled: true
-				},
-				filtering: {
-					enabled: true
-				},
-				behavior: { columnResizeMode: 'growAndShrink' },
-				columns: clClasament
-			}
-		}
+				
+			
+		};
+		
+		var dataAdapter =  new $.jqx.dataAdapter(source);
+		// initialize jqxGrid
+		$("#jqxGrid").jqxGrid(
+		{
+			width:'100%',
+			height: '100%',
+			source: dataAdapter,                
+			pageable: false,
+			autoheight: false,
+			sortable: true,
+			altrows: true,
+			enabletooltips: true,
+			editable: false,
+			autorowheight: false,
+            autoheight: false,
+			selectionmode: 'none',
+			columns: clClasament
+		});
 	});
 	   
-	
+
+
+	   

@@ -29,7 +29,7 @@ class Competition extends BObject{
                     inner join `range` r on r.RangeId = c.RangeId
                     inner join sportfield s on s.SportFieldId = c.SportFieldId
                 
-                order by c.StartDate ";
+                order by Year desc, c.StartDate ";
 
     public $MasterItemSelect = "SELECT `CompetitionId`, c.Name, `StartDate`, `EndDate`, c.`RangeId`, `Targets`, c.`SportFieldId` ,
                 r.name as `Range`, s.Name as SportField, year(StartDate) as Year,
