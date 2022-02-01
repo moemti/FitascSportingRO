@@ -137,13 +137,11 @@ smart-scroll-bar .smart-thumb
     h2{
         padding-top: 2rem;
         padding-left: 3rem;
+        @include respond(phone) {
+            padding: 0.1rem;
+        }
     }
     a{
-        background-color: rgba($color-secondary-ultralight, 0);
-        color: rgba($color-link, 1);
-        text-decoration: none;
-        padding: 0.3rem;
-        border-radius: 4px;
 
         &__medium{
             font-size: 2rem;
@@ -154,17 +152,8 @@ smart-scroll-bar .smart-thumb
     }
 }
 
-.a{
-    background-color: rgba($color-secondary-ultralight, 0);
-    color: rgba($color-link, 1);
-    text-decoration: none;
-    padding: 0.3rem;
-    border-radius: 4px;
-    &__medium{
-        font-size: 1.6rem;
-        font-weight: 300;
-    }
-}
+
+
 
 
 .gridcontainer{
@@ -181,7 +170,7 @@ smart-scroll-bar .smart-thumb
 }
 #jqxGrid .jqx-grid-cell {
     color: rgba($color-primary-dark, 1);
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     font-weight: 300;
     font-family: "Lato", sans-serif;
 }
@@ -246,17 +235,7 @@ smart-scroll-bar .smart-thumb
     }
 
 
-    input{
-        color: $color-primary;
-        border-style: none;
-        background-color: rgba($color-secondary-ultralight, 0);
-      
-        font-size: 1.7rem;
-        padding: 0.3rem;
-        border-radius: 3px;
-        font-weight: 300;
-        font-family: "Lato", sans-serif;
-    }
+  
     .row{
         margin: 0;
         align-self: flex-start;
@@ -267,13 +246,12 @@ smart-scroll-bar .smart-thumb
     h2{
         padding-top: 2rem;
         padding-left: 3rem;
+        @include respond(phone) {
+            padding: 0.1rem;
+        }
     }
     a{
-        background-color: rgba($color-secondary-ultralight, 0);
-        color: rgba($color-link, 1);
-        text-decoration: none;
-        padding: 0.3rem;
-        border-radius: 4px;
+      
 
         &__medium{
             font-size: 2rem;
@@ -283,4 +261,16 @@ smart-scroll-bar .smart-thumb
 
     }
     
+}
+
+input{
+    color: $color-primary;
+    border-style: none;
+    background-color: rgba($color-secondary-ultralight, 0);
+  
+    font-size: 1.7rem;
+    padding: 0.3rem;
+    border-radius: 3px;
+    font-weight: 300;
+    font-family: "Lato", sans-serif;
 }

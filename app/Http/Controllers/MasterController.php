@@ -120,7 +120,6 @@ class MasterController extends Controller
 
     public function getitemsajax(Request $request){
 
-        $OrganizationId = session('organizationId');
         $PersonId = session('PersonId');
         $filter = $request->filter;
         $caption = $request->caption;

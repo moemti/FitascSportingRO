@@ -45,18 +45,21 @@
 		$("#jqxGrid").jqxGrid(
 		{
 			width:'100%',
-			height: '100%',
+		
 			source: dataAdapter,                
 			pageable: false,
 			autoheight: false,
-			sortable: true,
+			sortable: false,
 			altrows: true,
 			enabletooltips: true,
 			editable: false,
 			autorowheight: false,
             autoheight: false,
 			selectionmode: 'none',
-			columns: clClasament
+			columns: clClasament,
+			filterable: true,
+	
+          
 		});
 	});
 	   

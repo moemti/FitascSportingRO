@@ -20,7 +20,7 @@
 
     <link rel="stylesheet" type="text/css" href="{{asset('css/pages/competitii.css')}}"/>
     <link rel="stylesheet" href="{{asset('js/components/jqwidgets/styles/jqx.base.css')}}" type="text/css" />
-@endpush
+
 
 <script>
 
@@ -28,6 +28,7 @@
            
 
 </script>
+@endpush
 
 @push('content')
 

@@ -7,9 +7,16 @@
 
 @endpush
 
+
 @push('content')
 
-        
+    <div class="page_content page_content_master">
+        <h1>welcome</h1>
 
-@endpush    
+           
+    </div>
+    
+       
+
+@endpush
 

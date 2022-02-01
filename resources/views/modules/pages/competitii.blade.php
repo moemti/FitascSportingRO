@@ -15,23 +15,25 @@
     <script type="text/javascript" src="{{asset('js/components/jqwidgets/jqxgrid.pager.js')}}"></script> 
     <script type="text/javascript" src="{{asset('js/components/jqwidgets/jqxgrid.selection.js')}}"></script> 
     <script type="text/javascript" src="{{asset('js/components/jqwidgets/jqxgrid.edit.js')}}"></script> 
+    <script type="text/javascript" src="{{asset('js/components/jqwidgets/jqxgrid.filter.js')}}"></script> 
+
 
     <script defer type="module" src="{{asset('js/pages/competitii.js')}}"></script>
 
-    <link rel="stylesheet" type="text/css" href="{{asset('css/pages/competitii.css')}}"/>
+    <!-- <link rel="stylesheet" type="text/css" href="{{asset('css/pages/competitii.css')}}"/> -->
     <link rel="stylesheet" href="{{asset('js/components/jqwidgets/styles/jqx.base.css')}}" type="text/css" />
+
+
+    <script>
+
+            let dsCompetitii= @Json($masterlist);
+            
+
+    </script>
 @endpush
-
-<script>
-
-        let dsCompetitii= @Json($masterlist);
-           
-
-</script>
-
 @push('content')
 
-    <div class="page_content page_content_master page_content_competitii">
+    <div class="page_content page_content_master ">
         <div class="page_content_header">
             <h1>Competitii</h1>
 

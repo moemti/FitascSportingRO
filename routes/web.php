@@ -25,6 +25,30 @@ Route::get('/', function () {
 Route::get('/competitii', 'App\Http\Controllers\CompetitiiController@getList');
 
 
+Route::get('/login', function(){  return view('auth/login');})->name('login');
+
+Route::post('/authenticate', 'App\Http\Controllers\Auth\LoginController@authenticate');
+Route::post('/registerme', 'App\Http\Controllers\Auth\LoginController@register');
+Route::post('/resetpassword', 'App\Http\Controllers\Auth\LoginController@resetpasswordmail');
+Route::get('/confirmregistration', 'App\Http\Controllers\Auth\LoginController@confirmregistrationemail');
+Route::get('/changepassword', 'App\Http\Controllers\Auth\LoginController@changepassword');
+Route::post('/changethepassword', 'App\Http\Controllers\Auth\LoginController@changethepassword');
+
+
+Route::get('/resetform', function (){
+    return view('auth/reset');
+
+})->name('resetpassword');
+
+Route::get('/register', function (){
+    return view('auth/register');
+
+})->name('register');
+
+Route::get('/logout', 'App\Http\Controllers\Auth\LoginController@logout')->name('logout');
+
+
+
 Route::get('/clasamente', 'App\Http\Controllers\ClasamenteController@getClasamente');
 
 //Route::POST('/competition', 'App\Http\Controllers\CompetitiiController@getItemAjax');
@@ -32,6 +56,15 @@ Route::GET('/clasament/{id}', 'App\Http\Controllers\CompetitiiController@getClas
 
 Route::get('/poligon/{id}', 'App\Http\Controllers\NavigationController@getPoligon');
 
+Route::middleware(['guest'])->group(function(){
+
+        // my user
+        Route::get('/myuser', 'App\Http\Controllers\PersonController@getmyuser')->name('myuser');
+        Route::post('/savemyuser', 'App\Http\Controllers\PersonController@savemyuser');
+        Route::post('/getmyuserajax', 'App\Http\Controllers\PersonController@getmyuserajax');
+        Route::post('/changemypassword', 'App\Http\Controllers\PersonController@changemypassvord');
+
+});
 
 Route::get('{page}', 'App\Http\Controllers\NavigationController@getPage'); 
 

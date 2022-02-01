@@ -172,6 +172,43 @@ class Person extends BObject{
         }
     }
     
+    public function getMyUser($PersonId){
+        $sql = "SELECT p.PersonId, p.Name, p.Email, GROUP_CONCAT(f.Name SEPARATOR ', ') as Role , p.NickName, u.IsSuperUser
+        from person p
+        inner join user u on u.PersonId = p.PersonId
+        left join personxrole x on x.PersonId = p.PersonId
+        left join role f on f.RoleId = x.RoleId
+        
+        where p.PersonId = $PersonId
+        group by  p.PersonId, p.Name, p.Email, p.NickName,  u.IsSuperUser";
+        
+        return DB::select($sql); 
+    }
+
+    public function saveMyUser($request){
+
+        $PersonId = $request['PersonId'];
+        $Email = $request['Email'];
+        $Name = $request['Name'];
+        $NickName = $request['NickName'];
+
+        $sql = "update person 
+                set Email = '$Email',
+                Name = '$Name',
+                NickName = '$NickName'
+            where PersonId = $PersonId";
+        
+        DB::select($sql); 
+
+        return $this->getMyUser($PersonId)[0];
+    }
+
+    public function setPassword($PersonId, $password){
+        $sql = "update user set Password = '$password' where PersonId = $PersonId";
+
+        DB::select($sql);
+    }
+
     //====================================================================================
 
     static public function getPersonParamsAll($PersonId){

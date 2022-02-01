@@ -15,25 +15,23 @@
     <script type="text/javascript" src="{{asset('js/components/jqwidgets/jqxgrid.pager.js')}}"></script> 
     <script type="text/javascript" src="{{asset('js/components/jqwidgets/jqxgrid.selection.js')}}"></script> 
     <script type="text/javascript" src="{{asset('js/components/jqwidgets/jqxgrid.edit.js')}}"></script> 
+    <script type="text/javascript" src="{{asset('js/components/jqwidgets/jqxgrid.filter.js')}}"></script> 
  
     <script defer type="module" src="{{asset('js/pages/clasamente.js')}}"></script>
-    <link rel="stylesheet" type="text/css" href="{{asset('css/pages/clasamente.css')}}"/>
+    <!-- <link rel="stylesheet" type="text/css" href="{{asset('css/pages/clasamente.css')}}"/> -->
     <link rel="stylesheet" href="{{asset('js/components/jqwidgets/styles/jqx.base.css')}}" type="text/css" />
 
-    <style>
-		
-	</style>
 
 <script>
 
         let dsClasament2021= @Json($clasament2021);
 
 </script>
-
 @endpush
+
 @push('content')
 
-    <div class="page_content page_content_master page_content_participanti">
+    <div class="page_content page_content_master">
 
         <div class="page_content_header">
             <h1>Clasamente</h1>
@@ -47,10 +45,6 @@
                     
             </div>
         </div>
-
-
-       
-        
 
     </div>
     

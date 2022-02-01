@@ -28,7 +28,7 @@
 
 
 
-@endpush
+
 
 <script>
 
@@ -36,6 +36,8 @@
            
 
 </script>
+
+@endpush
 
 @push('content')
 

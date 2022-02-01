@@ -9,12 +9,12 @@ import { GETAJAX, POSTAJAX } from '../helpers.js';
             { text: 'Nume', dataField: 'Name', width: '35%' },
             { text: 'Locatie', dataField: 'Range', width: '30%' },
             { text: 'Perioada', dataField: 'Perioada', width: '20%' },
-            { text: 'An', dataField: 'Year', width: '10%' },
+            { text: 'An', dataField: 'Year', width: '10%' ,filtertype: 'checkedlist', filteritems: [...new Set(dsCompetitii.Year)]},
           //`  { text: 'CompetitionId', dataField: 'CompetitionId', width: '0', hidden:true },
             {text:'', dataField: 'CompetitionId', width: '5%',
                 createwidget: function (row, column, value, htmlElement) {
-                var imgurl = APP_URL + '/img/podium.png';
-                var img = '<img class="curPointer" style="margin-top: 1px;" width="90%"src="' + imgurl + '"/>';
+                var imgurl = APP_URL + '/img/enter.png';
+                var img = '<img class="curPointer" style="margin-top: 1px;" width="60%"src="' + imgurl + '"/>';
                 var button = $("<div style='border:none;'>" + img + "<div class='buttonValue curPointer' data='" + value + "'>" + '' + "</div></div>");
                 $(htmlElement).append(button);
                 button.jqxButton({ template: "none", height: '100%', width: '100%' });
@@ -26,22 +26,25 @@ import { GETAJAX, POSTAJAX } from '../helpers.js';
                 });
             },
             initwidget: function (row, column, value, htmlElement) {
-                var imgurl = APP_URL + '/img/podium.png';
+                var imgurl = APP_URL + '/img/enter.png';
                 $(htmlElement).find('img')[0].src = imgurl;
             }}
         ]
 
     }
     else{
-        smcolumns = [ { text: 'Nume', dataField: 'NumeLung', width: '90%' },
-        // { text: 'Locatie', dataField: 'Range', width: '40%' },
+        smcolumns = [ { text: 'Nume', dataField: 'NumeLung', width: '73%' },
+        { text: 'An', dataField: 'Year', width: '15%' ,filtertype: 'checkedlist', filteritems: [...new Set(dsCompetitii.Year)]},
         
        
         {text:'', dataField: 'CompetitionId', width: '10%',
                 createwidget: function (row, column, value, htmlElement) {
               
-                var imgurl = APP_URL + '/img/podium.png';
-                var img = '<img  width="70%" src="' + imgurl + '"/>';
+                var imgurl = APP_URL + '/img/enter.png';
+                
+
+
+                var img = '<img  width="60%" src="' + imgurl + '"/>';
                 var button = $("<div style='border:none; margin-top: 1px; margin-right:2px;'>" + img + "<div class='buttonValue' data='" + value + "'>" + '' + "</div></div>");
                 $(htmlElement).append(button);
                 button.jqxButton({ template: "none", height: '100%', width: '100%' });
@@ -53,7 +56,7 @@ import { GETAJAX, POSTAJAX } from '../helpers.js';
                 });
             },
             initwidget: function (row, column, value, htmlElement) {
-                var imgurl = APP_URL + '/img/podium.png';
+                var imgurl = APP_URL + '/img/enter.png';
 
                 $(htmlElement).find('img')[0].src = imgurl;
             }}
@@ -108,9 +111,10 @@ import { GETAJAX, POSTAJAX } from '../helpers.js';
 			enabletooltips: false,
 			editable: false,
 			autorowheight: true,
-      
+            filterable: true,
 			selectionmode: 'none',
-		
+            showfilterrow: true,
+
 			columns: smcolumns
 		});
 	});

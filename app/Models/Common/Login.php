@@ -11,16 +11,15 @@ class Login
 {
     public static function Login($UserName){
        
-        $sql = "select p.PersonId, u.Password, p.Name, p.Email, o.Name as Organization, o.OrganizationId , u.IsSuperUser,
+        $sql = "select p.PersonId, u.Password, p.Name, p.Email,  u.IsSuperUser,
                 GROUP_CONCAT(f.Name SEPARATOR ', ') as Function 
                 from 
                 user u
-                    inner join person p on p.PersonId = u.Personid
-                inner join organization o on o.OrganizationId = p.OrganizationId 
+                inner join person p on p.PersonId = u.Personid
                 left join personxrole x on x.PersonId = p.PersonId
                 left join role f on f.RoleId = x.RoleId
-                where u.UserName = '{$UserName}'
-                GROUP BY p.PersonId, u.Password, p.Name, p.Email, o.Name , o.OrganizationId , u.IsSuperUser";
+                where p.Email = '{$UserName}'
+                GROUP BY p.PersonId, u.Password, p.Name, p.Email, u.IsSuperUser";
             
         $user = DB::select($sql);
         return $user;

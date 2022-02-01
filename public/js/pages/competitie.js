@@ -16,8 +16,8 @@
                 { text: 'Loc', dataField: 'Position', width: '5%' },
                 { text: 'Sportiv', dataField: 'Person', width: '50%' },
                 { text: 'Cat', dataField: 'Category', width: '10%' },
-                { text: 'Team', dataField: 'Team', width: '20%' },
-                { text: 'Total', dataField: 'Total', width: '10%' },
+                { text: 'Team', dataField: 'Team', width: '15%' },
+                { text: 'Total', dataField: 'Total', width: '15%' },
 
             
             ]

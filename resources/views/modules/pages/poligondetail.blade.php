@@ -1,10 +1,5 @@
 
-<div class="detail detail_poligon ">
 
-
-
-
-</div>
 
 
 @extends('layouts.base')

@@ -3,10 +3,14 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="csrf-token" content="{{csrf_token()}}">
+        
         <title>SPORTING ROMANIA</title>
 
         <script type="text/javascript">
              var APP_URL = {!! json_encode(url('/')) !!}
+             var baseUrl = APP_URL;
+             
         </script>
 
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600" rel="stylesheet">
@@ -23,9 +27,22 @@
         </script>
 
         <link rel="stylesheet" type="text/css" href="{{asset('js/components/smart//source/styles/smart.default.css')}}" />
+
+
         <script src="{{asset('js/app.js')}}"></script>
         <link rel="stylesheet" href={{asset("css/style.css")}}>
         <link href={{asset("icons/css/uicons-regular-rounded.css")}} rel="stylesheet">
+        <script src={{asset("js/scripts-init/bootstrap.bundle.min.js")}}></script>
+
+        <script src={{asset("js/scripts-init/toastr-fromsite.js")}}></script>
+        <script src={{asset("js/scripts-init/toastr.js")}}></script>
+
+        <!--SweetAlert2-->
+
+		<script src={{asset("js/scripts-init/sweet-alerts-fromsite.js")}}></script>
+        <script src={{asset("js/scripts-init/sweet-alerts.js")}}></script>
+
+        <script src={{asset("js/scripts-init/blockui.min.js")}}></script>
   
 
         @stack('scripts')
@@ -48,10 +65,18 @@
                         @include('modules.userloginheader')
                     </div>
                     
-                    @include('modules.navigation')
-                    
+                    <div class="header__user">
+                        @if (session("PersonId") > 0)
+       
+                            <h2 >
+                               <a href="{{Route('myuser')}}"> {{session("name") }}</a>
+                            </h2>
 
+                        @endif
+                    </div>
+            
             </header>
+            @include('modules.navigation')
             <div class="container">
 
                 <div class="sidebar">
@@ -84,5 +109,9 @@
         <div id="loaderLeft">&nbsp;</div>
         <div id="loaderRight">&nbsp;</div>
         <!-- <span onclick="history.back()" class=' fi fi-rr-angle-double-small-left btn_back'></span> -->
+
+
+
+    	@include('frame.bodyfooter')
     </body>
 </html>
