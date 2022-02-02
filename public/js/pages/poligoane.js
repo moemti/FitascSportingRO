@@ -8,25 +8,42 @@
             { text: 'Adresa', dataField: 'Address', width: '30%' },
             { text: 'Telefon', dataField: 'Phone', width: '20%' },
             { text: 'Tara', dataField: 'Country', width: '10%' },
-            { text: 'Detalii', dataField: 'RangeId', width: '10%', 
-        
-                createwidget: function (row, column, value, htmlElement) {
-                    var imgurl = APP_URL + '/img/enter.png';
-                    var img = '<img class="curPointer" style="margin-top: 1px;" height="60%"src="' + imgurl + '"/>';
-                    var button = $("<div style='border:none;'>" + img + "<div class='buttonValue curPointer' data='" + value + "'>" + '' + "</div></div>");
-                    $(htmlElement).append(button);
-                    button.jqxButton({ template: "none", height: '100%', width: '100%' });
-                    button.click(function (event) {
-                    
-                        const RangeId = button.find(".buttonValue")[0].getAttribute('data');
+           
+            { text: '', dataField: 'RangeId', width: '10%',
 
-                        document.location.href = `poligon/${RangeId}`;
-                    });
-                },  
-                initwidget: function (row, column, value, htmlElement) {
-                    var imgurl = APP_URL + '/img/enter.png';
-                    $(htmlElement).find('img')[0].src = imgurl;
-                    }
+            columntype:'button', cellsrenderer: function () {
+              return "...";
+
+              
+            }, 
+            
+            buttonclick: function (row) {
+               // open the popup window when the user clicks a button.
+                   let editrow = row;
+                  // var offset = $("#grid").offset();
+                   var dataRecord = $("#jqxGrid").jqxGrid('getrowdata', editrow);
+                   const RangeId = dataRecord.RangeId
+
+                   document.location.href = `poligon/${RangeId}`;
+               }
+        
+                // createwidget: function (row, column, value, htmlElement) {
+                //     var imgurl = APP_URL + '/img/enter.png';
+                //     var img = '<img class="curPointer" style="margin-top: 1px;" height="60%"src="' + imgurl + '"/>';
+                //     var button = $("<div style='border:none;'>" + img + "<div class='buttonValue curPointer' data='" + value + "'>" + '' + "</div></div>");
+                //     $(htmlElement).append(button);
+                //     button.jqxButton({ template: "none", height: '100%', width: '100%' });
+                //     button.click(function (event) {
+                    
+                //         const RangeId = button.find(".buttonValue")[0].getAttribute('data');
+
+                //         document.location.href = `poligon/${RangeId}`;
+                //     });
+                // },  
+                // initwidget: function (row, column, value, htmlElement) {
+                //     var imgurl = APP_URL + '/img/enter.png';
+                //     $(htmlElement).find('img')[0].src = imgurl;
+                //     }
         
         
             }
@@ -38,24 +55,40 @@
             { text: 'Poligon', dataField: 'Name', width: '90%' },
            
             { text: '', dataField: 'RangeId', width: '10%',
-        
-                createwidget: function (row, column, value, htmlElement) {
-                    var imgurl = APP_URL + '/img/enter.png';
-                    var img = '<img class="curPointer" style="margin-top: 1px;" height="60%"src="' + imgurl + '"/>';
-                    var button = $("<div style='border:none;'>" + img + "<div class='buttonValue curPointer' data='" + value + "'>" + '' + "</div></div>");
-                    $(htmlElement).append(button);
-                    button.jqxButton({ template: "none", height: '100%', width: '100%' });
-                    button.click(function (event) {
-                    
-                        const RangeId = button.find(".buttonValue")[0].getAttribute('data');
 
-                        document.location.href = `poligon/${RangeId}`;
-                    });
-                },  
-                initwidget: function (row, column, value, htmlElement) {
-                    var imgurl = APP_URL + '/img/enter.png';
-                    $(htmlElement).find('img')[0].src = imgurl;
-                    }
+            columntype:'button', cellsrenderer: function () {
+              return "...";
+
+              
+            }, 
+            
+            buttonclick: function (row) {
+               // open the popup window when the user clicks a button.
+                   let editrow = row;
+                  // var offset = $("#grid").offset();
+                   var dataRecord = $("#jqxGrid").jqxGrid('getrowdata', editrow);
+                   const RangeId = dataRecord.RangeId
+
+                   document.location.href = `poligon/${RangeId}`;
+               }
+        
+                // createwidget: function (row, column, value, htmlElement) {
+                //     var imgurl = APP_URL + '/img/enter.png';
+                //     var img = '<img class="curPointer" style="margin-top: 1px;" height="60%"src="' + imgurl + '"/>';
+                //     var button = $("<div style='border:none;'>" + img + "<div class='buttonValue curPointer' data='" + value + "'>" + '' + "</div></div>");
+                //     $(htmlElement).append(button);
+                //     button.jqxButton({ template: "none", height: '100%', width: '100%' });
+                //     button.click(function (event) {
+                    
+                //         const RangeId = button.find(".buttonValue")[0].getAttribute('data');
+
+                //         document.location.href = `poligon/${RangeId}`;
+                //     });
+                // },  
+                // initwidget: function (row, column, value, htmlElement) {
+                //     var imgurl = APP_URL + '/img/enter.png';
+                //     $(htmlElement).find('img')[0].src = imgurl;
+                //     }
         
         
             }
