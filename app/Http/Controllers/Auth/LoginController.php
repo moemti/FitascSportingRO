@@ -38,7 +38,7 @@ class LoginController extends Controller
         $passtoken = $request-> _passtoken;
 
         if ($password !== $password2)
-            return view("auth/changepassword")->with(["mesaj" => ['mesaj' =>'You entered different passwords! Try again'], "_passtoken"=>$passtoken]);    
+            return view("auth/changepassword")->with(["mesaj" => ['mesaj' =>'Ai introdus parole diferite. Incearca inca o data'], "_passtoken"=>$passtoken]);    
 
         $password = crypt($password, $password);
 
@@ -48,7 +48,7 @@ class LoginController extends Controller
         $message = User::setPassword($password, $passtoken);
 
         if ($message == 'OK')
-            return view("auth/login")->with(["mesaj" => ['The password has been changed!']]);
+            return view("auth/login")->with(["mesaj" => ['mesaj' => 'Parola a fost modificata!']]);
         else
             return view("auth/changepassword")->with(["mesaj" => ['mesaj' =>$message], "_passtoken"=>$passtoken]);
 
@@ -72,22 +72,22 @@ class LoginController extends Controller
 
 
             $data = [
-                'title' => 'Change password',
-                'content' => "Click the link to change your password",
+                'title' => 'Modifica parola',
+                'content' => "Apasa linkul pentru a modifica parola",
                 'link' => url('/changepassword?token='.$passtoken),
 
             ];
         
             Mail::send('mails.resetmail', $data, function($message) use ($Email){
 
-                $message->to($Email, 'User')->from('noreply@fitascsporting.ro')->subject('Password change');
+                $message->to($Email, 'User')->from('noreply@fitascsporting.ro')->subject('Modificare parola');
             }
 
             );
-            return view("auth/login")->with(["mesaj" =>['password'=> 'An email was sent to you. Follow the link received to change your password!']]);
+            return view("auth/login")->with(["mesaj" =>['password'=> 'S-a trimis un email de confirmare catre adresa introdusa. Trebuie sa confirmi apasand link-ul din email!']]);
         }
         else
-            return view("auth/reset")->with(["mesaj" =>['email'=> 'There is no user with the email you entered!']]);
+            return view("auth/reset")->with(["mesaj" =>['email'=> 'Nu exista utilizator cu emailul introdus!']]);
             
             
             
@@ -103,7 +103,7 @@ class LoginController extends Controller
 
 
         if ($password !== $password2)
-            return view("auth/register")->with(["mesaj" => ['NotOK' =>'You entered different passwords! Try again']]);    
+            return view("auth/register")->with(["mesaj" => ['NotOK' =>'Ai introdus parole diferite. Incearca inca o data']]);    
 
         $password = crypt($password, $password);
 
@@ -114,7 +114,7 @@ class LoginController extends Controller
         $user = Login::EmailExists($Email);
 
         if (isset($user) && count($user) > 0) {
-            return view("auth/register")->with(["mesaj" => ['NotOK' =>'There already exist an user with this email!']]);
+            return view("auth/register")->with(["mesaj" => ['NotOK' =>'Exista deja un utilizator cu acest email!']]);
         }
 
         $passtoken = uniqid();
@@ -122,8 +122,8 @@ class LoginController extends Controller
         $request['Token'] = $passtoken;
 
         $data = [
-            'title' => 'Registration to fitascsporting.ro',
-            'content' => "Click the link to confirm your email. After confirming your email, your request will be analyzed and you will receive a confirmation email!",
+            'title' => 'Inregistrare pe fitascsporting.ro',
+            'content' => "Apasa linkul pentru a confirma emailul. Dupa confirmare se va analiza si crea utilizatorul. Veti primi un alt email de confirmare a utilizatorului!",
             'link' => url('/confirmregistration?token='.$passtoken),
 
         ];
@@ -137,11 +137,11 @@ class LoginController extends Controller
 
             Mail::send('mails.registration', $data, function($message) use ($Email){
 
-                    $message->to($Email, 'User')->from('noreply@fitascsporting.ro')->subject('Registration to fitascsporting.ro');
+                    $message->to($Email, 'User')->from('noreply@fitascsporting.ro')->subject('Inregistrare pe fitascsporting.ro');
                 }
             );
 
-            return view("auth/register")->with(["mesaj" => ['OK'=>'You will receive an email to confirm your email. Please check your email and click the confirmation link']]);
+            return view("auth/login")->with(["mesaj" => ['mesaj' => 'S-a trimis un email pentru confirmare. Trebuie sa confirmi apasand link-ul din email!']]);
         }
         else{
             return view("auth/register")->with(["mesaj" => ['NotOK' =>$message]]);
@@ -156,10 +156,10 @@ class LoginController extends Controller
         $message = UserPerson::saveRegisteredUser($passtoken);
 
         if ($message == 'OK'){
-            return view("auth/register")->with(["mesaj" => ['OK'=>'Your email has been confirmed. You will receive an email when your account is ready.']]);
+            return view("auth/login")->with(["mesaj" => ['mesaj' => 'E-mailul tau a fost intregistrat. Vei primi un email cand userul tau este configurat.']]);
         }
         else
-            return view("auth/register")->with(["mesaj" => ['NotOK' =>$message]]);
+            return view("auth/register")->with(["mesaj" => ['NotOK' => $message]]);
 
 
     }
@@ -173,7 +173,7 @@ class LoginController extends Controller
         $user = Login::Login($request->input('username'));
 
         if (($request->input('password') === null) || ($request->input('username') === null)){
-            return view("auth/login")->with(["mesaj" =>[ 'password'=> 'Introduceti emailul si parola']]);
+            return view("auth/login")->with(["mesaj" =>[ 'password'=> 'Introdu emailul si parola']]);
         }
         
         

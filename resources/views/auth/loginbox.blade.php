@@ -40,13 +40,23 @@
                 
             </div>
             
-          
+              
 
             <div class="  text-right u-margin-top-medium">
                      <button class="btn-wide btn-pill btn-shadow btn-hover-shine btn btn-primary btn-lg">Login</button>
                
             </div>
+
+            @if (isset($mesaj) && array_key_exists('mesaj', $mesaj))
+                    <div class="col-md-12">
+                    <span class="text-succcess">
+                        <strong>{{ $mesaj['mesaj']}}</strong>
+                    </span>
+                    </div>
+                @endif
         </form>
+
+   
         </br>
         <div class="row">    
                 
