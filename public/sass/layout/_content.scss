@@ -267,10 +267,15 @@ input{
     color: $color-primary;
     border-style: none;
     background-color: rgba($color-secondary-ultralight, 0);
-  
+
     font-size: 1.7rem;
     padding: 0.3rem;
     border-radius: 3px;
     font-weight: 300;
     font-family: "Lato", sans-serif;
+}
+
+
+.input-w100{
+    width: 100%;
 }

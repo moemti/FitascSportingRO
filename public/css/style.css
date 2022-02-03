@@ -1652,6 +1652,9 @@ input {
   font-weight: 300;
   font-family: "Lato", sans-serif; }
 
+.input-w100 {
+  width: 100%; }
+
 .navigation {
   border-bottom: 5px solid #fa4d0e; }
   @media only screen and (max-width: 37.5em) {

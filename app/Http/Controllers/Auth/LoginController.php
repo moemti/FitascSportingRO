@@ -222,6 +222,57 @@ class LoginController extends Controller
         
         
     }
+
+
+    public function getregisteries(){
+      
+        return view( 'auth.registeries',['master' => UserPerson::getregisteries()]);
+        
+    
+    }
+
+    public function finishuser(Request $request){
+
+        $mesaj = '';
+
+        $Email = $request['Email'];
+        $PersonId = $request['PersonId'];
+        $RegisterId = $request['RegisterId'];
+
+        $mesaj = UserPerson::finishuser($RegisterId, $PersonId, $Email);
+
+        if ($mesaj == '')
+        {
+
+            $data = [
+                'title' => 'Confirmare cont pe fitascsporting.ro',
+                'content' => "Contul tau a fost configurat. Poti sa te loghezi urmand linkul",
+                'link' => url('/login'),
+    
+            ];
+
+
+    
+            Mail::send('mails.registration', $data, function($message) use ($Email){
+
+                    $message->to($Email, 'User')->from('noreply@fitascsporting.ro')->subject('Confirmare cont pe fitascsporting.ro');
+                }
+            );
+
+
+                return redirect( '/registeries')->with('mesaj', $mesaj);
+        }
+        else{
+            return redirect( "/registere/$RegisterId")->with('mesaj', $mesaj);
+        }
+
+    }
+
+    public function getregistere($RegisterId ){
+        return view( 'auth.registere',['register' => UserPerson::getregistere($RegisterId), 'persons' => UserPerson::getPersonNoUser()]);
+    }
+
+    
     
     
 }

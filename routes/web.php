@@ -47,6 +47,10 @@ Route::get('/register', function (){
 
 Route::get('/logout', 'App\Http\Controllers\Auth\LoginController@logout')->name('logout');
 
+// o sa-l punem in superuser
+        Route::get('/registeries', 'App\Http\Controllers\Auth\LoginController@getregisteries')->name('registeries');
+        Route::get('/registere/{id}', 'App\Http\Controllers\Auth\LoginController@getregistere');
+        Route::post('registere/finishuser', 'App\Http\Controllers\Auth\LoginController@finishuser');
 
 
 Route::get('/clasamente', 'App\Http\Controllers\ClasamenteController@getClasamente');
@@ -63,6 +67,10 @@ Route::middleware(['guest'])->group(function(){
         Route::post('/savemyuser', 'App\Http\Controllers\PersonController@savemyuser');
         Route::post('/getmyuserajax', 'App\Http\Controllers\PersonController@getmyuserajax');
         Route::post('/changemypassword', 'App\Http\Controllers\PersonController@changemypassvord');
+
+
+
+       
 
 });
 

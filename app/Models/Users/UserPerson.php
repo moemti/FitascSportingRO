@@ -78,6 +78,99 @@ class UserPerson extends BObject{
 
     }
 
+    public static function getregisteries(){
+        $sql = "select Name, Email, RegisterId from register where Status = 0 order by Name";
+        return   DB::select($sql);
+        
+    }
+
+    public static function getregistere($RegisterId){
+        $sql = "select Name, Email, RegisterId from register where Status = 0 and RegisterId = $RegisterId ";
+        return   DB::select($sql)[0];
+
+    } 
+    
+    
+    public static function getPersonNoUser(){
+        $sql = "select Name, Email, p.PersonId from person p left join user u on p.PersonId = u.PersonId where u.PersonId is null order by p.Name";
+        return  DB::select($sql);
+    }
+
+
+
+    
+    public static function finishuser($RegisterId, $PersonId, $Email){
+
+        // verificam Emailul
+
+        $sql = "select 1 from person where Email = '$Email'";
+        if (count(DB::select($sql)) > 0 )
+            return 'Acest email mai exista';
+
+        $mesaj = '';
+        try {
+            DB::beginTransaction();
+
+
+            if ($PersonId > 0){
+            
+    
+                $sql = "insert into user (PersonId, Password, IsSuperUser, UserName)
+                    select $PersonId , Password, 0, Name from register r
+                    where RegisterId = $RegisterId ;";
+                DB::select($sql);
+
+
+                $sql = "update person set Email = '$Email' where PersonId = $PersonId;";
+                DB::select($sql);
+
+
+                $sql = "update register set Status = 1  where RegisterId = $RegisterId;";
+                DB::select($sql);
+            
+    
+              
+    
+           
+            }
+            
+            else{
+                $sql = 
+                    "INSERT INTO person(Name, Code, Email, CountryId) 
+                        select Name, 'XXX', '$Email', 1 from register r
+                        where RegisterId = $RegisterId;";
+
+                    DB::select($sql);
+
+
+                $PersonId = DB::select("select LAST_INSERT_ID() as PersonId")[0]->PersonId;
+    
+            
+                $sql = 
+                    "insert into user (PersonId, Password, IsSuperUser, UserName)
+                    select $PersonId, Password, 0, Name from register r
+                    where RegisterId = $RegisterId;";
+
+                    DB::select($sql);
+
+                $sql = "update register set Status = 1  where RegisterId = $RegisterId;";
+                    DB::select($sql);
+
+            }
+
+            DB::Commit();
+        } catch (\Throwable $th) {
+            DB::Rollback();
+            throw $th;
+        }
+
+
+        return $mesaj;
+    }
+
+
+
+
     public static function saveRegisteredUser($passtoken){
         $sql = "select Email from register where `Token` = '$passtoken'";
         
