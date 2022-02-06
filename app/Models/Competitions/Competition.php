@@ -88,13 +88,14 @@ class Competition extends BObject{
 
 
                     left join (
-                        select GROUP_CONCAT(case when d.RoundNr > 8 then d.Result else null end ) as ShootOffS,
-                                sum(case when d.RoundNr > 8 then d.Result else 0 end ) as ShootOff, 
+                        select GROUP_CONCAT(case when d.RoundNr > 8 then d.Result else null end  order by d.RoundNr) as ShootOffS,
+                                sum(case when d.RoundNr > 8 then d.Result/(10 *( d.RoundNr - 8))  else 0 end ) as ShootOff, 
                                 sum(case when d.RoundNr <= 8 then d.Result else 0 end ) as Total,
                         
                         d.ResultId
                         from resultdetail d 
                         group by ResultId
+                        order by d.RoundNr 
                     ) sof on sof.ResultId = r.ResultId 
 
 
