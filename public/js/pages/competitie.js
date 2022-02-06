@@ -27,7 +27,7 @@
                     { text: 'Loc', dataField: 'Position', width: '5%' },
                     { text: 'Sportiv', dataField: 'Person', width: '25%' },
                     { text: 'Cat', dataField: 'Category', width: '5%' },
-                    { text: 'Team', dataField: 'Team', width: '10%' },
+                    { text: 'Team', dataField: 'Team', width: IsSuperUser===1?'5%':'10%' },
                     { text: 'M1', dataField: 'M1', width: '5%' ,cellclassname: cellclass,},
                     { text: 'M2', dataField: 'M2', width: '5%' ,cellclassname: cellclass,},
                     { text: 'M3', dataField: 'M3', width: '5%' ,cellclassname: cellclass,},
@@ -39,7 +39,38 @@
                     { text: 'Total', dataField: 'Total', width: '5%' },
                     { text: 'Procent', dataField: 'Procent', width: '5%'},
                     { text: 'ShOff', dataField: 'ShootOffS', width: '5%' },
+                  
+                 
+
+                    
                 ];
+
+
+             if (IsSuperUser === 1){
+                clClasament.push(
+                    { text: '', dataField: 'ResultId', width: '5%',
+                
+                    columntype:'button', cellsrenderer: function () {
+                        return "...";
+        
+                        
+                        }, 
+                    
+                    buttonclick: function (row) {
+                        // open the popup window when the user clicks a button.
+                            let editrow = row;
+                            // var offset = $("#grid").offset();
+                            var dataRecord = $("#jqxGrid").jqxGrid('getrowdata', editrow);
+                            const ResultId = dataRecord.ResultId
+        
+                            document.location.href = APP_URL + `/editresult/${ResultId}`;
+                        }
+                    }
+
+                )
+
+
+             }
 
             let cf = [];
                 cf.push({
@@ -97,6 +128,7 @@
                             { name: 'Total', type: 'number'},
                             { name: 'Procent', type: 'number'},
                             { name: 'ShootOffS', type: 'string'},
+                          
                         ]
 				
 			
@@ -176,111 +208,4 @@
 		});
 	});
 	   
-
-
-
-        // Smart('#clasamentcompetitie', class {
-        //     get properties() {
-        //         return {
-        //             onRowInit(index, row) {
-        //                // if (index === 0) {
-        //                     row.showDetail = false;
-        //                // }
-        //             },
-             
-
-        //             onRowDetailInit(index, row, detail) {
-
-        //                 if (window.innerWidth < 900){
-
-        //                         const grid = document.createElement('div');
-                                    
-        //                         detail.appendChild(grid);
-                                        
-        //                         const gridInstance = new Smart.Grid(grid, {
-
-        //                             conditionalFormatting: cf,
-                                    
-        //                             dataSource: new Smart.DataAdapter(
-        //                             {
-        //                                 dataSource: dsClasament.filter(data => data.ResultId === row.data.ResultId),
-        //                                 dataFields:
-        //                                 [
-        //                                     'M1: number',
-        //                                     'M2: number',
-        //                                     'M3: number',
-        //                                     'M4: number',
-        //                                     'M5: number',
-        //                                     'M6: number',
-        //                                     'M7: number',
-        //                                     'M8: number',
-        //                                     'Total: number',
-        //                                     'ShootOffS: string',
-        //                                 ]
-        //                             }),
-        //                             columns: [
-        //                                 { text: 'M1', dataField: 'M1', width: '9%' },
-        //                                 { text: 'M2', dataField: 'M2', width: '9%' },
-        //                                 { text: 'M3', dataField: 'M3', width: '9%' },
-        //                                 { text: 'M4', dataField: 'M4', width: '9%' },
-        //                                 { text: 'M5', dataField: 'M5', width: '9%' },
-        //                                 { text: 'M6', dataField: 'M6', width: '9%' },
-        //                                 { text: 'M7', dataField: 'M7', width: '9%' },
-        //                                 { text: 'M8', dataField: 'M8', width: '9%' },
-        //                                 { text: 'Total', dataField: 'Total', width: '10%' },
-        //                                 { text: 'ShOff', dataField: 'ShootOffS', width: '5%' },
-        //                             ]
-        //                         });	
-        //                     }				
-        //             },
-        //             rowDetail: {
-        //                 enabled: window.innerWidth < 900,
-        //                 visible: window.innerWidth < 900, 
-        //                 height: 100
-        //             },
-
-        //             dataSource: new Smart.DataAdapter(
-        //             {
-        //                 dataSource: dsClasament,
-        //                 dataFields:
-        //                     [
-        //                         'Position: number',
-        //                         'Person: string',
-        //                         'Category: string',
-        //                         'Team: string',
-        //                         'ResultId: number',
-        //                         'M1: number',
-        //                         'M2: number',
-        //                         'M3: number',
-        //                         'M4: number',
-        //                         'M5: number',
-        //                         'M6: number',
-        //                         'M7: number',
-        //                         'M8: number',
-        //                         'Total: number',
-        //                         'Procent: number',
-        //                         'ShootOffS: string',
-        //                     ]
-                               
-        //             }),
-        //             sorting: {
-        //                 enabled: false
-        //             },
-        //             filtering: {
-        //                 enabled: true
-        //             },
-        //             editing: {
-        //                 enabled: false,
-                      
-        //             },
-        //             behavior: { columnResizeMode: 'growAndShrink' 
-        //         },
-        //             columns: clClasament,
-        //             conditionalFormatting: cf
-                    
-        //         }
-        //     }
-        //   });
-
- 
 

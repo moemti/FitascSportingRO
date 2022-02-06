@@ -113,14 +113,28 @@
                 <div>
                     <input id="input_startdate" value='{{$master[0]->StartDate}}'disabled> </input>
                     <input id="input_enddate" value='{{$master[0]->EndDate}}'disabled> </input>
+
+                    @if ($master[0]->Status == 'Open')
+                    <button id="addRegister" class = "btn-register btn btn-xsm" >Ma inscriu</button>
+                    @endif
                 </div>
             </div>
+   
             <h2>Clasament</h2>
 
         </div>
 
+
+        
         <div class="page_content_content">
-           
+
+            @if (session('IsSuperUser') == 1)
+            <div class='row'>
+                <button id="addCompetitor" class = "btn-add btn btn-xsm" >Adauga</button>
+
+            </div>
+
+            @endif
             <div id ="jqxGrid" class="gridnou">
                     
             </div>

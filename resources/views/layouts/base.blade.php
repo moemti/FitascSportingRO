@@ -10,6 +10,10 @@
         <script type="text/javascript">
              var APP_URL = {!! json_encode(url('/')) !!}
              var baseUrl = APP_URL;
+             let IsSuperUser = 0;
+             @if (session("IsSuperUser") == 1)
+                IsSuperUser = 1;
+             @endif
              
         </script>
 

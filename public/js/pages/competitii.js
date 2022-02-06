@@ -26,23 +26,7 @@ import { GETAJAX, POSTAJAX } from '../helpers.js';
 
                         document.location.href = `clasament/${CompetitionId}`;
                     }
-            //     createwidget: function (row, column, value, htmlElement) {
-            //     var imgurl = APP_URL + '/img/enter.png';
-            //     var img = '<img class="curPointer" style="margin-top: 1px;" width="50%"src="' + imgurl + '"/>';
-            //     var button = $("<div style='border:none;'>" + img + "<div class='buttonValue curPointer' data='" + value + "'>" + '' + "</div></div>");
-            //     $(htmlElement).append(button);
-            //     button.jqxButton({ template: "none", height: '100%', width: '100%' });
-            //     button.click(function (event) {
-                  
-            //         const CompetitionId = button.find(".buttonValue")[0].getAttribute('data');
-
-            //         document.location.href = `clasament/${CompetitionId}`;
-            //     });
-            // },
-            // initwidget: function (row, column, value, htmlElement) {
-            //     var imgurl = APP_URL + '/img/enter.png';
-            //     $(htmlElement).find('img')[0].src = imgurl;
-            // }
+         
                 }
             
         ]

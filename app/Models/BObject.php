@@ -124,8 +124,6 @@ class BObject{
             session(["LAST_".$field => $r[0]->$field]);
                 
         }
-
-
         return $r;
 
     }
@@ -133,8 +131,7 @@ class BObject{
     public function Save($fields){
 
         $MasterKey = $this->MasterKeyField();
-
-        
+    
         $this->beforeSave($fields);
         
         try {
@@ -147,17 +144,13 @@ class BObject{
                 (!isset($fields[$MasterKey])) || ($fields[$MasterKey]== "") || ( isset($fields['isnew'] ) && $fields['isnew'] == "1")
                 ) {
 
-               
-
                 $sql = $this->GetMasterInsert($fields);
                 if ($sql == ''){
                     $sql = $this->MasterInsert;
                     foreach($fields as $key => $value){
                         if (!is_array($value))
                             $sql = self::paramreplace($key, $value, $sql); 
-                    }
-                
-                    
+                    }                    
                 }       
 
                 if ($this->IsInsertUnprepared)    
@@ -185,9 +178,7 @@ class BObject{
                     foreach($fields as $key => $value){
                         if (!is_array($value))
                             $sql = self::paramreplace($key, $value, $sql);
-                    }
-                
-                  
+                    }                          
                 } 
 
                 if ($this->IsUpdateUnprepared)    
@@ -251,7 +242,7 @@ class BObject{
             switch ($d->Operation){
                 case "D": $this->deleteDetail($d, $master);
                     break;
-                case "U":  $this->updateDetail($d, $master);
+                case "U": $this->updateDetail($d, $master);
                     break;
                 case "I": $this->insertDetail($d, $MasterId, $master);
                     break;    
@@ -311,18 +302,12 @@ class BObject{
                 if (!is_array($value))
                     $sql = self::paramreplace($key, $value, $sql); 
             }
-
-            
-           
-   
         }
 
         DB::unprepared($sql);
     }
 
-    public function updateDetail($detail, $master){
-
-        
+    public function updateDetail($detail, $master){      
         $sql = $this->GetDetailUpdate($detail, $master);
 
         if ($sql == ''){
@@ -396,13 +381,63 @@ class BObject{
                 
             }else {
                 $done = true;
-            }
-            
-  
+            }          
         }
         return $sqlDone.$sqlToDo;
     }
 
+    public static function PutNullValues(&$sql){
+        $done = false;
+        $done2 = false;
+ 
+        $sqlToDo = $sql;
+        $start = 0;
+        $finish = 0;
+     
+        $null = ' null ';
+
+        while(!$done){
+            $pos = strpos ($sqlToDo, ":");
+            
+            if  ($pos !== false){
+               
+                if ($pos == 0){
+                        $start = 0;
+                }
+                else{ 
+                    if (substr($sqlToDo, $pos , 1) === "'")
+                        $start = $pos - 1;  
+                    else
+                        $start = $pos;  
+                }
+                
+
+                $done2 = false;
+                $i = $start + 1;
+
+                while (!$done2 && (strlen($sqlToDo) > $i )){
+                    if (in_array($sqlToDo[$i] , array('`',"'", ' ', "\n", "\t", "\r", ';', ')', ','))){
+                        $finish = $i;
+
+                        if ($sqlToDo[$i] == "'")
+                            $finish++;
+                        $done2 = true;
+                    }
+                    else    
+                        $i++;
+
+                }
+
+                $sqlToDo = substr($sqlToDo, 0, $start - 1).$null.substr($sqlToDo, $finish, strlen($sqlToDo));
+               
+                
+            }else {
+                $done = true;
+            }          
+        }
+
+        $sql = $sqlToDo;
+    }
 
     public static function getFieldValues($fields, $valfields, $isarray = false, $isinsert = false, $nullvalue = 'null' ) {
 

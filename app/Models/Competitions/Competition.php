@@ -24,7 +24,7 @@ class Competition extends BObject{
 
     public $MasterSelect = "SELECT `CompetitionId`, c.Name, `StartDate`, `EndDate`, c.`RangeId`, `Targets`, c.`SportFieldId` , 
                     r.name as `Range`, s.Name as SportField, year(StartDate) as Year,  concat(c.Name , ' ' , r.Name , ' ' , c.EndDate) as NumeLung,
-                    concat(DATE_FORMAT(StartDate, '%d/%m'), ' - ', DATE_FORMAT(EndDate, '%d/%m %Y')) as Perioada
+                    concat(DATE_FORMAT(StartDate, '%d/%m'), ' - ', DATE_FORMAT(EndDate, '%d/%m %Y')) as Perioada, Status
                     FROM `competition` c
                     inner join `range` r on r.RangeId = c.RangeId
                     inner join sportfield s on s.SportFieldId = c.SportFieldId
@@ -33,7 +33,7 @@ class Competition extends BObject{
 
     public $MasterItemSelect = "SELECT `CompetitionId`, c.Name, `StartDate`, `EndDate`, c.`RangeId`, `Targets`, c.`SportFieldId` ,
                 r.name as `Range`, s.Name as SportField, year(StartDate) as Year,
-                concat(DATE_FORMAT(StartDate, '%d/%m'), ' - ', DATE_FORMAT(EndDate, '%d/%m %Y')) as Perioada
+                concat(DATE_FORMAT(StartDate, '%d/%m'), ' - ', DATE_FORMAT(EndDate, '%d/%m %Y')) as Perioada, Status
                 FROM `competition` c
                 inner join `range` r on r.RangeId = c.RangeId
                 inner join sportfield s on s.SportFieldId = c.SportFieldId
@@ -107,9 +107,144 @@ class Competition extends BObject{
                 ";
 
 
-
+        ////////////////    rezultate    //////////////////
+        
+        
         public function GetClasament($CompetitionId){
             return DB::select(str_replace(':CompetitionId', $CompetitionId,$this->ClasamentSelect));
+        }
+
+        public function getresults($ResultId){
+            $sql = "select * from resultdetail r where ResultId = $ResultId";
+            return DB::select($sql);
+        }
+        public function getresultDetail($ResultId){
+            $sql = "select p.Name as Persoana from result r 
+            inner join person p on p.PersonId = r.PersonId
+            
+            where r.ResultId = $ResultId";
+            return DB::select($sql);
+        }
+        
+        public function SaveResultsDetail($fields){
+          
+             
+            $ItemId = $fields['ResultId'];
+          
+            try {
+    
+                DB::beginTransaction();
+    
+
+                if (array_key_exists('delta', $fields)) 
+                    $this->updateDetails($fields['delta'], $ItemId, $fields);
+    
+                    
+                DB::commit();
+            }
+            catch(\Exception $e){
+                    DB::rollBack();
+    
+                    $this->OnSaveError($e);
+                    throw $e;
+            }
+          
+            return $this->getresults($ItemId);
+        }
+      
+
+        public function updateDetails($delta, $MasterId, $master){
+
+            if ($delta == [])
+                return 'no delta';
+    
+            foreach($delta as $s){
+                    
+                $d = (object) ($s);
+                switch ($d->Operation){
+                    case "D": $this->deleteDetail($d, $master);
+                        break;
+                    case "U":  $this->updateDetail($d, $master);
+                        break;
+                    case "I": $this->insertDetail($d, $MasterId, $master);
+                        break;    
+    
+                }
+            }
+    
+        }
+
+
+        public function insertDetail($detail, $ItemId, $master){
+
+        
+            $sql = "INSERT INTO resultdetail( ResultId, RoundNr, Targets, Result, Description) 
+                    VALUES ($ItemId, :RoundNr, :Targets, :Result, ':Description')";
+    
+            
+
+            foreach($detail as $key => $value){
+                $sql = self::paramreplace($key, $value, $sql); 
+            }
+
+            foreach($master as $key => $value){
+                if (!is_array($value))
+                    $sql = self::paramreplace($key, $value, $sql); 
+            }
+
+
+            self::PutNullValues($sql);
+
+            DB::unprepared($sql);
+        }
+    
+        public function updateDetail($detail, $master){
+    
+            
+            $sql = "
+                UPDATE
+                        `resultdetail`
+                    SET
+                        `RoundNr` = :RoundNr,
+                        `Targets` = :Targets,
+                        `Result` = :Result,
+                        `Description` = ':Description'
+                    WHERE
+                        ResultDetailId = :ResultDetailId
+                ";
+    
+        
+            foreach($detail as $key => $value){
+                $sql = self::paramreplace($key, $value, $sql); 
+            }
+            foreach($master as $key => $value){
+                if (!is_array($value))
+                    $sql = self::paramreplace($key, $value, $sql); 
+            }
+            self::PutNullValues($sql);
+           
+            DB::unprepared($sql);
+        }
+    
+        public function deleteDetail($detail, $master){
+            $sql = "
+                DELETE from
+                    `resultdetail`
+                WHERE
+                    ResultDetailId = :ResultDetailId
+                ";
+           
+          
+            foreach($detail as $key => $value){
+                $sql = self::paramreplace($key, $value, $sql); 
+            }
+            foreach($master as $key => $value){
+                if (!is_array($value))
+                    $sql = self::paramreplace($key, $value, $sql); 
+            }
+            
+        
+            return DB::unprepared($sql);
         }
 
 

@@ -820,6 +820,14 @@ button.toast-close-button {
   animation: moveInBottom .5s ease-out .75s;
   animation-fill-mode: backwards; }
 
+.btn-sm {
+  padding: 0.5rem 2rem;
+  font-size: 1.2rem; }
+
+.btn-xsm {
+  padding: 0.2rem 1rem;
+  font-size: 1rem; }
+
 .btn-text:link, .btn-text:visited {
   font-size: 1.6rem;
   color: #502900;

@@ -27,5 +27,22 @@ class CompetitiiController extends MasterController
         return view( 'modules.pages.competitiedetail',['master' => $this->BObject()->getMaster($ItemId), 'clasament' => $this->BObject()->GetClasament($ItemId)]);
     }
 
+    public function editresult($ResultId){
+        return view( 'modules.pages.competition.resultedit',['master' => $this->BObject()->getresults($ResultId), 
+                                                            'data' => $this->BObject()->getresultDetail($ResultId),
+                                                            'ResultId' => $ResultId
+                                                        
+                                                        ]);
+    }
+
+    public function saveresultdetail(Request $request){
+
+        $fields = $request->all();
+      
+
+        return $this->BObject()->SaveResultsDetail($fields);
+    }
+
+
 
 }

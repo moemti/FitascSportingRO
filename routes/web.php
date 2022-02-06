@@ -48,9 +48,16 @@ Route::get('/register', function (){
 Route::get('/logout', 'App\Http\Controllers\Auth\LoginController@logout')->name('logout');
 
 // o sa-l punem in superuser
+
         Route::get('/registeries', 'App\Http\Controllers\Auth\LoginController@getregisteries')->name('registeries');
         Route::get('/registere/{id}', 'App\Http\Controllers\Auth\LoginController@getregistere');
         Route::post('registere/finishuser', 'App\Http\Controllers\Auth\LoginController@finishuser');
+
+
+// permisiune de editare competitii
+        Route::get('/editresult/{id}', 'App\Http\Controllers\CompetitiiController@editresult');
+        Route::post('/saveresultdetail', 'App\Http\Controllers\CompetitiiController@saveresultdetail');
+        Route::post('/getresultsajax', 'App\Http\Controllers\CompetitiiController@getresultsajax');
 
 
 Route::get('/clasamente', 'App\Http\Controllers\ClasamenteController@getClasamente');
