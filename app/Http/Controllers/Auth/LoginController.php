@@ -155,7 +155,21 @@ class LoginController extends Controller
 
         $message = UserPerson::saveRegisteredUser($passtoken);
 
+        $Email = 'admin@fitascsporting.ro';
+        $data = [
+            'title' => 'Inregistrare noua pe fitascsporting.ro',
+            'content' => "Apasa linkul pentru a vizualiza cererile!",
+            'link' => url('/registeries'),
+
+        ];
+
         if ($message == 'OK'){
+            Mail::send('mails.registration', $data, function($message) use ($Email){
+
+                $message->to($Email, 'User')->from('noreply@fitascsporting.ro')->subject('Inregistrare noua pe fitascsporting.ro');
+                }
+            );
+
             return view("auth/login")->with(["mesaj" => ['mesaj' => 'E-mailul tau a fost intregistrat. Vei primi un email cand userul tau este configurat.']]);
         }
         else

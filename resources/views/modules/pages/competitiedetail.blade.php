@@ -115,8 +115,25 @@
                     <input id="input_enddate" value='{{$master[0]->EndDate}}'disabled> </input>
 
                     @if ($master[0]->Status == 'Open')
-                    <button id="addRegister" class = "btn-register btn btn-xsm" >Ma inscriu</button>
+                        <button id="addRegister" class = "btn-register btn btn-xsm" >Ma inscriu</button>
                     @endif
+
+                    @if(session("IsSuperUser") == 1)
+
+                    <select Name='CompetitionId' id='CompetitionId'>
+                    
+                        
+                            <option value = "Closed"  {{$master[0]->Status == 'Closed'?'selected':''}} >Closed  </option>
+                            <option value = "Open" {{$master[0]->Status == 'Open'?'selected':''}}> Open </option>
+                            <option value = "Finished" {{$master[0]->Status == 'Finished'?'selected':''}}>Finished</option>
+                       
+
+
+                </select>
+
+                    @endif
+
+
                 </div>
             </div>
    

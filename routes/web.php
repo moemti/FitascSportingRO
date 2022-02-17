@@ -45,6 +45,11 @@ Route::get('/register', function (){
 
 })->name('register');
 
+Route::get('/termeni', function (){
+    return view('modules/pages/termeni');
+
+})->name('termeni');
+
 Route::get('/logout', 'App\Http\Controllers\Auth\LoginController@logout')->name('logout');
 
 // o sa-l punem in superuser

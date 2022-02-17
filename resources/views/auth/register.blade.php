@@ -31,7 +31,7 @@
 
 
                     <div class="mt-3 position-relative form-check"><input name="check" id="Check" type="checkbox" class="form-check-input" required>
-                            <label for="Check" class="form-check-label">Acceptati <a href="javascript:void(0);">Termenii si conditiile noastre</a>.</label></div>
+                            <label for="Check" class="form-check-label">Acceptati <a href="{{Route('termeni')}}">Termenii si conditiile noastre</a>.</label></div>
                   
                 <div class=" d-block text-right u-margin-top-medium">
                     <button class="btn-wide btn-pill btn-shadow btn-hover-shine btn btn-primary btn-lg">Creaza cont</button>

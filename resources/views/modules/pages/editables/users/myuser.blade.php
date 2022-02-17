@@ -7,6 +7,7 @@
 @push('subtitle')
 
     Modificare utilizator
+    
 @endpush
 
 
@@ -16,6 +17,13 @@
 
 
 @push('formcontent')
+
+
+    @if(session("IsSuperUser") == 1)
+        <div class="  text-right u-margin-top-small">
+            <a href="{{Route('registeries')}}" class=" btn-sm">Registeries</a>
+        </div>
+    @endif
 
 <div class="row">
     

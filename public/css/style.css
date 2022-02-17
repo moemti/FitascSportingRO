@@ -248,6 +248,16 @@ a:active {
   a:active__medium {
     font-size: 1.8rem;
     font-weight: 300; }
+  a.btn-sm,
+  a:visited.btn-sm,
+  a:active.btn-sm {
+    padding: 0.5rem 2rem;
+    font-size: 1.2rem; }
+  a.btn-xsm,
+  a:visited.btn-xsm,
+  a:active.btn-xsm {
+    padding: 0.2rem 1rem;
+    font-size: 1rem; }
 
 a:hover {
   transform: translateY(-0.2rem);
@@ -1662,6 +1672,11 @@ input {
 
 .input-w100 {
   width: 100%; }
+
+.page_content_termeni {
+  font-size: 1.6rem;
+  color: #333;
+  background-color: #fffefb; }
 
 .navigation {
   border-bottom: 5px solid #fa4d0e; }
