@@ -7,9 +7,8 @@
     <title>Clay Sporting</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no"
     />
-    <meta name="description" content="Clay Sporting">
-    <link rel="icon" href={{asset("/assets/css/assets/images/logo_molland.svg")}} content="shrink-to-fit=no">
 
+   
     <!-- Disable tap highlight on IE -->
     <meta name="msapplication-tap-highlight" content="no">
 
