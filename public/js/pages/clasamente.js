@@ -1,9 +1,19 @@
 	let clClasament = []
 
+	var cellclassUser = function (row, columnfield, value) {
+		if (value === MyName) {
+			return 'clOrangeRedFont';
+		}
+	
+		else return '';
+
+
+	}
+
 	if (window.innerWidth > 900){
 		clClasament = [
 			{ text: 'Loc', dataField: 'Position', width: '5%' },
-			{ text: 'Sportiv', dataField: 'Person', width: '55%' },
+			{ text: 'Sportiv', dataField: 'Person', width: '55%', cellclassname: cellclassUser },
 			{ text: 'Categorie', dataField: 'Category', width: '10%' },
 			{ text: 'Team', dataField: 'Team', width: '20%' },
 			{ text: 'Procent', dataField: 'Procent', width: '10%' },
@@ -11,7 +21,7 @@
 	}else{
 		clClasament = [
 			{ text: '', dataField: 'Position', width: '5%' },
-			{ text: 'Sportiv', dataField: 'Person', width: '55%' },
+			{ text: 'Sportiv', dataField: 'Person', width: '55%', cellclassname: cellclassUser },
 			{ text: 'Cat', dataField: 'Category', width: '10%' },
 			{ text: 'Procent', dataField: 'Procent', width: '25%' },
 		]
