@@ -11,6 +11,7 @@
              var APP_URL = {!! json_encode(url('/')) !!}
              var baseUrl = APP_URL;
              let IsSuperUser = 0;
+             let MyName = '{{session("name")}}';
              @if (session("IsSuperUser") == 1)
                 IsSuperUser = 1;
              @endif

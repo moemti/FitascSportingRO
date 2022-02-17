@@ -25,6 +25,7 @@
 <script>
 
         let dsClasament= @Json($clasament);
+
            
 
 </script>

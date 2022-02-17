@@ -7,14 +7,28 @@
             }
         
             else return '';
+
+
         }
+
+        var cellclassUser = function (row, columnfield, value) {
+            if (value === MyName) {
+                return 'clOrangeRedFont';
+            }
+        
+            else return '';
+
+
+        }
+
+        
 
         let clClasament = [];
 
         if (window.innerWidth < 900)
             clClasament = [
                 { text: 'Loc', dataField: 'Position', width: '5%' },
-                { text: 'Sportiv', dataField: 'Person', width: '50%' },
+                { text: 'Sportiv', dataField: 'Person', width: '50%' , cellclassname: cellclassUser},
                 { text: 'Cat', dataField: 'Category', width: '10%' },
                 { text: 'Team', dataField: 'Team', width: '15%' },
                 { text: 'Total', dataField: 'Total', width: '15%' },
@@ -25,7 +39,7 @@
             clClasament =
                 [
                     { text: 'Loc', dataField: 'Position', width: '5%' },
-                    { text: 'Sportiv', dataField: 'Person', width: '25%' },
+                    { text: 'Sportiv', dataField: 'Person', width: '25%', cellclassname: cellclassUser },
                     { text: 'Cat', dataField: 'Category', width: '5%' },
                     { text: 'Team', dataField: 'Team', width: IsSuperUser===1?'5%':'10%' },
                     { text: 'M1', dataField: 'M1', width: '5%' ,cellclassname: cellclass,},
@@ -71,34 +85,6 @@
 
 
              }
-
-            let cf = [];
-                cf.push({
-                            column: 'Total',
-                            condition: 'greaterThan',
-                            firstValue: -1,
-                            fontSize: '1.3rem',
-                            text: 'rgb(0,0,200)',
-                            color: 'none'
-                            
-                        })
-
-              
-                for(let i = 0; i < 9; i++)  {
-                    cf.push(
-                        {
-                            column: 'M' + i,
-                            condition: 'equal',
-                            firstValue: 25,
-                            fontSize: '1.3rem',
-                            text: 'red',
-                            background: 'none'
-                        }
-                    );
-                }
-
-
-
 
 
 

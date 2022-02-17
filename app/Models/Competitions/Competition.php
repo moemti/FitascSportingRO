@@ -110,6 +110,11 @@ class Competition extends BObject{
 
         ////////////////    rezultate    //////////////////
         
+        public function getCompetitionYears(){
+            $sql = "select distinct  year(StartDate) as Year from competition order by  year(StartDate) desc ";
+            return DB::select($sql);
+        }
+
         
         public function GetClasament($CompetitionId){
             return DB::select(str_replace(':CompetitionId', $CompetitionId,$this->ClasamentSelect));

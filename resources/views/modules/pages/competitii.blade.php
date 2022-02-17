@@ -18,6 +18,7 @@
     <script type="text/javascript" src="{{asset('js/components/jqwidgets/jqxgrid.filter.js')}}"></script> 
 
 
+
     <script defer type="module" src="{{asset('js/pages/competitii.js')}}"></script>
 
     <!-- <link rel="stylesheet" type="text/css" href="{{asset('css/pages/competitii.css')}}"/> -->
@@ -27,6 +28,7 @@
     <script>
 
             let dsCompetitii= @Json($masterlist);
+            let dsYears = @Json($years);//.map(x =>  x.Year);
             
 
     </script>
@@ -37,14 +39,17 @@
         <div class="page_content_header">
             <h1>Competitii</h1>
 
-            <h2>Competitii din Romania 2022 - 2021</h2>
+            <h2>Competitii din Romania</h2>
         </div>
 
         <div class="page_content_content">
 
-            <div id ="jqxGrid" class="gridnou">
-                    
+            <div id = "jqxYear"></div>
+            <div id ="jqxGrid" class="gridnou">         
             </div>
+
+
+
         </div>
 
     </div>

@@ -1,20 +1,17 @@
-import { GETAJAX, POSTAJAX } from '../helpers.js';
+
 
     let smcolumns = [];
-
-
+    let dsCompetitiiY = [];
 
     if (window.innerWidth > 900){
         smcolumns = [
             { text: 'Nume', dataField: 'Name', width: '35%' },
             { text: 'Locatie', dataField: 'Range', width: '30%' },
             { text: 'Perioada', dataField: 'Perioada', width: '20%' },
-            { text: 'An', dataField: 'Year', width: '10%' ,filtertype: 'checkedlist', filteritems: [...new Set(dsCompetitii.Year)]},
+            { text: 'An', dataField: 'Year', width: '10%'},// ,filtertype: 'checkedlist', filteritems: [...new Set(dsCompetitii.Year)]},
             { text: '', dataField: 'CompetitionId', width: '15', 
                         columntype:'button', cellsrenderer: function () {
-                        return "...";
-
-                        
+                        return "...";                 
                         }, 
              
                 buttonclick: function (row) {
@@ -28,77 +25,39 @@ import { GETAJAX, POSTAJAX } from '../helpers.js';
                     }
          
                 }
-            
         ]
-
     }
     else{
-        smcolumns = [ { text: 'Nume', dataField: 'NumeLung', width: '73%' },
-        { text: 'An', dataField: 'Year', width: '15%' ,filtertype: 'checkedlist', filteritems: [...new Set(dsCompetitii.Year)]},
-        { text: '', dataField: 'CompetitionId', width: '15', 
-        columntype:'button', cellsrenderer: function () {
-          return "...";
+            smcolumns = [ { text: 'Nume', dataField: 'NumeLung', width: '73%' },
+            { text: 'An', dataField: 'Year', width: '15%' ,filtertype: 'checkedlist', filteritems: [...new Set(dsCompetitii.Year)]},
+            { text: '', dataField: 'CompetitionId', width: '15', 
+            columntype:'button', cellsrenderer: function () {
+            return "...";
 
-          
-        }, 
+            
+            }, 
+            
+            buttonclick: function (row) {
+            // open the popup window when the user clicks a button.
+                let editrow = row;
+                // var offset = $("#grid").offset();
+                var dataRecord = $("#jqxGrid").jqxGrid('getrowdata', editrow);
+                const CompetitionId = dataRecord.CompetitionId
+
+                    document.location.href = `clasament/${CompetitionId}`;
+            }
         
-        buttonclick: function (row) {
-           // open the popup window when the user clicks a button.
-               let editrow = row;
-              // var offset = $("#grid").offset();
-               var dataRecord = $("#jqxGrid").jqxGrid('getrowdata', editrow);
-               const CompetitionId = dataRecord.CompetitionId
 
-                document.location.href = `clasament/${CompetitionId}`;
-           }
-       
-        // {text:'', dataField: 'CompetitionId', width: '10%',
-        //         createwidget: function (row, column, value, htmlElement) {
-              
-        //         var imgurl = APP_URL + '/img/enter.png';
-                
-
-
-        //         var img = '<img  width="60%" src="' + imgurl + '"/>';
-        //         var button = $("<div style='border:none; margin-top: 1px; margin-right:2px;'>" + img + "<div class='buttonValue' data='" + value + "'>" + '' + "</div></div>");
-        //         $(htmlElement).append(button);
-        //         button.jqxButton({ template: "none", height: '100%', width: '100%' });
-        //         button.click(function (event) {
-                  
-        //             const CompetitionId = button.find(".buttonValue")[0].getAttribute('data');
-
-        //               document.location.href = `clasament/${CompetitionId}`;
-        //         });
-        //     },
-        //     initwidget: function (row, column, value, htmlElement) {
-        //         var imgurl = APP_URL + '/img/enter.png';
-
-        //         $(htmlElement).find('img')[0].src = imgurl;
-        //     }}
-        }
-    ]
+            }
+        ]
     }
 
-
-
-	   
-
-    // window.commandColumnCustomCommand = function (row) {
-    //     const CompetitionId = row.data.CompetitionId;
-
-    //       document.location.href = `clasament/${CompetitionId}`;
-     
-    // }
-
-
-
-	$(function () {
-	
-		// prepare the data
-		var source =
+    function getCompetitionByYear(Year){
+        dsCompetitiiY = dsCompetitii.filter(x=>x.Year === Year);
+        let source = 
 		{
 			datatype: "array",
-			localdata: dsCompetitii,
+			localdata: dsCompetitiiY,
 			dataFields:
 					[
 						{ name: 'Name', type: 'string' },
@@ -107,14 +66,10 @@ import { GETAJAX, POSTAJAX } from '../helpers.js';
 						{ name: 'CompetitionId', type: 'number'},
 						{ name: 'Perioada', type: 'string' },
                         { name: 'Year', type: 'number'},
-
-			
-					]
-         
-			
+					]			
 		};
 		
-		var dataAdapter =  new $.jqx.dataAdapter(source);
+		let dataAdapter =  new $.jqx.dataAdapter(source);
 		// initialize jqxGrid
 		$("#jqxGrid").jqxGrid(
 		{
@@ -129,9 +84,46 @@ import { GETAJAX, POSTAJAX } from '../helpers.js';
 			autorowheight: true,
             filterable: true,
 			selectionmode: 'none',
-            showfilterrow: true,
-
+            showfilterrow: false,
 			columns: smcolumns
 		});
+
+
+    }
+
+
+	$(function () {
+		// prepare the data
+
+
+
+        var dsYears2 =
+		{
+            datatype: "json",
+            datafields: [
+                { name: 'Year' },
+                
+            ],		
+            localdata: dsYears,
+      
+		};
+        var dataAdapterY = new $.jqx.dataAdapter(dsYears2);
+
+        $("#jqxYear").jqxDropDownList({source: dataAdapterY ,selectedIndex: 0, displayMember: "Year", valueMember: "Year", width: '200px', height: '25px'});
+
+        $('#jqxYear').on('select', function (event) {
+
+                var args = event.args;
+                var item = $('#jqxYear').jqxDropDownList('getItem', args.index);
+                if (item != null) {
+                     getCompetitionByYear(item.label);
+                }
+           
+        });
+
+        getCompetitionByYear($('#jqxYear').jqxDropDownList('getSelectedItem').label);
+
+
+		
 	});
 	   

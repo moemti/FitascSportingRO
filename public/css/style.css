@@ -156,7 +156,7 @@ body {
     font-size: 2.2rem;
     font-weight: 300;
     padding-left: 2rem;
-    padding-bottom: 2rem;
+    padding-bottom: 1rem;
     letter-spacing: 0.5rem;
     text-shadow: 1px 1px 1px rgba(250, 77, 14, 0.4); }
     @media only screen and (max-width: 37.5em) {
@@ -226,6 +226,12 @@ body {
 
 .clRedFont {
   color: red !important; }
+
+.clBlueFont {
+  color: #0033ff !important; }
+
+.clOrangeRedFont {
+  color: orangered !important; }
 
 .curPointer {
   cursor: pointer !important; }
@@ -1572,7 +1578,7 @@ smart-scroll-bar .smart-thumb {
     align-self: flex-start;
     width: 100%; }
   .page_content_detail h2 {
-    padding-top: 2rem;
+    padding-top: 1rem;
     padding-left: 3rem; }
     @media only screen and (max-width: 37.5em) {
       .page_content_detail h2 {
@@ -1651,7 +1657,7 @@ smart-scroll-bar .smart-thumb {
     align-self: flex-start;
     width: 100%; }
   .page_content_master h2 {
-    padding-top: 2rem;
+    padding-top: 1rem;
     padding-left: 3rem; }
     @media only screen and (max-width: 37.5em) {
       .page_content_master h2 {
