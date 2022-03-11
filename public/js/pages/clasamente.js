@@ -29,14 +29,43 @@
 
 
 
+	function getClasamentByYear(Year){
+        let Data = {};
 
-	$(function () {
-	
-		// prepare the data
-		var source =
+        Data.Year = Year;
+       
+
+
+        $.ajax({
+            type: 'POST',
+    
+            url: baseUrl + '/getClasamentByYear',
+            data: Data,
+            success: function (data) {
+                
+                ShowSuccess('Success');
+				dsClasament = data;	
+                putClasamentByYear();   
+                   
+     
+            
+            },
+            error: function(e){
+                ShowError(e);
+            }
+        });
+
+
+       
+    }   
+
+
+	function putClasamentByYear(){
+     
+        var source =
 		{
 			datatype: "array",
-			localdata: dsClasament2021,
+			localdata: dsClasament,
 			dataFields:
 					[
 						{ name: 'Position', type: 'number' },
@@ -58,19 +87,57 @@
 		
 			source: dataAdapter,                
 			pageable: false,
-			autoheight: false,
 			sortable: false,
 			altrows: true,
 			enabletooltips: true,
 			editable: false,
 			autorowheight: false,
-            autoheight: false,
+            autoheight: true,
 			selectionmode: 'none',
 			columns: clClasament,
 			filterable: true,
+			showfilterrow: true,
+			groupable: true,
 	
           
 		});
+
+    }
+
+
+	$(function () {
+	
+
+
+		var dsYears2 =
+		{
+            datatype: "json",
+            datafields: [
+                { name: 'Year' },               
+            ],		
+            localdata: dsYears,
+      
+		};
+        var dataAdapterY = new $.jqx.dataAdapter(dsYears2);
+
+        $("#jqxYear").jqxDropDownList({source: dataAdapterY ,selectedIndex: 0, displayMember: "Year", valueMember: "Year", width: '200px', height: '25px'});
+
+        $('#jqxYear').on('select', function (event) {
+
+                var args = event.args;
+                var item = $('#jqxYear').jqxDropDownList('getItem', args.index);
+                if (item != null) {
+					getClasamentByYear(item.label);
+                }
+           
+        });
+
+       // getClasamentByYear($('#jqxYear').jqxDropDownList('getSelectedItem').label);
+	   putClasamentByYear(); // initial este adus direct 
+
+
+
+		
 	});
 	   
 

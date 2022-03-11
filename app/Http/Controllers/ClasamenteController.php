@@ -18,13 +18,22 @@ class ClasamenteController extends MasterController
 
     public $views = ['master'=>'modules.pages.competitii', 'detail' => 'modules.pages.competitiidetail'];
 
-    // public function getOtherDetail($ItemId, Request $request){
-    //     return ['clasament' => $this->BObject()->GetClasament($ItemId)];
-    // }
+    public function getDictionaries(){
+        return ['years' => $this->BObject()->getCompetitionYears()];
+    }
 
     
     public function getClasamente(){
-        return view( 'modules.pages.clasamente',[ 'clasament2021' => $this->BObject()->GetClasament2021()]);
+        $years = $this->getDictionaries();
+      
+        $year = $years["years"][0]->Year;
+
+        return view( 'modules.pages.clasamente',['clasament' => $this->BObject()->GetClasament($year)], $years);
+    }
+
+    public function getClasamentByYear(Request $request){
+        $year = $request->Year;
+        return  $this->BObject()->GetClasament($year);
     }
 
 

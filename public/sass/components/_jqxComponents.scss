@@ -1,0 +1,21 @@
+/////////////////
+
+#jqxGrid .jqx-grid-column-header,
+#documentdetails .jqx-grid-column-header,
+#masterlist .jqx-grid-column-header {
+    font-weight: 300;
+    font-size: 1.2rem;
+    background-color: rgba($color-secondary-light, 0.2);
+    font-family: "Lato", sans-serif;
+}
+#jqxGrid .jqx-grid-cell,
+#documentdetails .jqx-grid-cell,
+#masterlist  .jqx-grid-cell {
+    color: rgba($color-primary-dark, 1);
+    font-size: 1.2rem;
+    font-weight: 300;
+    font-family: "Lato", sans-serif;
+    background-color: $color-primary-light;
+    
+}
+

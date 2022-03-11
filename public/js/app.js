@@ -1,18 +1,25 @@
+    function openCurtain(){
+        let s = document.getElementById('loaderRight').style;
+        s.opacity = '0';
+        s.width = '0';
 
 
+        s = document.getElementById('loaderLeft').style;
+        s.opacity = '0';
+        s.width = '0';
+    }
 
 
-window.onload = function (){
-    let s = document.getElementById('loaderRight').style;
-    s.opacity = '0';
-    s.width = '0';
-   // s.height = '0';
+    function closeCurtain() {
+        let s = document.getElementById('loaderRight').style;
+        s.opacity = '100%';
+        s.width = '50%';
+        // s.height = '0';
+        s = document.getElementById('loaderLeft').style;
+        s.opacity = '100%';
+        s.width = '50%';
+    }
 
-    s = document.getElementById('loaderLeft').style;
-    s.opacity = '0';
-    s.width = '0';
-    //s.height = '0';
-}
 
  	function createCookie(name, value, expires) {
         var cookie = name + "=" + value.replace(';', '##_##') + ";";
@@ -29,11 +36,7 @@ window.onload = function (){
 
             cookie += "expires=" + expires.toGMTString() + ";";
         }
-
-
         cookie += "path=/;";
-
-
         document.cookie = cookie;
     }
 
@@ -294,4 +297,12 @@ function ShowError(msg) {
           location.reload();
       }
 
+    window.onpageshow   = function (){
+      //  openCurtain(); 
+    }
 
+    window.onbeforeunload = function(){
+     //  closeCurtain();
+    }
+
+    

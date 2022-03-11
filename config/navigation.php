@@ -9,6 +9,13 @@ return  [
                 ['regulamente', 'Regulamente'],
                 ['poligoane', 'Poligoane'],
                 ['utile', 'Utile'],
-            //    ['antrenamente', 'Antrenamente'],
+                [
+                        [
+                                ['persoane', 'Persoane'],
+                                ['sezoane', 'Sezoane']
+                        ]
+                        
+                        , 'Administrare', 'super']
+         
                 ]
         ]  ;      

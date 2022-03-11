@@ -8,6 +8,7 @@
         
         @include('frame.message')
         @include('frame.confirm')
+        @include('frame.popupedit')
 
         @if (!isset($DeniedPermissions) || !in_array("Delete", $DeniedPermissions))
                    

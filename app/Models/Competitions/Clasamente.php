@@ -31,7 +31,7 @@ class Clasamente extends BObject{
             left join shootercategory sc on sc.ShooterCategoryId = r.ShooterCategoryId 
             left join team t on t.TeamId = r.TeamId 
             
-            where year(c.StartDate) = 2022 
+            where year(c.StartDate) = :Year 
             and p.CountryId = 1
             group by p.Name, p.PersonId
             order by Procent desc
@@ -64,26 +64,55 @@ class Clasamente extends BObject{
             where CompetitionId = :CompetitionId"  ;
 
 
-    public $Clasament2021Select = "
+    public $ClasamentSelect = "
                     SELECT row_number() over(order by Procent desc) as Position, p.Name as Person, Min(sc.Code) as Category, max(t.Name) as Team , p.PersonId, 
                     Round(Avg(case when ifNull(r.Aborted,1) = 0 then Percent else null end),2) as Procent 
                     FROM result r 
                     inner join person p on p.PersonId = r.PersonId 
-                    inner join competition c on c.CompetitionId = r.CompetitionId 
+                    inner join competition c on c.CompetitionId = r.CompetitionId and c.Status = 'Finished'
                     left join shootercategory sc on sc.ShooterCategoryId = r.ShooterCategoryId 
                     left join team t on t.TeamId = r.TeamId 
                     
-                    where year(c.StartDate) = 2021 
+                    where year(c.StartDate) = :Year 
                     and p.CountryId = 1
                     group by p.Name, p.PersonId
                     order by Procent desc
                 ";
 
 
+    public  $ClasamentSelectNew = "
+            SELECT 0 as Position, p.Name as Person, (sc.Code) as Category, (t.Name) as Team , p.PersonId, 
+            0 as Procent 
+            FROM season s 
+            inner join shooterxseason x on s.SeasonId = x.SeasonId
+            inner join person p on p.PersonId = x.PersonId 
+            
+            left join shootercategory sc on sc.ShooterCategoryId = x.ShooterCategoryId 
+            left join team t on t.TeamId = x.TeamId  
+            where s.Year = :Year  
+            order by sc.Code, p.Name 
+        ";
 
-        public function GetClasament2021(){
-            return DB::select($this->Clasament2021Select);
+    public function getCompetitionYears(){
+        $sql = "select Year from season order by  Year desc ";
+        return DB::select($sql);
+    }
+
+    public function GetClasament($Year){
+
+        $sql = str_replace( array(":Year") ,array($Year), $this->ClasamentSelect) ;
+
+        $result = DB::select($sql);
+
+        if (count($result) > 0)
+            return $result;
+        else{
+            $sql = str_replace( array(":Year") ,array($Year), $this->ClasamentSelectNew) ;
+            return DB::select($sql);
         }
+
+
+    }
 
 
 }

@@ -27,20 +27,69 @@ class CompetitiiController extends MasterController
     }
 
     public function editresult($ResultId){
-        return view( 'modules.pages.competition.resultedit',['master' => $this->BObject()->getresults($ResultId), 
-                                                            'data' => $this->BObject()->getresultDetail($ResultId),
-                                                            'ResultId' => $ResultId
+        return view( 'modules.pages.competition.resultedit',[
+                                                         
+                                                            'MasterPrimaryKey' => 'ResultId',
+                                                            'MasterPrimaryKeyValue' => $ResultId,
+                                                            'teams' => $this->BObject()->getTeams(),
+                                                            'categories' => $this->BObject()->getShootingCategories(),
                                                         
                                                         ]);
     }
 
+
+    public function getresultajax(Request $request){
+        $ResultId = $request->ResultId;
+        return [$this->BObject()->getresultDetail($ResultId)];
+    }
+
     public function saveresultdetail(Request $request){
-
         $fields = $request->all();
-      
-
         return $this->BObject()->SaveResultsDetail($fields);
     }
+
+    public function getresultdetailsajax(Request $request){
+      
+        $ResultId = $request['MasterKeyField'];
+        return [$this->BObject()->getresultDetails($ResultId)];
+    }
+
+
+    public function changeCompetitionStatus(Request $request){
+
+        $Status = $request->Status;
+        $CompetitionId = $request->CompetitionId;
+
+        return $this->BObject()->changeCompetitionStatus($CompetitionId, $Status);
+    }
+
+    public function registerMe(Request $request){
+
+        $PersonId = session('PersonId');
+        $Register = $request->Register == 1;
+        $CompetitionId = $request->CompetitionId;
+        if ($Register)
+            return $this->BObject()->registerMe($CompetitionId, $PersonId);
+        else
+            return $this->BObject()->unRegisterMe($CompetitionId, $PersonId);
+    }
+    
+
+    public function registerCompetitor(Request $request){
+        $CompetitionId = $request->CompetitionId;
+
+        return view('modules.pages.competition.addcompetitor')->with(["CompetitionId"=>$CompetitionId, "persons"=>$this->BObject()->getUnregisteredPersons($CompetitionId)]);
+    }
+
+    public function registerCompetitorDB(Request $request){
+        $CompetitionId = $request->CompetitionId;
+        $PersonId = $request->PersonId;
+        $Name = $request->Name;
+
+        return $this->BObject()->registerCompetitorDB($CompetitionId, $PersonId, $Name);
+    }
+
+
 
 
 

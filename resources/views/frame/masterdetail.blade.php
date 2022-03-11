@@ -1,39 +1,41 @@
-<!-- masterdetail -->
-@push('css')
-   	<link rel="stylesheet" href={{asset("/assets/plugins/jqwidgets/styles/jqx.base.css")}} type="text/css" />
-   	<link rel="stylesheet" href={{asset("/assets/plugins/jqwidgets/styles/jqx.energyblue.css")}} type="text/css" />
-@endpush
+@extends('layouts.base')
+
+
+    @push('css')
+
+    @endpush
 
 
        @push('scripts')
 
-    <script type="text/javascript" src={{asset("/assets/plugins/jqwidgets/jqxcore.js")}}></script>
-    <script type="text/javascript" src={{asset("/assets/plugins/jqwidgets/jqxdata.js")}}></script> 
-    <script type="text/javascript" src={{asset("/assets/plugins/jqwidgets/jqxbuttons.js")}}></script>
-    <script type="text/javascript" src={{asset("/assets/plugins/jqwidgets/jqxscrollbar.js")}}></script>
-    <script type="text/javascript" src={{asset("/assets/plugins/jqwidgets/jqxmenu.js")}}></script>
-    <script type="text/javascript" src={{asset("/assets/plugins/jqwidgets/jqxcheckbox.js")}}></script>
-    <script type="text/javascript" src={{asset("/assets/plugins/jqwidgets/jqxlistbox.js")}}></script>
-    <script type="text/javascript" src={{asset("/assets/plugins/jqwidgets/jqxdropdownlist.js")}}></script>
-    <script type="text/javascript" src={{asset("/assets/plugins/jqwidgets/jqxgrid.js")}}></script>
-    <script type="text/javascript" src={{asset("/assets/plugins/jqwidgets/jqxgrid.sort.js")}}></script> 
-    <script type="text/javascript" src={{asset("/assets/plugins/jqwidgets/jqxgrid.pager.js")}}></script> 
-    <script type="text/javascript" src={{asset("/assets/plugins/jqwidgets/jqxgrid.selection.js")}}></script> 
-    <script type="text/javascript" src={{asset("/assets/plugins/jqwidgets/jqxgrid.edit.js")}}></script>
-    <script type="text/javascript" src={{asset("/assets/plugins/jqwidgets/jqxgrid.columnsresize.js")}}></script>
-    <script type="text/javascript" src={{asset("/assets/plugins/jqwidgets/jqxgrid.filter.js")}}></script>
-    <script type="text/javascript" src={{asset("/assets/plugins/jqwidgets/jqxgrid.grouping.js")}}></script>
-    <script type="text/javascript" src={{asset("/assets/plugins/jqwidgets/jqxgrid.aggregates.js")}}></script>
-    <script type="text/javascript" src={{asset("/assets/plugins/jqwidgets/jqxfileupload.js")}}></script>
-    <script type="text/javascript" src={{asset("/assets/plugins/jqwidgets/jqxcombobox.js")}}></script>
-    <script type="text/javascript" src={{asset("/assets/plugins/jqwidgets/jqxdropdownbutton.js")}}></script>
-    <script type="text/javascript" src={{asset("/assets/plugins/jqwidgets/jqxtree.js")}}></script>
+       <script type="text/javascript" src="{{asset('js/components/jqwidgets/jqxcore.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/components/jqwidgets/jqxdata.js')}}"></script> 
+    <script type="text/javascript" src="{{asset('js/components/jqwidgets/jqxbuttons.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/components/jqwidgets/jqxscrollbar.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/components/jqwidgets/jqxmenu.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/components/jqwidgets/jqxcheckbox.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/components/jqwidgets/jqxlistbox.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/components/jqwidgets/jqxdropdownlist.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/components/jqwidgets/jqxcombobox.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/components/jqwidgets/jqxgrid.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/components/jqwidgets/jqxgrid.sort.js')}}"></script> 
+    <script type="text/javascript" src="{{asset('js/components/jqwidgets/jqxgrid.pager.js')}}"></script> 
+    <script type="text/javascript" src="{{asset('js/components/jqwidgets/jqxgrid.selection.js')}}"></script> 
+    <script type="text/javascript" src="{{asset('js/components/jqwidgets/jqxgrid.edit.js')}}"></script> 
+    <script type="text/javascript" src="{{asset('js/components/jqwidgets/jqxgrid.filter.js')}}"></script> 
+    <script type="text/javascript" src="{{asset('js/components/jqwidgets/jqxgrid.grouping.js')}}"></script> 
+    <script type="text/javascript" src="{{asset('js/components/jqwidgets/jqxgrid.columnsresize.js')}}"></script> 
+    <script type="text/javascript" src="{{asset('js/components/jqwidgets/jqxgrid.aggregates.js')}}"></script> 
+    <script type="text/javascript" src="{{asset('js/form-components/form-validation.min.js')}}"></script> 
+ 
 
-   
     
 
-  	<script type="text/javascript" src={{asset("/assets/scripts/modules/framework/masterdetail.js")}}></script>
+  	<script type="text/javascript" src={{asset('js/frame/masterdetail.js')}}></script>
+
+     
       
+    <link rel="stylesheet" href="{{asset('js/components/jqwidgets/styles/jqx.base.css')}}" type="text/css" />
       
         @yield('masterdetail')
             
@@ -78,9 +80,9 @@
     @endpush
     
 
-
+    @push('content')
     
-    @push('subtab')
+   
         @isset($subtabs)
             @foreach($subtabs as $subtab)
             <ul class="nav-tabs nav">
@@ -97,7 +99,7 @@
             </ul>
             @endforeach
         @endisset
-    @endpush
+   
 
 	
 <div class="app-main__inner">
@@ -165,7 +167,7 @@
 
                 
                     
-                    @include('partials.admin.filtercustom')
+                    @include('frame.filtercustom')
 
                     @if ( !isset($DeniedPermissions) ||  !in_array("Edit", $DeniedPermissions))
                         <button type="button" data-toggle="tooltip" class="btn-shadow mr-3 btn btn-primary " title="{{trans('general.add')}}" onclick="addNew()"><i class="fa fa-plus"></i></button>
@@ -316,7 +318,7 @@
 
 
 
-
+@endpush
 
 @push('dialogs')
 
@@ -347,7 +349,7 @@
 
 
 
-@include('partials/admin/filter')
+@include('frame/filter')
 
 @endpush
 

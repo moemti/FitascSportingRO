@@ -17,6 +17,7 @@
     <script type="text/javascript" src="{{asset('js/components/jqwidgets/jqxgrid.selection.js')}}"></script> 
     <script type="text/javascript" src="{{asset('js/components/jqwidgets/jqxgrid.edit.js')}}"></script> 
     <script type="text/javascript" src="{{asset('js/components/jqwidgets/jqxgrid.filter.js')}}"></script> 
+    <script type="text/javascript" src="{{asset('js/components/jqwidgets/jqxgrid.grouping.js')}}"></script> 
     <script type="text/javascript" src="{{asset('js/form-components/form-validation.min.js')}}"></script> 
 
 
@@ -85,6 +86,14 @@
 
         
         <div class="page_content_content">
+
+                <form  method="POST" id="detailform">
+
+
+                @stack('masterform')
+
+                </form>
+
                 @stack('content_before')
                 <div class="row">
                     <div class="text-right ">

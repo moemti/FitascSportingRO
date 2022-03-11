@@ -60,7 +60,7 @@ class Competition extends BObject{
 
 
     public $ClasamentSelect = "
-                SELECT row_number() over(order by Total desc, ShootOff desc)  as Position, p.Name as Person, sc.Code as Category, t.Name as Team , r.ResultId,
+                SELECT row_number() over(order by Total desc, ShootOff desc)  as Position, p.PersonId, p.Name as Person, sc.Code as Category, t.Name as Team , r.ResultId,
                     Round(Percent,2) as Procent,
                     
                     d1.Result as M1,
@@ -107,26 +107,96 @@ class Competition extends BObject{
                     order by Total desc, ShootOff desc;
                 ";
 
+        public function changeCompetitionStatus($CompetitionId, $Status){
+            $sql = "UPDATE `competition` 
+                set Status = '$Status'
+    
+            where CompetitionId = $CompetitionId";
+
+            try{
+
+                DB::select($sql);
+                return 'OK';
+            }
+            catch(\Exception $e){
+               return $e->getMessage();
+            }
+
+        }
+
+
+        public function registerMe($CompetitionId, $PersonId){
+            $sql = "insert into result (CompetitionId, PersonId, ShooterCategoryId, TeamId)
+            select $CompetitionId, $PersonId, null, null
+            where not exists (select 1 from result where CompetitionId = $CompetitionId and PersonId = $PersonId)";
+
+            try{
+
+                DB::select($sql);
+                return 'OK';
+            }
+            catch(\Exception $e){
+            return $e->getMessage();
+            }
+        }
+
+
+        public function unRegisterMe($CompetitionId, $PersonId){
+            $sql = "delete from result
+             where CompetitionId = $CompetitionId and PersonId = $PersonId";
+
+            try{
+
+                DB::select($sql);
+                return 'OK';
+            }
+            catch(\Exception $e){
+            return $e->getMessage();
+            }
+        }
+
+        
+
+
 
         ////////////////    rezultate    //////////////////
         
         public function getCompetitionYears(){
-            $sql = "select distinct  year(StartDate) as Year from competition order by  year(StartDate) desc ";
+            $sql = "select Year from season order by  Year desc ";
+
             return DB::select($sql);
         }
 
+
+        public function getShootingCategories(){
+            $sql = "select ShooterCategoryId, Name  from shootercategory order by Name ";
+
+            return DB::select($sql);
+        }
+
+
+        public function getTeams(){
+            $sql = "select TeamId, Name  from team order by Name ";
+
+            return DB::select($sql);
+        }
         
         public function GetClasament($CompetitionId){
             return DB::select(str_replace(':CompetitionId', $CompetitionId,$this->ClasamentSelect));
         }
 
-        public function getresults($ResultId){
+        public function getresultDetails($ResultId){
             $sql = "select * from resultdetail r where ResultId = $ResultId";
             return DB::select($sql);
         }
+
         public function getresultDetail($ResultId){
-            $sql = "select p.Name as Persoana from result r 
+            $sql = "select p.Name, coalesce(r.ShooterCategoryId, x.ShooterCategoryId) as ShooterCategoryId, coalesce(r.TeamId, x.TeamId) as TeamId, r.Aborted, Position, Total, Percent, ResultId
+            from result r 
             inner join person p on p.PersonId = r.PersonId
+            inner join competition c on c.CompetitionId = r.CompetitionId
+            inner join season s on Year(c.StartDate) = s.Year
+            left join shooterxseason x on x.PersonId = r.PersonId and x.SeasonId = s.SeasonId 
             
             where r.ResultId = $ResultId";
             return DB::select($sql);
@@ -254,4 +324,45 @@ class Competition extends BObject{
         }
 
 
+
+        public function getUnregisteredPersons($CompetitionId){
+            $sql = "select Name, Email, p.PersonId from person p 
+                    left join result u on p.PersonId = u.PersonId and u.CompetitionId = $CompetitionId
+                    where u.PersonId is null order by p.Name";
+            return  DB::select($sql);
+        }
+
+
+        public function registerCompetitorDB($CompetitionId, $PersonId, $Name){
+
+            try{
+
+                if ($PersonId == -1){
+                    $sql = "INSERT INTO person(Name, Code, Email, CountryId) 
+                        values( '$Name', 'xxx', '', 1 )";
+                      
+
+                    DB::select($sql);
+                    $PersonId = DB::select("select LAST_INSERT_ID() as PersonId")[0]->PersonId;
+
+                }
+                   
+                
+                $sql = "insert into result (CompetitionId, PersonId, ShooterCategoryId, TeamId)
+                    select $CompetitionId, $PersonId, null, null
+                    where not exists (select 1 from result where CompetitionId = $CompetitionId and PersonId = $PersonId)";
+
+                DB::select($sql);
+
+
+                DB::Commit();
+                return 'OK';
+            } catch (\Exception $e) {
+                DB::Rollback();
+                return $e->getMessage();
+            }
+
+        }
+
 }
+

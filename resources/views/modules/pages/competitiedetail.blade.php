@@ -26,23 +26,27 @@
 
         let dsClasament= @Json($clasament);
 
-           
+        let Status = '{{$master[0]->Status}}' ; 
 
 </script>
 @endpush
 
+@push('sidebar_left')   
+        
+@endpush
+
 @push('content')
 
-<!-- <div class="detail detail_competitii ">
 
-    <div class="page_content page_content_detail">
+    <div class="page_content page_content_master page_content_competitii">
+        
+        <div class="page_content_header">
+         
 
-        <h1>Competitie</h1>
-
-
+         <input id="CompetitionId" value='{{$master[0]->CompetitionId}}' hidden> </input>
         <div class='row'>
-      
-    
+
+
             <div>
                 <input id="input_competitie" value='{{$master[0]->Name}}' disabled> </input>
                 <input id="input_sportfield" value='{{$master[0]->SportField}}'disabled> </input>
@@ -52,105 +56,115 @@
 
             
         <div class='row'>
-         
+        
             <div>
                 <input id="input_locatie" value='{{$master[0]->Range}}'disabled> </input>
             </div>
         </div>
+      
 
         <div class='row'>
-        
+
             <div>
                 <input id="input_startdate" value='{{$master[0]->StartDate}}'disabled> </input>
                 <input id="input_enddate" value='{{$master[0]->EndDate}}'disabled> </input>
-            </div>
-        </div>
-
-    </div>
-
-
-    <div class="page_content page_content_master page_content_competitii">
-        
-
-        <h2>Clasament </h2>
-
-        <div class="page_content_content">
-
-            <div id ="jqxGrid" class="gridnou"></div>
-        </div>
-   
-
-    </div>
-
-
-</div> -->
-
-
-<div class="page_content page_content_master page_content_competitii">
-        <div class="page_content_header">
-             <h1>Competitie</h1>
-
-
-            <div class='row'>
-
-
-                <div>
-                    <input id="input_competitie" value='{{$master[0]->Name}}' disabled> </input>
-                    <input id="input_sportfield" value='{{$master[0]->SportField}}'disabled> </input>
-                </div>
-            </div>
-
-
-                
-            <div class='row'>
-            
-                <div>
-                    <input id="input_locatie" value='{{$master[0]->Range}}'disabled> </input>
-                </div>
-            </div>
-
-            <div class='row'>
-
-                <div>
-                    <input id="input_startdate" value='{{$master[0]->StartDate}}'disabled> </input>
-                    <input id="input_enddate" value='{{$master[0]->EndDate}}'disabled> </input>
-
-                    @if ($master[0]->Status == 'Open')
-                        <button id="addRegister" class = "btn-register btn btn-xsm" >Ma inscriu</button>
-                    @endif
-
-                    @if(session("IsSuperUser") == 1)
-
-                    <select Name='CompetitionId' id='CompetitionId'>
-                    
-                        
-                            <option value = "Closed"  {{$master[0]->Status == 'Closed'?'selected':''}} >Closed  </option>
-                            <option value = "Open" {{$master[0]->Status == 'Open'?'selected':''}}> Open </option>
-                            <option value = "Finished" {{$master[0]->Status == 'Finished'?'selected':''}}>Finished</option>
+                <span class="compet_status {{$master[0]->Status}}">{{$master[0]->Status}}</span> 
+                <div class="btnwrapper">
+                @switch($master[0]->Status)
+                    @case('Closed')
                        
+                        @if (session("IsSuperUser") == 1)
+                        <button id="btnOpen" data-status="Open" class = "cmpStatusChange btn btn-sm" >Open</button>
+                        @endif
+                        @break
+                    @case('Open')
 
 
-                </select>
+                  
 
-                    @endif
+                        @if (session("PersonId"))
+                       
+                            @php 
+
+                                $exists = false;
+
+                                $cl =  $clasament;
+                                foreach( $cl as $person) {
+                                    if ($person->PersonId === session("PersonId")){
+                                        $exists = true;
+                                        break;
+
+                                    }
+                                }
 
 
+                            @endphp    
+                            @if ($exists)
+                                <button id="btnUnRegister" class = "btn-register btn btn-sm" >Nu mai particip</button>
+                            @else
+                                 <button id="btnRegister" class = "btn-register btn btn-sm" >Ma inscriu</button>
+                            @endif
+
+                        @endif
+
+                        @if (session("IsSuperUser") == 1)
+                            <button id="btnClose"  data-status="Closed" class="cmpStatusChange btn-add btn btn-sm">Close</button>
+                            <button id="btnOngoing"  data-status="Progress" class="cmpStatusChange btn-add btn btn-sm">Start competition</button>
+                        @endif
+                        @break
+
+                    @case('Progress')     
+                         @if (session("IsSuperUser") == 1)
+                            <button id="btnOpen" data-status="Open" class = "cmpStatusChange btn btn-sm" >Open</button>
+                            <button id="btnFinish"  data-status="Finished" class="cmpStatusChange btn-add btn btn-sm">Finish competition</button>
+                        @endif
+
+                        @break
+
+
+                    @case('Finished')
+                      
+                        @if (session("IsSuperUser") == 1)
+                            <button id="btnOngoingR"  data-status="Progress" class="cmpStatusChange btn-add btn btn-sm">Reopen competition</button>
+                        @endif
+                        @break
+
+                @endswitch
+          
                 </div>
-            </div>
-   
-            <h2>Clasament</h2>
 
+
+            </div>
         </div>
 
+        @switch($master[0]->Status)
+            @case('Finished')
+               
+            @case('Progress')
+                <h2>Clasament</h2>
+                @break
+        
+            @case('Open')
+                <h2>Inscrisi</h2>
+                @break
+        
+            @default
+                
+        @endswitch
 
+
+
+
+
+    </div>
         
         <div class="page_content_content">
 
-            @if (session('IsSuperUser') == 1)
-            <div class='row'>
-                <button id="addCompetitor" class = "btn-add btn btn-xsm" >Adauga</button>
+            @if ((session('IsSuperUser') == 1) && (in_array(  $master[0]->Status,  array("Open","Progress"))  ))
 
-            </div>
+                <div class='row'>
+                    <button id="addCompetitor" class = "btn-add btn btn-sm" >Adauga</button>
+                </div>
 
             @endif
             <div id ="jqxGrid" class="gridnou">

@@ -16,6 +16,8 @@
     <script type="text/javascript" src="{{asset('js/components/jqwidgets/jqxgrid.selection.js')}}"></script> 
     <script type="text/javascript" src="{{asset('js/components/jqwidgets/jqxgrid.edit.js')}}"></script> 
     <script type="text/javascript" src="{{asset('js/components/jqwidgets/jqxgrid.filter.js')}}"></script> 
+    <script type="text/javascript" src="{{asset('js/components/jqwidgets/jqxgrid.grouping.js')}}"></script> 
+ 
  
     <script defer type="module" src="{{asset('js/pages/clasamente.js')}}"></script>
     <!-- <link rel="stylesheet" type="text/css" href="{{asset('css/pages/clasamente.css')}}"/> -->
@@ -24,7 +26,9 @@
 
 <script>
 
-        let dsClasament2021= @Json($clasament2021);
+        let dsClasament = @Json($clasament);
+        let dsYears = @Json($years);//.map(x =>  x.Year);
+           
 
 </script>
 @endpush
@@ -35,12 +39,11 @@
 
         <div class="page_content_header">
             <h1>Clasamente</h1>
-    
-            <h2>Clasament 2021</h2>
 
         </div>
         <div class="page_content_content">
 
+            <div id = "jqxYear"></div>
             <div id ="jqxGrid" class="gridnou">
                     
             </div>

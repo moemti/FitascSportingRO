@@ -1,16 +1,23 @@
-MasterPrimaryKey = 'ResultDetailId';
+
+MasterPrimaryKey = 'ResultId';
+DetailPrimaryKey = 'ResultDetailId';
+IsOneMaster = true;
 
 
  urls = {
     saveurl: '/saveresultdetail',
-    getmasterurl: '/getresultsajax',
+    getmasterurl: '/getresultajax',
+    getdetailurl: '/getresultajax',
     actionurl: undefined,
-    getdictionariesurl: undefined
+    getdictionariesurl: undefined,
+    getdetaillisturl: '/getresultdetailsajax',
 
 };
 
 
-MasterFields = 
+
+
+detaildatafields = 
     [
         { name: 'ResultDetailId', type: 'number'},
         { name: 'ResultId', type: 'Number'},
@@ -22,7 +29,7 @@ MasterFields =
     
     ];
 
- MasterColumns = [
+detailcolumns = [
     { text: 'Round', dataField: 'RoundNr', width: '10%' ,
                 validation: function (cell, value) {
                     if (value == "")
@@ -59,7 +66,6 @@ MasterFields =
 
 
 
-    DefaultMasterValues.ResultId = ResultId;
 
     function getOtherSaveFields(){
         return {ResultId: ResultId};

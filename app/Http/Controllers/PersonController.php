@@ -16,12 +16,13 @@ class PersonController extends MasterController
 {
     public $BObject = 'App\Models\Users\Person';
 
-    public $views = ['master'=>'users/person'];
+    public $views = ['master'=>'modules.pages.persoane.person'];
 
 
     public function getDictionaries(){
  
-        return ['roles' => $this->BObject()->getRoles($OrganizationId), 'params' => $this->BObject()->getParams('personxparam')];
+        return ['roles' => $this->BObject()->getRoles(), 'seasons' => $this->BObject()->getSeasons(),  'shootercategories' => $this->BObject()->getShooterCategories(),
+                              'teams' => $this->BObject()->getTeams()];
     }
 
 

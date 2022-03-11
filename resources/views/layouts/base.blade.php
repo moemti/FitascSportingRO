@@ -17,6 +17,11 @@
              @endif
              
         </script>
+
+        @stack('css')
+
+     <link rel="stylesheet" href="{{asset('css/bootstrap/bootstrap.min.css')}}" type="text/css" /> 
+
         <link rel="apple-touch-icon" sizes="180x180" href="{{asset('img/apple-touch-icon.png')}}">
         <link rel="icon" type="image/png" sizes="32x32" href="{{asset('img/favicon-32x32.png')}}">
         <link rel="icon" type="image/png" sizes="16x16" href="{{asset('img/favicon-16x16.png')}}">
@@ -40,9 +45,9 @@
 
         <script src="{{asset('js/app.js')}}"></script>
         <link rel="stylesheet" href={{asset("css/style.css")}}>
-        <link href={{asset("icons/css/uicons-regular-rounded.css")}} rel="stylesheet">
-        <script src={{asset("js/scripts-init/bootstrap.bundle.min.js")}}></script>
-
+        <link rel="stylesheet"  href={{asset("css/uicons-regular-rounded.css")}} >
+    
+        <script type="text/javascript" src="{{asset('js/bootstrap/bootstrap.min.js')}}"></script> 
         <script src={{asset("js/scripts-init/toastr-fromsite.js")}}></script>
         <script src={{asset("js/scripts-init/toastr.js")}}></script>
 
@@ -70,10 +75,9 @@
                     </div>
 
                     <div class="header__userlogin">
-                    
                         @include('modules.userloginheader')
                     </div>
-                    
+                
                     <div class="header__user">
                         @if (session("PersonId") > 0)
        
@@ -87,10 +91,6 @@
             </header>
             @include('modules.navigation')
             <div class="container">
-
-                <div class="sidebar">
-                        @stack('sidebar_left')
-                </div> 
 
                 <div class="content">
                     
@@ -110,16 +110,14 @@
                     </div>
 
                     <div class="footer__copyright">
-                        © Copyright by <span class='copyright__company'>Molland soft</span> 
+                        © <span class='copyright__company'>Sporting Romania</span> 
                     </div>
             </footer>
         </div>
 
         <div id="loaderLeft">&nbsp;</div>
         <div id="loaderRight">&nbsp;</div>
-        <!-- <span onclick="history.back()" class=' fi fi-rr-angle-double-small-left btn_back'></span> -->
-
-
+  
 
     	@include('frame.bodyfooter')
     </body>

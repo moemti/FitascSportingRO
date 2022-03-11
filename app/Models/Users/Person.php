@@ -24,36 +24,38 @@ class Person extends BObject{
                 from person p
                 left join personxrole x on x.PersonId = p.PersonId
                 left join role f on f.RoleId = x.RoleId
-                where p.OrganizationId = :_OrganizationId_ :filter
+               
                 group by  p.PersonId, p.Name, p.Email, p.NickName
                 order by p.Name"  ;
 
-    public $MasterItemSelect = "SELECT p.PersonId, p.Name, p.Email, GROUP_CONCAT(f.Name SEPARATOR ', ') as Role , p.NickName
+    public $MasterItemSelect = "SELECT p.PersonId, p.Name, p.Email, GROUP_CONCAT(f.Name SEPARATOR ', ') as Role , p.NickName, p.Code, p.CountryId, ifnull(u.IsSuperUser, 0) as IsSuperUser, 
+                                case when u.PersonId is null then 0 else 1 end as HasUser
                 from person p
                 left join personxrole x on x.PersonId = p.PersonId
+                left join user u on u.PersonId = p.PersonId
                 left join role f on f.RoleId = x.RoleId
                 where p.PersonId = :PersonId
-                group by  p.PersonId, p.Name, p.Email, p.NickName"  ;
+                group by  p.PersonId, p.Name, p.Email, p.NickName, p.Code, p.CountryId , ifnull(u.IsSuperUser, 0),  case when u.PersonId is null then 0 else 1 end "  ;
                                         
 
     public $MasterInsert = "INSERT INTO person( OrganizationId, Name, Email, NickName)
                                 values (:_OrganizationId_, ':Name', ':Email', ':NickName');
-
-
-                            
                                 ";         
    
 
     public $MasterUpdate = "UPDATE `person` SET
-                        `Email`= ':Email', `Name`=':Name', NickName = ':NickName'
+                        `Email`= ':Email', `Name`=':Name', NickName = ':NickName', Code = ':Code'
                         WHERE PersonId = :PersonId;
                         
-                        update personparam set Price = :Price 
-                        where PersonId = :PersonId;
+                        update user set IsSuperUser = :IsSuperUser
+                        WHERE PersonId = :PersonId;
+                        
+                    
+
                         ";
 
     public $MasterDelete = "
-                delete from personxparam
+                delete from user
                 where PersonId = :PersonId;
 
                 delete from person
@@ -65,31 +67,57 @@ class Person extends BObject{
 
     
     // punem old si new pentru a sti care a fost OLD la update/delete si NEW pentru insert/update
-    public $DetailSelect = "SELECT x.PersonId, f.RoleId, f.Name, f.RoleId as OLD_RoleId, f.RoleId as NEW_RoleId
-                from  personxrole x 
-                inner join role f on f.RoleId = x.RoleId
-                where x.PersonId = :PersonId
-                order by f.Name"  ;
+    public $DetailSelect = "SELECT x.PersonId, x.SeasonId,  s.SeasonId as OLD_SeasonId, s.SeasonId as NEW_SeasonId,
+                    x.ShooterCategoryId as OLD_ShooterCategoryId, x.ShooterCategoryId as NEW_ShooterCategoryId,
+                    t.TeamId as OLD_TeamId, t.TeamId as NEW_TeamId, s.Year, sc.Name as ShooterCategory, t.Name as Team
+                    from  shooterxseason x 
+                    inner join season s on s.SeasonId = x.SeasonId
+                    left join shootercategory sc on sc.ShooterCategoryId = x.ShooterCategoryId
+                    left join team t on t.TeamId = x.TeamId
+                    where x.PersonId = :PersonId
+                    order by s.Year"  ;
 
 
-    public $DetailInsert = "INSERT INTO `personxrole`(`PersonId`, `RoleId`) 
-            values(:PersonId, :NEW_RoleId)";
+    public $DetailInsert = "INSERT INTO `shooterxseason`(`PersonId`, `SeasonId`, `ShooterCategoryId`, `TeamId`)
+                                         values(:PersonId, :NEW_SeasonId, :NEW_ShooterCategoryId, :NEW_TeamId)";
 
-    public $DetailUpdate = "update `personxrole`
-                         set RoleId = :NEW_RoleId
-                        where RoleId = :OLD_RoleId and PersonId = :PersonId";    
+    public $DetailUpdate = "update `shooterxseason`
+                         set SeasonId = :NEW_SeasonId,
+                         ShooterCategoryId = :NEW_ShooterCategoryId,
+                         TeamId = :NEW_TeamId
+                        where SeasonId = :OLD_SeasonId and PersonId = :PersonId";    
 
-    public $DetailDelete = "delete from `personxrole`
-                        where RoleId = :OLD_RoleId and PersonId = :PersonId";
+    public $DetailDelete = "delete from `shooterxseason`
+                        where SeasonId = :OLD_SeasonId and PersonId = :PersonId";
 
-    public function getroles($OrganizationId){
-        $sql = "Select `RoleId`, `Name`, `Code`, `OrganizationId` FROM `role`
-            where OrganizationId = {$OrganizationId} order by Name"  ;
+    public function getroles(){
+        $sql = "Select `RoleId`, `Name`, `Code` FROM `role`
+            order by Name"  ;
 
         return DB::select($sql);
         
     }
 
+
+    public function getSeasons(){
+        $sql = "Select `SeasonId`, `Year` FROM `season`
+        order by 'Year'"  ;
+
+        return DB::select($sql);
+    }
+
+    public function getTeams(){
+        $sql = "SELECT `TeamId`, `Name`, `Description`, `IsActive` FROM `team` order by `Name`"  ;
+
+        return DB::select($sql);
+    }
+
+
+    public function getShooterCategories(){
+        $sql = "SELECT `ShooterCategoryId`, `Name`, `IsActive`, `Code` FROM `shootercategory` order by Name"  ;
+
+        return DB::select($sql);
+    }
 
 
     public function OnSaveError($e){
@@ -103,8 +131,9 @@ class Person extends BObject{
 
     // parametrii
 
-    public function getMasterOthers($ItemId, $OrganizationId){
-        return $this->getPersonParams($ItemId);
+    public function getMasterOthers($ItemId){
+        //return $this->getPersonParams($ItemId);
+        return [];
     }
 
     public function getParams($TableUses){

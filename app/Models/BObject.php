@@ -14,8 +14,8 @@ use Illuminate\Http\Request;
 
 class BObject{
 
-    public function __construct($OrganizationId = null){    
-        $this->OrganizationId = $OrganizationId;
+    public function __construct(){    
+
     
     }
     
@@ -31,7 +31,6 @@ class BObject{
     public function DetailFixedFields(){ return [];} // for checking that this fields to be not altered 
 
 
-    protected $OrganizationId = 0;
     protected $IsInsertUnprepared = false; // true if multiple statements etc
     protected $IsUpdateUnprepared = false; // true if multiple statements etc
     protected $IsDeleteUnprepared = false; // true if multiple statements etc
@@ -48,7 +47,7 @@ class BObject{
     public $MasterKeyIsNew = true; // if true get the new item as " select LAST_INSERT_ID() as ItemId" else get the MasteKeyFieldValue
 
     // overrideable functions for sql statements
-    public function GetMasterSelect($OrganizationId, $filter, $others = null){
+    public function GetMasterSelect($filter, $others = null){
         return '';
     }
     public function GetMasterItemSelect(){
@@ -63,7 +62,7 @@ class BObject{
     public function GetMasterDelete($ItemId){
         return '';
     }
-    public function GetDetailSelect($ItemId, $OrganizationId){ // toate detaliile
+    public function GetDetailSelect($ItemId){ // toate detaliile
         return '';
     }
     public function GetDetailItemSelect($ItemId){ // un singur detailiu
@@ -89,9 +88,9 @@ class BObject{
   
 
 
-    public function getMasterList($OrganizationId, $filter, $others = null){
+    public function getMasterList($filter, $others = null){
         
-        $sql = $this->GetMasterSelect($OrganizationId, $filter, $others);
+        $sql = $this->GetMasterSelect( $filter, $others);
        
         while (is_array($filter))
             $filter = $filter[1]; // un bug undeva
@@ -103,7 +102,7 @@ class BObject{
 
             $PersonId =  $others['PersonId'] ;   
 
-            $sql = str_replace( array(":filter", ":_OrganizationId_", ":_PersonId_") ,array("{$filter}", "{$OrganizationId}", "$PersonId"), $this->MasterSelect);
+            $sql = str_replace( array(":filter", ":_PersonId_") ,array("{$filter}",  "$PersonId"), $this->MasterSelect);
         }
 
         return  DB::select($sql);
@@ -273,17 +272,17 @@ class BObject{
     }
 
 
-    public function getDetails($ItemId, $OrganizationId){
+    public function getDetails($ItemId){
         $MasterKey = $this->MasterKeyField();
 
-        $sql = $this->GetDetailSelect($ItemId, $OrganizationId);
+        $sql = $this->GetDetailSelect($ItemId);
         if ($sql == '')
-            $sql = str_replace( array(":".$MasterKey, ":_OrganizationId_") ,array("{$ItemId}", "{$OrganizationId}"), $this->DetailSelect) ;
+            $sql = str_replace( array(":".$MasterKey) ,array("{$ItemId}"), $this->DetailSelect) ;
         return DB::select($sql);
 
     }
 
-    public function getMasterOthers($ItemId, $OrganizationId){
+    public function getMasterOthers($ItemId){
         return [];
     }
 
@@ -304,6 +303,7 @@ class BObject{
             }
         }
 
+        self::PutNullValues($sql);
         DB::unprepared($sql);
     }
 
@@ -321,7 +321,7 @@ class BObject{
             }
          
         }
-       
+        self::PutNullValues($sql);
         DB::unprepared($sql);
     }
 

@@ -20,14 +20,13 @@ class MasterController extends Controller
     public $views;
 
     public $theobject = null;
-    public $OrganizationId;
+  
 
     public function __construct(){
         
-        $this->OrganizationId = session('organizationId');
 
         $r = new \ReflectionClass($this->BObject);
-        $this->theobject =  $r->newInstanceArgs([$this->OrganizationId]);
+        $this->theobject =  $r->newInstanceArgs([]);
     }
 
 
@@ -75,12 +74,11 @@ class MasterController extends Controller
  
         
 
-        $OrganizationId = session('organizationId');
         $PersonId = session('PersonId');
 
         $others = ['PersonId' => $PersonId];
 
-        $items = $this->BObject()->getMasterList($OrganizationId, $thefilter, $others);
+        $items = $this->BObject()->getMasterList( $thefilter, $others);
 
         $MasterPrimayKey = $this->BObject()->MasterKeyField();
         $DetailPrimaryKey = $this->BObject()->DetailKeyField();
@@ -103,7 +101,7 @@ class MasterController extends Controller
     public function getItem(Request $request){
 
         //return $request;  // for debug
-        $OrganizationId = session('organizationId');
+  
         $ItemId = $request[$this->BObject()->MasterKeyField()];
         $PersonId = session('PersonId');
 
@@ -135,7 +133,7 @@ class MasterController extends Controller
 
         $others = ['PersonId' => $PersonId];
 
-        $items = $this->BObject()->getMasterList($OrganizationId, $filter, $others);
+        $items = $this->BObject()->getMasterList($filter, $others);
 
         return  [ 'masterlist' => $items];
     }
@@ -144,10 +142,10 @@ class MasterController extends Controller
     
 
     public function getitemajax(Request $request){
-        $OrganizationId = session('organizationId');
+ 
         $ItemId = $request[$this->BObject()->MasterKeyField()];
 
-        if ($this->views['detail'])
+        if (array_key_exists('detail',$this->views))
             return view($this->views['detail'], array_merge([
                 'master' => $this->BObject()->getMaster($ItemId), 
                 'dictionaries' => $this->getDictionaries(), 
@@ -163,7 +161,7 @@ class MasterController extends Controller
 
         $fields = $request->all();
         $fields['_PersonId_'] = session('PersonId');
-        $fields['_OrganizationId_'] = session('organizationId');
+
         $fields['_LocationId_'] = session('LocationId');
 
         $Permissions = app(CommonDictionariesController::class)->GetDeniedModulePermissions(session('PersonId'), $this->ModuleCode);
@@ -183,10 +181,10 @@ class MasterController extends Controller
 
     public function getdetaillistajax(Request $request){
         $ItemId = $request['MasterKeyField'];
-        $OrganizationId = session('organizationId');
-        $others = $this->BObject()->getMasterOthers($ItemId, $OrganizationId);
+
+        $others = $this->BObject()->getMasterOthers($ItemId);
     
-        return  [$this->BObject()->getDetails($ItemId, $OrganizationId), $others];
+        return  [$this->BObject()->getDetails($ItemId), $others];
 
     }
 
