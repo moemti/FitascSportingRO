@@ -1,6 +1,6 @@
-@extends('layouts.base')
+@extends('layouts.baseex')
 
-@push('scripts')
+@push('footerscripts')
 
 
 
@@ -41,12 +41,13 @@
 
 @push('content')
 
-    <div class="page_content page_content_master page_content_poligoane">
-        <h1>Poligoane</h1>
+<section class="content-termeni section section-tertiary section-no-border m-0">
+    <div class="container">
+        <h2>Poligoane</h2>
 
         <div id="jqxGrid" ></div>
     </div>
-    
+</section>
        
 
 @endpush

@@ -107,6 +107,23 @@ class Competition extends BObject{
                     order by Total desc, ShootOff desc;
                 ";
 
+
+        public function getTopCompetitions($PersonId){
+            $sql = "SELECT  c.`CompetitionId`, c.Name, `StartDate`, `EndDate`, `Targets`, 
+            r.name as `Range`, s.Name as SportField, concat(c.Name , ' ' , r.Name , ' ' ,  c.StartDate, ' ', c.EndDate) as NumeLung, year(c.StartDate) as Year, left(monthname(c.StartDate),3) as Month,
+            day(c.StartDate) as Day,
+            concat(DATE_FORMAT(StartDate, '%d/%m'), ' - ', DATE_FORMAT(EndDate, '%d/%m %Y')) as Perioada, Status, 
+            case when re.PersonId is null then 0 else 1 end as Inscris, r.RangeId, r.Coordinates, r.Address, r.Phone, cy.Name as Country
+            FROM `competition` c
+            inner join `range` r on r.RangeId = c.RangeId
+            inner join sportfield s on s.SportFieldId = c.SportFieldId
+            left join result re on re.CompetitionId = c.CompetitionId and re.PersonId = null
+            left join country cy on cy.CountryId = r.CountryId
+            where c.EndDate > CURDATE()
+             order by c.StartDate  limit 0, 4";
+             return  DB::select($sql);
+        }
+
         public function changeCompetitionStatus($CompetitionId, $Status){
             $sql = "UPDATE `competition` 
                 set Status = '$Status'

@@ -3,19 +3,23 @@
 return  [
         
         'MENU' => [
-                ['welcome', 'Pagina principala'],
-                ['competitii', 'Competitii'],
-                ['clasamente', 'Clasamente'],
-                ['regulamente', 'Regulamente'],
-                ['poligoane', 'Poligoane'],
-                ['utile', 'Utile'],
-                [
+                        ['welcome', 'Pagina principala'],
+                        ['competitii', 'Competitii'],
+                        ['clasamente', 'Clasamente'],
+                        ['regulamente', 'Regulamente'],
+               
+                        [      
+                                [   
+                                        ['poligoane', 'Poligoane'],
+                                        ['utile', 'Linkuri utile']
+                
+                                ], 'Utile'],
                         [
-                                ['persoane', 'Persoane'],
-                                ['sezoane', 'Sezoane']
-                        ]
-                        
-                        , 'Administrare', 'super']
+                                [
+                                        ['persoane', 'Persoane'],
+                                        ['sezoane', 'Sezoane'],
+                                        ['registeries', 'Cereri inregistrare'],
+                                ], 'Administrare', 'super']
          
                 ]
         ]  ;      

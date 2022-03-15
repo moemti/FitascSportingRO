@@ -22,8 +22,6 @@ class NavigationController extends Controller
             case 'poligoane':
                 $result['poligoane'] = Pages::getPoligoane();
                 break;
-            
-      
         }
 
 

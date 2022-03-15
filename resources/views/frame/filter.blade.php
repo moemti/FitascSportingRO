@@ -1,4 +1,4 @@
-<div id="FilterModal" class="modal fade " tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" style="display: none;" aria-hidden="false">
+<div id="FilterModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" style="display: none;" aria-hidden="false">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -37,7 +37,7 @@
                             ( )
                         </button>
 
-                        <input type="checkbox" id="not" name="not" value=" not " >   
+                        <input type="checkbox" class="form-check-input" id="not" name="not" value=" not " >   
                         <label for="not">not</label><br>
                         <div id = "and">
                             

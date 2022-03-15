@@ -5,9 +5,10 @@ use Illuminate\Support\Facades\Route;
 
 
 
-Route::get('/', function () {
-    return view('modules.pages.welcome');
-})->name('welcome');
+
+Route::get('/',  'App\Http\Controllers\CompetitiiController@returnWelcome')->name('welcome');
+
+Route::get('/welcome',  'App\Http\Controllers\CompetitiiController@returnWelcome')->name('welcome');
 
 
 Route::get('/competitii', 'App\Http\Controllers\CompetitiiController@getList');

@@ -1,4 +1,4 @@
-@extends('layouts.base')
+@extends('layouts.baseex')
 
 
     @push('css')
@@ -6,7 +6,7 @@
     @endpush
 
 
-       @push('scripts')
+       @push('footerscripts')
 
        <script type="text/javascript" src="{{asset('js/components/jqwidgets/jqxcore.js')}}"></script>
     <script type="text/javascript" src="{{asset('js/components/jqwidgets/jqxdata.js')}}"></script> 
@@ -31,7 +31,7 @@
 
     
 
-  	<script type="text/javascript" src={{asset('js/frame/masterdetail.js')}}></script>
+  	<script type="text/javascript" src="{{asset('js/frame/masterdetail.js')}}"></script>
 
      
       
@@ -102,7 +102,7 @@
    
 
 	
-<div class="app-main__inner">
+<div class="app-main__inner container">
     <div class="app-page-title">
         <div class="page-title-wrapper">
 
@@ -184,7 +184,7 @@
      <div class="main-card mb-3 card" id = "maincard">
         <div class="card-header">
         
-			<ul class="body-tabs body-tabs-layout tabs-animated body-tabs-animated nav">
+			<ul class="body-tabs body-tabs-layout tabs-animated body-tabs-animated nav w-75">
                 <li class="nav-item">
                     <a role="tab" class="nav-link mol-nav-link active" id="tab-0"  href="#" onclick="goList()">
                         <span>List</span>
@@ -197,18 +197,18 @@
                 </li>
             </ul>
 
-            <ul class="body-tabs body-tabs-layout tabs-animated body-tabs-animated nav">
-                <li class="nav-item">
+            <div class="body-tabs body-tabs-layout tabs-animated body-tabs-animated nav d-inline-flex w-75">
+                <div class="nav-item">
                     <a role="tab" class="nav-link mol-nav-link " id="tab-back"  href="#" onclick="goBack()">
                         <span><<</span>
                     </a>
-                </li>
-                <li class="nav-item">
+                </div>
+                <div class="nav-item">
                     <a role="tab" class="nav-link mol-nav-link " id="tab-next" href="#" onclick="goNext()">
                         <span>>></span>
                     </a>
-                </li>
-            </ul>
+                </div>
+</div>
         
             
         
@@ -250,7 +250,7 @@
                 
                 
         </div>
-        <div class="card-body">
+        <div class="card-body__">
             
             <div class="tab-content">
                 <div class="tab-pane active mol-tab-pane" id="tab-list" role="tabpanel">
@@ -290,7 +290,7 @@
 
                             <div id="MasterDetailDetail" class="form-row">
                                 <div class="col-md-12">
-                                    <label for="documentdetails">Details</label>
+                                    <label for="documentdetails"></label>
                                     @if (!isset($DeniedPermissions) || !in_array("Edit", $DeniedPermissions))
                                     <div class="text-right p-1">
                                         <button id= "deletedetail" type="button" data-toggle="tooltip" class="btn-shadow  btn btn-danger editable detailbtn" title="" onclick="deleteDetail()" data-original-title="Delete"><i class="fa fa-minus"></i></button>
@@ -322,7 +322,7 @@
 
 @push('dialogs')
 
-<div id="AttachModal" class="modal fade " tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" style="display: none;" aria-hidden="false">
+<div id="AttachModal" class="modal  " tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" style="display: none;" aria-hidden="false">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">

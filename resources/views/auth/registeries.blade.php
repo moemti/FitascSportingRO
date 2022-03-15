@@ -1,6 +1,6 @@
-@extends('layouts.base')
+@extends('layouts.baseex')
 
-@push('scripts')
+@push('footerscripts')
 
 
 
@@ -22,7 +22,7 @@
 
 
 
-    <script defer type="module" src="{{asset('js/pages/registeries.js')}}"></script>
+    <script src="{{asset('js/pages/registeries.js')}}"></script>
 
 
 
@@ -40,12 +40,13 @@
 
 @push('content')
 
-    <div class="page_content page_content_master ">
+<section class="content-termeni section section-tertiary section-no-border m-0">
+    <div class="container">
         <h1>Utilizatori de inregistrat</h1>
 
         <div id="jqxGrid" ></div>
     </div>
     
-       
+</section>
 
 @endpush

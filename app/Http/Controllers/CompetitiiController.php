@@ -78,7 +78,7 @@ class CompetitiiController extends MasterController
     public function registerCompetitor(Request $request){
         $CompetitionId = $request->CompetitionId;
 
-        return view('modules.pages.competition.addcompetitor')->with(["CompetitionId"=>$CompetitionId, "persons"=>$this->BObject()->getUnregisteredPersons($CompetitionId)]);
+        return view('modules.pages.competition.addcompetitor')->with(["CompetitionId" => $CompetitionId, "persons" => $this->BObject()->getUnregisteredPersons($CompetitionId)]);
     }
 
     public function registerCompetitorDB(Request $request){
@@ -90,7 +90,15 @@ class CompetitiiController extends MasterController
     }
 
 
+    public function returnWelcome(){
+        $PersonId = session('PersonId');
+        if (!$PersonId)
+            $PersonId = 'null';
 
+        $competitions = $this->BObject()->getTopCompetitions($PersonId);
+   
+        return view('modules.pages.welcome', ["competitions" => $competitions]);
+    }
 
 
 }

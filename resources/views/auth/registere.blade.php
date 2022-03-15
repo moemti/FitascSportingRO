@@ -1,4 +1,4 @@
-@extends('layouts.base')
+@extends('layouts.baseex')
 
 @push('scripts')
 
@@ -36,62 +36,72 @@
 @endpush
 
 @push('content')
-
-    <div class="page_content page_content_master ">
+<section class="content-termeni section section-tertiary section-no-border m-0">
+    <div class="container">
         <h1>Utilizator de inregistrat</h1>
 
-        <form class="" action="finishuser" method="POST">
-            @csrf
-        <div class='row'>
-                
-                <input Name = "RegisterId" id="RegisterId" value='{{$register->RegisterId}}' hidden> </input>
+        <div class="card mb-4">
+            <div class="card-body">
 
-                <div>
-                    <input Name = "Name" id="Name" class="input-w100" value='{{$register->Name}}' > </input>
-                   
-                </div>
-           
-                <div>
-                  
-                    <input Name = "Email" id="Email" class="input-w100" value='{{$register->Email}}' > </input>
-                </div>
-            </div>
+                <form class="" action="finishuser" method="POST">
+                    @csrf
+                    <div class='row'>
+                        
+                        <input Name = "RegisterId" id="RegisterId" value='{{$register->RegisterId}}' hidden> </input>
 
-            <div class='row u-margin-top-medium'>
-     
-                <select Name='PersonId' id='PersonId'>
-                    <option value = "-1">Persoana noua</option>
-                        @foreach ($persons as $person)
-                            <option value = "{{$person->PersonId}}">{{ $person->Name}}</option>
-                        @endforeach
-
-
-                </select>
-            </div>
-
-            <div class="  text-right u-margin-top-medium">
-                     <button class="btn-wide btn-pill btn-shadow btn-hover-shine btn btn-primary btn-lg">Registreaza</button>
-               
-            </div>
-
-
-         
-
-            @if ((isset($mesaj) &&  $mesaj != '') or (session()->has('message')))
-                    <div class="col-md-12">
-                    <span class="text-danger">
-                        <strong>{{ $mesaj.session()->has('message') }} </strong>
-                    </span>
+                        <div class="form-group col-lg-12 col">
+                       
+                            <input  Name = "Name" id="Name"  type="text" value='{{$register->Name}}' data-msg-required="" maxlength="100" class="form-control text-3 h-auto py-2" name="name" >
+                        </div>
                     </div>
-                @endif
-        </form>
 
+                    <div class='row'>
+                        <div class="form-group col-lg-12">
+                  
+                            <input   Name = "Email" id="Email"  type="text"  value='{{$register->Email}}' data-msg-required="" maxlength="100" class="form-control text-3 h-auto py-2" name="name" >
+                        
+                        </div>
+                    </div>
+
+
+                    <div class='row'>
+                        <div class="form-group col-lg-6">
+                
+                            <select Name='PersonId' id='PersonId' class="form-select form-control h-auto py-2">
+                                <option value = "-1">Persoana noua</option>
+                                    @foreach ($persons as $person)
+                                        <option value = "{{$person->PersonId}}">{{ $person->Name}}</option>
+                                    @endforeach
+
+
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="  text-right u-margin-top-medium">
+                            <button class="btn-wide btn-pill btn-shadow btn-hover-shine btn btn-primary btn-lg">Registreaza</button>
+                    
+                    </div>
+
+
+                
+
+                    @if ((isset($mesaj) &&  $mesaj != '') or (session()->has('message')))
+                            <div class="col-md-12">
+                                <span class="text-danger">
+                                    <strong>{{ $mesaj.session()->has('message') }} </strong>
+                                </span>
+                            </div>
+                        @endif
+                </form>
+            </div>
+        </div>
 
         <a href="{{Route('registeries')}}" target="_blank" class="a a__medium">De inregistrat</a>   
 
 
     </div>
     
-       
+</section>       
 
 @endpush

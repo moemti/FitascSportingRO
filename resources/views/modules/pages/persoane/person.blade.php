@@ -3,7 +3,7 @@
 @section('masterdetail')
 
 
-    <script type="text/javascript" src={{asset('js/pages/persoane.js')}}> </script> 
+    <script type="text/javascript" src="{{asset('js/pages/persoane.js')}}"> </script> 
 
   
     <script>
@@ -45,10 +45,10 @@
 
     <div class="form-row">
         <div class="col-md-2">
-             <label for="HasUser">Are user</label><input name="HasUser" id="HasUser"  type="checkbox"  class="form-control" >
+             <label for="HasUser">Are user</label><input name="HasUser" id="HasUser"  type="checkbox"  class="form-check-input" >
         </div>
         <div class="col-md-2">
-            <label for="IsSuperUser">Este super user</label><input name="IsSuperUser" id="IsSuperUser"  type="checkbox"  class="form-control" >
+            <label for="IsSuperUser">Este super user</label><input name="IsSuperUser" id="IsSuperUser"  type="checkbox" class="form-check-input" >
         </div>
 
         

@@ -3,19 +3,73 @@
 #jqxGrid .jqx-grid-column-header,
 #documentdetails .jqx-grid-column-header,
 #masterlist .jqx-grid-column-header {
-    font-weight: 300;
-    font-size: 1.2rem;
-    background-color: rgba($color-secondary-light, 0.2);
-    font-family: "Lato", sans-serif;
+ //   font-weight: 300;
+ //   font-size: 1.2rem;
+    background-color: rgb(197, 197, 197);
+  //  font-family: "Lato", sans-serif;
 }
 #jqxGrid .jqx-grid-cell,
 #documentdetails .jqx-grid-cell,
 #masterlist  .jqx-grid-cell {
-    color: rgba($color-primary-dark, 1);
-    font-size: 1.2rem;
-    font-weight: 300;
-    font-family: "Lato", sans-serif;
-    background-color: $color-primary-light;
+  //  color: rgb(255, 251, 245);
+ //   font-size: 1.2rem;
+  //  font-weight: 300;
+  //  font-family: "Lato", sans-serif;
+  //  background-color: rgb(247, 246, 241)
     
 }
 
+.compet_status{
+    text-decoration: none;
+    padding: .1rem 2rem;
+    display: inline-block;
+    border-radius: .5rem;
+    transition: all .2s;
+    position: relative;
+    font-size: 1.2rem;
+    color: rgb(255, 255, 255);
+    background-image: linear-gradient(
+        to  top left,
+        rgba($color-primary, 0.9),
+        rgba($color-primary-light, 0.95));
+
+    //Change for the <button> element
+    border: none;
+    &.Open{
+       // color: silver;
+        background-image: linear-gradient(
+            to  top left,
+            rgba(green, 0.7),
+            rgba(green, 0.2));
+    
+    }
+    &.Progress{
+       // color: silver;
+        background-image: linear-gradient(
+            to  top left,
+            rgba(orangered, 0.7),
+            rgba(orangered, 0.2));
+    
+    }
+    &.Finished{
+       // color: silver;
+        background-image: linear-gradient(
+            to  top left,
+            rgba(rgb(0, 8, 255), 0.7),
+            rgba(rgb(0, 8, 255), 0.2));
+    
+    }
+} 
+
+.cdetailbtn{
+    padding: 2px;
+    text-align: center; 
+    border-color: black;
+    border-width: 1px;;
+    margin: 2px; 
+    height:100%;
+    font-size: 1.2rem;
+    font-weight: 400;
+    border-radius: .2rem;
+    background-color: rgba($color-primary-light, 0.95);
+}

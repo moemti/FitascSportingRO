@@ -1,4 +1,4 @@
-<div id="messagedialog" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+<div id="messagedialog" class="modal bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" data-bs-toggle="modal">
 <div class="modal-dialog" style="width:30%;"  >
     <div class="modal-content panel-primary">
       

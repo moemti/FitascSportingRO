@@ -1,4 +1,4 @@
-<div id="confirmdialog" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+<div id="confirmdialog" class="modal bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog"   >
         <div class="modal-content panel-primary">
     
@@ -14,8 +14,8 @@
             		<input id="confirminput" val="">
             </div>
                 
-            <input id="btnConfirmCloseModal" type="button" data-dismiss="modal" aria-hidden="true" class="btn btn-primary btn-sm" value="Nu">
-            <input id="btnConfirmOKModal" type="button" data-dismiss="modal" aria-hidden="true" class="btn btn-primary btn-sm" value="Da">
+            <input id="btnConfirmCloseModal" type="button" data-bs-dismiss="modal" aria-hidden="true" class="btn btn-primary btn-sm" value="Nu">
+            <input id="btnConfirmOKModal" type="button" data-bs-dismiss="modal" aria-hidden="true" class="btn btn-primary btn-sm" value="Da">
             </div>
             
         </div>

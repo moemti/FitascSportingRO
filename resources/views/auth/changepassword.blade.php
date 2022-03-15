@@ -1,8 +1,10 @@
-@extends('layouts.base')
+@extends('layouts.baseex')
 	
     @push('content')
 
-    <div class="page_content page_content_master page_content_changepass">
+ 
+    <section class="content-termeni section section-tertiary section-no-border m-0">
+    <div class="container">
 
                 
                 <h1>Modificare parola</h1>
@@ -46,7 +48,7 @@
                     </div>
                 </div>
         </div>  
-
+</section>
 @endpush
 
 

@@ -1,6 +1,6 @@
 
-  
-   <div class="page_content page_content_master page_content_login">
+  <section class="content-termeni section section-tertiary section-no-border m-0">
+    <div class="container">
         <h1>Login</h1>
 
  
@@ -72,3 +72,4 @@
                 
         </div>
 </div>
+</section>

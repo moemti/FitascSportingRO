@@ -1,4 +1,4 @@
-<div id="popupDialog" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+<div id="popupDialog" class="modal  bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" datapapp-bs-toggle="modal">
     <div class="modal-dialog"  id="popupDialog-content" >
         <div class="modal-content panel-primary">
     

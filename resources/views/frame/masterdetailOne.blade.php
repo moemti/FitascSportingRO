@@ -1,4 +1,4 @@
-@extends('layouts.base')
+@extends('layouts.baseex')
 
 
     @push('css')
@@ -6,9 +6,9 @@
     @endpush
 
 
-       @push('scripts')
+       @push('footerscripts')
 
-       <script type="text/javascript" src="{{asset('js/components/jqwidgets/jqxcore.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/components/jqwidgets/jqxcore.js')}}"></script>
     <script type="text/javascript" src="{{asset('js/components/jqwidgets/jqxdata.js')}}"></script> 
     <script type="text/javascript" src="{{asset('js/components/jqwidgets/jqxbuttons.js')}}"></script>
     <script type="text/javascript" src="{{asset('js/components/jqwidgets/jqxscrollbar.js')}}"></script>
@@ -31,7 +31,7 @@
 
     
 
-  	<script type="text/javascript" src={{asset('js/frame/masterdetail.js')}}></script>
+  	<script type="text/javascript" src="{{asset('js/frame/masterdetail.js')}}"></script>
 
      
       
@@ -100,7 +100,7 @@
    
 
 	
-<div class="app-main__inner">
+<div class="app-main__inner container">
     <div class="app-page-title">
         <div class="page-title-wrapper">
 
@@ -158,7 +158,7 @@
                 
                 
         </div>
-        <div class="card-body">
+        <div class="card-body__">
             
             <div class="tab-content">
             
@@ -192,7 +192,7 @@
 
                             <div id="MasterDetailDetail" class="form-row">
                                 <div class="col-md-12">
-                                    <label for="documentdetails">Details</label>
+                                    <label for="documentdetails"></label>
                                     @if (!isset($DeniedPermissions) || !in_array("Edit", $DeniedPermissions))
                                     <div class="text-right p-1">
                                         <button id= "deletedetail" type="button" data-toggle="tooltip" class="btn-shadow  btn btn-danger editable detailbtn" title="" onclick="deleteDetail()" data-original-title="Delete"><i class="fa fa-minus"></i></button>
@@ -224,7 +224,7 @@
 
 @push('dialogs')
 
-<div id="AttachModal" class="modal fade " tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" style="display: none;" aria-hidden="false">
+<div id="AttachModal" class="modal  " tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" style="display: none;" aria-hidden="false">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">

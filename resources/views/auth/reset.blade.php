@@ -1,8 +1,9 @@
-@extends('layouts.base')
+@extends('layouts.baseex')
 	
     @push('content')
+    <section class="content-termeni section section-tertiary section-no-border m-0">
+    <div class="container">
 
-    <div class="page_content page_content_master page_content_resetpass">
         <h1>Reseteaza parola</h1>
         <form class="" action="resetpassword" method="POST">
                 @csrf
@@ -45,7 +46,7 @@
                     </div>
             </div>
 </div>
-
+</section>
 @endpush
 
 

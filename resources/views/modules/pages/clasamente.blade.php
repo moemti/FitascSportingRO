@@ -1,6 +1,6 @@
-@extends('layouts.base')
+@extends('layouts.baseex')
 
-@push('scripts')
+@push('footerscripts')
 
     <script type="text/javascript" src="{{asset('js/components/jqwidgets/jqxcore.js')}}"></script>
     <script type="text/javascript" src="{{asset('js/components/jqwidgets/jqxdata.js')}}"></script> 
@@ -19,7 +19,7 @@
     <script type="text/javascript" src="{{asset('js/components/jqwidgets/jqxgrid.grouping.js')}}"></script> 
  
  
-    <script defer type="module" src="{{asset('js/pages/clasamente.js')}}"></script>
+    <script src="{{asset('js/pages/clasamente.js')}}"></script>
     <!-- <link rel="stylesheet" type="text/css" href="{{asset('css/pages/clasamente.css')}}"/> -->
     <link rel="stylesheet" href="{{asset('js/components/jqwidgets/styles/jqx.base.css')}}" type="text/css" />
 
@@ -35,22 +35,22 @@
 
 @push('content')
 
-    <div class="page_content page_content_master">
+<section class="content-termeni section section-tertiary section-no-border m-0">
+    <div class="container">
+            <h2>Clasamente</h2>
 
-        <div class="page_content_header">
-            <h1>Clasamente</h1>
-
-        </div>
-        <div class="page_content_content">
+      
+       
 
             <div id = "jqxYear"></div>
-            <div id ="jqxGrid" class="gridnou">
-                    
+            <div id = "jqxGrid"> 
+
             </div>
-        </div>
+     
 
     </div>
-    
+
+</section>   
 
 
 @endpush

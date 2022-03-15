@@ -12,6 +12,9 @@
         "devserver": "live-server",
         "start": "npm-run-all --parallel watch:sass watch:sass2",
         "compile:sass": "node-sass public/sass/main.scss public/css/style.comp.css",
+        "compile-church:sass": "node-sass public/less/theme/demos/demo-church.scss public/css/theme/demo-church.css",
+        "compile-church:less": "lessc public/less/skin-church.less public/css/theme/skins/skin-church.css",
+
         "prefix:css": "postcss --use autoprefixer -b 'last 10 versions' public/css/style.comp.css -o public/css/style.prefix.css",
         "compress:css": "node-sass public/css/style.prefix.css public/css/style.css --output-style compressed",
         "build:css": "npm-run-all compile:sass prefix:css compress:css"

@@ -1,6 +1,6 @@
-@extends('layouts.base')
+@extends('layouts.baseex')
 
-@push('scripts')
+@push('footerscripts')
 
 <script type="text/javascript" src="{{asset('js/components/jqwidgets/jqxcore.js')}}"></script>
     <script type="text/javascript" src="{{asset('js/components/jqwidgets/jqxdata.js')}}"></script> 
@@ -37,19 +37,23 @@
 
 @push('content')
 
-
-    <div class="page_content page_content_master page_content_competitii">
+<section class="content-termeni section section-tertiary section-no-border m-0">
+    <div class="container">
         
-        <div class="page_content_header">
+        <div class="page_content_header text-center pt-3">
          
 
-         <input id="CompetitionId" value='{{$master[0]->CompetitionId}}' hidden> </input>
+             <input id="CompetitionId" value='{{$master[0]->CompetitionId}}' hidden> </input>
+
+
+
+
         <div class='row'>
 
 
-            <div>
-                <input id="input_competitie" value='{{$master[0]->Name}}' disabled> </input>
-                <input id="input_sportfield" value='{{$master[0]->SportField}}'disabled> </input>
+            <div class="mb-12">
+                <h2 id="p_competitie" value='' > {{$master[0]->Name}}</h2>
+              
             </div>
         </div>
 
@@ -58,26 +62,31 @@
         <div class='row'>
         
             <div>
-                <input id="input_locatie" value='{{$master[0]->Range}}'disabled> </input>
+                <h3 id="p_locatie" value=''> {{$master[0]->Range}}</h3>
             </div>
         </div>
       
 
         <div class='row'>
 
-            <div>
-                <input id="input_startdate" value='{{$master[0]->StartDate}}'disabled> </input>
-                <input id="input_enddate" value='{{$master[0]->EndDate}}'disabled> </input>
+            <div class="d-flex">
+
+
+               <strong> <p id="p_startdate" value=''> {{$master[0]->StartDate}}</p></strong>
+               <div class="ms-2  me-2">   -   </div> 
+                <strong>  <p id="p_enddate" value=''>{{$master[0]->EndDate}} </p> </strong> 
+            </div>
+
                 <span class="compet_status {{$master[0]->Status}}">{{$master[0]->Status}}</span> 
-                <div class="btnwrapper">
-                @switch($master[0]->Status)
-                    @case('Closed')
-                       
-                        @if (session("IsSuperUser") == 1)
-                        <button id="btnOpen" data-status="Open" class = "cmpStatusChange btn btn-sm" >Open</button>
-                        @endif
-                        @break
-                    @case('Open')
+                <div class="btnwrapper m-2">
+                    @switch($master[0]->Status)
+                        @case('Closed')
+                        
+                            @if (session("IsSuperUser") == 1)
+                            <button id="btnOpen" data-status="Open" class = "cmpStatusChange btn btn-primary btn-outline mb-2" >Deschide</button>
+                            @endif
+                            @break
+                        @case('Open')
 
 
                   
@@ -100,23 +109,23 @@
 
                             @endphp    
                             @if ($exists)
-                                <button id="btnUnRegister" class = "btn-register btn btn-sm" >Nu mai particip</button>
+                                <button id="btnUnRegister" class = "btn-register btn btn-danger btn-outline mb-2" >Nu mai particip</button>
                             @else
-                                 <button id="btnRegister" class = "btn-register btn btn-sm" >Ma inscriu</button>
+                                 <button id="btnRegister" class = "btn-register btn btn-primary btn-outline mb-2" >Ma inscriu</button>
                             @endif
 
                         @endif
 
                         @if (session("IsSuperUser") == 1)
-                            <button id="btnClose"  data-status="Closed" class="cmpStatusChange btn-add btn btn-sm">Close</button>
-                            <button id="btnOngoing"  data-status="Progress" class="cmpStatusChange btn-add btn btn-sm">Start competition</button>
+                            <button id="btnClose"  data-status="Closed" class="cmpStatusChange btn btn-secondary btn-outline mb-2">Close</button>
+                            <button id="btnOngoing"  data-status="Progress" class="cmpStatusChange btn btn-secondary btn-outline mb-2">Start competition</button>
                         @endif
                         @break
 
                     @case('Progress')     
                          @if (session("IsSuperUser") == 1)
-                            <button id="btnOpen" data-status="Open" class = "cmpStatusChange btn btn-sm" >Open</button>
-                            <button id="btnFinish"  data-status="Finished" class="cmpStatusChange btn-add btn btn-sm">Finish competition</button>
+                            <button id="btnOpen" data-status="Open" class = "cmpStatusChange btn btn-secondary btn-outline mb-2" >Open</button>
+                            <button id="btnFinish"  data-status="Finished" class="cmpStatusChange btn btn-secondary btn-outline mb-2">Finish competition</button>
                         @endif
 
                         @break
@@ -125,7 +134,7 @@
                     @case('Finished')
                       
                         @if (session("IsSuperUser") == 1)
-                            <button id="btnOngoingR"  data-status="Progress" class="cmpStatusChange btn-add btn btn-sm">Reopen competition</button>
+                            <button id="btnOngoingR"  data-status="Progress" class="cmpStatusChange btn btn-secondary btn-outline mb-2">Reopen competition</button>
                         @endif
                         @break
 
@@ -134,31 +143,33 @@
                 </div>
 
 
-            </div>
+            
         </div>
 
+        <div class="d-flex text-left">
         @switch($master[0]->Status)
             @case('Finished')
                
             @case('Progress')
-                <h2>Clasament</h2>
+                <h4>Clasament</h4>
                 @break
         
             @case('Open')
-                <h2>Inscrisi</h2>
+                <h4>Inscrisi</h4>
                 @break
         
             @default
                 
         @endswitch
 
+          </div>
 
 
 
 
     </div>
         
-        <div class="page_content_content">
+        <div class="d-flex text-right">
 
             @if ((session('IsSuperUser') == 1) && (in_array(  $master[0]->Status,  array("Open","Progress"))  ))
 
@@ -167,13 +178,14 @@
                 </div>
 
             @endif
+            </div>
             <div id ="jqxGrid" class="gridnou">
                     
             </div>
-        </div>
+        
 
     </div>
     
-
+ </section>
 
 @endpush

@@ -53,7 +53,7 @@
         <div class="col-md-2">
          <div class="position-relative form-group">
              <label for="Aborted">Renuntat</label>
-             <input name="Aborted" id="Aborted"  type="checkbox"  class="form-control" >
+             <input name="Aborted" id="Aborted"  type="checkbox"  class="form-check-input" >
              </div>
         </div>
      

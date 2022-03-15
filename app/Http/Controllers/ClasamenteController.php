@@ -32,6 +32,7 @@ class ClasamenteController extends MasterController
     }
 
     public function getClasamentByYear(Request $request){
+  
         $year = $request->Year;
         return  $this->BObject()->GetClasament($year);
     }

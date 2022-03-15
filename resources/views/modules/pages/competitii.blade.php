@@ -1,6 +1,6 @@
-@extends('layouts.base')
+@extends('layouts.baseex')
 
-@push('scripts')
+@push('footerscripts')
 
     <script type="text/javascript" src="{{asset('js/components/jqwidgets/jqxcore.js')}}"></script>
     <script type="text/javascript" src="{{asset('js/components/jqwidgets/jqxdata.js')}}"></script> 
@@ -34,27 +34,22 @@
     </script>
 @endpush
 @push('content')
+<section class="content-termeni section section-tertiary section-no-border m-0">
+    <div class="container">
+            <h2>Competitii</h2>
+        
 
-    <div class="page_content page_content_master ">
-        <div class="page_content_header">
-            <h1>Competitii</h1>
-
-            <h2>Competitii din Romania</h2>
-        </div>
-
-        <div class="page_content_content">
 
             <div id = "jqxYear"></div>
-            <div id ="jqxGrid" class="gridnou">         
-            </div>
+            <div id ="jqxGrid" class="gridnou">  </div>
 
 
 
-        </div>
+
 
     </div>
 
-  
+</section> 
 
 
 @endpush

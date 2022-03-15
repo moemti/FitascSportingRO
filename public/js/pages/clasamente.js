@@ -1,8 +1,9 @@
 	let clClasament = []
+	let source = undefined;
 
 	var cellclassUser = function (row, columnfield, value) {
 		if (value === MyName) {
-			return 'clOrangeRedFont';
+			return 'text-color-primary';
 		}
 	
 		else return '';
@@ -41,10 +42,10 @@
     
             url: baseUrl + '/getClasamentByYear',
             data: Data,
-            success: function (data) {
+            success: function (dataretur) {
                 
                 ShowSuccess('Success');
-				dsClasament = data;	
+				dsClasament = dataretur;	
                 putClasamentByYear();   
                    
      
@@ -61,8 +62,14 @@
 
 
 	function putClasamentByYear(){
-     
-        var source =
+
+		if (source){
+			source.localdata = dsClasament;
+			$("#jqxGrid").jqxGrid('updatebounddata', 'cells');
+			return;
+		}
+
+        source =
 		{
 			datatype: "array",
 			localdata: dsClasament,

@@ -214,7 +214,18 @@
                     $("#popupDialog").modal({
                         backdrop: 'static',
                         keyboard: false
-                    });
+                    }).show();
+                    
+                    $('#btnPopupCloseModal').off().on('click', 
+                         ()=>{
+                        $("#popupDialog").modal({
+                            backdrop: 'static',
+                            keyboard: false
+                        }).hide();
+                    }
+                    
+                    
+                    );
                     
                     $('#btnPopupSaveModal').off().on('click', addCompetitorDB);
      
@@ -241,6 +252,10 @@
             return;
         }
         
+            $("#popupDialog").modal({
+                backdrop: 'static',
+                keyboard: false
+            }).hide();
 
         $.ajax({
             type: 'POST',

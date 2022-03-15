@@ -1,19 +1,23 @@
-@extends('layouts.base')
+@extends('layouts.baseex')
 
 @push('content')
 
-    <div class="page_content page_content_master">
-        <h1>Regulamente</h1>
+<section class="content-termeni section section-tertiary section-no-border m-0">
+    <div class="container">
+        <h2>Regulamente</h2>
 
-            <div class="page_content_detail">
-                <div class='flex_column'>
-                    <a href="https://www.fitasc.com/uk/content/10" target="_blank" class="a a__medium">Regulamente Fitasc</a>
-
-                        <a href="https://www.fitasc.com/upload/images/reglements/rglt_pch_20220101_eng.pdf" target="_blank" class="a a__medium ident3">Regulament sporting</a>
-                </div>
-            </div>
+            <ul>
+                <li>
+                    <a href="https://www.fitasc.com/uk/content/10" target="_blank" class="">Regulamente Fitasc</a>
+                </li>
+                <ul>
+                    <li>
+                        <a href="https://www.fitasc.com/upload/images/reglements/rglt_pch_20220101_eng.pdf" target="_blank" class="">Regulament sporting</a>
+                    </li>
+                </ul>
+            </ul>
     </div>
     
-       
+</section>       
 
 @endpush

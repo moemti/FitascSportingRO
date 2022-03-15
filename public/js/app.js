@@ -235,26 +235,66 @@ function ShowError(msg) {
               $("#messagedialog_message").addClass("text-muted").removeClass("text-danger");
           }
 
+          $("#btnCloseModal").prop('onclick',null).off('click');
+          $("#btnCloseModal").click(()=>{
+                     
+                        $("#messagedialog").modal({
+                            backdrop: 'static',
+                            keyboard: false
+                        }).hide();
+                    }
+              );
+
           $("#messagedialog").modal({
               backdrop: 'static',
-              keyboard: false});
+              keyboard: false}).show();
 
       };
 
       window.alert = function(message) {
           $("#messagedialog_message").addClass("text-danger").removeClass("text-muted");
           $("#messagedialog_message").text(message);
+
+          
+
+          $("#btnCloseModal").prop('onclick',null).off('click');
+          $("#btnCloseModal").click(()=>{
+                     
+                        $("#messagedialog").modal({
+                            backdrop: 'static',
+                            keyboard: false
+                        }).hide();
+                    }
+              );
+
+
           $("#messagedialog").modal({
               backdrop: 'static',
               keyboard: false
-          });
+          }).show();
       };
 
       window.confirm = function(message, callback, hasoutput = false) {
           $("#confirmdialog_message").text(message);
           $("#btnConfirmOKModal").prop('onclick',null).off('click');
-          $("#btnConfirmOKModal").click(callback);
+          $("#btnConfirmOKModal").click(()=>{
+                        callback();
+                        $("#confirmdialog").modal({
+                            backdrop: 'static',
+                            keyboard: false
+                        }).hide();
+                    }
+              );
+
           $("#confirminput" ).val("");
+
+          $("#btnConfirmCloseModal").prop('onclick',null).off('click');
+          $("#btnConfirmCloseModal").click(()=>{
+            $("#confirmdialog").modal({
+                backdrop: 'static',
+                keyboard: false
+            }).hide();
+          });
 
           if (!hasoutput)
          	 $("#confirminputdiv").addClass("invisible")
@@ -265,17 +305,45 @@ function ShowError(msg) {
           $("#confirmdialog").modal({
               backdrop: 'static',
               keyboard: false
-          });
+          }).show();
+
+ 
       };
 
       function confirmSave (message, callbackSave, callbackStay, callbackCancel, hasoutput = false) {
         $("#confirmsavedialog_message").text(message);
         $("#btnConfirmSaveSaveModal").prop('onclick',null).off('click');
-        $("#btnConfirmSaveSaveModal").click(callbackSave);
+        $("#btnConfirmSaveSaveModal").click(
+            ()=>{
+                callbackSave();
+                $("#confirmsavedialog").modal({
+                    backdrop: 'static',
+                    keyboard: false
+                }).hide();
+            }
+            );
         $("#btnConfirmSaveStayModal").prop('onclick',null).off('click');
-        $("#btnConfirmSaveStayModal").click(callbackStay);
+        $("#btnConfirmSaveStayModal").click(
+            
+            ()=>{
+                callbackStay();
+                $("#confirmsavedialog").modal({
+                    backdrop: 'static',
+                    keyboard: false
+                }).hide();
+            }
+            );
         $("#btnConfirmSaveCancelModal").prop('onclick',null).off('click');
-        $("#btnConfirmSaveCancelModal").click(callbackCancel);
+        $("#btnConfirmSaveCancelModal").click(
+            
+            ()=>{
+                callbackCancel();
+                $("#confirmsavedialog").modal({
+                    backdrop: 'static',
+                    keyboard: false
+                }).hide();
+            }
+            );
 
 
         $("#confirmsaveinput" ).val("");
@@ -289,7 +357,7 @@ function ShowError(msg) {
         $("#confirmsavedialog").modal({
             backdrop: 'static',
             keyboard: false
-        });
+        }).show();
     };
 
       function setLanguage(lang){
