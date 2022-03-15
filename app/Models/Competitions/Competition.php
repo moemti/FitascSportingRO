@@ -144,8 +144,18 @@ class Competition extends BObject{
 
         public function registerMe($CompetitionId, $PersonId){
             $sql = "insert into result (CompetitionId, PersonId, ShooterCategoryId, TeamId)
-            select $CompetitionId, $PersonId, null, null from DUAL
-            where not exists (select 1 from result where CompetitionId = $CompetitionId and PersonId = $PersonId)";
+            select c.CompetitionId, $PersonId, TT.ShooterCategoryId, TT.TeamId 
+            from competition c
+            
+            left join 
+                (select x.ShooterCategoryId, x.TeamId, x.PersonId, s.Year
+                from shooterxseason x 
+                inner join season s  on s.SeasonId = x.SeasonId 
+                ) TT on TT.PersonId = $PersonId and year(c.StartDate) = TT.Year
+            where c.CompetitionId = $CompetitionId and not exists (select 1 from result where CompetitionId = $CompetitionId and PersonId = $PersonId)";
+
+
+      
 
             try{
 
@@ -153,7 +163,7 @@ class Competition extends BObject{
                 return 'OK';
             }
             catch(\Exception $e){
-            return $e->getMessage();
+                return $e->getMessage();
             }
         }
 
