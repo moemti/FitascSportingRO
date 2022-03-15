@@ -145,7 +145,7 @@
                                     
                                             @php 
 
-                                                $exists = $competitions[0]->Inscris == 1;
+                                                $exists = $competitions[0]->Inscris == '1';
 
 
                                             @endphp    

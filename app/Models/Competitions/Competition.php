@@ -117,7 +117,7 @@ class Competition extends BObject{
             FROM `competition` c
             inner join `range` r on r.RangeId = c.RangeId
             inner join sportfield s on s.SportFieldId = c.SportFieldId
-            left join result re on re.CompetitionId = c.CompetitionId and re.PersonId = null
+            left join result re on re.CompetitionId = c.CompetitionId and re.PersonId = $PersonId
             left join country cy on cy.CountryId = r.CountryId
             where c.EndDate > CURDATE()
              order by c.StartDate  limit 0, 4";
