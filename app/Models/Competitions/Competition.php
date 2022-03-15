@@ -104,7 +104,7 @@ class Competition extends BObject{
                     left join shootercategory sc on sc.ShooterCategoryId = r.ShooterCategoryId
                     left join team t on t.TeamId = r.TeamId
                     where r.CompetitionId = :CompetitionId
-                    order by Total desc, ShootOff desc;
+                    order by Total desc, ShootOff desc, p.Name;
                 ";
 
 

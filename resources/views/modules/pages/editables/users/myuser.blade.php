@@ -12,7 +12,7 @@
 
 
 @push('masterscripts')
-    <script type="text/javascript" src={{asset('js/pages/myuser.js')}}></script>
+    <script type="text/javascript" src="{{asset('js/pages/myuser.js')}}"></script>
 @endpush
 
 

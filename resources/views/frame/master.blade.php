@@ -1,6 +1,6 @@
 @extends('layouts.baseex')
 
-@push('footscripts')
+@push('footerscripts')
 
     <script type="text/javascript" src="{{asset('js/components/jqwidgets/jqxcore.js')}}"></script>
     <script type="text/javascript" src="{{asset('js/components/jqwidgets/jqxdata.js')}}"></script> 
@@ -25,7 +25,7 @@
 
 
 
-    <script type="text/javascript" src={{asset('js/frame/master.js')}}></script>
+    <script type="text/javascript" src="{{asset('js/frame/master.js')}}"></script>
       
       
       @stack('masterscripts')
