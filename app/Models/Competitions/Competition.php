@@ -144,7 +144,7 @@ class Competition extends BObject{
 
         public function registerMe($CompetitionId, $PersonId){
             $sql = "insert into result (CompetitionId, PersonId, ShooterCategoryId, TeamId)
-            select $CompetitionId, $PersonId, null, null
+            select $CompetitionId, $PersonId, null, null from DUAL
             where not exists (select 1 from result where CompetitionId = $CompetitionId and PersonId = $PersonId)";
 
             try{
@@ -366,7 +366,7 @@ class Competition extends BObject{
                    
                 
                 $sql = "insert into result (CompetitionId, PersonId, ShooterCategoryId, TeamId)
-                    select $CompetitionId, $PersonId, null, null
+                    select $CompetitionId, $PersonId, null, null from DUAL
                     where not exists (select 1 from result where CompetitionId = $CompetitionId and PersonId = $PersonId)";
 
                 DB::select($sql);
