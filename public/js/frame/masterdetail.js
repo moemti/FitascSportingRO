@@ -24,6 +24,8 @@
 	let filtersource = [];
 	let IsOneMaster = false;
 	let MasterPrimaryKeyValue;
+	let _autoheight = false;
+	let _showfilterrow = false;
 
 
 
@@ -380,6 +382,11 @@
 				}
 			};
 			
+
+
+	
+			
+
 			
 			$("#documentdetails").jqxGrid(
 			{
@@ -397,7 +404,7 @@
 				columnsresize: true,
 				selectionmode: 'singlerow',
 				showtoolbar: false,
-			
+				showfilterrow: false,
 				columns: detailcolumns,
 
 				
@@ -1025,10 +1032,10 @@
 			$("#masterlist").jqxGrid(
 			{
 				width:'100%',
-				height: '100%',
+				height: _autoheight?'':'100%',
 				source: source,
 				pageable: false,
-				autoheight: false,
+				autoheight: _autoheight,
 				sortable: true,
 				altrows: true,
 				groupable: false,
@@ -1038,7 +1045,7 @@
 				columnsresize: true,
 				selectionmode: selectMasterMuliple? 'multiplerowsextended':'singlerow',
 				showtoolbar: false,
-			
+				showfilterrow:_showfilterrow,
 
 				showgroupaggregates: false,
                 showstatusbar: false,

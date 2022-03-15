@@ -79,13 +79,13 @@ class UserPerson extends BObject{
     }
 
     public static function getregisteries(){
-        $sql = "select Name, Email, RegisterId from register where Status = 0 order by Name";
+        $sql = "select Name, Email, RegisterId, UserName from register where Status = 0 order by Name";
         return   DB::select($sql);
         
     }
 
     public static function getregistere($RegisterId){
-        $sql = "select Name, Email, RegisterId from register where Status = 0 and RegisterId = $RegisterId ";
+        $sql = "select Name, Email, RegisterId, UserName from register where Status = 0 and RegisterId = $RegisterId ";
         return   DB::select($sql)[0];
 
     } 
@@ -99,13 +99,13 @@ class UserPerson extends BObject{
 
 
     
-    public static function finishuser($RegisterId, $PersonId, $Email){
+    public static function finishuser($RegisterId, $PersonId, $Email, $TeamId, $Team){
 
         // verificam Emailul
 
         $sql = "select 1 from person where Email = '$Email'";
         if (count(DB::select($sql)) > 0 )
-            return 'Acest email mai exista';
+            return 'Acest email deja exista';
 
         $mesaj = '';
         try {
@@ -129,6 +129,27 @@ class UserPerson extends BObject{
                 DB::select($sql);
             
     
+                
+                if (!($TeamId > 0) &&  ($Team != '')){
+                    $sql = "insert into team (Name, IsActive) values ('$Team', 1)"; 
+                    DB::select($sql);
+
+
+                    $TeamId = DB::select("select LAST_INSERT_ID() as TeamId")[0]->TeamId;
+
+
+                }
+
+                if ($TeamId > 0){
+
+                    $sql = "update shooterxseason set TeamId = $TeamId where PersonId = $PersonId;";
+                    DB::select($sql); 
+
+                }
+               
+               
+
+
               
     
            
@@ -152,6 +173,24 @@ class UserPerson extends BObject{
                     where RegisterId = $RegisterId;";
 
                     DB::select($sql);
+
+
+                if (!($TeamId > 0) &&  ($Team != '')){
+                    $sql = "insert into team (Name, IsActive) values ('$Team', 1)"; 
+                    DB::select($sql);
+
+
+                    $TeamId = DB::select("select LAST_INSERT_ID() as TeamId")[0]->TeamId;
+
+
+                }
+
+                if ($TeamId > 0){
+
+                    $sql = "insert into  shooterxseason (PersonId, TeamId, SeasonId ) select $PersonId,  $TeamId, SeasonId from season;";
+                    DB::select($sql); 
+
+                }
 
                 $sql = "update register set Status = 1  where RegisterId = $RegisterId;";
                     DB::select($sql);
@@ -184,7 +223,7 @@ class UserPerson extends BObject{
         };
 
 
-        $sql = "update register set Status = 0 where `Token` = '$passtoken'";
+        $sql = "update register set Status = 0 where `Token` = '$passtoken' and Status is null";
        
 
     

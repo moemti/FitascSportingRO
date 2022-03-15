@@ -64,6 +64,8 @@
                     </div>
 
 
+
+
                     <div class='row'>
                         <div class="form-group col-lg-6">
                 
@@ -77,6 +79,35 @@
                             </select>
                         </div>
                     </div>
+
+
+
+                    <div class='row'>
+                        <div class="form-group col-lg-12">
+                  
+                            <input   Name = "Team" id="Team"  type="text"  value='{{$register->UserName}}' data-msg-required="" maxlength="100" class="form-control text-3 h-auto py-2" name="name" >
+                        
+                        </div>
+                    </div>
+
+
+
+                    <div class='row'>
+                        <div class="form-group col-lg-6">
+                
+                            <select Name='TeamId' id='TeamId' class="form-select form-control h-auto py-2">
+                                <option value = "-1">Club nou</option>
+                                    @foreach ($teams as $team)
+                                        <option value = "{{$team->TeamId}}">{{ $team->Name}}</option>
+                                    @endforeach
+
+
+                            </select>
+                        </div>
+                    </div>
+
+
+
 
                     <div class="  text-right u-margin-top-medium">
                             <button class="btn-wide btn-pill btn-shadow btn-hover-shine btn btn-primary btn-lg">Registreaza</button>

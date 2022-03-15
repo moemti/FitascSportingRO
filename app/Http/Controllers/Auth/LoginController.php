@@ -11,6 +11,7 @@ use App\Models\Common\Login;
 use App\Models\Users\User;
 use App\Models\Users\UserPerson;
 use App\Models\Common\Utilities;
+use App\Models\Competitions\Competition;
 use Illuminate\Support\Facades\Mail;
 
 
@@ -240,7 +241,7 @@ class LoginController extends Controller
 
     public function getregisteries(){
       
-        return view( 'auth.registeries',['master' => UserPerson::getregisteries()]);
+        return view( 'auth.registeries',['master' => UserPerson::getregisteries(), 'teams' => Competition::getTeams()]);
         
     
     }
@@ -252,8 +253,10 @@ class LoginController extends Controller
         $Email = $request['Email'];
         $PersonId = $request['PersonId'];
         $RegisterId = $request['RegisterId'];
+        $TeamId = $request['TeamId'];
+        $Team = $request['Team'];
 
-        $mesaj = UserPerson::finishuser($RegisterId, $PersonId, $Email);
+        $mesaj = UserPerson::finishuser($RegisterId, $PersonId, $Email, $TeamId, $Team);
 
         if ($mesaj == '')
         {
@@ -283,7 +286,7 @@ class LoginController extends Controller
     }
 
     public function getregistere($RegisterId ){
-        return view( 'auth.registere',['register' => UserPerson::getregistere($RegisterId), 'persons' => UserPerson::getPersonNoUser()]);
+        return view( 'auth.registere',['register' => UserPerson::getregistere($RegisterId), 'persons' => UserPerson::getPersonNoUser(),  'teams' => Competition::getTeams()]);
     }
 
     

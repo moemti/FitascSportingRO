@@ -202,12 +202,12 @@ class Person extends BObject{
     }
     
     public function getMyUser($PersonId){
-        $sql = "SELECT p.PersonId, p.Name, p.Email, GROUP_CONCAT(f.Name SEPARATOR ', ') as Role , p.NickName, u.IsSuperUser
+        $sql = "SELECT p.PersonId, p.Name, p.Email, GROUP_CONCAT(f.Name SEPARATOR ', ') as Role , p.NickName, u.IsSuperUser, xx.TeamId
         from person p
         inner join user u on u.PersonId = p.PersonId
         left join personxrole x on x.PersonId = p.PersonId
         left join role f on f.RoleId = x.RoleId
-        
+        left join shooterxseason xx on xx.Personid = p.PersonId 
         where p.PersonId = $PersonId
         group by  p.PersonId, p.Name, p.Email, p.NickName,  u.IsSuperUser";
         
@@ -220,14 +220,42 @@ class Person extends BObject{
         $Email = $request['Email'];
         $Name = $request['Name'];
         $NickName = $request['NickName'];
+        $TeamId = $request['TeamId'];
 
+        $fields = (array) $request->all();
+        
         $sql = "update person 
-                set Email = '$Email',
-                Name = '$Name',
-                NickName = '$NickName'
-            where PersonId = $PersonId";
+        set Email = ':Email',
+        Name = ':Name',
+        NickName = ':NickName'
+        where PersonId = :PersonId";
+        
+        foreach($fields as $key => $value){
+            $sql = self::paramreplace($key, $value, $sql); 
+        }
+       // self::PutNullValues($sql);
+
+        DB::select($sql); 
+        
+       
+
+        $sql = "update 
+                shooterxseason s
+                inner join season ss on ss.SeasonId = s.SeasonId and Year = year(CURRENT_DATE)
+                set s.TeamId = :TeamId
+                where PersonId = :PersonId";
+
+        foreach($fields as $key => $value){
+            $sql = self::paramreplace($key, $value, $sql); 
+        }
+       
+      //  self::PutNullValues($sql);
+
         
         DB::select($sql); 
+
+
+
 
         return $this->getMyUser($PersonId)[0];
     }

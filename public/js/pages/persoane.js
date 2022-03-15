@@ -1,6 +1,8 @@
 
 HasDetails = true;
 IsDetailListModal = false;
+_autoheight = true;
+_showfilterrow = true;
 
  
 

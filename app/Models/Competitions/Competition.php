@@ -202,7 +202,7 @@ class Competition extends BObject{
         }
 
 
-        public function getTeams(){
+        static public function getTeams(){
             $sql = "select TeamId, Name  from team order by Name ";
 
             return DB::select($sql);

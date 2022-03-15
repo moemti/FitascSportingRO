@@ -17,16 +17,21 @@
                               
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="position-relative form-group"><input name="Email" id="Email" placeholder="Email here..." type="email" class="form-control real_input" required></div>
+                            <div class="position-relative form-group"><input name="Email" id="Email" placeholder="Email.." type="email" class="form-control real_input" required></div>
                         </div>
                         <div class="col-md-12">
-                            <div class="position-relative form-group"><input name="Name" id="Name" placeholder="Name here..." type="text" class="form-control real_input" required></div>
+                            <div class="position-relative form-group"><input name="Name" id="Name" placeholder="Numele..." type="text" class="form-control real_input" required></div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="position-relative form-group"><input name="UserName" id="UserName" placeholder="Club (daca sunteti membru)..." type="text" class="form-control real_input" ></div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="position-relative form-group"><input name="password" id="Password" placeholder="Parola..." type="password" class="form-control real_input" required></div>
                         </div>
                         <div class="col-md-12">
-                            <div class="position-relative form-group"><input name="password" id="Password" placeholder="Password here..." type="password" class="form-control real_input" required></div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="position-relative form-group"><input name="password2" id="Password2" placeholder="Repeat Password here..." type="password" class="form-control real_input" required></div>
+                            <div class="position-relative form-group"><input name="password2" id="Password2" placeholder="Repetati parola..." type="password" class="form-control real_input" required></div>
                         </div>
                     </div>
 

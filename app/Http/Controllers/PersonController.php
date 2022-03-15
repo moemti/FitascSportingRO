@@ -28,7 +28,7 @@ class PersonController extends MasterController
 
     public function getmyuser(){
         $PersonId = session('PersonId');
-        return view('modules.pages.editables/users/myuser', ['data' => $this->BObject()->getMyUser($PersonId)]);
+        return view('modules.pages.editables/users/myuser', ['data' => $this->BObject()->getMyUser($PersonId),  'teams' => $this->BObject()->getTeams()]);
     }
 
 

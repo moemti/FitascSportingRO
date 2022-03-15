@@ -48,6 +48,18 @@
         <input name="NickName" id="NickName" class="form-control real_input" >
     </div>
 
+    <div class="col-md-4">
+            <div class="position-relative form-group"><label for="TeamId">Team 2022</label>
+            
+            <select name="TeamId" id="TeamId"  type="text" class="form-control"  >
+            <option value=""></option>
+                @foreach($teams as $r)
+                    <option value="{{$r->TeamId}}">{{$r->Name}}</option>
+                @endforeach
+            </select>
+        
+            </div>
+    </div>
 
 
     <div class="position-relative form-group">
