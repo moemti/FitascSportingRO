@@ -1,6 +1,6 @@
-@extends('layouts.base')
+@extends('layouts.baseex')
 
-@push('scripts')
+@push('footscripts')
 
     <script type="text/javascript" src="{{asset('js/components/jqwidgets/jqxcore.js')}}"></script>
     <script type="text/javascript" src="{{asset('js/components/jqwidgets/jqxdata.js')}}"></script> 
@@ -77,36 +77,36 @@
 
 @push('content')
 
-    <div class="page_content page_content_master">
-
-        <div class="page_content_header">
+<section class="content-termeni section section-tertiary section-no-border m-0">
+        <div class="container">
             <h1>@stack('title')</h1>
     
             <h2>@stack('subtitle')</h2>
 
-        </div>
-
         
-        <div class="page_content_content">
-                @stack('content_before')
 
-                <form id="detailform" method="POST">
-                    @csrf
+            
+            <div class="page_content_content">
+                    @stack('content_before')
 
-                    @stack('formcontent')
-                    
-                    <div class="  text-right u-margin-top-medium">
-                        <button type="submit" class="btn-wide btn-pill btn-shadow btn-hover-shine btn btn-primary btn-lg">Salveaza</button>
-               
-                    </div>
+                    <form id="detailform" method="POST">
+                        @csrf
+
+                        @stack('formcontent')
+                        
+                        <div class="  text-right u-margin-top-medium">
+                            <button type="submit" class="btn-wide btn-pill btn-shadow btn-hover-shine btn btn-primary btn-lg">Salveaza</button>
+                
+                        </div>
 
 
-                </form>
-                @stack('content_after')
+                    </form>
+                    @stack('content_after')
 
-        </div>
+            </div>
 
     </div>
+</section>
     
 
 
