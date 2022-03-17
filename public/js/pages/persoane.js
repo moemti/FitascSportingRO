@@ -4,6 +4,8 @@ IsDetailListModal = false;
 _autoheight = true;
 _showfilterrow = true;
 
+
+DetailPrimaryKey = 'OLD_SessionId';
  
 
 urls = {

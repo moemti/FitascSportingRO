@@ -147,12 +147,6 @@ class UserPerson extends BObject{
 
                 }
                
-               
-
-
-              
-    
-           
             }
             
             else{

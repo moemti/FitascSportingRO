@@ -228,6 +228,7 @@
                     );
                     
                     $('#btnPopupSaveModal').off().on('click', addCompetitorDB);
+                    $('#PersonId').off().on('change', putAttributes);
      
             
             },
@@ -244,8 +245,11 @@
     function addCompetitorDB(){
         let Data = {};
         Data.CompetitionId = $('#CompetitionId').val();
-        Data.PersonId = $('#PersonId').val()* 1;
+        Data.PersonId = $('#PersonId').val() * 1;
         Data.Name = $('#Name').val().trim();
+        Data.Team = $('#Team').val().trim();
+        Data.TeamId = $('#TeamId').val() * 1;
+        Data.ShooterCategoryId = $('#ShooterCategoryId').val().trim() * 1;
        
         if ((Data.PersonId === -1) && (Data.Name === '')){
             ShowError('Alegeti o persoana sau introduceti un nume');
@@ -263,13 +267,12 @@
             url: baseUrl + '/registerCompetitorDB',
             data: Data,
             success: function (data) {
-                
-                ShowSuccess('S-a adaugat cu success');
-                setTimeout(window.location.reload(), 300)
-                    
-                   
-     
-            
+                if (data === 'OK'){
+                    ShowSuccess('S-a adaugat cu success');
+                    setTimeout(window.location.reload(), 300);
+                }else{
+                    ShowError(data);
+                }
             },
             error: function(e){
                 ShowError(e);
@@ -280,7 +283,16 @@
        
     }     
 
+    function putAttributes(){
+        let ShooterCategoryId = $( "#PersonId option:selected" ).attr('data-ShooterCategoryId');
+        let TeamId = $( "#PersonId option:selected" ).attr('data-TeamId');
+        let selector = `#ShooterCategoryId option[value='${ShooterCategoryId}']`;
+        $(selector).attr('selected', 'selected');
 
+
+        selector = `#TeamId option[value='${TeamId}']`;
+        $(selector).attr('selected', 'selected');
+    }
 
 
 	$(function () {
@@ -291,6 +303,7 @@
         $("#btnRegister").on('click', registerMe);
         $("#btnUnRegister").on('click', unRegisterMe);
         $("#addCompetitor").on('click', addCompetitor);
+       
         
         
 	

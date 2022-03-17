@@ -195,7 +195,7 @@ class Competition extends BObject{
         }
 
 
-        public function getShootingCategories(){
+        public static function getShootingCategories(){
             $sql = "select ShooterCategoryId, Name  from shootercategory order by Name ";
 
             return DB::select($sql);
@@ -353,30 +353,67 @@ class Competition extends BObject{
 
 
         public function getUnregisteredPersons($CompetitionId){
-            $sql = "select Name, Email, p.PersonId from person p 
+            $sql = "select p.Name, Email, p.PersonId, x.ShooterCategoryId, x.TeamId
+                    from person p 
+                    inner join competition c on c.CompetitionId = $CompetitionId
+                    left join season s on year(c.StartDate) = s.Year
+                    left join shooterxseason x on x.SeasonId = s.SeasonId and p.PersonId = x.PersonId
                     left join result u on p.PersonId = u.PersonId and u.CompetitionId = $CompetitionId
                     where u.PersonId is null order by p.Name";
             return  DB::select($sql);
         }
 
 
-        public function registerCompetitorDB($CompetitionId, $PersonId, $Name){
+        public function registerCompetitorDB($CompetitionId, $PersonId, $Name,  $TeamId,  $Team, $ShooterCategoryId){
 
             try{
 
+                DB::beginTransaction();
+
                 if ($PersonId == -1){
                     $sql = "INSERT INTO person(Name, Code, Email, CountryId) 
-                        values( '$Name', 'xxx', '', 1 )";
+                        values( '$Name', 'xxx', null, 1 )";
                       
 
                     DB::select($sql);
                     $PersonId = DB::select("select LAST_INSERT_ID() as PersonId")[0]->PersonId;
 
+
+                    $sql = "insert into shooterxseason (PersonId, SeasonId) select $PersonId , SeasonId from season;";
+                    DB::select($sql);
+
                 }
-                   
+
+                if (!($TeamId > 0) &&  ($Team != '')){
+                    $sql = "insert into team (Name, IsActive) values ('$Team', 1)"; 
+                    DB::select($sql);
+
+
+                    $TeamId = DB::select("select LAST_INSERT_ID() as TeamId")[0]->TeamId;
+
+
+                }
+
+                if ($TeamId > 0){
+
+                    $sql = "update shooterxseason set TeamId = $TeamId where PersonId = $PersonId;";
+                    DB::select($sql); 
+
+                }
+                else
+                    $TeamId = 'null';
+
+
+                    
+                if ($ShooterCategoryId > 0){
+
+                    $sql = "update shooterxseason set ShooterCategoryId = $ShooterCategoryId where PersonId = $PersonId;";
+                    DB::select($sql); 
+                }else
+                    $ShooterCategoryId = 'null';
                 
                 $sql = "insert into result (CompetitionId, PersonId, ShooterCategoryId, TeamId)
-                    select $CompetitionId, $PersonId, null, null from DUAL
+                    select $CompetitionId, $PersonId, $ShooterCategoryId, $TeamId from DUAL
                     where not exists (select 1 from result where CompetitionId = $CompetitionId and PersonId = $PersonId)";
 
                 DB::select($sql);
@@ -388,6 +425,7 @@ class Competition extends BObject{
                 DB::Rollback();
                 return $e->getMessage();
             }
+
 
         }
 

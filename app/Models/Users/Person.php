@@ -15,7 +15,7 @@ class Person extends BObject{
     } 
 
     public function  DetailKeyField(){
-        return 'RoleId';
+        return 'OLD_SeasonId';
     }
 
 

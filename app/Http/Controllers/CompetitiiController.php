@@ -8,10 +8,6 @@ use Illuminate\Support\Facades\Redirect;
 use App\Http\Controllers\MasterController;
 
 
-
-
-
-
 class CompetitiiController extends MasterController
 {
     public $BObject = 'App\Models\Competitions\Competition';
@@ -76,17 +72,25 @@ class CompetitiiController extends MasterController
     
 
     public function registerCompetitor(Request $request){
+
         $CompetitionId = $request->CompetitionId;
 
-        return view('modules.pages.competition.addcompetitor')->with(["CompetitionId" => $CompetitionId, "persons" => $this->BObject()->getUnregisteredPersons($CompetitionId)]);
+        return view('modules.pages.competition.addcompetitor')->with(["CompetitionId" => $CompetitionId, 
+                    "persons" => $this->BObject()->getUnregisteredPersons($CompetitionId), 
+                    'categories' => $this->BObject()->getShootingCategories(),  
+                    'teams' => $this->BObject()->getTeams()
+          ]);
     }
 
     public function registerCompetitorDB(Request $request){
         $CompetitionId = $request->CompetitionId;
         $PersonId = $request->PersonId;
         $Name = $request->Name;
+        $TeamId = $request->TeamId;
+        $Team = $request->Team;
+        $ShooterCategoryId = $request->ShooterCategoryId;
 
-        return $this->BObject()->registerCompetitorDB($CompetitionId, $PersonId, $Name);
+        return $this->BObject()->registerCompetitorDB($CompetitionId, $PersonId, $Name,  $TeamId,  $Team, $ShooterCategoryId);
     }
 
 
