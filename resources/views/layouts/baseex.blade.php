@@ -190,10 +190,49 @@
 							</div>
 						</div>
 					</div>
+
+
+
+
 				</div>
 			</header>
 
 			<div role="main" class="main">
+
+
+ 
+
+                <section id="marketing" class="section section-no-border m-0 p-0">
+					<div class="container">
+					    <div class="row justify-content-center text-center align-items-center ">
+								@php
+
+                                    $images = scandir("img/marketing/arrow");                     
+                                    foreach ($images as $image){
+
+                                    if (!in_array($image , ['.', '..'])){
+                                @endphp
+                                <div class="col-lg-3 col-sm-8 mb-3 mb-lg-0" style=" max-width: 100%; height: auto;  overflow: hidden;">
+                                    <a href="//www.arw.ro" target="_blank">  
+                                        <img style="    width: 120px;
+   
+                                        float: left;
+                                        margin: 0px;
+                                        padding: 0px;" src=" {{url('img/marketing/arrow').'/'.$image}}">
+                                    </a>
+                                </div>
+                                                                    
+                                @php
+                                    }
+                                 
+
+                                    }
+                                @endphp
+							
+						
+                        </div>	
+					</div>
+                 </section>
 
                  @stack('content')
 

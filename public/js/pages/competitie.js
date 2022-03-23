@@ -56,17 +56,19 @@
                 clClasament =
                     [
                         { text: 'Loc', dataField: 'Position', width: '5%' },
-                        { text: 'Sportiv', dataField: 'Person', width: '25%', cellclassname: cellclassUser },
+                        { text: 'Sportiv', dataField: 'Person', width: '15%', cellclassname: cellclassUser },
                         { text: 'Cat', dataField: 'Category', width: '5%' },
                         { text: 'Team', dataField: 'Team', width: IsSuperUser===1?'5%':'10%' },
                         { text: 'M1', dataField: 'M1', width: '5%' ,cellclassname: cellclass,},
                         { text: 'M2', dataField: 'M2', width: '5%' ,cellclassname: cellclass,},
                         { text: 'M3', dataField: 'M3', width: '5%' ,cellclassname: cellclass,},
                         { text: 'M4', dataField: 'M4', width: '5%' ,cellclassname: cellclass,},
+                        { text: 'Total 1', dataField: 'Total1', width: '5%' },
                         { text: 'M5', dataField: 'M5', width: '5%' ,cellclassname: cellclass,},
                         { text: 'M6', dataField: 'M6', width: '5%' ,cellclassname: cellclass,},
                         { text: 'M7', dataField: 'M7', width: '5%' ,cellclassname: cellclass,},
                         { text: 'M8', dataField: 'M8', width: '5%' ,cellclassname: cellclass,},
+                        { text: 'Total 2', dataField: 'Total2', width: '5%' },
                         { text: 'Total', dataField: 'Total', width: '5%' },
                         { text: 'Procent', dataField: 'Procent', width: '5%'},
                         { text: 'ShOff', dataField: 'ShootOffS', width: '5%' },     
@@ -283,6 +285,9 @@
        
     }     
 
+  
+    
+
     function putAttributes(){
         let ShooterCategoryId = $( "#PersonId option:selected" ).attr('data-ShooterCategoryId');
         let TeamId = $( "#PersonId option:selected" ).attr('data-TeamId');
@@ -304,7 +309,13 @@
         $("#btnUnRegister").on('click', unRegisterMe);
         $("#addCompetitor").on('click', addCompetitor);
        
+        $("#exportexcel").click(function () {
+            $("#jqxGrid").jqxGrid('exportdata', 'xlsx', 'jqxGrid');           
+        });
         
+        $("#exportpdf").click(function () {
+            $("#jqxGrid").jqxGrid('exportdata', 'pdf', 'jqxGrid');
+        });
         
 	
 		// prepare the data
@@ -329,6 +340,8 @@
                             { name: 'M7', type: 'number'},
                             { name: 'M8', type: 'number'},
                             { name: 'Total', type: 'number'},
+                            { name: 'Total1', type: 'number'},
+                            { name: 'Total2', type: 'number'},
                             { name: 'Procent', type: 'number'},
                             { name: 'ShootOffS', type: 'string'},
                           

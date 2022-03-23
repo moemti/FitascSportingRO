@@ -12,6 +12,11 @@
 @endsection
 
 
+@push('DetailButtons')
+                           
+        <button id='btnDelete' class="btn-wide btn btn-danger editable">Delete</button>
+@endpush
+
 
 @push('detail')
     <input id="ResultId" name= "ResultId" hidden>

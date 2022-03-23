@@ -14,6 +14,8 @@ return  [
                                         ['utile', 'Linkuri utile']
                 
                                 ], 'Utile'],
+                        [[['gallery/13', 'Etapa 1 Ludus 19,20-03-2022']], 'Galerii foto'],
+
                         [
                                 [
                                         ['persoane', 'Persoane'],

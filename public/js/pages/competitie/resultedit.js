@@ -4,10 +4,12 @@ DetailPrimaryKey = 'ResultDetailId';
 IsOneMaster = true;
 
 
+
  urls = {
     saveurl: '/saveresultdetail',
     getmasterurl: '/getresultajax',
     getdetailurl: '/getresultajax',
+    deleteurl: '/deleteresultajax',
     actionurl: undefined,
     getdictionariesurl: undefined,
     getdetaillisturl: '/getresultdetailsajax',
@@ -95,3 +97,45 @@ detailcolumns = [
         return result;
 
     }
+
+
+    function DeleteResult(){
+
+        function DoDelete(){
+
+            Data = {'ResultId': $('#'+ MasterPrimaryKey).val()}
+
+            $.ajax({
+                type: 'POST',
+
+                url: baseUrl + urls.deleteurl,
+                data: Data,
+                success: function (data) {
+                    ShowSuccess('Sters cu succes!');
+                   
+                    window.location.replace("/clasament/" +  $('#ClasamentId').val());
+                    
+
+                }
+            });
+        }
+
+        var IsNew = $('#isnew').val();
+        
+        if (IsNew == "0"){
+            if (ValidateDelete() == true)
+                confirm("Doriti sa stergeti inregistrarea?", DoDelete);
+        }
+
+
+    }
+
+  
+    $(function () {
+
+
+
+   
+          $("#btnDelete").on('click', DeleteResult);
+        
+      });

@@ -16,6 +16,15 @@
     <script type="text/javascript" src="{{asset('js/components/jqwidgets/jqxgrid.selection.js')}}"></script> 
     <script type="text/javascript" src="{{asset('js/components/jqwidgets/jqxgrid.edit.js')}}"></script> 
     <script type="text/javascript" src="{{asset('js/components/jqwidgets/jqxgrid.filter.js')}}"></script> 
+   
+
+    <script type="text/javascript" src="{{asset('js/components/jqwidgets/jqxdata.export.js')}}"></script> 
+    <script type="text/javascript" src="{{asset('js/components/jqwidgets/jqxgrid.export.js')}}"></script> 
+	<script type="text/javascript" src="{{asset('js/components/jqwidgets/jqxexport.js')}}"></script> 
+
+
+	<!-- JSZip -->
+    <script type="text/javascript" src="{{asset('js/components/scripts/jszip.min.js')}}"></script>
 
     <script defer type="module" src="{{asset('js/pages/competitie.js')}}"></script>
 
@@ -77,7 +86,9 @@
                <div class="ms-2  me-2">   -   </div> 
                 <strong>  <p id="p_enddate" value=''>{{$master[0]->EndDate}} </p> </strong> 
             </div>
-
+            @if ( file_exists('img/gallery/competitions/'.$master[0]->CompetitionId ))
+                <a href="{{url('/gallery/').'/'.$master[0]->CompetitionId}}" class = "btn-galerie btn btn-primary btn-outline mb-2" >Vezi galerie</a>
+            @endif
                 <span class="compet_status {{$master[0]->Status}}">{{$master[0]->Status}}</span> 
                 <div class="btnwrapper m-2">
                     @switch($master[0]->Status)
@@ -180,6 +191,8 @@
 
             @endif
             </div>
+            <button id="exportexcel">Excel</button>
+            <button id="exportpdf">PDF</button>
             <div id ="jqxGrid" class="gridnou">
                     
             </div>

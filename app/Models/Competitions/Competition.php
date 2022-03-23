@@ -72,7 +72,9 @@ class Competition extends BObject{
                     d7.Result as M7,
                     d8.Result as M8,
                     sof.Total,
-                    sof.ShootOffS
+                    sof.ShootOffS,
+                    sof.Total1,
+                    sof.Total2
 
 
                     FROM result r
@@ -91,6 +93,8 @@ class Competition extends BObject{
                         select GROUP_CONCAT(case when d.RoundNr > 8 then d.Result else null end  order by d.RoundNr) as ShootOffS,
                                 sum(case when d.RoundNr > 8 then d.Result/(10 *( d.RoundNr - 8))  else 0 end ) as ShootOff, 
                                 sum(case when d.RoundNr <= 8 then d.Result else 0 end ) as Total,
+                                sum(case when d.RoundNr <= 4 then d.Result else 0 end ) as Total1,
+                                sum(case when d.RoundNr <= 8 and d.RoundNr > 4 then d.Result else 0 end ) as Total2,
                         
                         d.ResultId
                         from resultdetail d 
@@ -104,7 +108,7 @@ class Competition extends BObject{
                     left join shootercategory sc on sc.ShooterCategoryId = r.ShooterCategoryId
                     left join team t on t.TeamId = r.TeamId
                     where r.CompetitionId = :CompetitionId
-                    order by Total desc, ShootOff desc, p.Name;
+                    order by Position, p.Name;
                 ";
 
 
@@ -132,11 +136,20 @@ class Competition extends BObject{
 
             try{
 
+                DB::beginTransaction();
                 DB::select($sql);
+                
+                $sql = "call spResultsTotal(?)";
+
+                DB::select($sql, [$CompetitionId]);
+
+                
+
+                DB::Commit();
                 return 'OK';
-            }
-            catch(\Exception $e){
-               return $e->getMessage();
+            } catch (\Exception $e) {
+                DB::Rollback();
+                return $e->getMessage();
             }
 
         }
@@ -159,13 +172,31 @@ class Competition extends BObject{
 
             try{
 
+                DB::beginTransaction();
+
                 DB::select($sql);
+
+             
+                $ResultId = DB::select("select LAST_INSERT_ID() as RestultId")[0]->ResultId;
+
+
+
+                $sql = "INSERT INTO resultdetail( ResultId, RoundNr, Targets, Result, Description) 
+                select ($ResultId, Nr, 25, null, null)";
+                
+                DB::select($sql);
+ 
+
+                DB::Commit();
                 return 'OK';
-            }
-            catch(\Exception $e){
+            } catch (\Exception $e) {
+                DB::Rollback();
                 return $e->getMessage();
             }
         }
+
+
+
 
 
         public function unRegisterMe($CompetitionId, $PersonId){
@@ -227,6 +258,13 @@ class Competition extends BObject{
             
             where r.ResultId = $ResultId";
             return DB::select($sql);
+        }
+
+
+        public function getCompetitionByStartDate($data){
+            $sql = "select CompetitionId from competition c where  c.StartDate = '$data'";
+
+            return    DB::select($sql)[0]->CompetitionId;
         }
         
         public function SaveResultsDetail($fields){

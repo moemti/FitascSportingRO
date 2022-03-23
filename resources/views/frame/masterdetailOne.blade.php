@@ -179,6 +179,7 @@
                    
 
                         <div class="d-block text-right card-footer">
+                            @stack('DetailButtons')
                             <a href="javascript:CancelUpdates();" class="btn-wide btn btn-secondary">Cancel</a>
                             <button type ="submit" class="btn-wide btn btn-success editable">Save</button>
                         </div>  

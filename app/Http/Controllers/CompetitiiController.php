@@ -34,6 +34,12 @@ class CompetitiiController extends MasterController
     }
 
 
+    public function getClasamentdata($data){
+        $CompetitionId = $this->BObject()->getCompetitionByStartDate($data);
+
+        return $this->getClasament($CompetitionId);
+    }
+
     public function getresultajax(Request $request){
         $ResultId = $request->ResultId;
         return [$this->BObject()->getresultDetail($ResultId)];
@@ -102,6 +108,11 @@ class CompetitiiController extends MasterController
         $competitions = $this->BObject()->getTopCompetitions($PersonId);
    
         return view('modules.pages.welcome', ["competitions" => $competitions]);
+    }
+
+    public function getgallery($CompetitionId){
+        $images = scandir("img/gallery/competitions/$CompetitionId");
+        return view('modules.pages.gallery', ["images" => $images]);
     }
 
 

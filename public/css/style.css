@@ -852,6 +852,16 @@ button.toast-close-button {
   margin-top: 0.4rem;
   margin-left: 0.5rem; }
 
+@media screen and (min-width: 0px) and (max-width: 992px) {
+  #marketing {
+    display: none; }
+  /* hide it on small screens */ }
+
+@media screen and (min-width: 992px) and (max-width: 1024px) {
+  #marketing {
+    display: block; }
+  /* show it elsewhere */ }
+
 #jqxGrid .jqx-grid-column-header,
 #documentdetails .jqx-grid-column-header,
 #masterlist .jqx-grid-column-header {

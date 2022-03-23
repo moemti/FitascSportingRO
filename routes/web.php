@@ -62,6 +62,9 @@ Route::get('/logout', 'App\Http\Controllers\Auth\LoginController@logout')->name(
 
         Route::post('/getresultdetailsajax', 'App\Http\Controllers\CompetitiiController@getresultdetailsajax');
         Route::post('/saveresultdetail', 'App\Http\Controllers\ResultsController@saveitemajax');
+        Route::post('/deleteresultajax', 'App\Http\Controllers\ResultsController@deleteitemajax');
+        
+        Route::get('/gallery/{id}', 'App\Http\Controllers\CompetitiiController@getgallery');
         
 
 
@@ -73,6 +76,7 @@ Route::get('/logout', 'App\Http\Controllers\Auth\LoginController@logout')->name(
 
     //Route::POST('/competition', 'App\Http\Controllers\CompetitiiController@getItemAjax');
     Route::GET('/clasament/{id}', 'App\Http\Controllers\CompetitiiController@getClasament');
+    Route::GET('/clasamentdata/{id}', 'App\Http\Controllers\CompetitiiController@getClasamentdata');
 
     Route::get('/poligon/{id}', 'App\Http\Controllers\NavigationController@getPoligon');
 

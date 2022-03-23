@@ -9,22 +9,28 @@
 
 
 @push('content')
+
+<div class="container">
+    <div class="announcement row alert alert-quaternary alert-sm justify-content-center"><a href="{{url('/regulamente')}}">ATENTIE - Regulament intern 18-03-2022</a></div>
+    
+</div>
+
     <div class="owl-carousel owl-carousel-light owl-carousel-light-init-fadeIn owl-theme manual dots-inside dots-horizontal-center show-dots-hover show-dots-xs show-dots-sm show-dots-md full-width nav-inside nav-inside-edge show-nav-hover custom-carousel-arrows-style-1 mb-0" data-plugin-options="{'autoplayTimeout': 7000}" data-dynamic-height="['600px','600px','600px','500px','500px']" style="height: 50vh;">
         <div class="owl-stage-outer">
             <div class="owl-stage">
 
                 <!-- Carousel Slide 1 -->
-                <div class="owl-item position-relative overflow-hidden" style="background-image: url(img/grup.jpeg); background-size: cover; background-position: center; background-position: center;">
+                <div class="owl-item position-relative overflow-hidden" style="background-image:  url(img/gallery/competitions/13/9.jpeg); background-size: cover; background-position: 60% 40%; background-position: 60% 40%;">
                     <div class="container position-relative z-index-3 h-100">
                         <div class="row align-items-center justify-content-center h-100">
                             <div class="col-lg-7">
                                 <div class="d-flex flex-column justify-content-center align-items-center text-center h-100">
-                                    <span class="position-relative text-color-light text-6 line-height-5 font-weight-medium custom-secondary-font pe-4 mb-0 appear-animation" data-appear-animation="fadeInDownShorter" data-appear-animation-delay="500" data-plugin-options="{'minWindowWidth': 0}">
-                                        Welcome
+                                    <span class="position-relative text-color-light text-6 line-height-5 font-weight-medium custom-secondary-font pe-4 mb-0 " data-appear-animation="fadeInDownShorter" data-appear-animation-delay="500" data-plugin-options="{'minWindowWidth': 0}">
+                                        Etapa 1 Ludus 19-20 Martie
                                     </span>
-                                    <h1 class="text-color-light font-weight-extra-bold text-13 line-height-1 mb-2 appear-animation" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="750" data-plugin-options="{'minWindowWidth': 0}">Proceed to the Next Level</h1>
-                                    <p class="text-5 text-color-light font-weight-light custom-secondary-font mb-5 appear-animation" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1000">JOIN OUR CLAY SHOOTING COMMUNITY </p>
-                                    <!-- <a href="demo-church-about-us.html" class="btn btn-primary font-weight-bold btn-py-2 btn-px-4 appear-animation" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1250">LEARN MORE</a> -->
+                                    <h1 class="text-color-light font-weight-extra-bold text-13 line-height-1 mb-2" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="750" data-plugin-options="{'minWindowWidth': 0}">Prima competitie a anului</h1>
+                                    <p class="text-5 text-color-light font-weight-light custom-secondary-font mb-5 " data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1000">Vezi clasament si galeria de poze</p>
+                                    <a href="{{url('/clasamentdata/2022-03-19')}}" class="btn btn-primary font-weight-bold btn-py-2 btn-px-4 " data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1250">Vezi mai mult</a> 
                                 </div>
                             </div>
                         </div>
@@ -32,40 +38,40 @@
                 </div>
 
                 <!-- Carousel Slide 2 -->
-                <div class="owl-item position-relative overflow-hidden" style="background-image:  url(img/grup2.jpeg); background-size: cover; background-position: 60% 40%; background-position: 60% 40%;">
+                <div class="owl-item position-relative overflow-hidden" style="background-image:   url(img/gallery/competitions/13/1.jpeg); background-size: cover; background-position: 60% 40%; background-position: 60% 40%;">
                     <div class="container position-relative z-index-3 h-100">
                         <div class="row align-items-center justify-content-center h-100">
                             <div class="col-lg-7">
                                 <div class="d-flex flex-column justify-content-center align-items-center text-center h-100">
                                     <span class="position-relative text-color-light text-6 line-height-5 font-weight-medium custom-secondary-font pe-4 mb-0 appear-animation" data-appear-animation="fadeInDownShorter" data-appear-animation-delay="500" data-plugin-options="{'minWindowWidth': 0}">
-                                        Together
+                                        Etapa 1 Ludus 19-20 Martie
                                     </span>
-                                    <h1 class="text-color-light font-weight-extra-bold text-13 line-height-1 mb-2 appear-animation" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="750" data-plugin-options="{'minWindowWidth': 0}">We Can Make Difference</h1>
-                                    <p class="text-5 text-color-light font-weight-light custom-secondary-font mb-5 appear-animation" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1000">JOIN OUR CLAY SHOOTING COMMUNITY</p>
-                                    <!-- <a href="demo-church-about-us.html" class="btn btn-primary font-weight-bold btn-py-2 btn-px-4 appear-animation" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1250">LEARN MORE</a> -->
+                                    <h1 class="text-color-light font-weight-extra-bold text-13 line-height-1 mb-2 appear-animation" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="750" data-plugin-options="{'minWindowWidth': 0}">Prima competitie a anului</h1>
+                                    <p class="text-5 text-color-light font-weight-light custom-secondary-font mb-5 appear-animation" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1000">Vezi clasament si galeria de poze</p>
+                                    <a href="{{url('/clasamentdata/20220319')}}" class="btn btn-primary font-weight-bold btn-py-2 btn-px-4 appear-animation" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1250">Vezi mai mult</a> 
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                   <!-- Carousel Slide 3
-                   <div class="owl-item position-relative overflow-hidden" style="background-image:  url(img/grup3.jpeg); background-size: cover; background-position: center; background-position: center;">
+                           <!-- Carousel Slide 2 -->
+                <div class="owl-item position-relative overflow-hidden" style="background-image:   url(img/gallery/competitions/13/71.jpeg); background-size: cover; background-position: 60% 40%; background-position: 60% 40%;">
                     <div class="container position-relative z-index-3 h-100">
                         <div class="row align-items-center justify-content-center h-100">
                             <div class="col-lg-7">
                                 <div class="d-flex flex-column justify-content-center align-items-center text-center h-100">
                                     <span class="position-relative text-color-light text-6 line-height-5 font-weight-medium custom-secondary-font pe-4 mb-0 appear-animation" data-appear-animation="fadeInDownShorter" data-appear-animation-delay="500" data-plugin-options="{'minWindowWidth': 0}">
-                                        Together
+                                        Etapa 1 Ludus 19-20 Martie
                                     </span>
-                                    <h1 class="text-color-light font-weight-extra-bold text-13 line-height-1 mb-2 appear-animation" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="750" data-plugin-options="{'minWindowWidth': 0}">Be a better shooter</h1>
-                                    <p class="text-5 text-color-light font-weight-light custom-secondary-font mb-5 appear-animation" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1000">JOIN OUR CLAY SHOOTING COMMUNITY</p>
-                                    <a href="demo-church-about-us.html" class="btn btn-primary font-weight-bold btn-py-2 btn-px-4 appear-animation" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1250">LEARN MORE</a>
+                                    <h1 class="text-color-light font-weight-extra-bold text-13 line-height-1 mb-2 appear-animation" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="750" data-plugin-options="{'minWindowWidth': 0}">Prima competitie a anului</h1>
+                                    <p class="text-5 text-color-light font-weight-light custom-secondary-font mb-5 appear-animation" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1000">Vezi clasament si galeria de poze</p>
+                                    <a href="{{url('/clasamentdata/20220319')}}" class="btn btn-primary font-weight-bold btn-py-2 btn-px-4 appear-animation" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1250">Vezi mai mult</a> 
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div> -->
+                </div>
 
             </div>
         </div>
