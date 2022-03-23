@@ -177,12 +177,21 @@ class Competition extends BObject{
                 DB::select($sql);
 
              
-                $ResultId = DB::select("select LAST_INSERT_ID() as RestultId")[0]->ResultId;
+                $ResultId = DB::select("select LAST_INSERT_ID() as ResultId")[0]->ResultId;
 
 
 
                 $sql = "INSERT INTO resultdetail( ResultId, RoundNr, Targets, Result, Description) 
-                select ($ResultId, Nr, 25, null, null)";
+                  select $ResultId, Nr, 25, 0, null
+                  FROM `result` r 
+                  inner join (
+                  SELECT 
+                      ROW_NUMBER() OVER (
+                          ORDER BY PersonId
+                      )as Nr
+                      from person limit 0,8
+                  ) TT on 1 = 1
+                  WHERE ResultId = $ResultId";
                 
                 DB::select($sql);
  

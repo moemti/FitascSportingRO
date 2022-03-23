@@ -5,7 +5,7 @@
 
 
 
-        <link rel="stylesheet" href="{{asset('css/theme/demo-photography-3.css')}}">
+        <link rel="stylesheet" type="text/css" href="{{asset('css/theme/demo-photography-3.css')}}">
 
 
 @endpush

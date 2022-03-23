@@ -857,10 +857,23 @@ button.toast-close-button {
     display: none; }
   /* hide it on small screens */ }
 
-@media screen and (min-width: 992px) and (max-width: 1024px) {
+@media screen and (min-width: 992px) and (max-width: 5024px) {
   #marketing {
     display: block; }
   /* show it elsewhere */ }
+
+@media screen and (min-width: 0px) and (max-width: 992px) {
+  #marketingphone {
+    display: block; }
+  /* show it elsewhere */ }
+
+@media screen and (min-width: 992px) and (max-width: 5024px) {
+  #marketingphone {
+    display: none; }
+  /* hide it on small screens */ }
+
+.facebook {
+  color: blue !important; }
 
 #jqxGrid .jqx-grid-column-header,
 #documentdetails .jqx-grid-column-header,

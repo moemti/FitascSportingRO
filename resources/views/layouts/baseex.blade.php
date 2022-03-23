@@ -202,7 +202,7 @@
 
  
 
-                <section id="marketing" class="section section-no-border m-0 p-0">
+                <section id="marketing" class=" section-no-border m-0 p-0">
 					<div class="container">
 					    <div class="row justify-content-center text-center align-items-center ">
 								@php
@@ -212,7 +212,7 @@
 
                                     if (!in_array($image , ['.', '..'])){
                                 @endphp
-                                <div class="col-lg-3 col-sm-8 mb-3 mb-lg-0" style=" max-width: 100%; height: auto;  overflow: hidden;">
+                                <div class="col-lg-2 col-sm-8 mb-3 mb-lg-0" style=" max-width: 100%; height: auto;  overflow: hidden;">
                                     <a href="//www.arw.ro" target="_blank">  
                                         <img style="    width: 120px;
    
@@ -233,6 +233,56 @@
                         </div>	
 					</div>
                  </section>
+
+
+
+
+                 <div id = "marketingphone"  class="owl-carousel owl-carousel-light owl-carousel-light-init-fadeIn owl-theme manual dots-inside dots-horizontal-center show-dots-hover show-dots-xs show-dots-sm 
+                 show-dots-md nav-inside nav-inside-edge show-nav-hover custom-carousel-arrows-style-1 mb-1" data-plugin-options="{'autoplayTimeout': 5000}"  style="height: 8vh;">
+                    <div class="owl-stage-outer">
+                        <div class="owl-stage">
+
+                        
+
+
+                            @php
+
+                                    $images = scandir("img/marketing/arrow");                     
+                                    foreach ($images as $image){
+
+                                        if (!in_array($image , ['.', '..'])){
+                            @endphp
+                                        
+                                            <div class="owl-item position-relative overflow-hidden text-center">
+                                              
+                                                    <div class="container position-relative z-index-3 h-100">
+                                                        <!-- <div class="col-lg-3 col-sm-8 mb-3 mb-lg-0" style=" max-width: 100%; height: auto;  overflow: hidden;"> -->
+                                                            <a href="//www.arw.ro" target="_blank" style="display: inline-flex;    float: center;">  
+                                                                <img style="    height: 8vh;
+                        
+                                                                float: center;
+                                                                margin: 0px;
+                                                                padding: 0px;" src=" {{url('img/marketing/arrow').'/'.$image}}">
+                                                            </a>
+                                                        <!-- </div> -->
+                                                    </div>
+                                               
+                                            </div>
+                                    
+                                                                            
+                            @php
+                                        }
+                                    }
+                            @endphp
+                          
+                        </div>
+                    </div>
+
+                </div>
+
+
+
+
 
                  @stack('content')
 

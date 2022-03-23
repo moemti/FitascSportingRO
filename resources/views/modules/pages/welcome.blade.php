@@ -10,10 +10,10 @@
 
 @push('content')
 
-<div class="container">
-    <div class="announcement row alert alert-quaternary alert-sm justify-content-center"><a href="{{url('/regulamente')}}">ATENTIE - Regulament intern 18-03-2022</a></div>
-    
-</div>
+    <div class="container">
+        <div class="announcement row alert alert-quaternary alert-sm justify-content-center"><a href="{{url('/regulamente')}}">ATENTIE - Regulament intern 18-03-2022</a></div>
+        
+    </div>
 
     <div class="owl-carousel owl-carousel-light owl-carousel-light-init-fadeIn owl-theme manual dots-inside dots-horizontal-center show-dots-hover show-dots-xs show-dots-sm show-dots-md full-width nav-inside nav-inside-edge show-nav-hover custom-carousel-arrows-style-1 mb-0" data-plugin-options="{'autoplayTimeout': 7000}" data-dynamic-height="['600px','600px','600px','500px','500px']" style="height: 50vh;">
         <div class="owl-stage-outer">
@@ -31,6 +31,9 @@
                                     <h1 class="text-color-light font-weight-extra-bold text-13 line-height-1 mb-2" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="750" data-plugin-options="{'minWindowWidth': 0}">Prima competitie a anului</h1>
                                     <p class="text-5 text-color-light font-weight-light custom-secondary-font mb-5 " data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1000">Vezi clasament si galeria de poze</p>
                                     <a href="{{url('/clasamentdata/2022-03-19')}}" class="btn btn-primary font-weight-bold btn-py-2 btn-px-4 " data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1250">Vezi mai mult</a> 
+                                    <a class="text-5  text-color-light appear-animation"    data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1350" href="https://www.facebook.com/poligon.opristiberiu" target="_blank" title="Facebook">
+                                    <i style="color:blue !important;" class="fab fa-facebook-f"></i>Facebook</a>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -49,6 +52,8 @@
                                     <h1 class="text-color-light font-weight-extra-bold text-13 line-height-1 mb-2 appear-animation" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="750" data-plugin-options="{'minWindowWidth': 0}">Prima competitie a anului</h1>
                                     <p class="text-5 text-color-light font-weight-light custom-secondary-font mb-5 appear-animation" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1000">Vezi clasament si galeria de poze</p>
                                     <a href="{{url('/clasamentdata/20220319')}}" class="btn btn-primary font-weight-bold btn-py-2 btn-px-4 appear-animation" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1250">Vezi mai mult</a> 
+                                    <a class="text-5  text-color-light appear-animation"    data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1350" href="https://www.facebook.com/poligon.opristiberiu" target="_blank" title="Facebook">
+                                    <i style="color:blue !important;" class="fab fa-facebook-f"></i>Facebook</a>
                                 </div>
                             </div>
                         </div>
@@ -66,7 +71,9 @@
                                     </span>
                                     <h1 class="text-color-light font-weight-extra-bold text-13 line-height-1 mb-2 appear-animation" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="750" data-plugin-options="{'minWindowWidth': 0}">Prima competitie a anului</h1>
                                     <p class="text-5 text-color-light font-weight-light custom-secondary-font mb-5 appear-animation" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1000">Vezi clasament si galeria de poze</p>
-                                    <a href="{{url('/clasamentdata/20220319')}}" class="btn btn-primary font-weight-bold btn-py-2 btn-px-4 appear-animation" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1250">Vezi mai mult</a> 
+                                    <a href="{{url('/clasamentdata/20220319')}}" class="btn btn-primary font-weight-bold btn-py-2 btn-px-4 appear-animation mb-2" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1250">Vezi mai mult</a> 
+                                    <a class="text-5  text-color-light appear-animation"    data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1350" href="https://www.facebook.com/poligon.opristiberiu" target="_blank" title="Facebook">
+                                    <i style="color:blue !important;" class="fab fa-facebook-f"></i>Facebook</a>
                                 </div>
                             </div>
                         </div>
@@ -271,7 +278,7 @@
 				
 
 				
-
+                @if (!session("PersonId"))
 				
                 <section class="section section-tertiary section-no-border m-0">
 					<div class="container">
@@ -288,6 +295,51 @@
 						</div>
 					</div>
 				</section>
+
+                @endif
+                <div id = "marketingphoneall"  class="owl-carousel owl-carousel-light owl-carousel-light-init-fadeIn owl-theme manual dots-inside dots-horizontal-center show-dots-hover show-dots-xs show-dots-sm 
+                 show-dots-md nav-inside nav-inside-edge show-nav-hover custom-carousel-arrows-style-1 m-1" data-plugin-options="{'autoplayTimeout': 5000}"  style="height: 8vh;">
+                    <div class="owl-stage-outer">
+                        <div class="owl-stage">
+
+                        
+
+
+                            @php
+
+                                    $images = scandir("img/marketing/arrow");                     
+                                    foreach ($images as $image){
+
+                                        if (!in_array($image , ['.', '..'])){
+                            @endphp
+                                        
+                                            <div class="owl-item position-relative overflow-hidden text-center">
+                                              
+                                                    <div class="container position-relative z-index-3 h-100">
+                                                        <!-- <div class="col-lg-3 col-sm-8 mb-3 mb-lg-0" style=" max-width: 100%; height: auto;  overflow: hidden;"> -->
+                                                            <a href="//www.arw.ro" target="_blank" style="display: inline-flex;    float: center;">  
+                                                                <img style="    height: 8vh;
+                        
+                                                                float: center;
+                                                                margin: 0px;
+                                                                padding: 0px;" src=" {{url('img/marketing/arrow').'/'.$image}}">
+                                                            </a>
+                                                        <!-- </div> -->
+                                                    </div>
+                                               
+                                            </div>
+                                    
+                                                                            
+                            @php
+                                        }
+                                    }
+                            @endphp
+                          
+                        </div>
+                    </div>
+
+                </div>
+
 
 			
 
