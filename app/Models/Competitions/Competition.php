@@ -60,55 +60,91 @@ class Competition extends BObject{
 
 
     public $ClasamentSelect = "
-                SELECT row_number() over(order by Total desc, ShootOff desc)  as Position, p.PersonId, p.Name as Person, sc.Code as Category, t.Name as Team , r.ResultId,
-                    Round(Percent,2) as Procent,
-                    
-                    d1.Result as M1,
-                    d2.Result as M2,
-                    d3.Result as M3,
-                    d4.Result as M4,
-                    d5.Result as M5,
-                    d6.Result as M6,
-                    d7.Result as M7,
-                    d8.Result as M8,
-                    sof.Total,
-                    sof.ShootOffS,
-                    sof.Total1,
-                    sof.Total2
+    SELECT row_number() over(order by Total desc, ShootOff desc, d8.Result desc, d7.Result  desc, d6.Result desc, d5.Result desc, d4.Result desc, d3.Result desc, d2.Result desc, d1.Result desc)  as Position, 
 
-
-                    FROM result r
-
-                    left join resultdetail d1 on r.ResultId = d1.ResultId and d1.RoundNr = 1
-                    left join resultdetail d2 on r.ResultId = d2.ResultId and d2.RoundNr = 2
-                    left join resultdetail d3 on r.ResultId = d3.ResultId and d3.RoundNr = 3
-                    left join resultdetail d4 on r.ResultId = d4.ResultId and d4.RoundNr = 4
-                    left join resultdetail d5 on r.ResultId = d5.ResultId and d5.RoundNr = 5
-                    left join resultdetail d6 on r.ResultId = d6.ResultId and d6.RoundNr = 6
-                    left join resultdetail d7 on r.ResultId = d7.ResultId and d7.RoundNr = 7
-                    left join resultdetail d8 on r.ResultId = d8.ResultId and d8.RoundNr = 8
-
-
-                    left join (
-                        select GROUP_CONCAT(case when d.RoundNr > 8 then d.Result else null end  order by d.RoundNr) as ShootOffS,
-                                sum(case when d.RoundNr > 8 then d.Result/(10 *( d.RoundNr - 8))  else 0 end ) as ShootOff, 
-                                sum(case when d.RoundNr <= 8 then d.Result else 0 end ) as Total,
-                                sum(case when d.RoundNr <= 4 then d.Result else 0 end ) as Total1,
-                                sum(case when d.RoundNr <= 8 and d.RoundNr > 4 then d.Result else 0 end ) as Total2,
+    p.PersonId, p.Name as Person, sc.Code as Category, t.Name as Team , r.ResultId,
+                        Round(Percent,2) as Procent,
                         
-                        d.ResultId
-                        from resultdetail d 
-                        group by ResultId
-                        order by d.RoundNr 
-                    ) sof on sof.ResultId = r.ResultId 
-
-
-
-                    inner join person p on p.PersonId = r.PersonId
-                    left join shootercategory sc on sc.ShooterCategoryId = r.ShooterCategoryId
-                    left join team t on t.TeamId = r.TeamId
-                    where r.CompetitionId = :CompetitionId
-                    order by Position, p.Name;
+                        d1.Result as M1,
+                        d2.Result as M2,
+                        d3.Result as M3,
+                        d4.Result as M4,
+                        d5.Result as M5,
+                        d6.Result as M6,
+                        d7.Result as M7,
+                        d8.Result as M8,
+                        sof.Total,
+                        sof.ShootOffS,
+                        sof.Total1,
+                        sof.Total2,
+                        cps.ResultatCat
+    
+    
+                        FROM result r
+    
+                        left join resultdetail d1 on r.ResultId = d1.ResultId and d1.RoundNr = 1
+                        left join resultdetail d2 on r.ResultId = d2.ResultId and d2.RoundNr = 2
+                        left join resultdetail d3 on r.ResultId = d3.ResultId and d3.RoundNr = 3
+                        left join resultdetail d4 on r.ResultId = d4.ResultId and d4.RoundNr = 4
+                        left join resultdetail d5 on r.ResultId = d5.ResultId and d5.RoundNr = 5
+                        left join resultdetail d6 on r.ResultId = d6.ResultId and d6.RoundNr = 6
+                        left join resultdetail d7 on r.ResultId = d7.ResultId and d7.RoundNr = 7
+                        left join resultdetail d8 on r.ResultId = d8.ResultId and d8.RoundNr = 8
+    
+    
+                        left join (
+                            select GROUP_CONCAT(case when d.RoundNr > 8 then d.Result else null end  order by d.RoundNr) as ShootOffS,
+                                    sum(case when d.RoundNr > 8 then d.Result/(10 *( d.RoundNr - 8))  else 0 end ) as ShootOff, 
+                                    sum(case when d.RoundNr <= 8 then d.Result else 0 end ) as Total,
+                                    sum(case when d.RoundNr <= 4 then d.Result else 0 end ) as Total1,
+                                    sum(case when d.RoundNr <= 8 and d.RoundNr > 4 then d.Result else 0 end ) as Total2,
+                            
+                            d.ResultId
+                            from resultdetail d 
+                            group by ResultId
+                            order by d.RoundNr 
+                        ) sof on sof.ResultId = r.ResultId 
+    
+    
+                        left join (select concat(loc,' ' , vvv.Code ) as ResultatCat , ResultId from (
+    
+                            SELECT  
+                                    ROW_NUMBER() OVER (
+                                      PARTITION BY sc.Code 
+                                      ORDER BY sof.Total desc, ShootOff desc) as loc ,
+    
+                                      r.ResultId, sc.Code
+    
+    
+                                                FROM result r
+    
+    
+    
+                                                left join (
+                                                    select GROUP_CONCAT(case when d.RoundNr > 8 then d.Result else null end  order by d.RoundNr) as ShootOffS,
+                                                            sum(case when d.RoundNr > 8 then d.Result/(10 *( d.RoundNr - 8))  else 0 end ) as ShootOff, 
+                                                            sum(case when d.RoundNr <= 8 then d.Result else 0 end ) as Total,
+    
+    
+                                                    d.ResultId
+                                                    from resultdetail d 
+                                                    group by ResultId
+                                                    order by d.RoundNr 
+                                                ) sof on sof.ResultId = r.ResultId 
+    
+                                                left join shootercategory sc on sc.ShooterCategoryId = r.ShooterCategoryId
+    
+                                                where r.CompetitionId = :CompetitionId and sc.code <> 'STR'
+                                                order by sc.Code, loc )vvv
+    
+                                                where loc < 4) cps on cps.ResultId = r.ResultId
+    
+    
+                        inner join person p on p.PersonId = r.PersonId
+                        left join shootercategory sc on sc.ShooterCategoryId = r.ShooterCategoryId
+                        left join team t on t.TeamId = r.TeamId
+                        where r.CompetitionId = :CompetitionId
+                        order by Position, p.Name;
                 ";
 
 

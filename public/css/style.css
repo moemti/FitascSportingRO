@@ -457,7 +457,7 @@ button.toast-close-button {
 
 .clBlueFontB {
   color: #041146 !important;
-  background-image: linear-gradient(to left, rgba(0, 30, 255, 0.501), #fffefb) !important; }
+  background-image: linear-gradient(to left, rgba(79, 191, 252, 0.446), #fffefb) !important; }
 
 .clOrangeRedFontB {
   color: #541903 !important;
@@ -889,14 +889,14 @@ button.toast-close-button {
   position: relative;
   font-size: 1.2rem;
   color: white;
-  background-image: linear-gradient(to top left, rgba(136, 70, 0, 0.9), rgba(250, 247, 242, 0.95));
+  background-image: linear-gradient(to top left, rgba(196, 153, 98, 0.9), rgba(250, 247, 242, 0.95));
   border: none; }
   .compet_status.Open {
-    background-image: linear-gradient(to top left, rgba(0, 128, 0, 0.7), rgba(0, 128, 0, 0.2)); }
+    background-image: linear-gradient(to top left, rgba(5, 162, 44, 0.364), rgba(0, 128, 0, 0.2)); }
   .compet_status.Progress {
-    background-image: linear-gradient(to top left, rgba(255, 69, 0, 0.7), rgba(255, 69, 0, 0.2)); }
+    background-image: linear-gradient(to top left, rgba(252, 134, 134, 0.556), rgba(255, 69, 0, 0.2)); }
   .compet_status.Finished {
-    background-image: linear-gradient(to top left, rgba(0, 8, 255, 0.7), rgba(0, 8, 255, 0.2)); }
+    background-image: linear-gradient(to top left, rgba(79, 191, 252, 0.446), rgba(0, 8, 255, 0.2)); }
 
 .cdetailbtn {
   padding: 2px;

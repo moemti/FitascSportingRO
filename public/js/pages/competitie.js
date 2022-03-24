@@ -56,7 +56,7 @@
                 clClasament =
                     [
                         { text: 'Loc', dataField: 'Position', width: '5%' },
-                        { text: 'Sportiv', dataField: 'Person', width: '15%', cellclassname: cellclassUser },
+                        { text: 'Sportiv', dataField: 'Person', width: '10%', cellclassname: cellclassUser },
                         { text: 'Cat', dataField: 'Category', width: '5%' },
                         { text: 'Team', dataField: 'Team', width: IsSuperUser===1?'5%':'10%' },
                         { text: 'M1', dataField: 'M1', width: '5%' ,cellclassname: cellclass,},
@@ -71,7 +71,9 @@
                         { text: 'Total 2', dataField: 'Total2', width: '5%' },
                         { text: 'Total', dataField: 'Total', width: '5%' },
                         { text: 'Procent', dataField: 'Procent', width: '5%'},
-                        { text: 'ShOff', dataField: 'ShootOffS', width: '5%' },     
+                        { text: 'ShOff', dataField: 'ShootOffS', width: '5%' },  
+                        { text: 'Cat', dataField: 'ResultatCat', width: '5%' },  
+                           
                     ];
                 }
         }
@@ -344,6 +346,8 @@
                             { name: 'Total2', type: 'number'},
                             { name: 'Procent', type: 'number'},
                             { name: 'ShootOffS', type: 'string'},
+                            { name: 'ResultatCat', type: 'string'},
+                            
                           
                         ]
 				

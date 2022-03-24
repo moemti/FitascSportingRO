@@ -192,7 +192,7 @@
             @endif
             </div>
             <button id="exportexcel">Excel</button>
-            <button id="exportpdf">PDF</button>
+            <!-- <button id="exportpdf">PDF</button> -->
             <div id ="jqxGrid" class="gridnou">
                     
             </div>
