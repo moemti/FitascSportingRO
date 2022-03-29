@@ -28,10 +28,14 @@
         if (window.innerWidth < 900)
 
             if (Status == 'Open'){
-                clClasament = [          
-                    { text: 'Sportiv', dataField: 'Person', width: (IsSuperUser === 1)?'65%':'70%' , cellclassname: cellclassUser},
+                clClasament = [      
+                    { text: 'BIB', dataField: 'BIB', width: '5%' },  
+                    { text: 'Serie', dataField: 'NrSerie', width: '5%' },  
+                    { text: 'Sportiv', dataField: 'Person', width: (IsSuperUser === 1)?'40%':'55%' , cellclassname: cellclassUser},
                     { text: 'Cat', dataField: 'Category', width: '10%' },
                     { text: 'Team', dataField: 'Team', width: '20%' },
+                    { text: 'In Echipa', dataField: 'IsInTeam', width: '5%' },
+                   
                 ]
             }
             else{
@@ -46,10 +50,13 @@
         else{
 
             if (Status == 'Open'){
-                clClasament = [          
-                    { text: 'Sportiv', dataField: 'Person', width: (IsSuperUser === 1)?'65%':'70%'  , cellclassname: cellclassUser},
+                clClasament = [      
+                    { text: 'BIB', dataField: 'BIB', width: '5%' },  
+                    { text: 'Serie', dataField: 'NrSerie', width: '5%' },     
+                    { text: 'Sportiv', dataField: 'Person', width: (IsSuperUser === 1)?'50%':'55%'  , cellclassname: cellclassUser},
                     { text: 'Cat', dataField: 'Category', width: '10%' },
                     { text: 'Team', dataField: 'Team', width: '20%' },
+                    { text: 'In Echipa', dataField: 'IsInTeam', width: '5%' },
                 ]
             }
             else{
@@ -105,6 +112,39 @@
 
         }
 
+        function createSquads(e){
+            lastevent = e;
+            let type = lastevent.target.dataset.type == 'All'?' pentru toti participantii':' doar pentru cei ce nu au inca squad'
+            confirm(`Doriti sa generati squadurile${type}?`, createSquadsDo);
+        }
+
+        function createSquadsDo(){
+            let Data = {};
+
+            Data.Type = lastevent.target.dataset.type;
+            Data.CompetitionId = $('#CompetitionId').val();
+
+            $.ajax({
+                type: 'POST',
+        
+                url: baseUrl + '/doCompetitionSquads',
+                data: Data,
+                success: function (data) {
+                    if (data === 'OK'){
+                        ShowSuccess('S-au creat echipele cu succes');
+                        window.location.reload();
+                    }
+                    else    
+                        ShowError(data)
+                
+                },
+                error: function(e){
+                    ShowError(e);
+                }
+            });
+        }
+
+
         function changeCompetitionStatus(e){
             lastevent = e;
             confirm('Doriti sa schimbati statusul competitiei?', changeCompetitionStatusDo);
@@ -139,35 +179,72 @@
             }
 
             function registerMe(){
-              
-                confirm('Doriti sa va inregistrati?', registerMeDo);
-            }
-
-            function registerMeDo(){
                 let Data = {};
                 Data.CompetitionId = $('#CompetitionId').val();
-                Data.Register = 1;
+                Data.PersonId = PersonId;
+            
 
                 $.ajax({
                     type: 'POST',
             
-                    url: baseUrl + '/registerMe',
+                    url: baseUrl + '/registerCompetitor',
                     data: Data,
                     success: function (data) {
-                        if (data === 'OK'){
-                            ShowSuccess('Ati fost inregistrat cu succes');
-                            setTimeout(window.location.reload(), 300)
+                        
+                            $("#popup_body").html(data);
+
+                            $("#popupDialog").modal({
+                                backdrop: 'static',
+                                keyboard: false
+                            }).show();
                             
-                        }
-                        else    
-                            ShowError(data)
+                            $('#btnPopupCloseModal').off().on('click', 
+                                ()=>{
+                                $("#popupDialog").modal({
+                                    backdrop: 'static',
+                                    keyboard: false
+                                }).hide();
+                            }
+                            );
+                            
+                            $('#btnPopupSaveModal').off().on('click', addCompetitorDB);
+                            
+                            putAttributes(PersonId);
+            
                     
                     },
                     error: function(e){
                         ShowError(e);
                     }
                 });
+              
             }
+
+            // function registerMeDo(){
+            //     let Data = {};
+            //     Data.CompetitionId = $('#CompetitionId').val();
+            //     Data.Register = 1;
+
+            //     $.ajax({
+            //         type: 'POST',
+            
+            //         url: baseUrl + '/registerMe',
+            //         data: Data,
+            //         success: function (data) {
+            //             if (data === 'OK'){
+            //                 ShowSuccess('Ati fost inregistrat cu succes');
+            //                 setTimeout(window.location.reload(), 300)
+                            
+            //             }
+            //             else    
+            //                 ShowError(data)
+                    
+            //         },
+            //         error: function(e){
+            //             ShowError(e);
+            //         }
+            //     });
+            // }
 
             function unRegisterMe(){
              
@@ -232,7 +309,7 @@
                     );
                     
                     $('#btnPopupSaveModal').off().on('click', addCompetitorDB);
-                    $('#PersonId').off().on('change', putAttributes);
+                    $('#PersonId').off().on('change', onChangePerson);
      
             
             },
@@ -246,14 +323,34 @@
     }        
 
 
+    function RetrieveFields(){
+
+
+        var results = {};
+    
+        $("#addcompetitor :input").each(function(){
+            var val;
+            if ($(this).is(':checkbox'))
+                val = $(this).prop( "checked")?1:0;
+            else
+                val =  $(this).val();
+            results[$(this).attr('id')] = val;
+        
+        });
+
+
+       
+        return results;
+
+
+    }	
+
     function addCompetitorDB(){
         let Data = {};
-        Data.CompetitionId = $('#CompetitionId').val();
-        Data.PersonId = $('#PersonId').val() * 1;
-        Data.Name = $('#Name').val().trim();
-        Data.Team = $('#Team').val().trim();
-        Data.TeamId = $('#TeamId').val() * 1;
-        Data.ShooterCategoryId = $('#ShooterCategoryId').val().trim() * 1;
+     
+
+        Data = RetrieveFields();
+
        
         if ((Data.PersonId === -1) && (Data.Name === '')){
             ShowError('Alegeti o persoana sau introduceti un nume');
@@ -287,18 +384,66 @@
        
     }     
 
-  
+    
+    function onChangePerson(e){
+        let PersonId = $(e.target).val();
+        if (!PersonId > 0)
+            return;
+
+        putAttributes(PersonId);
+
+    }
     
 
-    function putAttributes(){
-        let ShooterCategoryId = $( "#PersonId option:selected" ).attr('data-ShooterCategoryId');
-        let TeamId = $( "#PersonId option:selected" ).attr('data-TeamId');
-        let selector = `#ShooterCategoryId option[value='${ShooterCategoryId}']`;
-        $(selector).attr('selected', 'selected');
+    function putAttributes(PersonId){   
+
+        $.ajax({
+            type: 'POST',
+    
+            url: baseUrl + '/getpersonajax',
+            data: {PersonId: PersonId},
+            success: function (data) {
+               
+
+                ShowSuccess('Detalii aduse');
+                data = data[0][0];
+                let fields = [];
+
+                let ShooterCategoryId = $( "#PersonId option:selected" ).attr('data-ShooterCategoryId');
+                let TeamId = $( "#PersonId option:selected" ).attr('data-TeamId');
 
 
-        selector = `#TeamId option[value='${TeamId}']`;
-        $(selector).attr('selected', 'selected');
+
+
+                let selector = `#ShooterCategoryId option[value='${ShooterCategoryId}']`;
+                $(selector).attr('selected', 'selected');
+        
+                selector = `#TeamId option[value='${TeamId}']`;
+                $(selector).attr('selected', 'selected');
+
+                Object.keys(data).forEach(element => {
+					fields.push(element);
+					
+				});
+
+                fields.forEach(element => {
+                    if ($('#' + element).is(':checkbox')){
+                        $('#' + element).prop( "checked", data[element] == 1 );
+                    }else{
+                        $('#' + element).val(data[element]);
+                    }
+                    
+                });
+   
+            },
+            error: function(e){
+                ShowError(e);
+            }
+        });
+
+
+
+       
     }
 
 
@@ -307,6 +452,8 @@
 
 
         $(".cmpStatusChange").on('click', changeCompetitionStatus);
+        $(".createSquads").on('click', createSquads);
+
         $("#btnRegister").on('click', registerMe);
         $("#btnUnRegister").on('click', unRegisterMe);
         $("#addCompetitor").on('click', addCompetitor);
@@ -347,8 +494,10 @@
                             { name: 'Procent', type: 'number'},
                             { name: 'ShootOffS', type: 'string'},
                             { name: 'ResultatCat', type: 'string'},
+                            { name: 'BIB', type: 'number'},
+                            { name: 'IsInTeam', type: 'number'},
+                            { name: 'NrSerie', type: 'string'},
                             
-                          
                         ]
 				
 			

@@ -38,7 +38,7 @@
 @push('content')
 <section class="content-termeni section section-tertiary section-no-border m-0">
     <div class="container">
-        <h1>Utilizator de inregistrat</h1>
+        <h1>Persoana de inregistrat</h1>
 
         <div class="card mb-4">
             <div class="card-body">

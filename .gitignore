@@ -109,3 +109,4 @@ public/img/gallery/
 *.json
 *.json
 *.DS_Store
+*.sql

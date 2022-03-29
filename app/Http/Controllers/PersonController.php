@@ -6,7 +6,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Controllers\MasterController;
-
+use App\Models\Dictionaries\Dictionary;
 
 
 
@@ -22,13 +22,13 @@ class PersonController extends MasterController
     public function getDictionaries(){
  
         return ['roles' => $this->BObject()->getRoles(), 'seasons' => $this->BObject()->getSeasons(),  'shootercategories' => $this->BObject()->getShooterCategories(),
-                              'teams' => $this->BObject()->getTeams()];
+                              'teams' => $this->BObject()->getTeams(), 'countries' =>  Dictionary::getCountries()];
     }
 
 
     public function getmyuser(){
         $PersonId = session('PersonId');
-        return view('modules.pages.editables/users/myuser', ['data' => $this->BObject()->getMyUser($PersonId),  'teams' => $this->BObject()->getTeams()]);
+        return view('modules.pages.editables/users/myuser', ['data' => $this->BObject()->getMyUser($PersonId),  'teams' => $this->BObject()->getTeams(),  'countries' =>  Dictionary::getCountries()]);
     }
 
 

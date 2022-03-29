@@ -60,9 +60,8 @@ class Competition extends BObject{
 
 
     public $ClasamentSelect = "
-    SELECT row_number() over(order by Total desc, ShootOff desc, d8.Result desc, d7.Result  desc, d6.Result desc, d5.Result desc, d4.Result desc, d3.Result desc, d2.Result desc, d1.Result desc)  as Position, 
-
-    p.PersonId, p.Name as Person, sc.Code as Category, t.Name as Team , r.ResultId,
+        SELECT row_number() over(order by Total desc, ShootOff desc, d8.Result desc, d7.Result  desc, d6.Result desc, d5.Result desc, d4.Result desc, d3.Result desc, d2.Result desc, d1.Result desc)  as Position, 
+            p.PersonId, p.Name as Person, sc.Code as Category, t.Name as Team , r.ResultId, r.BIB, r.IsInTeam, r.NrSerie,
                         Round(Percent,2) as Procent,
                         
                         d1.Result as M1,
@@ -191,6 +190,97 @@ class Competition extends BObject{
         }
 
 
+        public function doCompetitionSquads($CompetitionId, $Type){
+
+            
+            $MaxSquad = 6; // nr max de competitori
+            $NrParallel = 2;  // nr de poligoane
+            $nr = 0;
+            $bibs = array();
+
+            // get Results (competitors)
+            $competitors = DB::select("select ResultId, BIB from result where CompetitionId = $CompetitionId");
+
+            $nr = count($competitors);
+
+            foreach ($competitors as $comp){
+                if (isset($comp->BIB))
+                     array_push($bibs, $comp->BIB);
+            }
+
+            // Nr of squads
+            $S = ceil($nr/$MaxSquad);
+            if ($S < 4)
+                if (floor($nr/4) < 3)
+                    $S = 2;
+                else    
+                    $S = 3;
+
+            $Squads = [];
+
+            // vad cate sunt peste minim 
+
+            $M = $nr%$S;
+            $N = floor($nr/$S);
+            
+            for ($i = 1; $i <= $S; $i++) {
+                $p = ($i <= $M?1:0);
+                array_push($Squads, [$N + $p]);
+
+            }
+
+            $bibs = array();
+
+            for ($i = 1;$i <= $nr; $i++) {
+                $bibs[] = $i;
+            }
+
+            shuffle($bibs);
+
+            // modificam intre ele acolo unde au deja pusi
+            if ($Type == 'Diff'){
+                foreach ($competitors as $i=>$comp){
+                    if (isset($comp->BIB)){
+                        
+                        $old = $bibs[$i];
+                        $new = $comp->BIB;
+
+                        foreach($bibs as $ii => $b)
+                            if ($b == $new)
+                                $bibs[$ii] = $old;
+
+                        $bibs[$i] = $new;
+                    }
+                }
+            }
+            
+            // modificam BIB-urile in baza
+         
+            foreach ($competitors as $i=>$comp){
+                $BIB = $bibs[$i];
+                $ResultId = $comp->ResultId;
+                $sql = "update result set BIB = $BIB where ResultId = $ResultId";
+                DB::select($sql);
+            }
+
+            // punem si squad-urile
+            $mesaj = [];
+            $c = 1;
+            foreach ($Squads as $i => $sq){
+                $nr = $sq[0];
+                $sql = "update result set NrSerie = $i + 1 where CompetitionId = $CompetitionId and BIB >= $c and BIB < $c + $nr";
+                DB::select($sql);
+                array_push($mesaj, [$nr, $c, $sql]);
+                $c += $nr;
+
+            }
+
+
+            return 'OK';
+
+        }
+
+
         public function registerMe($CompetitionId, $PersonId){
             $sql = "insert into result (CompetitionId, PersonId, ShooterCategoryId, TeamId)
             select c.CompetitionId, $PersonId, TT.ShooterCategoryId, TT.TeamId 
@@ -294,7 +384,8 @@ class Competition extends BObject{
         }
 
         public function getresultDetail($ResultId){
-            $sql = "select p.Name, coalesce(r.ShooterCategoryId, x.ShooterCategoryId) as ShooterCategoryId, coalesce(r.TeamId, x.TeamId) as TeamId, r.Aborted, Position, Total, Percent, ResultId
+            $sql = "select p.Name, coalesce(r.ShooterCategoryId, x.ShooterCategoryId) as ShooterCategoryId, coalesce(r.TeamId, x.TeamId) as TeamId, r.Aborted, Position, Total, Percent, ResultId, p.PersonId,
+                r.BIB, r.IsInTeam, r.NrSerie,   p.SerieNrCI, p.CNP, p.SeriePermisArma, p.DataExpPermis, p.MarcaArma, p.SerieArma, p.CalibruArma
             from result r 
             inner join person p on p.PersonId = r.PersonId
             inner join competition c on c.CompetitionId = r.CompetitionId
@@ -311,6 +402,12 @@ class Competition extends BObject{
 
             return    DB::select($sql)[0]->CompetitionId;
         }
+        public function getCompetitionByResult($ResultId){
+            $sql = "select CompetitionId from result c where  c.ResultId = $ResultId";
+
+            return    DB::select($sql)[0]->CompetitionId;
+        }
+        
         
         public function SaveResultsDetail($fields){
           
@@ -447,18 +544,41 @@ class Competition extends BObject{
         }
 
 
-        public function registerCompetitorDB($CompetitionId, $PersonId, $Name,  $TeamId,  $Team, $ShooterCategoryId){
+        public function registerCompetitorDB($request){
+
+
+         
+
 
             try{
 
-                DB::beginTransaction();
+            //    DB::beginTransaction();
+
+
+                $PersonId = $request['PersonId'];
+                $TeamId = $request['TeamId'];
+                $ShooterCategoryId = $request['ShooterCategoryId'];
+                $CompetitionId = $request['CompetitionId'];
+                $Team = $request['Team'];
 
                 if ($PersonId == -1){
-                    $sql = "INSERT INTO person(Name, Code, Email, CountryId) 
-                        values( '$Name', 'xxx', null, 1 )";
+                    $sql = "INSERT INTO person(Name, Code, Email,   SerieNrCI, CNP, SeriePermisArma, DataExpPermis, MarcaArma, SerieArma, CalibruArma, CountryId) 
+                        values( ':Name', 'xxx', null,  ':SerieNrCI', ':CNP', ':SeriePermisArma', ':DataExpPermis', ':MarcaArma', ':SerieArma', ':CalibruArma', :CountryId )";
                       
 
+                    // replace parameters
+                    foreach($request as $key => $value){
+                        if (!is_array($value))
+                            $sql = self::paramreplace($key, $value, $sql); 
+                    }
+        
+        
+                    self::PutNullValues($sql);
+
+
                     DB::select($sql);
+
+
                     $PersonId = DB::select("select LAST_INSERT_ID() as PersonId")[0]->PersonId;
 
 
@@ -466,6 +586,37 @@ class Competition extends BObject{
                     DB::select($sql);
 
                 }
+
+                $sql =  "UPDATE `person` SET
+                    
+                        CountryId = :CountryId,
+                        SerieNrCI = ':SerieNrCI',
+                        CNP = ':CNP',
+                        SeriePermisArma = ':SeriePermisArma',
+                        DataExpPermis = ':DataExpPermis',
+                        MarcaArma = ':MarcaArma',
+                        SerieArma = ':SerieArma',
+                        CalibruArma = ':CalibruArma'
+
+                        WHERE PersonId = :PersonId;";
+
+                 // replace parameters
+
+           
+
+
+                 foreach($request as $key => $value){
+                    if (!is_array($value))
+                        $sql = self::paramreplace($key, $value, $sql); 
+                }
+    
+
+    
+                self::PutNullValues($sql);
+
+
+                DB::select($sql);       
+
 
                 if (!($TeamId > 0) &&  ($Team != '')){
                     $sql = "insert into team (Name, IsActive) values ('$Team', 1)"; 

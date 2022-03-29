@@ -29,7 +29,7 @@ class Person extends BObject{
                 order by p.Name"  ;
 
     public $MasterItemSelect = "SELECT p.PersonId, p.Name, p.Email, GROUP_CONCAT(f.Name SEPARATOR ', ') as Role , p.NickName, p.Code, p.CountryId, ifnull(u.IsSuperUser, 0) as IsSuperUser, 
-                                case when u.PersonId is null then 0 else 1 end as HasUser
+                                case when u.PersonId is null then 0 else 1 end as HasUser,   p.SerieNrCI, p.CNP, p.SeriePermisArma, p.DataExpPermis, p.MarcaArma, p.SerieArma, p.CalibruArma
                 from person p
                 left join personxrole x on x.PersonId = p.PersonId
                 left join user u on u.PersonId = p.PersonId
@@ -38,13 +38,25 @@ class Person extends BObject{
                 group by  p.PersonId, p.Name, p.Email, p.NickName, p.Code, p.CountryId , ifnull(u.IsSuperUser, 0),  case when u.PersonId is null then 0 else 1 end "  ;
                                         
 
-    public $MasterInsert = "INSERT INTO person( OrganizationId, Name, Email, NickName)
-                                values (:_OrganizationId_, ':Name', ':Email', ':NickName');
+    public $MasterInsert = "INSERT INTO person( Name, Email, NickName, SerieNrCI, CNP, SeriePermisArma, DataExpPermis, MarcaArma, SerieArma, CalibruArma, CountryId, Code)
+                                values ( ':Name', ':Email', ':NickName', ':SerieNrCI', ':CNP', ':SeriePermisArma', ':DataExpPermis', ':MarcaArma', ':SerieArma', ':CalibruArma', :CountryId, ':Code');
                                 ";         
    
 
     public $MasterUpdate = "UPDATE `person` SET
-                        `Email`= ':Email', `Name`=':Name', NickName = ':NickName', Code = ':Code'
+                        `Email`= ':Email', 
+                        `Name`=':Name', 
+                        NickName = ':NickName', 
+                        Code = ':Code', 
+                        CountryId = :CountryId,
+                        SerieNrCI = ':SerieNrCI',
+                        CNP = ':CNP',
+                        SeriePermisArma = ':SeriePermisArma',
+                        DataExpPermis = ':DataExpPermis',
+                        MarcaArma = ':MarcaArma',
+                        SerieArma = ':SerieArma',
+                        CalibruArma = ':CalibruArma'
+
                         WHERE PersonId = :PersonId;
                         
                         update user set IsSuperUser = :IsSuperUser
@@ -202,7 +214,10 @@ class Person extends BObject{
     }
     
     public function getMyUser($PersonId){
-        $sql = "SELECT p.PersonId, p.Name, p.Email, GROUP_CONCAT(f.Name SEPARATOR ', ') as Role , p.NickName, u.IsSuperUser, xx.TeamId
+        $sql = "SELECT p.PersonId, p.Name, p.Email, GROUP_CONCAT(f.Name SEPARATOR ', ') as Role , p.NickName, u.IsSuperUser, xx.TeamId, CountryId,
+        p.SerieNrCI, p.CNP, p.SeriePermisArma, p.DataExpPermis, p.MarcaArma, p.SerieArma, p.CalibruArma
+
+     
         from person p
         inner join user u on u.PersonId = p.PersonId
         left join personxrole x on x.PersonId = p.PersonId
@@ -225,10 +240,19 @@ class Person extends BObject{
         $fields = (array) $request->all();
         
         $sql = "update person 
-        set Email = ':Email',
+        set 
+        Email = ':Email',
         Name = ':Name',
-        NickName = ':NickName'
-        where PersonId = :PersonId";
+        NickName = ':NickName',
+        SerieNrCI = ':SerieNrCI',
+        CNP = ':CNP',
+        SeriePermisArma = ':SeriePermisArma',
+        DataExpPermis = ':DataExpPermis',
+        MarcaArma = ':MarcaArma',
+        SerieArma = ':SerieArma',
+        CalibruArma = ':CalibruArma',
+        CountryId = :CountryId
+         where PersonId = :PersonId";
         
         foreach($fields as $key => $value){
             $sql = self::paramreplace($key, $value, $sql); 

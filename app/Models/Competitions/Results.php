@@ -7,7 +7,9 @@ use App\Models\BObject;
 class Results extends BObject{
 
 
-  
+    protected $IsInsertUnprepared = true; // true if multiple statements etc
+    protected $IsUpdateUnprepared = true; // true if multiple statements etc
+    protected $IsDeleteUnprepared = false; // true if multiple statements etc
     
 
     const CustomFilters=[
@@ -24,7 +26,8 @@ class Results extends BObject{
 
     public $MasterSelect = " ";
 
-    public $MasterItemSelect = "select p.Name, coalesce(r.ShooterCategoryId, x.ShooterCategoryId) as ShooterCategoryId, coalesce(r.TeamId, x.TeamId) as TeamId, r.Aborted, Position, Total, Percent, ResultId
+    public $MasterItemSelect = "select p.Name, coalesce(r.ShooterCategoryId, x.ShooterCategoryId) as ShooterCategoryId, coalesce(r.TeamId, x.TeamId) as TeamId, r.Aborted, Position, Total, Percent, ResultId,
+            r.BIB, r.IsInTeam, r.NrSerie
             from result r 
             inner join person p on p.PersonId = r.PersonId
             inner join competition c on c.CompetitionId = r.CompetitionId
@@ -34,8 +37,23 @@ class Results extends BObject{
             where r.ResultId = :ResultId";
                                             
 
-    public $MasterInsert = "INSERT INTO `result`( `CompetitionId`, `PersonId`, `ShooterCategoryId`, `TeamId`, `Aborted`)
-        values  ( :CompetitionId, :PersonId, :ShooterCategoryId, :TeamId, :Aborted)";            
+    public $MasterInsert = "INSERT INTO `result`( `CompetitionId`, `PersonId`, `ShooterCategoryId`, `TeamId`, `Aborted`, BIB, IsInTeam, NrSerie)
+        values  ( :CompetitionId, :PersonId, :ShooterCategoryId, :TeamId, :Aborted, :BIB, :IsInTeam, :NrSerie);
+       
+        UPDATE `person` SET
+                    
+                      
+                    SerieNrCI = ':SerieNrCI',
+                    CNP = ':CNP',
+                    SeriePermisArma = ':SeriePermisArma',
+                    DataExpPermis = ':DataExpPermis',
+                    MarcaArma = ':MarcaArma',
+                    SerieArma = ':SerieArma',
+                    CalibruArma = ':CalibruArma'
+
+                    WHERE PersonId = :PersonId;
+
+        ";            
    
 
     public $MasterUpdate = "UPDATE
@@ -43,13 +61,29 @@ class Results extends BObject{
             SET
                 `ShooterCategoryId` =:ShooterCategoryId,
                 `TeamId` = :TeamId,
-                `Aborted` = :Aborted
+                `Aborted` = :Aborted,
+                 BIB = :BIB, 
+                 IsInTeam = :IsInTeam, 
+                 NrSerie = :NrSerie
             WHERE
-    
-             ResultId = :ResultId";
+             ResultId = :ResultId;
+             
+             UPDATE `person` SET
+                        SerieNrCI = ':SerieNrCI',
+                        CNP = ':CNP',
+                        SeriePermisArma = ':SeriePermisArma',
+                        DataExpPermis = ':DataExpPermis',
+                        MarcaArma = ':MarcaArma',
+                        SerieArma = ':SerieArma',
+                        CalibruArma = ':CalibruArma'
+                        WHERE PersonId = :PersonId; ";
 
-    public $MasterDelete = "delete from result
-            where ResultId = :ResultId"  ;
+    public $MasterDelete = "
+    
+            delete from resultdetail where ResultId = :ResultId;
+    
+            delete from result
+            where ResultId = :ResultId;"  ;
 
     public $DetailInsert =  "INSERT INTO resultdetail( ResultId, RoundNr, Targets, Result, Description) 
             VALUES (:ResultId, :RoundNr, :Targets, :Result, ':Description')";
@@ -106,7 +140,8 @@ class Results extends BObject{
         }
 
         public function getresultDetail($ResultId){
-            $sql = "select p.Name, coalesce(r.ShooterCategoryId, x.ShooterCategoryId) as ShooterCategoryId, coalesce(r.TeamId, x.TeamId) as TeamId, r.Aborted, Position, Total, Percent, ResultId
+            $sql = "select p.Name, coalesce(r.ShooterCategoryId, x.ShooterCategoryId) as ShooterCategoryId, coalesce(r.TeamId, x.TeamId) as TeamId, r.Aborted, Position, Total, Percent, ResultId,
+            r.BIB, r.IsInTeam, r.NrSerie
             from result r 
             inner join person p on p.PersonId = r.PersonId
             inner join competition c on c.CompetitionId = r.CompetitionId

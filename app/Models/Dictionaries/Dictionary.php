@@ -105,6 +105,12 @@ class Dictionary{
         return DB::select($sql);
     }
 
+    public static function getCountries(){
+        $sql = "SELECT `CountryId`, `Name`, `CodeSport`, Code FROM `country` order by Name"  ;
+        return DB::select($sql);
+    }
+
+
     public static function getDocumentSerials($DocumentCode){
         //ToDo: aici trebuie sa punem si o filtrare dupa data
 

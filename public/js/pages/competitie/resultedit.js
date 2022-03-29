@@ -113,7 +113,7 @@ detailcolumns = [
                 success: function (data) {
                     ShowSuccess('Sters cu succes!');
                    
-                    window.location.replace("/clasament/" +  $('#ClasamentId').val());
+                    window.location.replace("/clasament/" +  $('#CompetitionId').val());
                     
 
                 }

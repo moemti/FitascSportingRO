@@ -188,7 +188,7 @@ class LoginController extends Controller
         $user = Login::Login($request->input('username'));
 
         if (($request->input('password') === null) || ($request->input('username') === null)){
-            return view("auth/login")->with(["mesaj" =>[ 'password'=> 'Introdu emailul si parola']]);
+            return view("auth/login")->with(["mesaj" =>[ 'password'=> 'Introduceti emailul si parola']]);
         }
         
         

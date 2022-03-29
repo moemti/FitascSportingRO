@@ -19,73 +19,135 @@
 @push('formcontent')
 
 
-    @if(session("IsSuperUser") == 1)
-        <div class="  text-right u-margin-top-small">
-            <a href="{{Route('registeries')}}" class=" btn-sm">Registeries</a>
-        </div>
-    @endif
-
-<div class="row">
-    
-    <input name="PersonId" id="PersonId" hidden>
-
-
-    <div class="position-relative form-group">
-         <label class= "form-label">Email</label>
-        <input name="Email" id="Email" placeholder="Email here..." type="email" class="form-control real_input" required>
-    </div>
-
-
-    <div class="position-relative form-group">
-    <label class= "form-label">Nume intreg</label>
-        <input name="Name" id="Name" placeholder="Name here..." type="text" class="form-control real_input" required>
-    </div>
-
-    
-
-    <div class="position-relative form-group">
-        <label class= "form-label">Nume</label>
-        <input name="NickName" id="NickName" class="form-control real_input" >
-    </div>
-
-    <div class="col-md-4">
-            <div class="position-relative form-group"><label for="TeamId">Team 2022</label>
-            
-            <select name="TeamId" id="TeamId"  type="text" class="form-control"  >
-            <option value=""></option>
-                @foreach($teams as $r)
-                    <option value="{{$r->TeamId}}">{{$r->Name}}</option>
-                @endforeach
-            </select>
+  
+<div class="container">
+    <div class="row">
         
+        <input name="PersonId" id="PersonId" hidden>
+
+
+        <div class= "position-relative form-group col-12 col-md-6">
+            <label class= "form-label">Email</label>
+            <input name="Email" id="Email" placeholder="Email here..." type="email" class="form-control " required>
+        </div>
+
+
+        <div class= "position-relative form-group col-12 col-md-6">
+            <label class= "form-label">Nume intreg</label>
+            <input name="Name" id="Name" placeholder="Name here..." type="text" class="form-control " required>
+        </div>
+    </div>
+
+    <div class="row">  
+    <div class="col-12 col-md-6">
+            <div class="position-relative form-group  ">
+                
+                <label class= "" for="CountryId">Tara</label>
+                
+                <select name="CountryId" id="CountryId"  type="text" class="form-control" required >
+                <option value=""></option>
+                    @foreach($countries as $r)
+                        <option value="{{$r->CountryId}}">{{$r->Name}}</option>
+                    @endforeach
+                </select>
+            
+                
+            </div>
+        </div>
+    </div>
+
+    
+    <div class="row">  
+
+        <div class="position-relative form-group col-12 col-md-6">
+            <label class= "form-label">Nume</label>
+            <input name="NickName" id="NickName" class="form-control real_input" >
+        </div>
+
+        <div class="position-relative form-group  col-12 col-md-6">
+            
+                <label class= "form-label" for="TeamId">Team 2022</label>
+                
+                <select name="TeamId" id="TeamId"  type="text" class="form-control"  >
+                <option value=""></option>
+                    @foreach($teams as $r)
+                        <option value="{{$r->TeamId}}">{{$r->Name}}</option>
+                    @endforeach
+                </select>
+            
+                
+        </div>
+
+    </div>
+
+    <!-- <div class="row">    
+        <div class="position-relative form-group col-12 col-md-6">
+            <label class= "form-label">Roluri</label>
+            <input name="Role" id="Role" class="form-control real_input" disabled>
+        </div>
+
+
+    </div> -->
+
+    <div class="row">
+        <div class="position-relative form-group col-12 col-md-6">
+            <label class= "form-label">Serie si Nr CI</label>
+            <input name="SerieNrCI" id="SerieNrCI" class="form-control" >
+        </div>
+        <div class="position-relative form-group col-12 col-md-6">
+            <label class= "form-label">CNP</label>
+            <input name="CNP" id="CNP" class="form-control" >
+        </div>
+    </div >
+
+     <div class="row">
+            <div class="position-relative form-group col-12 col-md-6">
+                <label class= "form-label">Serie permis arma</label>
+                <input name="SeriePermisArma" id="SeriePermisArma" class="form-control" >
+            </div>
+            <div class="position-relative form-group col-12 col-md-6">
+                <label class= "form-label">Data expirare permis arma</label>
+                <input type = "date" name="DataExpPermis" id="DataExpPermis" class="form-control" >
+            </div>
+    </div>
+        
+    <div class="row">
+            <div class="position-relative form-group col-12 col-md-6">
+                <label class= "form-label">Marca arma</label>
+                <input name="MarcaArma" id="MarcaArma" class="form-control" >
+            </div>
+            <div class="position-relative form-group col-12 col-md-4">
+                <label class= "form-label">Serie arma</label>
+                <input name="SerieArma" id="SerieArma" class="form-control" >
+            </div>
+            <div class="position-relative form-group col-12 col-md-2">
+                <label class= "form-label">Calibru arma</label>
+                <input name="CalibruArma" id="CalibruArma" class="form-control" >
             </div>
     </div>
 
+    
 
-    <div class="position-relative form-group">
-        <label class= "form-label">Roluri</label>
-        <input name="Role" id="Role" class="form-control real_input" disabled>
-    </div>
 
 
 </div>
-     
 @endpush
 
 @push('content_after')
+    <form id="changemypassword" action="" class="passwordchange mt-3">
+        <div class="container">
+            <div class="row">
+        
+                <div class="col-md-12">
+                    <div class="position-relative form-group  col-12 col-md-4"><input name="password" id="Password" placeholder="Password here..." type="password" class="form-control real_input" required></div>
+                </div>
+                <div class="col-md-12">
+                    <div class="position-relative form-group  col-12 col-md-4"><input name="password2" id="Password2" placeholder="Repeat Password here..." type="password" class="form-control real_input" required></div>
+                </div>
 
-    <form id="changemypassword" action="" class="passwordchange">
-    <div class="row">
-       
-        <div class="col-md-12">
-            <div class="position-relative form-group"><input name="password" id="Password" placeholder="Password here..." type="password" class="form-control real_input" required></div>
+            </div>
         </div>
-        <div class="col-md-12">
-            <div class="position-relative form-group"><input name="password2" id="Password2" placeholder="Repeat Password here..." type="password" class="form-control real_input" required></div>
-        </div>
-
-    </div>
-        <div class="  text-right u-margin-top-medium">
+        <div class="text-left ">
             <button type="submit" class="btn-wide btn-pill btn-shadow btn-hover-shine btn btn-primary btn-lg">Modifica parola</button>
     
         </div>

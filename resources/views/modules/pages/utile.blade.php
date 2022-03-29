@@ -19,6 +19,11 @@
                             <li><a href="http://fitascsporting.hu/index.php?page=versenyek" target="_blank" class="a a__medium ident2">Concursuri Ungaria</a></li>
                         </ul>
                         <li><a href="https://www.cpsa.co.uk/" target="_blank" class="a a__medium">CPSA Anglia</a></li>
+                        <li><a href="https://www.agvps.ro/" target="_blank" class="a a__medium">AGVPS</a></li>
+                        <ul>
+                            <li><a href="https://www.agvps.ro/revista.html" target="_blank" class="a a__medium ident2">Revista vanatorul si pescarul român</a></li>
+                        </ul>
+                        
                     </ul>
             </div>        
            

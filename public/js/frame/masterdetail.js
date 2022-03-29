@@ -745,6 +745,10 @@
 
 		function onDoNew(){
 			
+			documentdetailsDB = [];
+			PutDetails();
+			LastDocumentDetailId = -1;
+			mydelta = [];
 
 		}
 
@@ -777,6 +781,8 @@
 
             putDefaultValues();
 			onDoNew();
+		
+
 			$("#detailform").trackChanges();
 			
 			//$('#ul-actions').html("");

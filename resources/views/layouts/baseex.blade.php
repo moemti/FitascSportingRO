@@ -78,6 +78,10 @@
              var APP_URL = {!! json_encode(url('/')) !!}
              var baseUrl = APP_URL;
              let IsSuperUser = 0;
+			 let PersonId = 0;
+			 @if (session()->has('PersonId'))
+			 	PersonId = {{session('PersonId')}};
+			 @endif
              let MyName = '{{session("name")}}';
              @if (session("IsSuperUser") == 1)
                 IsSuperUser = 1;
@@ -134,6 +138,8 @@
 							</div>
 						</div>
 					</div>
+
+					
 					<div class="header-container container">
 						<div class="header-row">
 							<div class="header-column">
@@ -207,34 +213,68 @@
 
 			<div role="main" class="main">
 
-
  
 
                 <section id="marketing" class=" section-no-border m-0 p-0">
-					<div class="container">
+					<div class="container_">
 					    <div class="row justify-content-center text-center align-items-center ">
 								@php
 
-                                    $images = scandir("img/marketing/arrow");                     
-                                    foreach ($images as $image){
+							
 
-                                    if (!in_array($image , ['.', '..'])){
-                                @endphp
-                                <div class="col-lg-2 col-sm-8 mb-3 mb-lg-0" style=" max-width: 100%; height: auto;  overflow: hidden;">
-                                    <a href="//www.arw.ro" target="_blank">  
-                                        <img style="    width: 120px;
-   
-                                        float: left;
-                                        margin: 0px;
-                                        padding: 0px;" src=" {{url('img/marketing/arrow').'/'.$image}}">
-                                    </a>
-                                </div>
-                                                                    
-                                @php
-                                    }
-                                 
+								function outputFiles($path){
+								
+								
 
-                                    }
+									if(file_exists($path) && is_dir($path)){
+									
+									
+										$result = scandir($path);
+										
+									
+
+										$files = array_diff($result, array('.', '..'));
+										
+									
+										if(count($files) > 0){
+										
+											foreach($files as $file){
+
+											
+
+												if(is_file("$path/$file")){
+												
+													$url = url($path.'/'.$file);
+													$link = basename($path);
+												
+													echo " <div class='col-lg-2 col-sm-8 mb-3 mb-lg-0' 
+													style=' max-width: 100%; height: auto;  overflow: hidden;'>
+													<a href='//www.$link' target='_blank'>  
+														<img style='    width: 120px;
+				
+														float: center;
+														margin: 0px;
+														padding: 0px;' src= '$url'>
+													</a>
+												</div>";
+
+
+												} else {
+
+												
+
+												
+														outputFiles("$path/$file");
+													
+												}
+											}
+										} 
+									}
+								}
+								
+								outputFiles("img/marketing");
+
+						
                                 @endphp
 							
 						
@@ -254,34 +294,64 @@
 
 
                             @php
+								
 
-                                    $images = scandir("img/marketing/arrow");                     
-                                    foreach ($images as $image){
 
-                                        if (!in_array($image , ['.', '..'])){
-                            @endphp
-                                        
-                                            <div class="owl-item position-relative overflow-hidden text-center">
-                                              
-                                                    <div class="container position-relative z-index-3 h-100">
-                                                        <!-- <div class="col-lg-3 col-sm-8 mb-3 mb-lg-0" style=" max-width: 100%; height: auto;  overflow: hidden;"> -->
-                                                            <a href="//www.arw.ro" target="_blank" style="display: inline-flex;    float: center;">  
-                                                                <img style="    height: 8vh;
+
+							function outputFiles2($path){
+								
+								
+
+								if(file_exists($path) && is_dir($path)){
+								
+								
+									$result = scandir($path);
+									
+								
+
+									$files = array_diff($result, array('.', '..'));
+									
+								
+									if(count($files) > 0){
+									
+										foreach($files as $file){
+
+										
+
+											if(is_file("$path/$file")){
+											
+												$url = url($path.'/'.$file);
+												$link = basename($path);
+											
+												echo "  <div class='owl-item position-relative overflow-hidden text-center'>
+															<div class='container position-relative z-index-3 h-100'>
+															<a href='//www.$link' target='_blank' style='display: inline-flex;    float: center;'> 
+																<img style='   height: 8vh;
                         
-                                                                float: center;
-                                                                margin: 0px;
-                                                                padding: 0px;" src=" {{url('img/marketing/arrow').'/'.$image}}">
-                                                            </a>
-                                                        <!-- </div> -->
-                                                    </div>
-                                               
-                                            </div>
-                                    
-                                                                            
-                            @php
-                                        }
-                                    }
-                            @endphp
+																	float: center;
+																	margin: 0px;
+																	padding: 0px;' src= '$url'>
+															</a>
+															</div>
+														</div>";
+
+
+											} else {
+
+											
+
+											
+													outputFiles2("$path/$file");
+												
+											}
+										}
+									} 
+								}
+							}
+							
+							outputFiles2("img/marketing");
+
+							@endphp
                           
                         </div>
                     </div>
@@ -294,14 +364,69 @@
 
                  @stack('content')
 
+				 <div class="row justify-content-center text-center align-items-center ">
+						 <div class="row justify-content-center text-center align-items-center ">
+							<p class="alternative-font-4 text-3-5">
+								<strong class="d-block text-color-dark custom-secondary-font text-5-5 line-height-8 mb-0">Parteneri</strong>
+								
+							</p>
+						</div>
+						<div class="col-lg-3 custom-sm-margin-bottom-1 p-b-3">
+                            <!-- <a href="{{Route('welcome')}}" class="alternative-font-4 text-decoration-none text-5-5 font-weight-bold">Sporting Romania</a> -->
+							
+                                    <a href="//www.fitasc.com" target="_blank">  
+                                        <img style="    width: 100px;
+   
+                                        float: center;
+                                        margin: 0px;
+                                        padding: 0px;" src=" {{url('img/parteneri/fitasc.png')}}">
+                                    </a>
+                              
+						</div>
+						<div class="col-lg-3 custom-sm-margin-bottom-1">
+                            <!-- <a href="{{Route('welcome')}}" class="alternative-font-4 text-decoration-none text-5-5 font-weight-bold">Sporting Romania</a> -->
+							
+                                    <a href="//www.arw.ro" target="_blank">  
+                                        <img style="    width: 100px;
+   
+                                        float: center;
+                                        margin: 0px;
+                                        padding: 0px;" src=" {{url('img/parteneri/arrow.png')}}">
+                                    </a>
+                              
+						</div>
+						<div class="col-lg-3 custom-sm-margin-bottom-1">
+                            <!-- <a href="{{Route('welcome')}}" class="alternative-font-4 text-decoration-none text-5-5 font-weight-bold">Sporting Romania</a> -->
+							
+                                    <a href="//www.agvps.ro" target="_blank">  
+                                        <img style="    width: 160px;
+   
+                                        float: center;
+                                        margin: 0px;
+                                        padding: 0px;" src=" {{url('img/marketing/agvps.ro/agvps.png')}}">
+                                    </a>
+                              
+						</div>
+						<div class="col-lg-3 custom-sm-margin-bottom-1">
+                            <!-- <a href="{{Route('welcome')}}" class="alternative-font-4 text-decoration-none text-5-5 font-weight-bold">Sporting Romania</a> -->
+							
+                                    <a href="//www.frts.ro" target="_blank">  
+                                        <img style="    width: 100px;
+                                        float: center;
+                                        margin: 0px;
+										
+                                        padding: 0px;" src=" {{url('img/parteneri/frts.png')}}">
+                                    </a>
+                              
+						</div>
+					</div>
 
 			<footer id="footer" class="bg-color-secondary custom-footer m-0" style="background: url({{asset('img/theme/footer-bg.jpg')}}); background-size: cover;">
 				<div class="container pt-3">
-					<div class="row text-center">
-						<div class="col">
-                            <a href="{{Route('welcome')}}" class="alternative-font-4 text-decoration-none text-5-5 font-weight-bold">Sporting Romania</a>
-						</div>
-					</div>
+					
+					
+
+
 					<hr class="solid tall custom-hr-color-1">
 					<div class="row justify-content-center text-center">
 						<div class="col-lg-3 custom-sm-margin-bottom-1">

@@ -4,8 +4,6 @@ use Illuminate\Support\Facades\Route;
 
 
 
-
-
 Route::get('/',  'App\Http\Controllers\CompetitiiController@returnWelcome')->name('welcome');
 
 Route::get('/welcome',  'App\Http\Controllers\CompetitiiController@returnWelcome')->name('welcome');
@@ -56,8 +54,12 @@ Route::get('/logout', 'App\Http\Controllers\Auth\LoginController@logout')->name(
 
 
         Route::post('/changeCompetitionStatus', 'App\Http\Controllers\CompetitiiController@changeCompetitionStatus');
+        Route::post('/doCompetitionSquads', 'App\Http\Controllers\CompetitiiController@doCompetitionSquads');
+        
+
         Route::post('/registerMe', 'App\Http\Controllers\CompetitiiController@registerMe');
         Route::post('/registerCompetitor', 'App\Http\Controllers\CompetitiiController@registerCompetitor');
+        Route::post('/registerCompetitor/{PersonId}', 'App\Http\Controllers\CompetitiiController@registerCompetitor');
         Route::post('/registerCompetitorDB', 'App\Http\Controllers\CompetitiiController@registerCompetitorDB');
 
         Route::post('/getresultdetailsajax', 'App\Http\Controllers\CompetitiiController@getresultdetailsajax');
