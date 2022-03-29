@@ -366,12 +366,12 @@
 
 				 <div class="row justify-content-center text-center align-items-center ">
 						 <div class="row justify-content-center text-center align-items-center ">
-							<p class="alternative-font-4 text-3-5">
+							<p class="alternative-font-4 text-3-5 mb-0">
 								<strong class="d-block text-color-dark custom-secondary-font text-5-5 line-height-8 mb-0">Parteneri</strong>
 								
 							</p>
 						</div>
-						<div class="col-lg-3 custom-sm-margin-bottom-1 p-b-3">
+						<div class="col-lg-3 custom-sm-margin-bottom-1 pb-3">
                             <!-- <a href="{{Route('welcome')}}" class="alternative-font-4 text-decoration-none text-5-5 font-weight-bold">Sporting Romania</a> -->
 							
                                     <a href="//www.fitasc.com" target="_blank">  
@@ -383,7 +383,7 @@
                                     </a>
                               
 						</div>
-						<div class="col-lg-3 custom-sm-margin-bottom-1">
+						<div class="col-lg-3 custom-sm-margin-bottom-1 pb-3">
                             <!-- <a href="{{Route('welcome')}}" class="alternative-font-4 text-decoration-none text-5-5 font-weight-bold">Sporting Romania</a> -->
 							
                                     <a href="//www.arw.ro" target="_blank">  
@@ -395,7 +395,7 @@
                                     </a>
                               
 						</div>
-						<div class="col-lg-3 custom-sm-margin-bottom-1">
+						<div class="col-lg-3 custom-sm-margin-bottom-1 pb-3">
                             <!-- <a href="{{Route('welcome')}}" class="alternative-font-4 text-decoration-none text-5-5 font-weight-bold">Sporting Romania</a> -->
 							
                                     <a href="//www.agvps.ro" target="_blank">  
@@ -407,7 +407,7 @@
                                     </a>
                               
 						</div>
-						<div class="col-lg-3 custom-sm-margin-bottom-1">
+						<div class="col-lg-3 custom-sm-margin-bottom-1 pb-3">
                             <!-- <a href="{{Route('welcome')}}" class="alternative-font-4 text-decoration-none text-5-5 font-weight-bold">Sporting Romania</a> -->
 							
                                     <a href="//www.frts.ro" target="_blank">  
