@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 
+
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Controllers\MasterController;
@@ -131,6 +134,94 @@ class CompetitiiController extends MasterController
     public function getgallery($CompetitionId){
         $images = scandir("img/gallery/competitions/$CompetitionId");
         return view('modules.pages.gallery', ["images" => $images]);
+    }
+
+
+    public function getClasamentList ($CompetitionId){
+   
+
+        $dataset = $this->BObject()->GetClasament($CompetitionId);
+
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // header
+        $row = 4;
+        $col = 'B';
+        $sheet->setCellValue('B2', 'Lista participanti');
+
+        function IncColumn(&$column){
+            $loc = $column;
+            $column++;
+            return $loc;
+        }
+
+        function IncRow(&$row){
+            $loc = $row;
+
+            $row++;            
+            return $loc;
+        }
+
+
+        $spreadsheet->getDefaultStyle()->getNumberFormat()->setFormatCode('#');
+
+
+
+        $sheet->setCellValue(IncColumn($col).$row, 'Nr');
+        
+        $sheet->setCellValue(IncColumn($col).$row, 'Nume');
+        $sheet->setCellValue(IncColumn($col).$row, 'Categorie');
+        $sheet->setCellValue(IncColumn($col).$row, 'Echipa');
+        $sheet->setCellValue(IncColumn($col).$row, 'Serie Nr CI');
+        $sheet->setCellValue(IncColumn($col).$row, 'CNP');
+        $sheet->setCellValue(IncColumn($col).$row, 'Serie permis arma');
+        $sheet->setCellValue(IncColumn($col).$row, 'Data Exp permis');
+        $sheet->setCellValue(IncColumn($col).$row, 'Marca arma');
+        $sheet->setCellValue(IncColumn($col).$row, 'Serie arma');
+        $sheet->setCellValue(IncColumn($col).$row, 'Calibru arma');
+
+        IncRow($row);
+        $col = 'B';
+
+        foreach($dataset as $d){
+            $sheet->setCellValue(IncColumn($col).$row, strval($d->Position));
+            $sheet->setCellValue(IncColumn($col).$row, strval($d->Person));
+            $sheet->setCellValue(IncColumn($col).$row, strval($d->Category));
+            $sheet->setCellValue(IncColumn($col).$row, strval($d->Team));
+            $sheet->setCellValue(IncColumn($col).$row, strval($d->SerieNrCI));
+            $sheet->setCellValue(IncColumn($col).$row, strval($d->CNP));
+            $sheet->setCellValue(IncColumn($col).$row, strval($d->SeriePermisArma));
+            $sheet->setCellValue(IncColumn($col).$row, strval($d->DataExpPermis));
+            $sheet->setCellValue(IncColumn($col).$row, strval($d->MarcaArma));
+            $sheet->setCellValue(IncColumn($col).$row, strval($d->SerieArma));
+            $sheet->setCellValue(IncColumn($col).$row, strval($d->CalibruArma));
+
+            $col = 'B';
+            IncRow($row);
+        }
+
+        $col = 'B';
+        for ($i = 1; $i <= 20; $i++) {
+            $sheet->getStyle($col)->getAlignment()->setHorizontal('left');
+            $sheet->getColumnDimension(IncColumn($col))->setAutoSize(true);
+        }
+
+
+        ob_clean();
+        $writer = new Xlsx($spreadsheet);
+
+        $filename = 'listaCompetitieSemnat.xlsx';
+        
+        
+        header('Content-Description: File Transfer');
+        header('Content-Type:  application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header("Content-Disposition: attachment; filename=$filename");
+
+        ob_end_clean();
+        $writer->save('php://output');
+        die;
+
     }
 
 
