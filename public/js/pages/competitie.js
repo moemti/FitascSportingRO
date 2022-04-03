@@ -576,6 +576,110 @@
             },
            
 		});
+
+
+
+        // prepare the data
+		var sourcecat =
+		{
+			datatype: "array",
+			localdata: dsClasamentCat,
+			dataFields:
+		
+                    [
+                        { name: 'loc', type: 'number'},
+                        { name: 'Category', type: 'string'},
+                        { name: 'Team', type: 'string'},
+                        { name: 'Person', type: 'string'},
+                        { name: 'Total', type: 'Number'},
+                        { name: 'ShootOffS', type: 'string'},
+                        
+                    ]
+				
+			
+		};
+
+		var dataAdapterCat =  new $.jqx.dataAdapter(sourcecat);
+
+        if ( $("#jqxGridCat").length)
+        $("#jqxGridCat").jqxGrid(
+            {
+                width:'100%',
+                //height: '100%',
+                source: dataAdapterCat,                
+                pageable: false,
+                autoheight: true,
+                sortable: false,
+                altrows: true,
+                enabletooltips: true,
+                editable: false,
+                autorowheight: false,
+                showfilterrow: false,
+                filterable: false,
+                selectionmode: 'none',
+                columns: [
+                    { text: 'Loc', dataField: 'loc', width: '5%' ,cellclassname: cellclass,},
+                    { text: 'Categorie', dataField: 'Category', width: '5%' ,cellclassname: cellclass,},
+                    { text: 'Persoana', dataField: 'Person', width: '70%' ,cellclassname: cellclass,},
+                    { text: 'Total', dataField: 'Total', width: '10%' ,cellclassname: cellclass,},
+                    { text: 'Shoot off', dataField: 'ShootOffS', width: '10%' ,cellclassname: cellclass,},
+
+               ]
+               
+               
+            });
+
+
+        // prepare the data
+		var sourceteam=
+		{
+			datatype: "array",
+			localdata: dsClasamentTeam,
+			dataFields:
+		
+                    [
+                        { name: 'Loc', type: 'number'},
+                        { name: 'Team', type: 'string'},
+                        { name: 'Total', type: 'Number'},
+                        { name: 'Members', type: 'string'},
+                        
+                    ]
+				
+			
+		};
+
+		var dataAdapterTeam =  new $.jqx.dataAdapter(sourceteam);
+
+        if ( $("#jqxGridTeam").length)
+        $("#jqxGridTeam").jqxGrid(
+            {
+                width:'100%',
+                //height: '100%',
+                source: dataAdapterTeam,                
+                pageable: false,
+                autoheight: true,
+                sortable: false,
+                altrows: true,
+                enabletooltips: true,
+                editable: false,
+                autorowheight: false,
+                showfilterrow: false,
+                filterable: false,
+                selectionmode: 'none',
+                columns: [
+                    { text: 'Loc', dataField: 'Loc', width: '5%' ,cellclassname: cellclass,},
+                    { text: 'Echipa', dataField: 'Team', width: '25%' ,cellclassname: cellclass,},
+                    { text: 'Membrii', dataField: 'Members', width: '60%' ,cellclassname: cellclass,},
+                    { text: 'Total', dataField: 'Total', width: '10%' ,cellclassname: cellclass,},
+         
+
+               ]
+               
+               
+            });
+
+
+
 	});
 	   
 

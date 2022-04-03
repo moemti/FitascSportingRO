@@ -35,6 +35,8 @@
 <script>
 
         let dsClasament= @Json($clasament);
+        let dsClasamentCat = @Json($clasamentcategorie);
+        let dsClasamentTeam = @Json($clasamentteams);
 
         let Status = '{{$master[0]->Status}}' ; 
 
@@ -100,9 +102,6 @@
                             @break
                         @case('Open')
 
-
-                  
-
                         @if (session("PersonId"))
                        
                             @php 
@@ -134,7 +133,13 @@
                             <button id="btnCreateSquadsAll"  data-type="All" class="createSquads btn btn-secondary btn-outline mb-2">Create squads all</button>
                             <button id="btnCreateSquadsDiff"  data-type="Diff" class="createSquads btn btn-secondary btn-outline mb-2">Create squads diff</button>
                             <a id="btnDownloadListaAll" href="{{url('/competitionListDown/').'/'.$master[0]->CompetitionId}}" data-type="Diff" class=" btn btn-secondary btn-outline mb-2">Download lista</a>
-                            
+                            <div class="row"> 
+                            <div class="btnwrapper m-2">
+                            <b>Download serii</b>
+                            <a id="btnDownloadListaSquad1" href="{{url('/competitionDownSquads/').'/'.$master[0]->CompetitionId}}/1" data-type="Diff" class=" btn btn-secondary btn-outline mb-2">Ziua 1</a>
+                            <a id="btnDownloadListaSquad2" href="{{url('/competitionDownSquads/').'/'.$master[0]->CompetitionId}}/2" data-type="Diff" class=" btn btn-secondary btn-outline mb-2">Ziua 2</a>
+                            </div>
+                            </div>
                         @endif
                         @break
 
@@ -142,6 +147,7 @@
                          @if (session("IsSuperUser") == 1)
                             <button id="btnOpen" data-status="Open" class = "cmpStatusChange btn btn-secondary btn-outline mb-2" >Open</button>
                             <button id="btnFinish"  data-status="Finished" class="cmpStatusChange btn btn-secondary btn-outline mb-2">Finish competition</button>
+                            <a id="btnAddResults"  href="{{url('/editresultsall/').'/'.$master[0]->CompetitionId}}" data-status="Finished" class=" btn btn-secondary btn-outline mb-2">Adauga rezultate</a>
                         @endif
 
                         @break
@@ -162,12 +168,32 @@
             
         </div>
 
-        <div class="d-flex text-left">
+      
+
+
+
+    </div>
+                                
+       @if ($master[0]->Status == 'Finished')
+       <h6>Clasamente categorii</h6>
+        <div id ="jqxGridCat" class="gridnou">
+                    
+        </div> 
+
+        <h6>Clasamente pe echipe</h6>
+        <div id ="jqxGridTeam" class="gridnou">
+                    
+        </div> 
+
+       @endif
+       <div class="d-flex text-left">
         @switch($master[0]->Status)
             @case('Finished')
+
+
                
             @case('Progress')
-                <h4>Clasament</h4>
+                <h4>Clasament open</h4>
                 @break
         
             @case('Open')
@@ -181,10 +207,6 @@
           </div>
 
 
-
-
-    </div>
-        
         <div class="d-flex text-right">
 
             @if ((session('IsSuperUser') == 1) && (in_array(  $master[0]->Status,  array("Open","Progress"))  ))
@@ -196,7 +218,9 @@
             @endif
             </div>
             <button id="exportexcel">Excel</button>
+
             <!-- <button id="exportpdf">PDF</button> -->
+
             <div id ="jqxGrid" class="gridnou">
                     
             </div>

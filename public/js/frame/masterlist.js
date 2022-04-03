@@ -18,6 +18,8 @@
 
 	var filtersource = undefined;
 
+	let columngroups = [];
+
 	let urls = {
 		saveurl: undefined,
 		getmasterurl: undefined,
@@ -67,7 +69,7 @@
 		
 		
 		function CheckExists(item, index){
-			Exists = false;
+		
 			if (item[MasterPrimaryKey] === Oper[MasterPrimaryKey]){
 				if (Oper.Operation == 'D')
 					if (mydelta[index].Operation == 'I')
@@ -220,11 +222,24 @@
         
 
 		function CancelUpdates(){
-	
+			if (mydelta.length == 0)
+				return;
+			RefreshMasterAjax();
 		};
 
 		function getOtherSaveFields(){
-	
+			let results = {};
+			$(".container :input").each(function(){
+				var val;
+				if ($(this).is(':checkbox'))
+					val = $(this).prop( "checked")?1:0;
+				else
+					val =  $(this).val();
+
+				results[$(this).attr('id')] = val;
+			
+			});
+			return results;
 		};
 
 		function RetrieveFields(){
@@ -412,6 +427,26 @@
 		}
 
 
+		function RefreshMasterAjax(){
+
+			let data = {};
+			data.MasterFilter = $('#MasterFilter').val();
+
+
+			$.ajax({
+				type: 'POST',
+		
+				url: baseUrl + urls.getlistajax,
+				data: data,
+				success: function (data) {
+					ShowSuccess('Succes');
+				
+					RefreshMaster(data);
+
+				}
+			});
+		}
+
 
 
 	/////////////////////
@@ -459,8 +494,13 @@
 			$('#saveMaster').on('click',
 			function(event){
 				SaveUpdates();
-			}
-		);			
+			});
+
+			$('#cancelMaster').on('click',
+			function(event){
+				CancelUpdates();
+			});
+				
 
 
 			// prepare the data
@@ -525,18 +565,20 @@
 			$("#jqxGrid").jqxGrid(
 			{
 				width:'100%',
-				height: '100%',
+		
 				source: dataAdapter,                
 				pageable: false,
-				autoheight: false,
-				sortable: true,
+				showfilterrow: true,
+				filterable: true,
+				sortable: false,
 				altrows: true,
 				enabletooltips: true,
 				editable: true,
 				autorowheight: false,
-				autoheight: false,
-				selectionmode: 'singlerow',
+				autoheight: true,
+				selectionmode: 'multiplecellsadvanced',
 				columns: MasterColumns,
+				columngroups: columngroups
 				
 				
 			});

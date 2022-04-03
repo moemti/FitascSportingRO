@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Controllers\MasterController;
 use App\Models\Dictionaries\Dictionary;
+use App\Models\Competitions\Competition;
 
 class CompetitiiController extends MasterController
 {
@@ -22,7 +23,14 @@ class CompetitiiController extends MasterController
     }
 
     public function getClasament($ItemId){
-        return view( 'modules.pages.competitiedetail',['master' => $this->BObject()->getMaster($ItemId), 'clasament' => $this->BObject()->GetClasament($ItemId)]);
+        return view( 'modules.pages.competitiedetail',['master' => $this->BObject()->getMaster($ItemId), 'clasament' => $this->BObject()->GetClasament($ItemId),
+        'clasamentcategorie' => $this->BObject()->GetClasamentCategory($ItemId),
+        'clasamentteams' => $this->BObject()->GetClasamentTeams($ItemId)
+    
+        
+    ]);
+
+
     }
 
     public function editresult($ResultId){
@@ -35,6 +43,9 @@ class CompetitiiController extends MasterController
                                                         
                                                         ]);
     }
+
+
+
 
 
     public function getClasamentdata($data){
@@ -224,5 +235,111 @@ class CompetitiiController extends MasterController
 
     }
 
+
+    public function getClasamentSquads ($CompetitionId, $Day){
+      
+
+        $dataset = $this->BObject()->GetCompetitors($CompetitionId);
+        $info = Competition::getCompetitionInfo($CompetitionId);
+        $title = $info->NumeLung;
+
+
+        $date = $Day==1?$info->StartDate: $info->EndDate;
+
+
+        // header
+        $row = 7;
+        $col = 'A';
+        $nr = 0;
+      
+        function IncColumn(&$column){
+            $loc = $column;
+            $column++;
+            return $loc;
+        }
+
+        function IncRow(&$row){
+            $loc = $row;
+
+            $row += 2;            
+            return $loc;
+        }
+
+        $inputFileType = 'Xlsx'; // Xlsx - Xml - Ods - Slk - Gnumeric - Csv
+        $inputFileName = "Templates/Squad.xlsx";
+
+        /**  Create a new Reader of the type defined in $inputFileType  **/
+        $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader($inputFileType);
+        /**  Load $inputFileName to a Spreadsheet Object  **/
+
+
+        $spreadsheet = $reader->load($inputFileName);
+        $sheet = clone $spreadsheet->getSheet(0);
+
+
+        $spreadsheet2 =  new Spreadsheet();
+        $spreadsheet2->getDefaultStyle()->getNumberFormat()->setFormatCode('#');
+        $spreadsheet2->addExternalSheet($sheet);
+
+        $sheet2 = $spreadsheet2->getSheet(1);
+        $sheet2->setTitle('Seria 1');
+
+    
+        $sheet2->setCellValue('A2','Seria '. $nr + 1);
+        $sheet2->setCellValue('C1',$title);
+        $sheet2->setCellValue('AC1',$date);
+        
+
+ 
+
+        foreach($dataset as $d){
+
+            if ($nr + 1 < $d->NrSerie){
+                $nr++;
+               // break;
+                unset($sheet2);
+                unset($sheet);
+                unset($spreadsheet);
+
+                $spreadsheet = $reader->load($inputFileName);
+                $sheet = $spreadsheet->getSheet(0);
+
+                $sheet->setTitle('Seria '.$d->NrSerie);
+
+                $spreadsheet2->addExternalSheet($sheet);
+                $sheet2 = $spreadsheet2->getSheet($nr + 1);
+                $sheet2->setCellValue('A2', 'Seria '. $d->NrSerie);
+                $sheet2->setCellValue('C1',$title);
+                $sheet2->setCellValue('AC1',$date);
+                $row = 7;
+
+
+            }
+
+           // $sheet2->setCellValue(IncColumn($col).$row, strval($d->LocSerie));
+            $sheet2->setCellValue(IncColumn($col).$row, strval($d->BIB));
+            $sheet2->setCellValue(IncColumn($col).$row, strval($d->Name));
+            $col = 'A';
+            IncRow($row);
+        }
+
+        $spreadsheet2->removeSheetByIndex(0);
+
+        ob_clean();
+        $writer = new Xlsx($spreadsheet2);
+
+        $filename = 'Squads.xlsx';
+        
+        
+        header('Content-Description: File Transfer');
+        header('Content-Type:  application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header("Content-Disposition: attachment; filename=$filename");
+
+        ob_end_clean();
+        $writer->save('php://output');
+        die;
+
+
+    }
 
 }

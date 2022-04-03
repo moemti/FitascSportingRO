@@ -48,7 +48,13 @@ Route::get('/logout', 'App\Http\Controllers\Auth\LoginController@logout')->name(
 
 // permisiune de editare competitii
         Route::get('/editresult/{id}', 'App\Http\Controllers\CompetitiiController@editresult');
-        
+
+
+        Route::get('/editresultsall/{id}', 'App\Http\Controllers\ResultsControllerAll@getlist');
+        Route::post('/saveresultsall', 'App\Http\Controllers\ResultsControllerAll@savelist');
+        Route::post('/getresultallajax', 'App\Http\Controllers\ResultsControllerAll@getlistajax');
+
+
         Route::post('/getresultajax', 'App\Http\Controllers\CompetitiiController@getresultajax');
 
 
@@ -80,6 +86,9 @@ Route::get('/logout', 'App\Http\Controllers\Auth\LoginController@logout')->name(
     Route::GET('/clasament/{id}', 'App\Http\Controllers\CompetitiiController@getClasament');
     Route::GET('/clasamentdata/{id}', 'App\Http\Controllers\CompetitiiController@getClasamentdata');
     Route::GET('/competitionListDown/{id}', 'App\Http\Controllers\CompetitiiController@getClasamentList');
+    Route::GET('/competitionDownSquads/{id}/{day}', 'App\Http\Controllers\CompetitiiController@getClasamentSquads');
+
+    
 
 
     Route::get('/poligon/{id}', 'App\Http\Controllers\NavigationController@getPoligon');

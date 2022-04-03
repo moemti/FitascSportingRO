@@ -364,7 +364,7 @@
 
                  @stack('content')
 
-				 <div class="row justify-content-center text-center align-items-center ">
+				 <div class="row justify-content-center text-center align-items-center section section-default bg-color-light-scale-1">
 						 <div class="row justify-content-center text-center align-items-center ">
 							<p class="alternative-font-4 text-3-5 mb-0">
 								<strong class="d-block text-color-dark custom-secondary-font text-5-5 line-height-8 mb-0">Parteneri</strong>

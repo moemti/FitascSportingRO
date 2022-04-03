@@ -23,7 +23,7 @@ class Competition extends BObject{
 
 
     public $MasterSelect = "SELECT `CompetitionId`, c.Name, `StartDate`, `EndDate`, c.`RangeId`, `Targets`, c.`SportFieldId` , 
-                    r.name as `Range`, s.Name as SportField, year(StartDate) as Year,  concat(c.Name , ' ' , r.Name , ' ' , c.EndDate) as NumeLung,
+                    r.name as `Range`, s.Name as SportField, year(StartDate) as Year,  concat(c.Name , ' ' , r.Name , ' ' , c.StartDate) as NumeLung,
                     concat(DATE_FORMAT(StartDate, '%d/%m'), ' - ', DATE_FORMAT(EndDate, '%d/%m %Y')) as Perioada, Status
                     FROM `competition` c
                     inner join `range` r on r.RangeId = c.RangeId
@@ -349,7 +349,14 @@ class Competition extends BObject{
         }
 
         
+        public static function getCompetitionName($Item){
+            return DB::select("select concat(c.Name , ' ' , r.Name , ' ' , c.StartDate) as NumeLung from competition c inner join `range` r on r.RangeId = c.RangeId where c.CompetitionId = $Item")[0]->NumeLung;
+        }
 
+        public static function getCompetitionInfo($Item){
+            return DB::select("select concat(c.Name , ' ' , r.Name , ' ' , c.StartDate) as NumeLung,
+                StartDate, EndDate from competition c inner join `range` r on r.RangeId = c.RangeId where c.CompetitionId = $Item")[0];
+        }
 
 
         ////////////////    rezultate    //////////////////
@@ -377,6 +384,138 @@ class Competition extends BObject{
         public function GetClasament($CompetitionId){
             return DB::select(str_replace(':CompetitionId', $CompetitionId,$this->ClasamentSelect));
         }
+
+
+        public function GetClasamentCategory($CompetitionId){
+
+        $sql =  "
+        SELECT 
+             p.Name as Person, sc.Code as Category, t.Name as Team ,loc, sof.Total, ShootOffS
+    
+                        FROM result r
+    
+    
+                        left join (
+                            select GROUP_CONCAT(case when d.RoundNr > 8 then d.Result else null end  order by d.RoundNr) as ShootOffS,
+                                    sum(case when d.RoundNr > 8 then d.Result/(10 *( d.RoundNr - 8))  else 0 end ) as ShootOff, 
+                                    sum(case when d.RoundNr <= 8 then d.Result else 0 end ) as Total,
+                                    sum(case when d.RoundNr <= 4 then d.Result else 0 end ) as Total1,
+                                    sum(case when d.RoundNr <= 8 and d.RoundNr > 4 then d.Result else 0 end ) as Total2,
+                            
+                            d.ResultId
+                            from resultdetail d 
+                            group by ResultId
+                            order by d.RoundNr 
+                        ) sof on sof.ResultId = r.ResultId 
+    
+    
+                        left join (select concat(loc,' ' , vvv.Code ) as ResultatCat , loc, ResultId from (
+    
+                            SELECT  
+                                    ROW_NUMBER() OVER (
+                                      PARTITION BY sc.Code 
+                                      ORDER BY sof.Total desc, ShootOff desc) as loc ,
+    
+                                      r.ResultId, sc.Code
+    
+    
+                                                FROM result r
+    
+    
+    
+                                                left join (
+                                                    select GROUP_CONCAT(case when d.RoundNr > 8 then d.Result else null end  order by d.RoundNr) as ShootOffS,
+                                                            sum(case when d.RoundNr > 8 then d.Result/(10 *( d.RoundNr - 8))  else 0 end ) as ShootOff, 
+                                                            sum(case when d.RoundNr <= 8 then d.Result else 0 end ) as Total,
+    
+    
+                                                    d.ResultId
+                                                    from resultdetail d 
+                                                    group by ResultId
+                                                    order by d.RoundNr 
+                                                ) sof on sof.ResultId = r.ResultId 
+    
+                                                left join shootercategory sc on sc.ShooterCategoryId = r.ShooterCategoryId
+    
+                                                where r.CompetitionId = :CompetitionId and sc.code <> 'STR'
+                                                order by sc.Code, loc )vvv
+    
+                                                where loc < 4) cps on cps.ResultId = r.ResultId
+    
+    
+                        inner join person p on p.PersonId = r.PersonId
+                        left join shootercategory sc on sc.ShooterCategoryId = r.ShooterCategoryId
+                        left join team t on t.TeamId = r.TeamId
+                        where r.CompetitionId = :CompetitionId
+                        and ResultatCat is not null
+                        order by Category, loc
+                ";
+            return DB::select(str_replace(':CompetitionId', $CompetitionId, $sql));
+        }
+        
+
+        public function GetClasamentTeams($CompetitionId){
+
+            $sql =  "
+            
+            
+            
+            select     ROW_NUMBER() OVER ( order by sum(Total) desc ) as Loc,  sum(Total) as Total, Team, GROUP_CONCAT(person order by locechipa) as Members  from 
+            
+            
+            ( select * from (
+                                                    
+                                                    select    ROW_NUMBER() OVER (
+                                                    
+                                                    	Partition by rr.TeamId
+                                                        order by IsInTeam desc ,soft.Total desc
+                                                    ) as locechipa, rr.ResultId, rr.IsInTeam, soft.Total, rr.PersonId, p.Name as Person, rr.TeamId, t.Name as Team
+                                                    
+                                                    FROM result rr
+               										inner join person p on p.PersonId = rr.PersonId
+                									inner join team t on t.TeamId = rr.TeamId
+                                                    inner join (
+                                                            select GROUP_CONCAT(case when d.RoundNr > 8 then d.Result else null end  order by d.RoundNr) as ShootOffS,
+                                                                        sum(case when d.RoundNr > 8 then d.Result/(10 *( d.RoundNr - 8))  else 0 end ) as ShootOff, 
+                                                                        sum(case when d.RoundNr <= 8 then d.Result else 0 end ) as Total,
+
+
+                                                                d.ResultId
+                                                                from resultdetail d 
+                                                                group by ResultId
+
+
+                                                            ) soft on soft.ResultId = rr.ResultId 
+        
+        											left join shootercategory sc on sc.ShooterCategoryId = rr.ShooterCategoryId
+
+                                                	where rr.CompetitionId = :CompetitionId and sc.code <> 'STR'  
+                                                
+                                                    
+                                                    order by IsInTeam desc, Total desc, locechipa
+                ) X where locechipa < 4
+			order by Total desc , locechipa)
+            table1
+            group by TeamId
+            order by Total desc
+        
+                    ";
+                return DB::select(str_replace(':CompetitionId', $CompetitionId, $sql));
+            }
+        
+        public function GetCompetitors($CompetitionId){
+            $sql =  " select BIB , NrSerie,  ROW_NUMBER() OVER ( Partition by NrSerie
+                                                    order by BIB 
+                                                ) as LocSerie, p.Name
+
+            FROM result rr
+            inner join person p on p.PersonId = rr.PersonId
+            where rr.CompetitionId = $CompetitionId 
+            order by  NrSerie, BIB";
+            return DB::select($sql);
+
+        }
+
 
         public function getresultDetails($ResultId){
             $sql = "select * from resultdetail r where ResultId = $ResultId";

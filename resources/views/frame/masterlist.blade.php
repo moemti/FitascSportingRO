@@ -1,6 +1,6 @@
-@extends('layouts.base')
+@extends('layouts.baseex')
 
-@push('scripts')
+@push('footerscripts')
 
     <script type="text/javascript" src="{{asset('js/components/jqwidgets/jqxcore.js')}}"></script>
     <script type="text/javascript" src="{{asset('js/components/jqwidgets/jqxdata.js')}}"></script> 
@@ -73,26 +73,18 @@
 
 @push('content')
 
-    <div class="page_content page_content_master">
 
-        <div class="page_content_header">
+<section class="content-termeni section section-tertiary section-no-border m-0">
+        <div class="container">
             <h1>@stack('title')</h1>
     
             <h2>@stack('subtitle')</h2>
 
             @stack('aftertitle')
 
-        </div>
-
+       
         
-        <div class="page_content_content">
-
-                <form  method="POST" id="detailform">
-
-
-                @stack('masterform')
-
-                </form>
+       
 
                 @stack('content_before')
                 <div class="row">
@@ -102,6 +94,8 @@
                         <button id="addMaster" class="btn-pill btn-shadow btn-hover-shine btn btn-primary btn-sm">Add</button>
                     </div>
                 </div>
+
+
                 <div id="jqxGrid"></div>
 
                 
@@ -112,12 +106,13 @@
                
                 @stack('content_after')
 
-        </div>
+       
         <div class="text-right u-margin-top-medium">
                 <button id="saveMaster" class="btn-wide btn-pill btn-shadow btn-hover-shine btn btn-primary btn-lg">Salveaza</button>
         </div>
+        </div>
 
-    </div>
+    </section>
     
 
 

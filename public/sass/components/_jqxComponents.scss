@@ -64,3 +64,25 @@
     border-radius: .2rem;
     background-color: rgba($color-primary-light, 0.95);
 }
+
+.clFirstDay{
+    background-color: rgb(252, 236, 221) !important;
+    &.jqx-grid-cell-selected{
+        background-color: rgba(252, 236, 221, 0.378) !important;
+    }
+}
+.clSecondDay{
+    background-color: rgb(247, 213, 182) !important;
+    &.jqx-grid-cell-selected{
+        background-color:  rgba(247, 214, 182, 0.344) !important;
+    }
+}
+.clShootOff{
+    background-color: rgb(191, 190, 189) !important;
+    &.jqx-grid-cell-selected{
+        background-color:rgba(191, 190, 189, 0.378) !important;
+    }
+}
+.clTotal{
+    background-color:  rgb(255, 188, 157)e !important;
+}
