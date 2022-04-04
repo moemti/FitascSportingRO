@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 
+Route::get('/debug', function(){  return view('debug');});
 
 Route::get('/',  'App\Http\Controllers\CompetitiiController@returnWelcome')->name('welcome');
 

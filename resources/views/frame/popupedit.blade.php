@@ -1,6 +1,6 @@
 <div id="popupDialog" class="modal  bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" datapapp-bs-toggle="modal">
     <div class="modal-dialog"  id="popupDialog-content" >
-        <div class="modal-content panel-primary">
+        <div class="modal-content panel-primary" style="overflow: scroll;">
     
             <div class="modal-body" id='popup_body' >
                 
