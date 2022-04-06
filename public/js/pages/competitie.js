@@ -114,8 +114,8 @@
 
         function createSquads(e){
             lastevent = e;
-            let type = lastevent.target.dataset.type == 'All'?' pentru toti participantii':' doar pentru cei ce nu au inca squad'
-            confirm(`Doriti sa generati squadurile${type}?`, createSquadsDo);
+            let type = lastevent.target.dataset.type == 'All'?'Doriti sa generati squadurile pentru toti participantii':lastevent.target.dataset.type=='Clear'?'Doriti sa stergeti BIB-urile': 'Doriti sa generati squadurile doar pentru cei ce nu au inca squad'
+            confirm(`${type}?`, createSquadsDo);
         }
 
         function createSquadsDo(){

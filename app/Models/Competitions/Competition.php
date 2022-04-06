@@ -192,6 +192,10 @@ class Competition extends BObject{
 
         public function doCompetitionSquads($CompetitionId, $Type){
 
+            if ($Type == 'Clear'){
+                DB::select("update result set BIB = null, NrSerie = null where CompetitionId = $CompetitionId");
+                return 'OK';
+            }
             
             $MaxSquad = 6; // nr max de competitori
             $NrParallel = 2;  // nr de poligoane
@@ -272,10 +276,7 @@ class Competition extends BObject{
                 DB::select($sql);
                 array_push($mesaj, [$nr, $c, $sql]);
                 $c += $nr;
-
             }
-
-
             return 'OK';
 
         }
