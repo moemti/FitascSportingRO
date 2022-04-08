@@ -76,7 +76,12 @@ class Results extends BObject{
                         MarcaArma = ':MarcaArma',
                         SerieArma = ':SerieArma',
                         CalibruArma = ':CalibruArma'
-                        WHERE PersonId = :PersonId; ";
+                        WHERE PersonId = :PersonId; 
+                        
+                        ";
+
+        
+
 
     public $MasterDelete = "
     

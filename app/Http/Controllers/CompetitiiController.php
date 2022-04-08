@@ -236,6 +236,82 @@ class CompetitiiController extends MasterController
     }
 
 
+
+    public function getClasamentListSerii ($CompetitionId){
+   
+
+        $dataset = $this->BObject()->GetClasamentSerii($CompetitionId);
+
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // header
+        $row = 4;
+        $col = 'B';
+        $sheet->setCellValue('B2', 'Lista participanti');
+
+        function IncColumn(&$column){
+            $loc = $column;
+            $column++;
+            return $loc;
+        }
+
+        function IncRow(&$row){
+            $loc = $row;
+
+            $row++;            
+            return $loc;
+        }
+
+
+        $spreadsheet->getDefaultStyle()->getNumberFormat()->setFormatCode('#');
+
+
+
+        $sheet->setCellValue(IncColumn($col).$row, 'BIB');
+        $sheet->setCellValue(IncColumn($col).$row, 'Serie');
+        $sheet->setCellValue(IncColumn($col).$row, 'Nume');
+        $sheet->setCellValue(IncColumn($col).$row, 'Categorie');
+        $sheet->setCellValue(IncColumn($col).$row, 'Echipa');
+       
+
+        IncRow($row);
+        $col = 'B';
+
+        foreach($dataset as $d){
+            $sheet->setCellValue(IncColumn($col).$row, strval($d->BIB));
+            $sheet->setCellValue(IncColumn($col).$row, strval($d->NrSerie));
+            $sheet->setCellValue(IncColumn($col).$row, strval($d->Person));
+            $sheet->setCellValue(IncColumn($col).$row, strval($d->Category));
+            $sheet->setCellValue(IncColumn($col).$row, strval($d->Team));
+           
+            $col = 'B';
+            IncRow($row);
+        }
+
+        $col = 'B';
+        for ($i = 1; $i <= 20; $i++) {
+            $sheet->getStyle($col)->getAlignment()->setHorizontal('left');
+            $sheet->getColumnDimension(IncColumn($col))->setAutoSize(true);
+        }
+
+
+        ob_clean();
+        $writer = new Xlsx($spreadsheet);
+
+        $filename = 'listaCompetitieSerii.xlsx';
+        
+        
+        header('Content-Description: File Transfer');
+        header('Content-Type:  application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header("Content-Disposition: attachment; filename=$filename");
+
+        ob_end_clean();
+        $writer->save('php://output');
+        die;
+
+    }
+
     public function getClasamentSquads ($CompetitionId, $Day){
       
 

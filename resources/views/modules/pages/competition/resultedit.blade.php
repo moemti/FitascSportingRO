@@ -33,7 +33,7 @@
         <div class="col-2 col-md-2">
             <div class="position-relative form-group">
                 <label for="NrSerie">Serie</label>
-                <input name="NrSerie" id="NrSerie" type="text" class="form-control" disabled>
+                <input name="NrSerie" id="NrSerie" type="text" class="form-control" >
             </div>
         </div>
     </div>
@@ -76,7 +76,7 @@
         <div class="col-2 col-md-2">
             <div class="position-relative form-group">
                 <label for="IsInTeam">Este in echipa</label>
-                <input name="IsInTeam" id="IsInTeam"  type="checkbox"  class="form-check-input" >
+                <input name="IsInTeam" id="IsInTeam"  type="number"  class="form-control" >
              </div>
         </div>
     </div>
