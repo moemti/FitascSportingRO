@@ -12,13 +12,13 @@
 
 .compet_status{
     text-decoration: none;
-    padding: .1rem 2rem;
+    padding: 3px 1rem;
     display: inline-block;
     border-radius: .5rem;
     transition: all .2s;
-    position: relative;
-    font-size: 1.2rem;
-    color: rgb(255, 255, 255);
+    position: absolute;
+   
+    color: rgb(255, 8, 0);
     background-image: linear-gradient(
         to  top left,
         rgba($color-primary, 0.9),
@@ -30,24 +30,24 @@
        // color: silver;
         background-image: linear-gradient(
             to  top left,
-            rgba(green, 0.7),
-            rgba(green, 0.2));
+            rgba(rgb(210, 248, 198), 0.7),
+            rgba(rgb(235, 255, 235), 0.2));
     
     }
     &.Progress{
        // color: silver;
         background-image: linear-gradient(
             to  top left,
-            rgba(orangered, 0.7),
-            rgba(orangered, 0.2));
+            rgba(rgb(248, 164, 134), 0.7),
+            rgba(rgb(252, 219, 207), 0.2));
     
     }
     &.Finished{
        // color: silver;
         background-image: linear-gradient(
             to  top left,
-            rgba(rgb(0, 8, 255), 0.7),
-            rgba(rgb(0, 8, 255), 0.2));
+            rgba(rgb(83, 37, 18), 0.7),
+            rgba(rgb(246, 214, 184), 0.2));
     
     }
 } 

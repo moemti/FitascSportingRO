@@ -180,8 +180,8 @@
 
                         <div class="d-block text-right card-footer">
                             @stack('DetailButtons')
-                            <a href="javascript:CancelUpdates();" class="btn-wide btn btn-secondary">Cancel</a>
-                            <button type ="submit" class="btn-wide btn btn-success editable">Save</button>
+                            <a href="javascript:CancelUpdates();" class="btn-wide btn btn-secondary">{{transex('Cancel')}}</a>
+                            <button type ="submit" class="btn-wide btn btn-success editable">{{transex('Save')}}</button>
                         </div>  
 
                     @endif
@@ -229,7 +229,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Attach file</h5>
+                <h5 class="modal-title" id="exampleModalLongTitle">{{transex('Attach file')}}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">X</span>
                 </button>
@@ -238,13 +238,13 @@
             	<form id="uploadform" class="form-horizontal" method="post" name="uploadform" enctype="multipart/form-data">
                                     			{!! csrf_field() !!}
                 	<input class="btn-primary" name="file" id="theFile" type="file" class="form-control-file">
-                	<small>Description</small>
+                	<small>{{transex('Description')}}</small>
                 	<input name="description" id="attachdescription" type="text" class="form-control-file">
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button id="buttonUpload" type="button" class="btn btn-primary">Upload</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{{transex('Close')}}</button>
+                <button id="buttonUpload" type="button" class="btn btn-primary">{{transex('Upload')}}</button>
             </div>
         </div>
     </div>

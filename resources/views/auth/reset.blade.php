@@ -26,11 +26,11 @@
 
                 <div class="row">   
                     <div class=" d-block text-right u-margin-top-medium">
-                        <button class="btn-wide btn-pill btn-shadow btn-hover-shine btn btn-primary btn-lg">Reseteaza</button>
+                        <button class="btn-wide btn-pill btn-shadow btn-hover-shine btn btn-primary btn-lg">{{transex('Reseteaza')}}</button>
                     </div>
                     </br>
                     <div>
-                        <h6 class="text-succcess"><span>Dupa resetare veti primi un email si apasati pe link-ul din continut</span></h6>
+                        <h6 class="text-succcess"><span>{{transex('Dupa resetare veti primi un email si apasati pe link-ul din continut')}}</span></h6>
                                 
                     </div>
                 </div>
@@ -41,7 +41,7 @@
 
             <div class="form-row">    
                     <div class="col-md-12">
-                        <div><a href="{{route('login')}}">Login</a></div>
+                        <div><a href="{{route('login')}}">{{transex('Login')}}</a></div>
                         
                     </div>
             </div>

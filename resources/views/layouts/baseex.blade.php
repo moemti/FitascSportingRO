@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="{{session('Locale')}}">
 	<head>
 
 		<!-- Basic -->
@@ -7,6 +7,7 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">	
 
 		<title>Sporting Romania</title>	
+	
 
 		<meta name="keywords" content="Sporting romania" />
 		<meta name="description" content="Sporting Romania">
@@ -53,11 +54,13 @@
 			<!-- Global site tag (gtag.js) - Google Analytics -->
 			<script async src="https://www.googletagmanager.com/gtag/js?id=G-6F7LNKW6T2"></script>
 			<script>
-			window.dataLayer = window.dataLayer || [];
-			function gtag(){dataLayer.push(arguments);}
-			gtag('js', new Date());
+				window.dataLayer = window.dataLayer || [];
+				function gtag(){dataLayer.push(arguments);}
+				gtag('js', new Date());
 
-			gtag('config', 'G-6F7LNKW6T2');
+				gtag('config', 'G-6F7LNKW6T2');
+
+			
 			</script>
 
 
@@ -87,7 +90,28 @@
                 IsSuperUser = 1;
              @endif
              
+			 let transarray = @Json(gettranarray());
+
+			let trano ={};
+			transarray.map(v=>trano[v.Base] = v.Translation);
+
+			function translate(base){
+				r = trano[base];
+				return r?r:base;
+
+				if (!r){
+
+					
+
+
+
+				}
+
+			}
+
+
         </script>
+	
 
         @stack('css')
         @stack('scripts')
@@ -96,6 +120,9 @@
 	<body>
 
     @php 
+
+	
+
       $menus = config('navigation.MENU') 
     @endphp
 		<div class="body">
@@ -105,9 +132,34 @@
 						<div class="container">
 							<div class="row justify-content-between">
 								<div class="col-auto">
-									<!-- <p class="custom-secondary-font font-weight-bold custom-text-color-1 text-6 mb-0">Sporting Romania</p> -->
+									
+
+
+										<div class="dropdownlang">
+											<button class="dropbtn lang-RO">
+												<img src="{{asset('img/flags').'/'.session('Locale').'.png'}}"   height="25"alt="">
+
+											</button>
+											<div class="dropdown-content">
+												<a href="#" class=" lang-RO"><img src="{{asset('img/flags/RO.png')}}" onclick="setLanguage('RO')"  height="20"alt=""></a>
+												<a href="#" class=" lang-EN"><img src="{{asset('img/flags/EN.png')}}" onclick="setLanguage('EN')"  height="20"alt=""></a>
+												<a href="#" class=" lang-HU"><img src="{{asset('img/flags/HU.png')}}" onclick="setLanguage('HU')"  height="20"alt=""></a>
+											</div>
+											</div>
+
+							
+
+
+
 								</div>
 								<div class="col-auto d-flex align-items-center">
+								
+								
+
+								
+
+
+
 									<nav>
 										<ul class="list list-unstyled d-flex text-1 mb-0  social-icons-medium  me-2 mb-0 ms-1">
 											
@@ -119,26 +171,26 @@
 											<!-- <li class="mb-0 ms-4-5 d-none d-sm-block"><a href="demo-church-events.html" class="alternative-font-4 text-decoration-none text-3-5 font-weight-bold">CALENDAR</a></li> -->
 										</ul>
                                     </nav>
-                                        <div class="header-nav-features  ms-5-5">
-                                            <ul class="header-social-icons social-icons social-icons-clean social-icons-icon-dark-2 social-icons-medium me-2 mb-0 d-sm-block ms-1">
-                                            <li class="social-icons-googleplus">
-                                                    @if (session("PersonId") > 0)
-                                                    <a href="{{Route('logout')}}" class="">
-                                                        <i class="fas fa-user-slash"></i>
-                                                    </a>
-                                                    @else
-                                                    <a href="{{Route('login')}}" class="">
-                                                        <i class="fas fa-user"></i>
-                                                    </a>
-                                                    @endif  
-                                            </li>
-                                            </ul>
-                                        </div>
+
+									<div class="header-nav-features  ms-5-5">
+										<ul class="header-social-icons social-icons social-icons-clean social-icons-icon-dark-2 social-icons-medium me-2 mb-0 d-sm-block ms-1">
+										<li class="social-icons-googleplus">
+												@if (session("PersonId") > 0)
+												<a href="{{Route('logout')}}" class="">
+													<i class="fas fa-user-slash"></i>
+												</a>
+												@else
+												<a href="{{Route('login')}}" class="">
+													<i class="fas fa-user"></i>
+												</a>
+												@endif  
+										</li>
+										</ul>
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-
 					
 					<div class="header-container container">
 						<div class="header-row">
@@ -164,32 +216,39 @@
                                                         <li 
                                                                 @if (is_array($menu[0]))
                                                                         class="dropdown dropdown-full-color dropdown-primary">
-														
-                                                                        <a href='#' class="dropdown-item dropdown-toggle">{{$menu[1]}}</a>
+																	
+                                                                        <a href='#' class="dropdown-item dropdown-toggle">{{transex($menu[1])}}</a>
                                                                         <ul class="dropdown-menu">
                                                                     
                                                                         @php
-                                                                                foreach($menu[0] as $submenu){
+                                                                                foreach($menu[0] as $submenu) {
                                                                         @endphp
+																	
 															                     <li>
-                                                                                <a href={{url($submenu[0])}} class="dropdown-item" >{{$submenu[1]}}</a> 
+																					 
+                                                                               		<a href={{url($submenu[0])}} class="dropdown-item" >{{transex($submenu[1])}}</a> 
+																						
                                                                                 </li>
 
                                                                         @php
                                                                                 }
                                                                         @endphp 
                                                                         </ul>  
-                                                                @else
-                                                                   >
-                                                                    <a href={{url($menu[0])}} class="navmenu">{{$menu[1]}}</a>
-                                                                @endif
-                                                        </li>
+														@else
+															>
+															<a href={{url($menu[0])}} class="navmenu">{{transex($menu[1])}}</a>
+
+														
+
+
+														@endif
+                                                        	</li>
 
                                                     @endif
 
-                                                    @php
-                                                            }
-                                                    @endphp  
+												@php
+														}
+												@endphp  
                                                  
 
 
@@ -205,7 +264,7 @@
 						</div>
 					</div>
 
-
+								
 
 
 				</div>
@@ -367,7 +426,7 @@
 				 <div class="row justify-content-center text-center align-items-center section section-default bg-color-light-scale-1">
 						 <div class="row justify-content-center text-center align-items-center ">
 							<p class="alternative-font-4 text-3-5 mb-0">
-								<strong class="d-block text-color-dark custom-secondary-font text-5-5 line-height-8 mb-0">Parteneri</strong>
+								<strong class="d-block text-color-dark custom-secondary-font text-5-5 line-height-8 mb-0">{{transex('Parteneri')}}</strong>
 								
 							</p>
 						</div>
@@ -424,15 +483,14 @@
 			<footer id="footer" class="bg-color-secondary custom-footer m-0" style="background: url({{asset('img/theme/footer-bg.jpg')}}); background-size: cover;">
 				<div class="container pt-3">
 					
-					
-
+	
 
 					<hr class="solid tall custom-hr-color-1">
 					<div class="row justify-content-center text-center">
 						<div class="col-lg-3 custom-sm-margin-bottom-1">
 							<i class="fas fa-map-marker-alt text-color-primary custom-icon-size-1"></i>
 							<p class="custom-text-color-2 alternative-font-4 text-3-5">
-								<strong class="d-block text-color-light custom-secondary-font text-5-5 line-height-8 mb-1">Localizare</strong>
+								<strong class="d-block text-color-light custom-secondary-font text-5-5 line-height-8 mb-1">{{transex('Localizare')}}</strong>
 								FRTS, Str. Vadul Moldovei, Nr. 14, Sector 1, 014033  </br>Bucuresti ROMANIA
 							</p>
 						</div>
@@ -440,16 +498,16 @@
 		
                             <i class="fas fa-align-justify text-color-primary custom-icon-size-1"></i>
 							<p class="custom-text-color-2 alternative-font-4 text-3-5">
-								<strong class="d-block text-color-light custom-secondary-font text-5-5 line-height-8 mb-1">Termeni si conditii</strong>
+								<strong class="d-block text-color-light custom-secondary-font text-5-5 line-height-8 mb-1">{{transex('Termeni si conditii')}}</strong>
 								 <br>
-								<a href="{{Route('termeni')}}">Vezi termenii si conditiile de utilizare</a>
+								<a href="{{Route('termeni')}}">{{transex('Vezi termenii si conditiile de utilizare')}}</a>
 							</p>
 						</div>
 						<div class="col-lg-3">
 							<i class="fas fa-phone-volume text-color-primary custom-icon-size-1"></i>
 							<p class="alternative-font-4 text-3-5">
-								<strong class="d-block text-color-light custom-secondary-font text-5-5 line-height-8 mb-1">Contact</strong>
-								<a href="tel:+" class="text-decoration-none custom-text-color-2">Telefon : </a></br>
+								<strong class="d-block text-color-light custom-secondary-font text-5-5 line-height-8 mb-1">{{transex('Contact')}}</strong>
+								<a href="tel:+" class="text-decoration-none custom-text-color-2">{{transex('Telefon')}} : </a></br>
 								<a href="mail:admin@fitascsporting.ro" class="text-decoration-none custom-text-color-2">Email : admin@fitascsporting.ro</a>
 							</p>
 						</div>
@@ -487,6 +545,7 @@
 		<script src="{{asset('js/theme/vendor/isotope/jquery.isotope.min.js')}}"></script>
 		<script src="{{asset('js/theme/vendor/owl.carousel/owl.carousel.min.js')}}"></script>
 		<script src="{{asset('js/theme/vendor/magnific-popup/jquery.magnific-popup.min.js')}}"></script>
+	
 		<script src="{{asset('js/theme/vendor/vide/jquery.vide.min.js')}}"></script>
 		<script src="{{asset('js/theme/vendor/vivus/vivus.min.js')}}"></script>
 		<script src="{{asset('js/theme/vendor/jquery.countdown/jquery.countdown.min.js')}}"></script>

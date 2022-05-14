@@ -53,7 +53,7 @@
 
                                 @if (!in_array($image , ['.', '..']))
 
-                                <div style="background: url( {{url('img/gallery/competitions/13').'/'.$image}})"></div> 
+                                <div style="background: url( {{url('img/gallery/competitions/').'/'.$competition.'/'.$image}})"></div> 
 
                                 @endif
 
@@ -66,7 +66,7 @@
 
                                 @if (!in_array($image , ['.', '..']))
 
-                                <div style="background: url( {{url('img/gallery/competitions/13').'/'.$image}})"></div> 
+                                <div style="background: url( {{url('img/gallery/competitions/').'/'.$competition.'/'.$image}})"></div> 
 
                                 @endif
 

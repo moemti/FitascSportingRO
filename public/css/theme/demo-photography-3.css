@@ -180,7 +180,7 @@ h6 {
 		border-width: 2px;
 		font-size: 1em;
 }
-
+/* 
 #header .header-body {
 		border-top: 0;
 }
@@ -238,7 +238,7 @@ h6 {
 		height: 34px;
 		width: 34px;
 		padding: 0;
-}
+} 
 
 html:not(.boxed) #header.header-full-width .header-container {
 		padding-right: 27px;
@@ -299,7 +299,7 @@ html.sticky-header-active #header .header-body {
 #main {
 		min-height: calc( 100vh - 167px);
 }
-
+*/
 .slider-container {
 		background: transparent !important;
 }
@@ -394,7 +394,7 @@ html.sticky-header-active #header .header-body {
 }
 
 .social-icons li a {
-		border: 2px solid #333;
+		/* border: 2px solid #333; */
 		width: 34px;
 		height: 34px;
 		line-height: 31px;

@@ -453,23 +453,23 @@ button.toast-close-button {
 
 .clRedFontB {
   color: #480404 !important;
-  background-image: linear-gradient(to left, rgba(255, 0, 0, 0.508) #fffefb) !important; }
+  background-image: linear-gradient(to left, rgba(255, 0, 0, 0.508) white) !important; }
 
 .clBlueFontB {
   color: #041146 !important;
-  background-image: linear-gradient(to left, rgba(0, 30, 255, 0.501), #fffefb) !important; }
+  background-image: linear-gradient(to left, #fff6ee, white) !important; }
 
 .clOrangeRedFontB {
   color: #541903 !important;
-  background-image: linear-gradient(to left, rgba(255, 68, 0, 0.494), #fffefb) !important; }
+  background-image: linear-gradient(to left, #ffd9d0, white) !important; }
 
 .clGreenFontB {
   color: #0d2707 !important;
-  background-image: linear-gradient(to left, rgba(0, 128, 0, 0.535), #fffefb) !important; }
+  background-image: linear-gradient(to left, #fbfee4, white) !important; }
 
 .clBrownFontB {
   color: #0d2707 !important;
-  background-image: linear-gradient(to left, rgba(82, 36, 1, 0.487), #fffefb) !important; }
+  background-image: linear-gradient(to left, #ffbb88, white) !important; }
 
 .curPointer {
   cursor: pointer !important; }
@@ -875,6 +875,34 @@ button.toast-close-button {
 .facebook {
   color: blue !important; }
 
+.dropbtn {
+  padding: 6px;
+  font-size: 12px;
+  border: none;
+  background-color: white; }
+
+.dropdownlang {
+  position: relative;
+  display: inline-block;
+  height: 12px;
+  max-height: 12px;
+  background-color: white; }
+  .dropdownlang:hover .dropdown-content {
+    display: block; }
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #fff8f4;
+  min-width: 16px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 17686868; }
+  .dropdown-content a {
+    color: black;
+    padding: 2px 16px;
+    text-decoration: none;
+    display: block; }
+
 #jqxGrid .jqx-grid-column-header,
 #documentdetails .jqx-grid-column-header,
 #masterlist .jqx-grid-column-header {
@@ -882,21 +910,20 @@ button.toast-close-button {
 
 .compet_status {
   text-decoration: none;
-  padding: .1rem 2rem;
+  padding: 3px 1rem;
   display: inline-block;
   border-radius: .5rem;
   transition: all .2s;
-  position: relative;
-  font-size: 1.2rem;
-  color: white;
+  position: absolute;
+  color: #ff0800;
   background-image: linear-gradient(to top left, rgba(136, 70, 0, 0.9), rgba(250, 247, 242, 0.95));
   border: none; }
   .compet_status.Open {
-    background-image: linear-gradient(to top left, rgba(0, 128, 0, 0.7), rgba(0, 128, 0, 0.2)); }
+    background-image: linear-gradient(to top left, rgba(210, 248, 198, 0.7), rgba(235, 255, 235, 0.2)); }
   .compet_status.Progress {
-    background-image: linear-gradient(to top left, rgba(255, 69, 0, 0.7), rgba(255, 69, 0, 0.2)); }
+    background-image: linear-gradient(to top left, rgba(248, 164, 134, 0.7), rgba(252, 219, 207, 0.2)); }
   .compet_status.Finished {
-    background-image: linear-gradient(to top left, rgba(0, 8, 255, 0.7), rgba(0, 8, 255, 0.2)); }
+    background-image: linear-gradient(to top left, rgba(83, 37, 18, 0.7), rgba(246, 214, 184, 0.2)); }
 
 .cdetailbtn {
   padding: 2px;

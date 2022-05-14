@@ -37,7 +37,7 @@
 
 <section class="content-termeni section section-tertiary section-no-border m-0">
     <div class="container">
-            <h2>Clasamente</h2>
+            <h2>{{transex('Clasamente')}}</h2>
 
       
        

@@ -173,12 +173,12 @@
 		var selectedrowindex = $("#jqxGrid").jqxGrid('getselectedrowindex');
 		
 		if (selectedrowindex == -1)
-			ShowError('Alegeti o intregistrare');
+			ShowError(translate('Alegeti o intregistrare'));
 		else{
 	
 				var selectedrowindex = $("#jqxGrid").jqxGrid('getselectedrowindex');
 				if (selectedrowindex == -1)
-					ShowError('Alegeti o intregistrare');
+					ShowError(translate('Alegeti o intregistrare'));
 				
 				var rowscount = $("#jqxGrid").jqxGrid('getdatainformation').rowscount;
 				if (selectedrowindex >= 0 && selectedrowindex < rowscount) {
@@ -284,7 +284,7 @@
 
 
 			if (Rec){
-				ShowError('Nu ati introdus toate informatiile');
+				ShowError(translate('Nu ati introdus toate informatiile'));
 
 				return false;
 			}
@@ -305,7 +305,7 @@
 	            url: baseUrl + urls.saveurl,
 	            data: Data,
 	            success: function (data) {
-					ShowSuccess('Salvat cu succes!');
+					ShowSuccess(translate('Salvat cu succes!'));
 					$('#isnew').val("0");
 		            OnSaveSucces(data);
 		    		RefreshMaster(data);
@@ -340,11 +340,7 @@
 				event.preventDefault();
 			});
 
-
-
 		}
-
-
 
 
 		function AfterLoadMaster(data){
@@ -363,7 +359,7 @@
 		}
 
 		function ActionConfirm(ActionType, DoIt){
-			confirm("Doriti sa executati actiunea " + ActionType + "?", DoIt);
+			confirm(translate("Doriti sa executati actiunea ") + ActionType + "?", DoIt);
 			
 		}
 
@@ -375,7 +371,7 @@
 			var SuccessMsg = '';
 		
 			if ( MasterChanged() ){
-				ShowError('Salvati documentul!')
+				ShowError(translate('Salvati documentul!'))
 				return;
 			}
 
@@ -463,7 +459,7 @@
 			 
 			window.onbeforeunload = function(){
 				if (MasterChanged()){
-					return "Nu ati salvat modficarile";	
+					return translate("Nu ati salvat modificarile");	
 				}
 			} 	
       

@@ -9,7 +9,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="position-relative form-group">
-                        <input name="username" id="username" placeholder="Email..." type="email" class="form-control real_input" required>
+                        <input name="username" id="username" placeholder="{{transex('Email')}}..." type="email" class="form-control real_input" required>
                     </div>
                 </div>
                 @if (isset($mesaj) && array_key_exists('NumeUtilizator',$mesaj))
@@ -24,7 +24,7 @@
             <div class="row">    
                 <div class="col-md-12">
                     <div class="position-relative form-group">
-                        <input name="password" id="password" placeholder="Parola..." type="password" class="form-control real_input" required>
+                        <input name="password" id="password" placeholder="{{transex('Parola')}}..." type="password" class="form-control real_input" required>
                     </div>
                 </div>
                 
@@ -43,7 +43,7 @@
               
 
             <div class="  text-right u-margin-top-medium">
-                     <button class="btn-wide btn-pill btn-shadow btn-hover-shine btn btn-primary btn-lg">Login</button>
+                     <button class="btn-wide btn-pill btn-shadow btn-hover-shine btn btn-primary btn-lg">{{transex('Login')}}</button>
                
             </div>
 
@@ -60,7 +60,7 @@
         </br>
         <div class="row">    
                 
-                    <div><a href="{{route('resetpassword')}}">Am uitat parola</a></div>
+                    <div><a href="{{route('resetpassword')}}">{{transex('Am uitat parola')}}</a></div>
                    
                 
         </div>
@@ -68,7 +68,7 @@
         </br>
         <div class="row">    
               
-                    <div><a href="{{route('register')}}">Inregistrare</a></div>
+                    <div><a href="{{route('register')}}">{{transex('Inregistrare')}}</a></div>
                 
         </div>
 </div>

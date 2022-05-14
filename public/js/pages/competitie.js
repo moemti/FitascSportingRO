@@ -30,21 +30,21 @@
             if (Status == 'Open'){
                 clClasament = [      
                     { text: 'BIB', dataField: 'BIB', width: '5%' },  
-                    { text: 'Serie', dataField: 'NrSerie', width: '5%' },  
-                    { text: 'Sportiv', dataField: 'Person', width: (IsSuperUser === 1)?'40%':'55%' , cellclassname: cellclassUser},
-                    { text: 'Cat', dataField: 'Category', width: '10%' },
-                    { text: 'Team', dataField: 'Team', width: '20%' },
-                    { text: 'In Echipa', dataField: 'IsInTeam', width: '5%' },
+                    { text: translate('Serie'), dataField: 'NrSerie', width: '5%' },  
+                    { text: translate('Sportiv'), dataField: 'Person', width: (IsSuperUser === 1)?'40%':'55%' , cellclassname: cellclassUser},
+                    { text: translate('Cat'), dataField: 'Category', width: '10%' },
+                    { text: translate('Team'), dataField: 'Team', width: '20%' },
+                    { text: translate('In Echipa'), dataField: 'IsInTeam', width: '5%' },
                    
                 ]
             }
             else{
                 clClasament = [
-                    { text: 'Loc', dataField: 'Position', width: '5%' },
-                    { text: 'Sportiv', dataField: 'Person', width:  (IsSuperUser === 1)?'45%':'50%'  , cellclassname: cellclassUser},
-                    { text: 'Cat', dataField: 'Category', width: '10%' },
-                    { text: 'Team', dataField: 'Team', width: '15%' },
-                    { text: 'Total', dataField: 'Total', width: '15%' },               
+                    { text: translate('Loc'), dataField: 'Position', width: '5%' },
+                    { text: translate('Sportiv'), dataField: 'Person', width:  (IsSuperUser === 1)?'45%':'50%'  , cellclassname: cellclassUser},
+                    { text: translate('Cat'), dataField: 'Category', width: '10%' },
+                    { text: translate('Team'), dataField: 'Team', width: '15%' },
+                    { text: translate('Total'), dataField: 'Total', width: '15%' },               
                 ]
         }
         else{
@@ -52,34 +52,34 @@
             if (Status == 'Open'){
                 clClasament = [      
                     { text: 'BIB', dataField: 'BIB', width: '5%' },  
-                    { text: 'Serie', dataField: 'NrSerie', width: '5%' },     
-                    { text: 'Sportiv', dataField: 'Person', width: (IsSuperUser === 1)?'50%':'55%'  , cellclassname: cellclassUser},
-                    { text: 'Cat', dataField: 'Category', width: '10%' },
-                    { text: 'Team', dataField: 'Team', width: '20%' },
-                    { text: 'In Echipa', dataField: 'IsInTeam', width: '5%' },
+                    { text: translate('Serie'), dataField: 'NrSerie', width: '5%' },     
+                    { text: translate('Sportiv'), dataField: 'Person', width: (IsSuperUser === 1)?'50%':'55%'  , cellclassname: cellclassUser},
+                    { text: translate('Cat'), dataField: 'Category', width: '10%' },
+                    { text: translate('Team'), dataField: 'Team', width: '20%' },
+                    { text: translate('In Echipa'), dataField: 'IsInTeam', width: '5%' },
                 ]
             }
             else{
                 clClasament =
                     [
-                        { text: 'Loc', dataField: 'Position', width: '5%' },
-                        { text: 'Sportiv', dataField: 'Person', width: '10%', cellclassname: cellclassUser },
-                        { text: 'Cat', dataField: 'Category', width: '5%' },
-                        { text: 'Team', dataField: 'Team', width: IsSuperUser===1?'5%':'10%' },
+                        { text: translate('Loc'), dataField: 'Position', width: '5%' },
+                        { text: translate('Sportiv'), dataField: 'Person', width: '10%', cellclassname: cellclassUser },
+                        { text: translate('Cat'), dataField: 'Category', width: '5%' },
+                        { text: translate('Team'), dataField: 'Team', width: IsSuperUser===1?'5%':'10%' },
                         { text: 'M1', dataField: 'M1', width: '5%' ,cellclassname: cellclass,},
                         { text: 'M2', dataField: 'M2', width: '5%' ,cellclassname: cellclass,},
                         { text: 'M3', dataField: 'M3', width: '5%' ,cellclassname: cellclass,},
                         { text: 'M4', dataField: 'M4', width: '5%' ,cellclassname: cellclass,},
-                        { text: 'Total 1', dataField: 'Total1', width: '5%' },
+                        { text: translate('Total 1'), dataField: 'Total1', width: '5%' },
                         { text: 'M5', dataField: 'M5', width: '5%' ,cellclassname: cellclass,},
                         { text: 'M6', dataField: 'M6', width: '5%' ,cellclassname: cellclass,},
                         { text: 'M7', dataField: 'M7', width: '5%' ,cellclassname: cellclass,},
                         { text: 'M8', dataField: 'M8', width: '5%' ,cellclassname: cellclass,},
-                        { text: 'Total 2', dataField: 'Total2', width: '5%' },
-                        { text: 'Total', dataField: 'Total', width: '5%' },
-                        { text: 'Procent', dataField: 'Procent', width: '5%'},
+                        { text: translate('Total 2'), dataField: 'Total2', width: '5%' },
+                        { text: translate('Total'), dataField: 'Total', width: '5%' },
+                        { text: translate('Procent'), dataField: 'Procent', width: '5%'},
                         { text: 'ShOff', dataField: 'ShootOffS', width: '5%' },  
-                        { text: 'Cat', dataField: 'ResultatCat', width: '5%' },  
+                        { text: translate('Cat'), dataField: 'ResultatCat', width: '5%' },  
                            
                     ];
                 }
@@ -114,7 +114,8 @@
 
         function createSquads(e){
             lastevent = e;
-            let type = lastevent.target.dataset.type == 'All'?'Doriti sa generati squadurile pentru toti participantii':lastevent.target.dataset.type=='Clear'?'Doriti sa stergeti BIB-urile': 'Doriti sa generati squadurile doar pentru cei ce nu au inca squad'
+            let type = lastevent.target.dataset.type == 'All'?translate('Doriti sa generati squadurile pentru toti participantii'):lastevent.target.dataset.type=='Clear'?translate('Doriti sa stergeti BIB-urile'): 
+                    translate('Doriti sa generati squadurile doar pentru cei ce nu au inca squad')
             confirm(`${type}?`, createSquadsDo);
         }
 
@@ -587,7 +588,7 @@
 			dataFields:
 		
                     [
-                        { name: 'loc', type: 'number'},
+                        { name: translate('loc'), type: 'number'},
                         { name: 'Category', type: 'string'},
                         { name: 'Team', type: 'string'},
                         { name: 'Person', type: 'string'},
@@ -618,7 +619,7 @@
                 filterable: false,
                 selectionmode: 'none',
                 columns: [
-                    { text: 'Loc', dataField: 'loc', width: '5%' ,cellclassname: cellclass,},
+                    { text: translate('Loc'), dataField: translate('loc'), width: '5%' ,cellclassname: cellclass,},
                     { text: 'Categorie', dataField: 'Category', width: '5%' ,cellclassname: cellclass,},
                     { text: 'Persoana', dataField: 'Person', width: '70%' ,cellclassname: cellclass,},
                     { text: 'Total', dataField: 'Total', width: '10%' ,cellclassname: cellclass,},
@@ -638,7 +639,7 @@
 			dataFields:
 		
                     [
-                        { name: 'Loc', type: 'number'},
+                        { name: translate('Loc'), type: 'number'},
                         { name: 'Team', type: 'string'},
                         { name: 'Total', type: 'Number'},
                         { name: 'Members', type: 'string'},
@@ -667,7 +668,7 @@
                 filterable: false,
                 selectionmode: 'none',
                 columns: [
-                    { text: 'Loc', dataField: 'Loc', width: '5%' ,cellclassname: cellclass,},
+                    { text: translate('Loc'), dataField: translate('Loc'), width: '5%' ,cellclassname: cellclass,},
                     { text: 'Echipa', dataField: 'Team', width: '25%' ,cellclassname: cellclass,},
                     { text: 'Membrii', dataField: 'Members', width: '60%' ,cellclassname: cellclass,},
                     { text: 'Total', dataField: 'Total', width: '10%' ,cellclassname: cellclass,},

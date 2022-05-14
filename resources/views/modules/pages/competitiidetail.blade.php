@@ -35,7 +35,7 @@
 
     <script> dsClasament = @Json($other['clasament']);</script>
 
-    <h2> Clasament</h2>
+    <h2> {{transex('Clasament')}}</h2>
    
     <div class='row'>
         <div class="gridcontainer">

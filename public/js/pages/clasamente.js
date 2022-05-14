@@ -13,18 +13,18 @@
 
 	if (window.innerWidth > 900){
 		clClasament = [
-			{ text: 'Loc', dataField: 'Position', width: '5%' },
-			{ text: 'Sportiv', dataField: 'Person', width: '55%', cellclassname: cellclassUser },
-			{ text: 'Categorie', dataField: 'Category', width: '10%' },
-			{ text: 'Team', dataField: 'Team', width: '20%' },
-			{ text: 'Procent', dataField: 'Procent', width: '10%' },
+			{ text: translate('Loc'), dataField: 'Position', width: '5%' },
+			{ text: translate('Sportiv'), dataField: 'Person', width: '55%', cellclassname: cellclassUser },
+			{ text: translate('Categorie'), dataField: 'Category', width: '10%' },
+			{ text: translate('Team'), dataField: 'Team', width: '20%' },
+			{ text: translate('Procent'), dataField: 'Procent', width: '10%' },
 		]
 	}else{
 		clClasament = [
 			{ text: '', dataField: 'Position', width: '5%' },
-			{ text: 'Sportiv', dataField: 'Person', width: '55%', cellclassname: cellclassUser },
-			{ text: 'Cat', dataField: 'Category', width: '10%' },
-			{ text: 'Procent', dataField: 'Procent', width: '25%' },
+			{ text: translate('Sportiv'), dataField: 'Person', width: '55%', cellclassname: cellclassUser },
+			{ text: translate('Cat'), dataField: 'Category', width: '10%' },
+			{ text: translate('Procent'), dataField: 'Procent', width: '25%' },
 		]
 	}
 

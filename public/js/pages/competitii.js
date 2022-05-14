@@ -19,10 +19,10 @@
 
     if (window.innerWidth > 900){
         smcolumns = [
-            { text: 'Nume', dataField: 'Name', width: '35%' },
-            { text: 'Locatie', dataField: 'Range', width: '30%' },
-            { text: 'Perioada', dataField: 'Perioada', width: '20%' },
-            { text: 'Stare', dataField: 'Status', width: '10%', cellclassname: cellclassStatus},// ,filtertype: 'checkedlist', filteritems: [...new Set(dsCompetitii.Year)]},
+            { text: translate('Nume'), dataField: 'Name', width: '35%' },
+            { text: translate('Locatie'), dataField: 'Range', width: '30%' },
+            { text: translate('Perioada'), dataField: 'Perioada', width: '20%' },
+            { text: translate('Stare'), dataField: 'Status', width: '10%', cellclassname: cellclassStatus},// ,filtertype: 'checkedlist', filteritems: [...new Set(dsCompetitii.Year)]},
             { text: '', dataField: 'CompetitionId', width: '5%', 
                       //  columntype:'button', 
                             cellsrenderer: cellsrenderer,
@@ -37,8 +37,8 @@
         ]
     }
     else{
-            smcolumns = [ { text: 'Nume', dataField: 'NumeLung', width: '70%' },
-            { text: 'Stare', dataField: 'Status', width: '15%' , cellclassname: cellclassStatus},
+            smcolumns = [ { text: translate('Nume'), dataField: 'NumeLung', width: '70%' },
+            { text: translate('Stare'), dataField: 'Status', width: '15%' , cellclassname: cellclassStatus},
             { text: '', dataField: 'CompetitionId', width: '15%', 
               cellsrenderer: cellsrenderer,
             

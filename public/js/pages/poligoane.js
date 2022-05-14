@@ -4,10 +4,10 @@
 
     if (window.innerWidth > 900){
         pcolumns = [
-            { text: 'Poligon', dataField: 'Name', width: '30%' },
-            { text: 'Adresa', dataField: 'Address', width: '30%' },
-            { text: 'Telefon', dataField: 'Phone', width: '20%' },
-            { text: 'Tara', dataField: 'Country', width: '10%' },
+            { text: translate('Poligon'), dataField: 'Name', width: '30%' },
+            { text: translate('Adresa'), dataField: 'Address', width: '30%' },
+            { text: translate('Telefon'), dataField: 'Phone', width: '20%' },
+            { text: translate('Tara'), dataField: 'Country', width: '10%' },
            
             { text: '', dataField: 'RangeId', width: '10%',
 
@@ -32,7 +32,7 @@
     }
     else{
         pcolumns = [
-            { text: 'Poligon', dataField: 'Name', width: '90%' },
+            { text: translate('Poligon'), dataField: 'Name', width: '90%' },
            
             { text: '', dataField: 'RangeId', width: '10%',
 

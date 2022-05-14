@@ -9,7 +9,7 @@
     Valid = $('#Password').val() === $('#Password2').val()
 
     if (!Valid)
-        ShowError('Introduceti de doua ori aceiasi parola!');
+        ShowError(translate('Introduceti de doua ori aceiasi parola!'));
 
     return Valid;
 }
@@ -43,7 +43,7 @@ $(function () {
             url: baseUrl + '/changemypassword',
             data: Data,
             success: function (data) {
-                ShowSuccess('S-a modificat parola cu succes');
+                ShowSuccess(translate('S-a modificat parola cu succes'));
                
             },
             error: function(data){

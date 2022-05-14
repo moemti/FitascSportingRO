@@ -5,8 +5,8 @@
   
         pcolumns = [
            
-            { text: 'Name', dataField: 'Name', width: '50%' },
-            { text: 'Email', dataField: 'Email', width: '40%' },
+            { text: translate('Name'), dataField: 'Name', width: '50%' },
+            { text: translate('Email'), dataField: 'Email', width: '40%' },
             { text: '', dataField: 'RegisterId', width: '10%',
 
             columntype:'button', cellsrenderer: function () {

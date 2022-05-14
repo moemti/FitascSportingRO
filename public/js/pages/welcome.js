@@ -3,7 +3,7 @@ let lastCompetitionId = 0;
 function registerMe(compId){
           
     lastCompetitionId = compId; 
-    confirm('Doriti sa va inregistrati?', registerMeDo);
+    confirm(translate('Doriti sa va inregistrati?'), registerMeDo);
 }
 
 function registerMeDo(){
@@ -18,7 +18,7 @@ function registerMeDo(){
         data: Data,
         success: function (data) {
             if (data === 'OK'){
-                ShowSuccess('Ati fost inregistrat cu succes');
+                ShowSuccess(translate('Ati fost inregistrat cu succes'));
                 setTimeout(window.location.reload(), 300)
                 
             }
@@ -33,11 +33,4 @@ function registerMeDo(){
 }
 
 
-$(function () {
 
-
-
-   
-  //  $("#btnRegister").on('click', registerMe);
-  
-})

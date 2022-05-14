@@ -17,9 +17,9 @@
             		<input id="confirmsaveinput" val="">
             </div>
                 
-            <input id="btnConfirmSaveStayModal" type="button" data-bs-dismiss="modal" aria-hidden="true" class="btn btn-primary" value={{trans("general.Stay")}}>
-            <input id="btnConfirmSaveCancelModal" type="button" data-bs-dismiss="modal" aria-hidden="true" class="btn btn-primary" value={{trans("general.Cancel")}}>
-            <input id="btnConfirmSaveSaveModal" type="button" data-bs-dismiss="modal" aria-hidden="true" class="btn btn-primary" value={{trans("general.Save")}}>    
+            <input id="btnConfirmSaveStayModal" type="button" data-bs-dismiss="modal" aria-hidden="true" class="btn btn-primary" value={{transex("Stay")}}>
+            <input id="btnConfirmSaveCancelModal" type="button" data-bs-dismiss="modal" aria-hidden="true" class="btn btn-primary" value={{transex("Cancel")}}>
+            <input id="btnConfirmSaveSaveModal" type="button" data-bs-dismiss="modal" aria-hidden="true" class="btn btn-primary" value={{transex("Save")}}>    
         </div>
             
         </div>

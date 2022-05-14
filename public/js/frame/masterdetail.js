@@ -155,11 +155,11 @@
 					
 				rowindex = $('#masterlist').jqxGrid('getselectedrowindex');
 				if (rowindex == -1){
-					ShowError('Selectati o inregistrare!');
+					ShowError(translate('Selectati o inregistrare!'));
 					return;
 				}
 				if (!$('#masterlist').jqxGrid('getrowdata', rowindex)){
-					ShowError('Selectati o inregistrare!');
+					ShowError(translate('Selectati o inregistrare!'));
 					return;
 				}
 			}
@@ -302,7 +302,7 @@
 					url: baseUrl + urls.getdetaillisturl,
 					data: {MasterKeyField: MasterId},
 					success: function (data) {
-						ShowSuccess('Details retrieved!');
+						ShowSuccess(translate('Details retrieved!'));
 						documentdetailsDB = data[0];
 						PutDetails();
 						OnPutDetailOthers(data[1]);
@@ -536,7 +536,7 @@
 
 		function CloseDetailModal(){
 			if ( $('#detailformmodal').isChanged() ){
-				confirm("Nu ati salvat modificarile! Doriti sa continuati?", onCloseDetailModal);
+				confirm(translate("Nu ati salvat modificarile! Doriti sa continuati?"), onCloseDetailModal);
 			}
 			else
 				onCloseDetailModal()
@@ -559,7 +559,7 @@
 
 
 			if (!Valid)
-				ShowError('Introduceti toate informatiile!');
+				ShowError(translate('Introduceti toate informatiile!'));
 
 			return Valid;
 		}
@@ -642,7 +642,7 @@
 		var selectedrowindex = $("#documentdetails").jqxGrid('getselectedrowindex');
 		
 		if (selectedrowindex == -1)
-			ShowError('Alegeti o intregistrare');
+			ShowError(translate('Alegeti o intregistrare'));
 		else{
 			// delete from datasource
 			if (IsDetailListModal){
@@ -660,7 +660,7 @@
 			else{
 				var selectedrowindex = $("#documentdetails").jqxGrid('getselectedrowindex');
 				if (selectedrowindex == -1)
-					ShowError('Alegeti o intregistrare');
+					ShowError(translate('Alegeti o intregistrare'));
 				
 				var rowscount = $("#documentdetails").jqxGrid('getdatainformation').rowscount;
 				if (selectedrowindex >= 0 && selectedrowindex < rowscount) {
@@ -681,7 +681,7 @@
            // check if the detail is modified end prevent to change to list
 
 			if ( DetailChanged() ){
-                confirm("Nu ati salvat modificarile! Doriti sa continuati?", doList);
+                confirm(translate("Nu ati salvat modificarile! Doriti sa continuati?"), doList);
 
             }
 			else
@@ -737,7 +737,7 @@
 
         function addNew(){
         	if ( DetailChanged()){
-                confirm("Nu ati salvat modificarile! Doriti sa continuati?", doNew);
+                confirm(translate("Nu ati salvat modificarile! Doriti sa continuati?"), doNew);
             }else
             	doNew();
         }
@@ -825,7 +825,7 @@
     	            url: baseUrl + urls.deleteurl,
     	            data: Data,
     	            success: function (data) {
-    	            	ShowSuccess('Sters cu succes!');
+    	            	ShowSuccess(translate('Sters cu succes!'));
 
     		            OnDeleteSucces(data)
     		    		RefreshMaster(LastFilter);
@@ -839,7 +839,7 @@
 			
         	if (IsNew == "0"){
 				if (ValidateDelete() == true)
-					confirm("Doriti sa stergeti inregistrarea?", DoDelete);
+					confirm(translate("Doriti sa stergeti inregistrarea?"), DoDelete);
 			}
 
 
@@ -923,7 +923,7 @@
 
 
 			if (Rec){
-				ShowError('Nu ati introdus toate informatiile');
+				ShowError(translate('Nu ati introdus toate informatiile'));
 
 				return false;
 			}
@@ -947,7 +947,7 @@
 	            url: baseUrl + urls.saveurl,
 	            data: Data,
 	            success: function (data) {
-	            	ShowSuccess('Salvat cu succes!');
+	            	ShowSuccess(translate('Salvat cu succes!'));
 		            OnSaveSucces(data);
 		    		RefreshMaster(LastFilter);
 		    		$("#detailform").resetChanges();
@@ -1098,7 +1098,7 @@
 		}
 
 		function ActionConfirm(ActionType, DoIt){
-			confirm("Doriti sa executati actiunea " + ActionType + "?", DoIt);
+			confirm(translate("Doriti sa executati actiunea ") + ActionType + "?", DoIt);
 			
 		}
 
@@ -1110,7 +1110,7 @@
 			var SuccessMsg = '';
 		
 			if ( DetailChanged() ){
-				ShowError('Salvati documentul!')
+				ShowError(translate('Salvati documentul!'))
 				return;
 			}
 
@@ -1177,7 +1177,7 @@
 		if (Warning != "")
 			confirm(Warning, DoIt);
 		else
-			confirm("Doriti sa executati actiunea " + ActionType + "?", DoIt);
+			confirm(translate("Doriti sa executati actiunea ") + ActionType + "?", DoIt);
 		
 	}
 
@@ -1190,7 +1190,7 @@
 
 		Data.ActionType = ActionType;
 
-		var SuccessMsg = 'S-a rulat cu succes actiunea';
+		var SuccessMsg = translate('S-a rulat cu succes actiunea');
 
 		if ( ! BeforeDoListAction(Data)){ // on descendants we can make our own data
 
@@ -1354,7 +1354,7 @@
 			 
 			window.onbeforeunload = function(){
 				if (DetailChanged()){
-					return "Nu ati salvat modficarile";	
+					return translate("Nu ati salvat modificarile");	
 				}
 			} 	
 

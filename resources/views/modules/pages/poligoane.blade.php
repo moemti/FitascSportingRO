@@ -43,7 +43,7 @@
 
 <section class="content-termeni section section-tertiary section-no-border m-0">
     <div class="container">
-        <h2>Poligoane</h2>
+        <h2>{{transex('Poligoane')}}</h2>
 
         <div id="jqxGrid" ></div>
     </div>

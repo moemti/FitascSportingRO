@@ -144,7 +144,7 @@ class CompetitiiController extends MasterController
 
     public function getgallery($CompetitionId){
         $images = scandir("img/gallery/competitions/$CompetitionId");
-        return view('modules.pages.gallery', ["images" => $images]);
+        return view('modules.pages.gallery', ["images" => $images, "competition" => $CompetitionId]);
     }
 
 

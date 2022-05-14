@@ -553,21 +553,20 @@ class Competition extends BObject{
             $sql =  "
             
             
-            
-            select     ROW_NUMBER() OVER ( order by sum(Total) desc ) as Loc,  sum(Total) as Total, Team, GROUP_CONCAT(person order by locechipa) as Members  from 
+            select     ROW_NUMBER() OVER ( order by sum(Total) desc ) as Loc,  sum(Total) as Total, Team , GROUP_CONCAT(person order by locechipa) as Members  from 
             
             
             ( select * from (
                                                     
                                                     select    ROW_NUMBER() OVER (
                                                     
-                                                    	Partition by rr.TeamId
-                                                        order by IsInTeam desc ,soft.Total desc
-                                                    ) as locechipa, rr.ResultId, rr.IsInTeam, soft.Total, rr.PersonId, p.Name as Person, rr.TeamId, t.Name as Team
+                                                    	Partition by TeamName
+                                                        order by TeamName desc ,soft.Total desc
+                                                    ) as locechipa, rr.ResultId, IFNULL(IsInTeam,0) as IsInTeam, soft.Total, rr.PersonId, p.Name as Person, rr.TeamId, TeamName as Team
                                                     
                                                     FROM result rr
                										inner join person p on p.PersonId = rr.PersonId
-                									inner join team t on t.TeamId = rr.TeamId
+                									
                                                     inner join (
                                                             select GROUP_CONCAT(case when d.RoundNr > 8 then d.Result else null end  order by d.RoundNr) as ShootOffS,
                                                                         sum(case when d.RoundNr > 8 then d.Result/(10 *( d.RoundNr - 8))  else 0 end ) as ShootOff, 
@@ -583,14 +582,14 @@ class Competition extends BObject{
         
         											left join shootercategory sc on sc.ShooterCategoryId = rr.ShooterCategoryId
 
-                                                	where rr.CompetitionId = :CompetitionId and sc.code <> 'STR'  
+                                                	where rr.CompetitionId = :CompetitionId and sc.code <> 'STR'  and TeamName is not null
                                                 
                                                     
                                                     order by IsInTeam desc, Total desc, locechipa
                 ) X where locechipa < 4
 			order by Total desc , locechipa)
             table1
-            group by TeamId
+            group by Team
             order by Total desc
         
                     ";

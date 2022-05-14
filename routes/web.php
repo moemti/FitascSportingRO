@@ -3,42 +3,45 @@
 use Illuminate\Support\Facades\Route;
 
 
-Route::get('/debug', function(){  return view('debug');});
+Route::group(['middleware' => 'options'], function () {
 
-Route::get('/',  'App\Http\Controllers\CompetitiiController@returnWelcome')->name('welcome');
+        Route::get('/debug', function(){  return view('debug');});
 
-Route::get('/welcome',  'App\Http\Controllers\CompetitiiController@returnWelcome')->name('welcome');
+        Route::get('/',  'App\Http\Controllers\CompetitiiController@returnWelcome')->name('welcome');
 
-
-Route::get('/competitii', 'App\Http\Controllers\CompetitiiController@getList');
-
-
-Route::get('/login', function(){  return view('auth/login');})->name('login');
-
-Route::post('/authenticate', 'App\Http\Controllers\Auth\LoginController@authenticate');
-Route::post('/registerme', 'App\Http\Controllers\Auth\LoginController@register');
-Route::post('/resetpassword', 'App\Http\Controllers\Auth\LoginController@resetpasswordmail');
-Route::get('/confirmregistration', 'App\Http\Controllers\Auth\LoginController@confirmregistrationemail');
-Route::get('/changepassword', 'App\Http\Controllers\Auth\LoginController@changepassword');
-Route::post('/changethepassword', 'App\Http\Controllers\Auth\LoginController@changethepassword');
+        Route::get('/welcome',  'App\Http\Controllers\CompetitiiController@returnWelcome')->name('welcome');
 
 
-Route::get('/resetform', function (){
-    return view('auth/reset');
+        Route::get('/competitii', 'App\Http\Controllers\CompetitiiController@getList');
 
-})->name('resetpassword');
 
-Route::get('/register', function (){
-    return view('auth/register');
+        Route::get('/login', function(){  return view('auth/login');})->name('login');
 
-})->name('register');
+        Route::post('/authenticate', 'App\Http\Controllers\Auth\LoginController@authenticate');
+        Route::post('/registerme', 'App\Http\Controllers\Auth\LoginController@register');
+        Route::post('/resetpassword', 'App\Http\Controllers\Auth\LoginController@resetpasswordmail');
+        Route::get('/confirmregistration', 'App\Http\Controllers\Auth\LoginController@confirmregistrationemail');
+        Route::get('/changepassword', 'App\Http\Controllers\Auth\LoginController@changepassword');
+        Route::post('/changethepassword', 'App\Http\Controllers\Auth\LoginController@changethepassword');
+        Route::post('/addtranslation', 'App\Http\Controllers\Controller@addTranslation');
 
-Route::get('/termeni', function (){
-    return view('modules/pages/termeni');
 
-})->name('termeni');
+        Route::get('/resetform', function (){
+            return view('auth/reset');
 
-Route::get('/logout', 'App\Http\Controllers\Auth\LoginController@logout')->name('logout');
+        })->name('resetpassword');
+
+        Route::get('/register', function (){
+            return view('auth/register');
+
+        })->name('register');
+
+        Route::get('/termeni', function (){
+            return view('modules/pages/termeni');
+
+        })->name('termeni');
+
+        Route::get('/logout', 'App\Http\Controllers\Auth\LoginController@logout')->name('logout');
 
 // o sa-l punem in superuser
 
@@ -55,10 +58,7 @@ Route::get('/logout', 'App\Http\Controllers\Auth\LoginController@logout')->name(
         Route::post('/saveresultsall', 'App\Http\Controllers\ResultsControllerAll@savelist');
         Route::post('/getresultallajax', 'App\Http\Controllers\ResultsControllerAll@getlistajax');
 
-
         Route::post('/getresultajax', 'App\Http\Controllers\CompetitiiController@getresultajax');
-
-
 
         Route::post('/changeCompetitionStatus', 'App\Http\Controllers\CompetitiiController@changeCompetitionStatus');
         Route::post('/doCompetitionSquads', 'App\Http\Controllers\CompetitiiController@doCompetitionSquads');
@@ -73,28 +73,33 @@ Route::get('/logout', 'App\Http\Controllers\Auth\LoginController@logout')->name(
         Route::post('/saveresultdetail', 'App\Http\Controllers\ResultsController@saveitemajax');
         Route::post('/deleteresultajax', 'App\Http\Controllers\ResultsController@deleteitemajax');
         
+        
+        
+        Route::get('/translations', 'App\Http\Controllers\TranslationController@getlist');
+        Route::post('/gettranslationajax', 'App\Http\Controllers\TranslationController@getlistajax');
+        Route::post('/savetranslation', 'App\Http\Controllers\TranslationController@savelist');
+    
+
         Route::get('/gallery/{id}', 'App\Http\Controllers\CompetitiiController@getgallery');
         
 
+        Route::get('/clasamente', 'App\Http\Controllers\ClasamenteController@getClasamente');
+
+        Route::post('/getClasamentByYear', 'App\Http\Controllers\ClasamenteController@getClasamentByYear');
 
 
-    Route::get('/clasamente', 'App\Http\Controllers\ClasamenteController@getClasamente');
-
-    Route::post('/getClasamentByYear', 'App\Http\Controllers\ClasamenteController@getClasamentByYear');
-
-
-    //Route::POST('/competition', 'App\Http\Controllers\CompetitiiController@getItemAjax');
-    Route::GET('/clasament/{id}', 'App\Http\Controllers\CompetitiiController@getClasament');
-    Route::GET('/clasamentdata/{id}', 'App\Http\Controllers\CompetitiiController@getClasamentdata');
-    Route::GET('/competitionListDown/{id}', 'App\Http\Controllers\CompetitiiController@getClasamentList');
-    Route::GET('/competitionDownSquads/{id}/{day}', 'App\Http\Controllers\CompetitiiController@getClasamentSquads');
-    Route::GET('/competitionListDownSerii/{id}', 'App\Http\Controllers\CompetitiiController@getClasamentListSerii');
-    
+        //Route::POST('/competition', 'App\Http\Controllers\CompetitiiController@getItemAjax');
+        Route::GET('/clasament/{id}', 'App\Http\Controllers\CompetitiiController@getClasament');
+        Route::GET('/clasamentdata/{id}', 'App\Http\Controllers\CompetitiiController@getClasamentdata');
+        Route::GET('/competitionListDown/{id}', 'App\Http\Controllers\CompetitiiController@getClasamentList');
+        Route::GET('/competitionDownSquads/{id}/{day}', 'App\Http\Controllers\CompetitiiController@getClasamentSquads');
+        Route::GET('/competitionListDownSerii/{id}', 'App\Http\Controllers\CompetitiiController@getClasamentListSerii');
+        
 
 
-    Route::get('/poligon/{id}', 'App\Http\Controllers\NavigationController@getPoligon');
+        Route::get('/poligon/{id}', 'App\Http\Controllers\NavigationController@getPoligon');
 
-    Route::middleware(['guest'])->group(function(){
+        Route::middleware(['guest'])->group(function(){
 
             // my user
             Route::get('/myuser', 'App\Http\Controllers\PersonController@getmyuser')->name('myuser');
@@ -111,11 +116,8 @@ Route::get('/logout', 'App\Http\Controllers\Auth\LoginController@logout')->name(
             Route::post('deletepersonajax', 'App\Http\Controllers\PersonController@deleteitemajax');
             Route::post('getpersondetaillistajax', 'App\Http\Controllers\PersonController@getdetaillistajax');
 
+        });
 
-            
-
+        Route::get('{page}', 'App\Http\Controllers\NavigationController@getPage'); 
 
     });
-
-    Route::get('{page}', 'App\Http\Controllers\NavigationController@getPage'); 
-

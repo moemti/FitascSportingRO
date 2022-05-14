@@ -90,8 +90,8 @@
                 <div class="row">
                     <div class="text-right ">
                         
-                        <button id="deleteMaster" class="btn-pill btn-shadow btn-hover-shine btn btn-primary btn-sm">Delete</button>
-                        <button id="addMaster" class="btn-pill btn-shadow btn-hover-shine btn btn-primary btn-sm">Add</button>
+                        <button id="deleteMaster" class="btn-pill btn-shadow btn-hover-shine btn btn-primary btn-sm">{{transex('Delete')}}</button>
+                        <button id="addMaster" class="btn-pill btn-shadow btn-hover-shine btn btn-primary btn-sm">{{transex('Add')}}</button>
                     </div>
                 </div>
 
@@ -108,7 +108,7 @@
 
        
         <div class="text-right u-margin-top-medium">
-                <button id="saveMaster" class="btn-wide btn-pill btn-shadow btn-hover-shine btn btn-primary btn-lg">Salveaza</button>
+                <button id="saveMaster" class="btn-wide btn-pill btn-shadow btn-hover-shine btn btn-primary btn-lg">{{transex('Salveaza')}}</button>
         </div>
         </div>
 

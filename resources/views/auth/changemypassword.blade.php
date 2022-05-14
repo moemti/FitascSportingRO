@@ -13,7 +13,7 @@
             <div class="page-title-wrapper">
 
                 <div class="page-title-heading">
-                    <span>Change my password</span></h4>
+                    <span>C{{transex('hange my password')}}</span></h4>
                 </div>
 
 
@@ -56,7 +56,7 @@
 
                         <div class="d-flex align-items-center">
                             <div class="ml-left"><!--a href="javascript:void(0);" class="btn-lg btn btn-link">Recover Password</a-->
-                                <button class="btn btn-primary btn-lg">Change the password</button>
+                                <button class="btn btn-primary btn-lg">{{transex('Change the password')}}</button>
                             </div>
                         </div>
                     </form>

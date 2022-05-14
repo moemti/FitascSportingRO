@@ -27,7 +27,9 @@
 
 
     <script type="text/javascript" src="{{asset('js/frame/masterlist.js')}}"></script>
-    <script src="{{asset('js/pages/resultseditall.js')}}"></script>
+
+
+    <script src="{{asset('js/pages/translations.js')}}"></script>
 
     <link rel="stylesheet" href="{{asset('js/components/jqwidgets/styles/jqx.base.css')}}" type="text/css" />
 
@@ -50,11 +52,10 @@
     <div class='row'>
         
         <div>
-            <h5 > {{transex('Adaugare rezultate')}} </h5><p>{{$Title}}</p>
+            <h5 > {{$Title}} </h5>
         </div>
     </div>
-    <a href="{{url('/clasament/').'/'.$MasterFilter}}" class="btn-wide btn btn-primary editable">{{transex('Competitie')}}</a>            
-     
+      
                                 
         <input id='MasterFilter' value = "{{$MasterFilter}}" hidden>
 
