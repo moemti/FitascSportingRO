@@ -85,7 +85,10 @@ class CompetitiiController extends MasterController
         $Type = $request->Type;
         $CompetitionId = $request->CompetitionId;
 
-        return $this->BObject()->doCompetitionSquads($CompetitionId, $Type);
+        if ($Type == 'Even')
+            return $this->BObject()->doCompetitionSquadsEven($CompetitionId);
+        else
+            return $this->BObject()->doCompetitionSquads($CompetitionId, $Type);
     }
 
 
@@ -239,7 +242,7 @@ class CompetitiiController extends MasterController
 
     public function getClasamentListSerii ($CompetitionId){
    
-
+        
         $dataset = $this->BObject()->GetClasamentSerii($CompetitionId);
 
         $spreadsheet = new Spreadsheet();

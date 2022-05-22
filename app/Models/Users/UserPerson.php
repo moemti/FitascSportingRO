@@ -204,17 +204,22 @@ class UserPerson extends BObject{
 
 
 
-    public static function saveRegisteredUser($passtoken){
+    public static function saveRegisteredUser($passtoken, &$confirmedEmail){
         $sql = "select Email from register where `Token` = '$passtoken'";
         
 
-    
+        $result = DB::select($sql);
 
-        if (count(DB::select($sql)) == 0){
+        
+
+        if (count($result) == 0){
 
            return 'There is no registration with this token!';
 
-        };
+        }
+        else{
+            $confirmedEmail = $result[0]->Email;
+        }
 
 
         $sql = "update register set Status = 0 where `Token` = '$passtoken' and Status is null";

@@ -134,8 +134,12 @@
                         @if (session("IsSuperUser") == 1)
                             <button id="btnClose"  data-status="Closed" class="cmpStatusChange btn btn-secondary btn-outline mb-2">{{transex('Close')}}</button>
                             <button id="btnOngoing"  data-status="Progress" class="cmpStatusChange btn btn-secondary btn-outline mb-2">Start competition</button>
+                            
                             <button id="btnCreateSquadsAll"  data-type="All" class="createSquads btn btn-secondary btn-outline mb-2">Create squads all</button>
                             <button id="btnCreateSquadsDiff"  data-type="Diff" class="createSquads btn btn-secondary btn-outline mb-2">Create squads diff</button>
+                            <button id="btnCreateSquadsEven"  data-type="Even" class="createSquads btn btn-secondary btn-outline mb-2">Create squads even</button>
+
+
                             <button id="btnDeleteSquads"  data-type="Clear" class="createSquads btn btn-secondary btn-outline mb-2">Clear squads</button>
                             <a id="btnDownloadListaAll" href="{{url('/competitionListDown/').'/'.$master[0]->CompetitionId}}" data-type="Diff" class=" btn btn-secondary btn-outline mb-2">Download lista</a>
                             <div class="row"> 

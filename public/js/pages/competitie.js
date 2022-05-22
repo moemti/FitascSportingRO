@@ -34,7 +34,7 @@
                     { text: translate('Sportiv'), dataField: 'Person', width: (IsSuperUser === 1)?'40%':'55%' , cellclassname: cellclassUser},
                     { text: translate('Cat'), dataField: 'Category', width: '10%' },
                     { text: translate('Team'), dataField: 'Team', width: '20%' },
-                    { text: translate('In Echipa'), dataField: 'IsInTeam', width: '5%' },
+                    { text: translate('In Echipa'), dataField: 'TeamName', width: '5%' },
                    
                 ]
             }
@@ -56,7 +56,7 @@
                     { text: translate('Sportiv'), dataField: 'Person', width: (IsSuperUser === 1)?'50%':'55%'  , cellclassname: cellclassUser},
                     { text: translate('Cat'), dataField: 'Category', width: '10%' },
                     { text: translate('Team'), dataField: 'Team', width: '20%' },
-                    { text: translate('In Echipa'), dataField: 'IsInTeam', width: '5%' },
+                    { text: translate('In Echipa'), dataField: 'TeamName', width: '5%' },
                 ]
             }
             else{
@@ -115,7 +115,7 @@
         function createSquads(e){
             lastevent = e;
             let type = lastevent.target.dataset.type == 'All'?translate('Doriti sa generati squadurile pentru toti participantii'):lastevent.target.dataset.type=='Clear'?translate('Doriti sa stergeti BIB-urile'): 
-                    translate('Doriti sa generati squadurile doar pentru cei ce nu au inca squad')
+                    lastevent.target.dataset.type=='Even'? translate('Doriti sa generati squadurile in mod echilibrat valoric'): translate('Doriti sa generati squadurile doar pentru cei ce nu au inca squad')
             confirm(`${type}?`, createSquadsDo);
         }
 
@@ -496,7 +496,7 @@
                             { name: 'ShootOffS', type: 'string'},
                             { name: 'ResultatCat', type: 'string'},
                             { name: 'BIB', type: 'number'},
-                            { name: 'IsInTeam', type: 'number'},
+                            { name: 'TeamName', type: 'string'},
                             { name: 'NrSerie', type: 'string'},
                             
                         ]

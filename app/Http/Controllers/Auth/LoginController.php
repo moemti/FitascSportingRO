@@ -155,11 +155,13 @@ class LoginController extends Controller
 
         $passtoken = $request->token;
 
-        $message = UserPerson::saveRegisteredUser($passtoken);
+        $confirmedEmail = '';
+
+        $message = UserPerson::saveRegisteredUser($passtoken, $confirmedEmail);
 
         $Email = 'admin@fitascsporting.ro';
         $data = [
-            'title' => transex('Inregistrare noua pe fitascsporting.ro'),
+            'title' => transex('Inregistrare noua pe fitascsporting.ro de catre emailul: ').$confirmedEmail,
             'content' => transex("Apasa linkul pentru a vizualiza cererile!"),
             'link' => url('/registeries'),
 

@@ -75,8 +75,8 @@
 
         <div class="col-2 col-md-2">
             <div class="position-relative form-group">
-                <label for="IsInTeam">Este in echipa</label>
-                <input name="IsInTeam" id="IsInTeam"  type="number"  class="form-control" >
+                <label for="TeamName">Este in echipa:</label>
+                <input name="TeamName" id="TeamName"  class="form-control" >
              </div>
         </div>
     </div>

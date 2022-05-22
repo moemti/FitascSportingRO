@@ -59,9 +59,100 @@ class Competition extends BObject{
             where CompetitionId = :CompetitionId"  ;
 
 
+
+
+        public $ClasamentSelect2 = "
+        SELECT row_number() over(order by Total desc, ShootOff desc, d8.Result desc, d7.Result  desc, d6.Result desc, d5.Result desc, d4.Result desc, d3.Result desc, d2.Result desc, d1.Result desc, r.BIB)  as Position, 
+            p.PersonId, p.Name as Person, sc.Code as Category, t.Name as Team , r.ResultId, NULL AS BIB, 
+            r.IsInTeam, NULL AS NrSerie,  p.SerieNrCI, p.CNP, p.SeriePermisArma, p.DataExpPermis, p.MarcaArma, p.SerieArma, p.CalibruArma, r.TeamName,
+                        Round(Percent,2) as Procent,
+                        
+                        nullif(d1.Result, 0) as M1,
+                        nullif(d2.Result, 0) as M2,
+                        nullif(d3.Result, 0) as M3,
+                        nullif(d4.Result, 0) as M4,
+                        nullif(d5.Result, 0) as M5,
+                        nullif(d6.Result, 0) as M6,
+                        nullif(d7.Result, 0) as M7,
+                        nullif(d8.Result, 0) as M8,
+                        nullif(sof.Total, 0) as Total,
+                        sof.ShootOffS,
+                        nullif(sof.Total1, 0) as Total1,
+                        nullif(sof.Total2, 0) as Total2,
+                        cps.ResultatCat
+    
+    
+                        FROM result r
+    
+                        left join resultdetail d1 on r.ResultId = d1.ResultId and d1.RoundNr = 1
+                        left join resultdetail d2 on r.ResultId = d2.ResultId and d2.RoundNr = 2
+                        left join resultdetail d3 on r.ResultId = d3.ResultId and d3.RoundNr = 3
+                        left join resultdetail d4 on r.ResultId = d4.ResultId and d4.RoundNr = 4
+                        left join resultdetail d5 on r.ResultId = d5.ResultId and d5.RoundNr = 5
+                        left join resultdetail d6 on r.ResultId = d6.ResultId and d6.RoundNr = 6
+                        left join resultdetail d7 on r.ResultId = d7.ResultId and d7.RoundNr = 7
+                        left join resultdetail d8 on r.ResultId = d8.ResultId and d8.RoundNr = 8
+    
+    
+                        left join (
+                            select GROUP_CONCAT(case when d.RoundNr > 8 then d.Result else null end  order by d.RoundNr) as ShootOffS,
+                                    sum(case when d.RoundNr > 8 then d.Result/(10 *( d.RoundNr - 8))  else 0 end ) as ShootOff, 
+                                    sum(case when d.RoundNr <= 8 then d.Result else 0 end ) as Total,
+                                    sum(case when d.RoundNr <= 4 then d.Result else 0 end ) as Total1,
+                                    sum(case when d.RoundNr <= 8 and d.RoundNr > 4 then d.Result else 0 end ) as Total2,
+                            
+                            d.ResultId
+                            from resultdetail d 
+                            group by ResultId
+                            order by d.RoundNr 
+                        ) sof on sof.ResultId = r.ResultId 
+    
+    
+                        left join (select concat(loc,' ' , vvv.Code ) as ResultatCat , ResultId from (
+    
+                            SELECT  
+                                    ROW_NUMBER() OVER (
+                                      PARTITION BY sc.Code 
+                                      ORDER BY sof.Total desc, ShootOff desc) as loc ,
+    
+                                      r.ResultId, sc.Code
+    
+    
+                                                FROM result r
+    
+    
+    
+                                                left join (
+                                                    select GROUP_CONCAT(case when d.RoundNr > 8 then d.Result else null end  order by d.RoundNr) as ShootOffS,
+                                                            sum(case when d.RoundNr > 8 then d.Result/(10 *( d.RoundNr - 8))  else 0 end ) as ShootOff, 
+                                                            sum(case when d.RoundNr <= 8 then d.Result else 0 end ) as Total,
+    
+    
+                                                    d.ResultId
+                                                    from resultdetail d 
+                                                    group by ResultId
+                                                    order by d.RoundNr 
+                                                ) sof on sof.ResultId = r.ResultId 
+    
+                                                left join shootercategory sc on sc.ShooterCategoryId = r.ShooterCategoryId
+    
+                                                where r.CompetitionId = :CompetitionId and sc.code <> 'STR'
+                                                order by sc.Code, loc )vvv
+    
+                                                where loc < 4) cps on cps.ResultId = r.ResultId
+    
+    
+                        inner join person p on p.PersonId = r.PersonId
+                        left join shootercategory sc on sc.ShooterCategoryId = r.ShooterCategoryId
+                        left join team t on t.TeamId = r.TeamId
+                        where r.CompetitionId = :CompetitionId
+                        order by Position, p.Name;
+                ";
+
     public $ClasamentSelect = "
         SELECT row_number() over(order by Total desc, ShootOff desc, d8.Result desc, d7.Result  desc, d6.Result desc, d5.Result desc, d4.Result desc, d3.Result desc, d2.Result desc, d1.Result desc, r.BIB)  as Position, 
-            p.PersonId, p.Name as Person, sc.Code as Category, t.Name as Team , r.ResultId, r.BIB, r.IsInTeam, r.NrSerie,  p.SerieNrCI, p.CNP, p.SeriePermisArma, p.DataExpPermis, p.MarcaArma, p.SerieArma, p.CalibruArma,
+            p.PersonId, p.Name as Person, sc.Code as Category, t.Name as Team , r.ResultId, r.BIB, 
+            r.IsInTeam, r.NrSerie,  p.SerieNrCI, p.CNP, p.SeriePermisArma, p.DataExpPermis, p.MarcaArma, p.SerieArma, p.CalibruArma, r.TeamName,
                         Round(Percent,2) as Procent,
                         
                         nullif(d1.Result, 0) as M1,
@@ -148,7 +239,10 @@ class Competition extends BObject{
 
                 public $ClasamentSelectSerii = "
                 SELECT row_number() over(order by Total desc, ShootOff desc, d8.Result desc, d7.Result  desc, d6.Result desc, d5.Result desc, d4.Result desc, d3.Result desc, d2.Result desc, d1.Result desc, r.BIB)  as Position, 
-                    p.PersonId, p.Name as Person, sc.Code as Category, t.Name as Team , r.ResultId, r.BIB, r.IsInTeam, r.NrSerie,  p.SerieNrCI, p.CNP, p.SeriePermisArma, p.DataExpPermis, p.MarcaArma, p.SerieArma, p.CalibruArma,
+                    p.PersonId, p.Name as Person, sc.Code as Category, t.Name as Team , r.ResultId,
+                    r.BIB,
+                    
+                    r.IsInTeam, r.NrSerie,  p.SerieNrCI, p.CNP, p.SeriePermisArma, p.DataExpPermis, p.MarcaArma, p.SerieArma, p.CalibruArma, r.TeamName,
                                 Round(Percent,2) as Procent,
                                 
                                 d1.Result as M1,
@@ -277,6 +371,125 @@ class Competition extends BObject{
         }
 
 
+        public function putTogetherCompetitiorsEven($CompetitionId, $BibFrom, $SerieTo){
+            return 0;
+        }
+
+
+        public function doCompetitionSquadsEven($CompetitionId){
+            
+
+            $MaxPerSquad = 6; // nr max de competitori
+            $competitors = DB::select("select ResultId, BIB , c.Code as Cat
+                                        from result r 
+                                        left join shootercategory c on r.ShooterCategoryId = c.ShooterCategoryId where CompetitionId = $CompetitionId order by c.Code" );
+
+            $nr = count($competitors);
+
+            $S = ceil($nr/$MaxPerSquad);
+            if ($S < 4)
+                if (floor($nr/4) < 3)
+                    $S = 2;
+                else    
+                    $S = 3;
+
+            $Squads = [];
+
+            // vad cate sunt peste minim 
+
+            $M = $nr % $S;
+            $N = floor($nr / $S);
+            
+            for ($i = 1; $i <= $S; $i++) {
+                $p = ($i <= $M?1:0);
+                array_push($Squads, [$N + $p, []]); // am pus in fiecare $Squads cati sunt si un array in care o sa intre competitorii
+
+            }
+
+        
+         
+
+            // punem in urne de catogorii
+
+            $Valori = [];
+
+            $OldCat = '';
+
+            foreach ($competitors as $i => $comp){
+                if ($OldCat !== $comp->Cat){
+                    array_push($Valori, []);
+                    $OldCat = $comp->Cat;
+                }
+
+                array_push($Valori[count($Valori) - 1], $comp->ResultId);
+
+            }
+
+
+            // acum le amestecam
+
+            foreach($Valori as $i => $val){
+                shuffle($val);
+                $Valori[$i] = $val;
+            }
+
+
+            // impartim pe squads
+
+            $k = 0;
+            $l = 0;
+            $snr = 0;
+            
+            foreach($Valori as $i => $val){
+                foreach($val as $v){
+                
+                    // verific sa nu fie deja umplute
+                    while (count($Squads[$snr][1]) >= $Squads[$snr][0]){
+                        if ($snr >= $S - 1){ // daca e mai mare decat numarul de squaduri
+                            $snr = 0;
+                        }
+                        else{
+                            $snr += 1;
+                        }
+                    }
+                    
+
+                    array_push($Squads[$snr][1], $v);
+
+                    if ($snr >= $S - 1){ // daca e mai mare decat numarul de squaduri
+                        $snr = 0;
+                    }
+                    else{
+                        $snr += 1;
+                    }
+                   
+                }
+
+                
+            }
+
+            $bib = 1;
+            $SS = 1;
+
+           foreach($Squads as $sq){
+               foreach($sq[1] as $r){
+                    $ResultId = $r;
+                    $sql = "update result set BIB = $bib, NrSerie = $SS where ResultId = $ResultId";
+                    DB::select($sql);
+
+                    $bib += 1;
+               }
+
+               $SS += 1;
+           }
+
+
+           return 'OK';
+
+        }
+
+
+
         public function doCompetitionSquads($CompetitionId, $Type){
 
             if ($Type == 'Clear'){
@@ -285,19 +498,21 @@ class Competition extends BObject{
             }
             
             $MaxSquad = 6; // nr max de competitori
-            $NrParallel = 2;  // nr de poligoane
+          //  $NrParallel = 2;  // nr de poligoane
             $nr = 0;
             $bibs = array();
 
             // get Results (competitors)
-            $competitors = DB::select("select ResultId, BIB from result where CompetitionId = $CompetitionId");
+            $competitors = DB::select("select ResultId, BIB , c.Code
+                    from result r 
+                    left join shootercategory c on r.ShooterCategoryId = c.ShooterCategoryId where CompetitionId = $CompetitionId");
 
             $nr = count($competitors);
 
-            foreach ($competitors as $comp){
-                if (isset($comp->BIB))
-                     array_push($bibs, $comp->BIB);
-            }
+            // foreach ($competitors as $comp){
+            //     if (isset($comp->BIB))
+            //          array_push($bibs, $comp->BIB);
+            // }  -- eu zic ca nu mai trebuie
 
             // Nr of squads
             $S = ceil($nr/$MaxSquad);
@@ -311,9 +526,10 @@ class Competition extends BObject{
 
             // vad cate sunt peste minim 
 
-            $M = $nr%$S;
+            $M = $nr % $S;
             $N = floor($nr/$S);
             
+
             for ($i = 1; $i <= $S; $i++) {
                 $p = ($i <= $M?1:0);
                 array_push($Squads, [$N + $p]);
@@ -470,7 +686,11 @@ class Competition extends BObject{
         }
         
         public function GetClasament($CompetitionId){
-            return DB::select(str_replace(':CompetitionId', $CompetitionId,$this->ClasamentSelect));
+
+        //    if (session('PersonId') == 195)
+                return DB::select(str_replace(':CompetitionId', $CompetitionId,$this->ClasamentSelect));
+      //      else
+            //    return DB::select(str_replace(':CompetitionId', $CompetitionId,$this->ClasamentSelect2));
         }
 
         public function GetClasamentSerii($CompetitionId){
@@ -551,18 +771,15 @@ class Competition extends BObject{
         public function GetClasamentTeams($CompetitionId){
 
             $sql =  "
-            
-            
-            select     ROW_NUMBER() OVER ( order by sum(Total) desc ) as Loc,  sum(Total) as Total, Team , GROUP_CONCAT(person order by locechipa) as Members  from 
-            
-            
+            select ROW_NUMBER() OVER ( order by sum(Total) desc ) as Loc, sum(Total) as Total, Team , GROUP_CONCAT(person order by locechipa SEPARATOR ', ') as Members  
+            from   
             ( select * from (
                                                     
                                                     select    ROW_NUMBER() OVER (
                                                     
-                                                    	Partition by TeamName
-                                                        order by TeamName desc ,soft.Total desc
-                                                    ) as locechipa, rr.ResultId, IFNULL(IsInTeam,0) as IsInTeam, soft.Total, rr.PersonId, p.Name as Person, rr.TeamId, TeamName as Team
+                                                    	Partition by Team
+                                                        order by Team desc ,soft.Total desc
+                                                    ) as locechipa, rr.ResultId, soft.Total, rr.PersonId, p.Name as Person, rr.TeamId, IfNull(TeamName, t.Name) as Team
                                                     
                                                     FROM result rr
                										inner join person p on p.PersonId = rr.PersonId
@@ -581,16 +798,15 @@ class Competition extends BObject{
                                                             ) soft on soft.ResultId = rr.ResultId 
         
         											left join shootercategory sc on sc.ShooterCategoryId = rr.ShooterCategoryId
-
-                                                	where rr.CompetitionId = :CompetitionId and sc.code <> 'STR'  and TeamName is not null
-                                                
-                                                    
-                                                    order by IsInTeam desc, Total desc, locechipa
+                                                    left join team t on t.TeamId = rr.TeamId
+                                                	where rr.CompetitionId = :CompetitionId and sc.code <> 'STR'  and IfNull(TeamName, t.Name) is not null                                                    
+                                                    order by  Total desc, locechipa
                 ) X where locechipa < 4
 			order by Total desc , locechipa)
             table1
             group by Team
             order by Total desc
+            limit 0,3
         
                     ";
                 return DB::select(str_replace(':CompetitionId', $CompetitionId, $sql));
@@ -617,7 +833,7 @@ class Competition extends BObject{
 
         public function getresultDetail($ResultId){
             $sql = "select p.Name, coalesce(r.ShooterCategoryId, x.ShooterCategoryId) as ShooterCategoryId, coalesce(r.TeamId, x.TeamId) as TeamId, r.Aborted, Position, Total, Percent, ResultId, p.PersonId,
-                r.BIB, r.IsInTeam, r.NrSerie,   p.SerieNrCI, p.CNP, p.SeriePermisArma, p.DataExpPermis, p.MarcaArma, p.SerieArma, p.CalibruArma
+                r.BIB, r.IsInTeam, r.NrSerie, r.TeamName,  p.SerieNrCI, p.CNP, p.SeriePermisArma, p.DataExpPermis, p.MarcaArma, p.SerieArma, p.CalibruArma
             from result r 
             inner join person p on p.PersonId = r.PersonId
             inner join competition c on c.CompetitionId = r.CompetitionId
@@ -777,9 +993,6 @@ class Competition extends BObject{
 
 
         public function registerCompetitorDB($request){
-
-
-         
 
 
             try{

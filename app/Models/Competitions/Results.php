@@ -27,7 +27,7 @@ class Results extends BObject{
     public $MasterSelect = " ";
 
     public $MasterItemSelect = "select p.Name, coalesce(r.ShooterCategoryId, x.ShooterCategoryId) as ShooterCategoryId, coalesce(r.TeamId, x.TeamId) as TeamId, r.Aborted, Position, Total, Percent, ResultId,
-            r.BIB, r.IsInTeam, r.NrSerie
+            r.BIB, r.NrSerie, r.TeamName
             from result r 
             inner join person p on p.PersonId = r.PersonId
             inner join competition c on c.CompetitionId = r.CompetitionId
@@ -37,8 +37,8 @@ class Results extends BObject{
             where r.ResultId = :ResultId";
                                             
 
-    public $MasterInsert = "INSERT INTO `result`( `CompetitionId`, `PersonId`, `ShooterCategoryId`, `TeamId`, `Aborted`, BIB, IsInTeam, NrSerie)
-        values  ( :CompetitionId, :PersonId, :ShooterCategoryId, :TeamId, :Aborted, :BIB, :IsInTeam, :NrSerie);
+    public $MasterInsert = "INSERT INTO `result`( `CompetitionId`, `PersonId`, `ShooterCategoryId`, `TeamId`, `Aborted`, BIB, TeamName, NrSerie)
+        values  ( :CompetitionId, :PersonId, :ShooterCategoryId, :TeamId, :Aborted, :BIB, ':TeamName', :NrSerie);
        
         UPDATE `person` SET
                     
@@ -63,7 +63,7 @@ class Results extends BObject{
                 `TeamId` = :TeamId,
                 `Aborted` = :Aborted,
                  BIB = :BIB, 
-                 IsInTeam = :IsInTeam, 
+                 TeamName = ':TeamName', 
                  NrSerie = :NrSerie
             WHERE
              ResultId = :ResultId;
@@ -146,7 +146,7 @@ class Results extends BObject{
 
         public function getresultDetail($ResultId){
             $sql = "select p.Name, coalesce(r.ShooterCategoryId, x.ShooterCategoryId) as ShooterCategoryId, coalesce(r.TeamId, x.TeamId) as TeamId, r.Aborted, Position, Total, Percent, ResultId,
-            r.BIB, r.IsInTeam, r.NrSerie
+            r.BIB, r.TeamName, r.NrSerie
             from result r 
             inner join person p on p.PersonId = r.PersonId
             inner join competition c on c.CompetitionId = r.CompetitionId
