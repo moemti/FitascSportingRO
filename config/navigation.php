@@ -19,7 +19,8 @@ return  [
                         [
                                 [
                                         ['gallery/13', 'Etapa 1 Ludus 19,20-03-2022'], 
-                                        ['gallery/14', 'Etapa 2 Lugoj 9,10-04-2022']
+                                        ['gallery/14', 'Etapa 2 Lugoj 9,10-04-2022'],
+                                        ['gallery/15', 'Etapa 2 Bucuresti 21,22-05-2022']
                 
                                 ], 'Galerii foto'
                 

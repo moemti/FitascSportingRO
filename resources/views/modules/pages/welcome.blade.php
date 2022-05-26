@@ -21,19 +21,19 @@
             <div class="owl-stage">
 
                 <!-- Carousel Slide 1 -->
-                <div class="owl-item position-relative overflow-hidden" style="background-image:  url(img/gallery/competitions/14/1.jpg); background-size: cover; background-position: 60% 40%; background-position: 60% 40%;">
+                <div class="owl-item position-relative overflow-hidden" style="background-image:  url(img/gallery/competitions/15/1.jpeg); background-size: cover; background-position: 60% 40%; background-position: 60% 40%;">
                     <div class="container position-relative z-index-3 h-100">
                         <div class="row align-items-center justify-content-center h-100">
                             <div class="col-lg-7">
                                 <div class="d-flex flex-column justify-content-center align-items-center text-center h-100">
                                     <span class="position-relative text-color-light text-6 line-height-5 font-weight-medium custom-secondary-font pe-4 mb-0 " data-appear-animation="fadeInDownShorter" data-appear-animation-delay="500" data-plugin-options="{'minWindowWidth': 0}">
-                                    {{transex('Etapa')}} 2 Lugoj 9-10 Aprilie
+                                    {{transex('Etapa')}} 3 Bucuresti 21-22 Mai
                                     </span>
                                     <h1 class="text-color-light font-weight-extra-bold text-13 line-height-1 mb-2" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="750" data-plugin-options="{'minWindowWidth': 0}">{{transex('Competitiile continua')}}</h1>
                                     <p class="text-5 text-color-light font-weight-light custom-secondary-font mb-5 " data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1000">{{transex('Vezi clasament si galeria de poze')}}</p>
-                                    <a href="{{url('/clasamentdata/2022-04-09')}}" class="btn btn-primary font-weight-bold btn-py-2 btn-px-4 " data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1250">{{transex('Vezi mai mult')}}</a> 
-                                    <a class="text-5  text-color-light appear-animation"    data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1350" href="https://www.facebook.com/miclosm" target="_blank" title="Facebook">
-                                    <i style="color:blue !important;" class="fab fa-facebook-f"></i>Facebook</a>
+                                    <a href="{{url('/clasamentdata/2022-05-21')}}" class="btn btn-primary font-weight-bold btn-py-2 btn-px-4 " data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1250">{{transex('Vezi mai mult')}}</a> 
+                                    <!-- <a class="text-5  text-color-light appear-animation"    data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1350" href="https://www.facebook.com/miclosm" target="_blank" title="Facebook">
+                                    <i style="color:blue !important;" class="fab fa-facebook-f"></i>Facebook</a> -->
                                     
                                 </div>
                             </div>
@@ -42,44 +42,63 @@
                 </div>
 
                 <!-- Carousel Slide 2 -->
-                <div class="owl-item position-relative overflow-hidden" style="background-image:   url(img/gallery/competitions/14/2.jpg); background-size: cover; background-position: 60% 40%; background-position: 60% 40%;">
+                <div class="owl-item position-relative overflow-hidden" style="background-image:   url(img/gallery/competitions/15/2.jpeg); background-size: cover; background-position: 60% 40%; background-position: 60% 40%;">
                     <div class="container position-relative z-index-3 h-100">
                         <div class="row align-items-center justify-content-center h-100">
                             <div class="col-lg-7">
                                 <div class="d-flex flex-column justify-content-center align-items-center text-center h-100">
                                     <span class="position-relative text-color-light text-6 line-height-5 font-weight-medium custom-secondary-font pe-4 mb-0 appear-animation" data-appear-animation="fadeInDownShorter" data-appear-animation-delay="500" data-plugin-options="{'minWindowWidth': 0}">
-                                    {{transex('Etapa')}} 2 Lugoj 9-10 Aprilie
+                                    {{transex('Etapa')}} 3 Bucuresti 21-22 Mai
                                     </span>
                                     <h1 class="text-color-light font-weight-extra-bold text-13 line-height-1 mb-2 appear-animation" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="750" data-plugin-options="{'minWindowWidth': 0}">{{transex('Competitiile continua')}}</h1>
                                     <p class="text-5 text-color-light font-weight-light custom-secondary-font mb-5 appear-animation" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1000">{{transex('Vezi clasament si galeria de poze')}}</p>
-                                    <a href="{{url('/clasamentdata/2022-04-09')}}" class="btn btn-primary font-weight-bold btn-py-2 btn-px-4 appear-animation" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1250">{{transex('Vezi mai mult')}}</a> 
-                                    <a class="text-5  text-color-light appear-animation"    data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1350" href="https://www.facebook.com/miclosm" target="_blank" title="Facebook">
-                                    <i style="color:blue !important;" class="fab fa-facebook-f"></i>Facebook</a>
+                                    <a href="{{url('/clasamentdata/2022-05-21')}}" class="btn btn-primary font-weight-bold btn-py-2 btn-px-4 appear-animation" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1250">{{transex('Vezi mai mult')}}</a> 
+                                    <!-- <a class="text-5  text-color-light appear-animation"    data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1350" href="https://www.facebook.com/miclosm" target="_blank" title="Facebook">
+                                    <i style="color:blue !important;" class="fab fa-facebook-f"></i>Facebook</a> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="owl-item position-relative overflow-hidden" style="background-image:   url(img/gallery/competitions/15/11.jpeg); background-size: cover; background-position: 60% 40%; background-position: 60% 40%;">
+                    <div class="container position-relative z-index-3 h-100">
+                        <div class="row align-items-center justify-content-center h-100">
+                            <div class="col-lg-7">
+                                <div class="d-flex flex-column justify-content-center align-items-center text-center h-100">
+                                    <span class="position-relative text-color-light text-6 line-height-5 font-weight-medium custom-secondary-font pe-4 mb-0 appear-animation" data-appear-animation="fadeInDownShorter" data-appear-animation-delay="500" data-plugin-options="{'minWindowWidth': 0}">
+                                        {{transex('Etapa')}} 3 Bucuresti 21-22 Mai
+                                    </span>
+                                    <h1 class="text-color-light font-weight-extra-bold text-13 line-height-1 mb-2 appear-animation" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="750" data-plugin-options="{'minWindowWidth': 0}">{{transex('Competitiile continua')}}</h1>
+                                    <p class="text-5 text-color-light font-weight-light custom-secondary-font mb-5 appear-animation" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1000">{{transex('Vezi clasament si galeria de poze')}}</p>
+                                    <a href="{{url('/clasamentdata/2022-05-21')}}" class="btn btn-primary font-weight-bold btn-py-2 btn-px-4 appear-animation mb-2" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1250">{{transex('Vezi mai mult')}}</a> 
+                                    <!-- <a class="text-5  text-color-light appear-animation"    data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1350" href="https://www.facebook.com/miclosm" target="_blank" title="Facebook">
+                                    <i style="color:blue !important;" class="fab fa-facebook-f"></i>Facebook</a> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                           <!-- Carousel Slide 2 -->
+                <div class="owl-item position-relative overflow-hidden" style="background-image:   url(img/gallery/competitions/15/10.jpeg); background-size: cover; background-position: 60% 40%; background-position: 60% 40%;">
+                    <div class="container position-relative z-index-3 h-100">
+                        <div class="row align-items-center justify-content-center h-100">
+                            <div class="col-lg-7">
+                                <div class="d-flex flex-column justify-content-center align-items-center text-center h-100">
+                                    <span class="position-relative text-color-light text-6 line-height-5 font-weight-medium custom-secondary-font pe-4 mb-0 appear-animation" data-appear-animation="fadeInDownShorter" data-appear-animation-delay="500" data-plugin-options="{'minWindowWidth': 0}">
+                                        {{transex('Etapa')}} 3 Bucuresti 21-22 Mai
+                                    </span>
+                                    <h1 class="text-color-light font-weight-extra-bold text-13 line-height-1 mb-2 appear-animation" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="750" data-plugin-options="{'minWindowWidth': 0}">{{transex('Competitiile continua')}}</h1>
+                                    <p class="text-5 text-color-light font-weight-light custom-secondary-font mb-5 appear-animation" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1000">{{transex('Vezi clasament si galeria de poze')}}</p>
+                                    <a href="{{url('/clasamentdata/2022-05-21')}}" class="btn btn-primary font-weight-bold btn-py-2 btn-px-4 appear-animation mb-2" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1250">{{transex('Vezi mai mult')}}</a> 
+                                    <!-- <a class="text-5  text-color-light appear-animation"    data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1350" href="https://www.facebook.com/miclosm" target="_blank" title="Facebook">
+                                    <i style="color:blue !important;" class="fab fa-facebook-f"></i>Facebook</a> -->
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                           <!-- Carousel Slide 2 -->
-                <div class="owl-item position-relative overflow-hidden" style="background-image:   url(img/gallery/competitions/14/3.jpg); background-size: cover; background-position: 60% 40%; background-position: 60% 40%;">
-                    <div class="container position-relative z-index-3 h-100">
-                        <div class="row align-items-center justify-content-center h-100">
-                            <div class="col-lg-7">
-                                <div class="d-flex flex-column justify-content-center align-items-center text-center h-100">
-                                    <span class="position-relative text-color-light text-6 line-height-5 font-weight-medium custom-secondary-font pe-4 mb-0 appear-animation" data-appear-animation="fadeInDownShorter" data-appear-animation-delay="500" data-plugin-options="{'minWindowWidth': 0}">
-                                        {{transex('Etapa')}} 2 Lugoj 9-10 Aprilie
-                                    </span>
-                                    <h1 class="text-color-light font-weight-extra-bold text-13 line-height-1 mb-2 appear-animation" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="750" data-plugin-options="{'minWindowWidth': 0}">{{transex('Competitiile continua')}}</h1>
-                                    <p class="text-5 text-color-light font-weight-light custom-secondary-font mb-5 appear-animation" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1000">{{transex('Vezi clasament si galeria de poze')}}</p>
-                                    <a href="{{url('/clasamentdata/2022-04-09')}}" class="btn btn-primary font-weight-bold btn-py-2 btn-px-4 appear-animation mb-2" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1250">{{transex('Vezi mai mult')}}</a> 
-                                    <a class="text-5  text-color-light appear-animation"    data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1350" href="https://www.facebook.com/miclosm" target="_blank" title="Facebook">
-                                    <i style="color:blue !important;" class="fab fa-facebook-f"></i>Facebook</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
             </div>
         </div>
