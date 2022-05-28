@@ -49,7 +49,17 @@
         }
         else{
 
+
             if (Status == 'Open'){
+                clClasament = [      
+                    { text: 'NrCrt', dataField: 'Position', width: '5%' },  
+                      { text: translate('Sportiv'), dataField: 'Person', width: (IsSuperUser === 1)?'55%':'60%'  , cellclassname: cellclassUser},
+                    { text: translate('Cat'), dataField: 'Category', width: '10%' },
+                    { text: translate('Team'), dataField: 'Team', width: '20%' },
+                    { text: translate('In Echipa'), dataField: 'TeamName', width: '5%' },
+                ]
+            }
+            else if (Status == 'Preparation'){
                 clClasament = [      
                     { text: 'BIB', dataField: 'BIB', width: '5%' },  
                     { text: translate('Serie'), dataField: 'NrSerie', width: '5%' },     
@@ -58,7 +68,12 @@
                     { text: translate('Team'), dataField: 'Team', width: '20%' },
                     { text: translate('In Echipa'), dataField: 'TeamName', width: '5%' },
                 ]
+
+
+
             }
+                
+            
             else{
                 clClasament =
                     [

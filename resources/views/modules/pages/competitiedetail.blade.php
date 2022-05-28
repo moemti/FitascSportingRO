@@ -104,6 +104,8 @@
                             <button id="btnOpen" data-status="Open" class = "cmpStatusChange btn btn-primary btn-outline mb-2" >{{transex('Deschide')}}</button>
                             @endif
                             @break
+
+
                         @case('Open')
 
                         @if (session("PersonId"))
@@ -129,12 +131,19 @@
                                  <button id="btnRegister" class = "btn-register btn btn-primary btn-outline mb-2" >{{transex('Ma inscriu')}}</button>
                             @endif
 
+                            @if (session("IsSuperUser") == 1)
+                             <button id="btnOngoing"  data-status="Preparation" class="cmpStatusChange btn btn-secondary btn-outline mb-2">Close subscription</button>
+                            @endif
                         @endif
+                        @break
+                        @case('Preparation')
+
+                      
 
                         @if (session("IsSuperUser") == 1)
                             <button id="btnClose"  data-status="Closed" class="cmpStatusChange btn btn-secondary btn-outline mb-2">{{transex('Close')}}</button>
+                            <button id="btnOpen" data-status="Open" class = "cmpStatusChange btn btn-secondary btn-outline mb-2" >Open</button>
                             <button id="btnOngoing"  data-status="Progress" class="cmpStatusChange btn btn-secondary btn-outline mb-2">Start competition</button>
-                            
                             <button id="btnCreateSquadsAll"  data-type="All" class="createSquads btn btn-secondary btn-outline mb-2">Create squads all</button>
                             <button id="btnCreateSquadsDiff"  data-type="Diff" class="createSquads btn btn-secondary btn-outline mb-2">Create squads diff</button>
                             <button id="btnCreateSquadsEven"  data-type="Even" class="createSquads btn btn-secondary btn-outline mb-2">Create squads even</button>
@@ -150,12 +159,13 @@
                             </div>
                             </div>
                         @endif
-                        <a id="btnDownloadListaAll" href="{{url('/competitionListDownSerii/').'/'.$master[0]->CompetitionId}}" data-type="Diff" class=" btn btn-secondary btn-outline mb-2">{{transex('Download serii')}}</a>
+                            <a id="btnDownloadListaAll" href="{{url('/competitionListDownSerii/').'/'.$master[0]->CompetitionId}}" data-type="Diff" class=" btn btn-secondary btn-outline mb-2">{{transex('Download serii')}}</a>
                         @break
 
+                        
                     @case('Progress')     
                          @if (session("IsSuperUser") == 1)
-                            <button id="btnOpen" data-status="Open" class = "cmpStatusChange btn btn-secondary btn-outline mb-2" >Open</button>
+                            <button id="btnOngoing"  data-status="Preparation" class="cmpStatusChange btn btn-secondary btn-outline mb-2">Open to preparation</button>
                             <button id="btnFinish"  data-status="Finished" class="cmpStatusChange btn btn-secondary btn-outline mb-2">Finish competition</button>
                             <a id="btnDownloadListaSquad1" href="{{url('/competitionDownSquads/').'/'.$master[0]->CompetitionId}}/1" data-type="Diff" class=" btn btn-secondary btn-outline mb-2">Ziua 1</a>
                             <a id="btnDownloadListaSquad2" href="{{url('/competitionDownSquads/').'/'.$master[0]->CompetitionId}}/2" data-type="Diff" class=" btn btn-secondary btn-outline mb-2">Ziua 2</a>
