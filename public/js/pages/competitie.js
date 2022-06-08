@@ -25,19 +25,31 @@
 
         let clClasament = [];
 
-        if (window.innerWidth < 900)
+        if (window.innerWidth < 900){
 
             if (Status == 'Open'){
                 clClasament = [      
+                    { text: 'Nr', dataField: 'Position', width: '5%' }, 
+                   
+                    { text: translate('Sportiv'), dataField: 'Person', width: (IsSuperUser === 1)?'55%':'60%' , cellclassname: cellclassUser},
+                    { text: translate('Cat'), dataField: 'Category', width: '10%' },
+                    { text: translate('Team'), dataField: 'Team', width: '25%' },
+                  
+                   
+                ]
+            }  else if (Status == 'Preparation'){
+                clClasament = [      
                     { text: 'BIB', dataField: 'BIB', width: '5%' },  
-                    { text: translate('Serie'), dataField: 'NrSerie', width: '5%' },  
-                    { text: translate('Sportiv'), dataField: 'Person', width: (IsSuperUser === 1)?'40%':'55%' , cellclassname: cellclassUser},
+                    { text: translate('Serie'), dataField: 'NrSerie', width: '5%' },     
+                    { text: translate('Sportiv'), dataField: 'Person', width: (IsSuperUser === 1)?'50%':'55%'  , cellclassname: cellclassUser},
                     { text: translate('Cat'), dataField: 'Category', width: '10%' },
                     { text: translate('Team'), dataField: 'Team', width: '20%' },
                     { text: translate('In Echipa'), dataField: 'TeamName', width: '5%' },
-                   
                 ]
-            }
+
+
+
+                }
             else{
                 clClasament = [
                     { text: translate('Loc'), dataField: 'Position', width: '5%' },
@@ -46,14 +58,15 @@
                     { text: translate('Team'), dataField: 'Team', width: '15%' },
                     { text: translate('Total'), dataField: 'Total', width: '15%' },               
                 ]
+            }
         }
         else{
 
 
             if (Status == 'Open'){
                 clClasament = [      
-                    { text: 'NrCrt', dataField: 'Position', width: '5%' },  
-                      { text: translate('Sportiv'), dataField: 'Person', width: (IsSuperUser === 1)?'55%':'60%'  , cellclassname: cellclassUser},
+                    { text: 'Nr', dataField: 'Position', width: '5%' },  
+                    { text: translate('Sportiv'), dataField: 'Person', width: (IsSuperUser === 1)?'55%':'60%'  , cellclassname: cellclassUser},
                     { text: translate('Cat'), dataField: 'Category', width: '10%' },
                     { text: translate('Team'), dataField: 'Team', width: '20%' },
                     { text: translate('In Echipa'), dataField: 'TeamName', width: '5%' },
@@ -71,7 +84,7 @@
 
 
 
-            }
+                }
                 
             
             else{

@@ -26,7 +26,7 @@
 	<!-- JSZip -->
     <script type="text/javascript" src="{{asset('js/components/scripts/jszip.min.js')}}"></script>
 
-    <script defer type="module" src="{{asset('js/pages/competitie.js')}}"></script>
+    <script defer type="module" src="{{asset('js/pages/competitie.js?v=1')}}"></script>
 
     <link rel="stylesheet" type="text/css" href="{{asset('css/pages/competitii.css')}}"/>
     <link rel="stylesheet" href="{{asset('js/components/jqwidgets/styles/jqx.base.css')}}" type="text/css" />

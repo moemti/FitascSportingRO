@@ -915,11 +915,11 @@ button.toast-close-button {
   border-radius: .5rem;
   transition: all .2s;
   position: absolute;
-  color: #ff0800;
+  color: #050000;
   background-image: linear-gradient(to top left, rgba(136, 70, 0, 0.9), rgba(250, 247, 242, 0.95));
   border: none; }
   .compet_status.Open {
-    background-image: linear-gradient(to top left, rgba(210, 248, 198, 0.7), rgba(235, 255, 235, 0.2)); }
+    background-image: linear-gradient(to top left, rgba(26, 95, 5, 0.7), rgba(4, 100, 4, 0.2)); }
   .compet_status.Progress {
     background-image: linear-gradient(to top left, rgba(248, 164, 134, 0.7), rgba(252, 219, 207, 0.2)); }
   .compet_status.Finished {

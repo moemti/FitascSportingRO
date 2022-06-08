@@ -44,7 +44,7 @@
 
 
         <script src="{{asset('js/app.js')}}"></script>
-        <link rel="stylesheet" href={{asset("css/style.css")}}>
+        <link rel="stylesheet" href={{asset("css/style.css?v=1")}}>
         <link rel="stylesheet"  href={{asset("css/uicons-regular-rounded.css")}} >
     
         <script type="text/javascript" src="{{asset('js/bootstrap/bootstrap.min.js')}}"></script> 

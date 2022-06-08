@@ -18,7 +18,7 @@
     transition: all .2s;
     position: absolute;
    
-    color: rgb(255, 8, 0);
+    color: rgb(5, 0, 0);
     background-image: linear-gradient(
         to  top left,
         rgba($color-primary, 0.9),
@@ -30,9 +30,8 @@
        // color: silver;
         background-image: linear-gradient(
             to  top left,
-            rgba(rgb(210, 248, 198), 0.7),
-            rgba(rgb(235, 255, 235), 0.2));
-    
+            rgba(rgb(26, 95, 5), 0.7),
+            rgba(rgb(4, 100, 4), 0.2));
     }
     &.Progress{
        // color: silver;
