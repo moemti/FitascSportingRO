@@ -921,7 +921,7 @@ button.toast-close-button {
   .compet_status.Open {
     background-image: linear-gradient(to top left, rgba(26, 95, 5, 0.7), rgba(4, 100, 4, 0.2)); }
   .compet_status.Progress {
-    background-image: linear-gradient(to top left, rgba(248, 164, 134, 0.7), rgba(252, 219, 207, 0.2)); }
+    background-image: linear-gradient(to top left, rgba(120, 35, 4, 0.7), rgba(134, 38, 3, 0.2)); }
   .compet_status.Finished {
     background-image: linear-gradient(to top left, rgba(83, 37, 18, 0.7), rgba(246, 214, 184, 0.2)); }
 
