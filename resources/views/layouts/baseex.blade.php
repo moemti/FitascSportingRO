@@ -478,7 +478,50 @@
                                     </a>
                               
 						</div>
+						<div class="col-lg-3 custom-sm-margin-bottom-1 pb-3">
+                            <!-- <a href="{{Route('welcome')}}" class="alternative-font-4 text-decoration-none text-5-5 font-weight-bold">Sporting Romania</a> -->
+							
+                                    <a href="https://therme.ro" target="_blank">  
+                                        <img style="    width: 100px;
+                                        float: center;
+                                        margin: 0px;
+										
+                                        padding: 0px;" src=" {{url('img/parteneri/TB_logograma.png')}}">
+                                    </a>
+                              
+						</div>
 					</div>
+
+
+			<section id="marketing" class=" section-no-border m-0 p-0">
+					<div class="container_">
+					    <div class="row justify-content-center text-center align-items-center ">
+						<a href="https://therme.ro" target="_blank">  
+                                        <img style="    width: 100%;
+                                        float: center;
+                                        margin: 0px;
+										
+                                        padding: 0px;" src=" {{url('img/parteneri/therme/desktop_FHD_size.jpg')}}">
+                                    </a>
+						</div>
+					</div>
+			</section>
+
+			<section id="marketingphone" class=" section-no-border m-0 p-0">
+					<div class="container_">
+					    <div class="row justify-content-center text-center align-items-center ">
+						<a href="https://therme.ro" target="_blank">  
+                                        <img style="    width: 100%;
+                                        float: center;
+                                        margin: 0px;
+										
+                                        padding: 0px;" src=" {{url('img/parteneri/therme/mobile_size.jpg')}}">
+                                    </a>
+						</div>
+					</div>
+			</section>
+
+
 
 			<footer id="footer" class="bg-color-secondary custom-footer m-0" style="background: url({{asset('img/theme/footer-bg.jpg')}}); background-size: cover;">
 				<div class="container pt-3">
