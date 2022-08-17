@@ -307,7 +307,7 @@
 													$link = basename($path);
 												
 													echo " <div class='col-lg-2 col-sm-8 mb-3 mb-lg-0' 
-													style=' max-width: 100%; height: auto;  overflow: hidden;'>
+													style=' max-width: 100%; height: auto;  overflow: hidden;margin-bottom:4px !important;'>
 													<a href='//www.$link' target='_blank'>  
 														<img style='    width: 120px;
 				
