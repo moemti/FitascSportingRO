@@ -702,6 +702,9 @@ class Competition extends BObject{
 
         public function GetClasamentCategory($CompetitionId){
 
+           
+
+
         $sql =  "
         SELECT 
              p.Name as Person, sc.Code as Category, t.Name as Team ,loc, sof.Total, ShootOffS
@@ -770,45 +773,90 @@ class Competition extends BObject{
 
         public function GetClasamentTeams($CompetitionId){
 
-            $sql =  "
-            select ROW_NUMBER() OVER ( order by sum(Total) desc ) as Loc, sum(Total) as Total, Team , GROUP_CONCAT(person order by locechipa SEPARATOR ', ') as Members  
-            from   
-            ( select * from (
-                                                    
-                                                    select    ROW_NUMBER() OVER (
-                                                    
-                                                    	Partition by Team
-                                                        order by Team desc ,soft.Total desc
-                                                    ) as locechipa, rr.ResultId, soft.Total, rr.PersonId, p.Name as Person, rr.TeamId, IfNull(TeamName, t.Name) as Team
-                                                    
-                                                    FROM result rr
-               										inner join person p on p.PersonId = rr.PersonId
-                									
-                                                    inner join (
-                                                            select GROUP_CONCAT(case when d.RoundNr > 8 then d.Result else null end  order by d.RoundNr) as ShootOffS,
-                                                                        sum(case when d.RoundNr > 8 then d.Result/(10 *( d.RoundNr - 8))  else 0 end ) as ShootOff, 
-                                                                        sum(case when d.RoundNr <= 8 then d.Result else 0 end ) as Total,
+
+            $sql = "SELECT 1 FROM `result` WHERE TeamName is not null and CompetitionId = $CompetitionId";
+
+            if (count(DB::select($sql)) > 0 )
+
+                    $sql =  "
+                    select ROW_NUMBER() OVER ( order by sum(Total) desc ) as Loc, sum(Total) as Total, Team , GROUP_CONCAT(person order by locechipa SEPARATOR ', ') as Members  
+                    from   
+                    ( select * from (
+                                                            
+                                                            select    ROW_NUMBER() OVER (
+                                                            
+                                                                Partition by Team
+                                                                order by Team desc ,soft.Total desc
+                                                            ) as locechipa, rr.ResultId, soft.Total, rr.PersonId, p.Name as Person, rr.TeamId, IfNull(TeamName, t.Name) as Team
+                                                            
+                                                            FROM result rr
+                                                            inner join person p on p.PersonId = rr.PersonId
+                                                            
+                                                            inner join (
+                                                                    select GROUP_CONCAT(case when d.RoundNr > 8 then d.Result else null end  order by d.RoundNr) as ShootOffS,
+                                                                                sum(case when d.RoundNr > 8 then d.Result/(10 *( d.RoundNr - 8))  else 0 end ) as ShootOff, 
+                                                                                sum(case when d.RoundNr <= 8 then d.Result else 0 end ) as Total,
 
 
-                                                                d.ResultId
-                                                                from resultdetail d 
-                                                                group by ResultId
+                                                                        d.ResultId
+                                                                        from resultdetail d 
+                                                                        group by ResultId
 
 
-                                                            ) soft on soft.ResultId = rr.ResultId 
-        
-        											left join shootercategory sc on sc.ShooterCategoryId = rr.ShooterCategoryId
-                                                    left join team t on t.TeamId = rr.TeamId
-                                                	where rr.CompetitionId = :CompetitionId and sc.code <> 'STR'  and IfNull(TeamName, t.Name) is not null                                                    
-                                                    order by  Total desc, locechipa
-                ) X where locechipa < 4
-			order by Total desc , locechipa)
-            table1
-            group by Team
-            order by Total desc
-            limit 0,3
-        
-                    ";
+                                                                    ) soft on soft.ResultId = rr.ResultId 
+                
+                                                            left join shootercategory sc on sc.ShooterCategoryId = rr.ShooterCategoryId
+                                                            left join team t on t.TeamId = rr.TeamId
+                                                            where rr.CompetitionId = :CompetitionId and sc.code <> 'STR'  and TeamName is not null                                                    
+                                                            order by  Total desc, locechipa
+                        ) X where locechipa < 4
+                    order by Total desc , locechipa)
+                    table1
+                    group by Team
+                    order by Total desc
+                    limit 0,3 ";
+
+                else
+
+                    $sql =  "
+                    select ROW_NUMBER() OVER ( order by sum(Total) desc ) as Loc, sum(Total) as Total, Team , GROUP_CONCAT(person order by locechipa SEPARATOR ', ') as Members  
+                    from   
+                    ( select * from (
+                                                            
+                                                            select    ROW_NUMBER() OVER (
+                                                            
+                                                                Partition by Team
+                                                                order by Team desc ,soft.Total desc
+                                                            ) as locechipa, rr.ResultId, soft.Total, rr.PersonId, p.Name as Person, rr.TeamId, IfNull(TeamName, t.Name) as Team
+                                                            
+                                                            FROM result rr
+                                                            inner join person p on p.PersonId = rr.PersonId
+                                                            
+                                                            inner join (
+                                                                    select GROUP_CONCAT(case when d.RoundNr > 8 then d.Result else null end  order by d.RoundNr) as ShootOffS,
+                                                                                sum(case when d.RoundNr > 8 then d.Result/(10 *( d.RoundNr - 8))  else 0 end ) as ShootOff, 
+                                                                                sum(case when d.RoundNr <= 8 then d.Result else 0 end ) as Total,
+
+
+                                                                        d.ResultId
+                                                                        from resultdetail d 
+                                                                        group by ResultId
+
+
+                                                                    ) soft on soft.ResultId = rr.ResultId 
+                
+                                                            left join shootercategory sc on sc.ShooterCategoryId = rr.ShooterCategoryId
+                                                            left join team t on t.TeamId = rr.TeamId
+                                                            where rr.CompetitionId = :CompetitionId and sc.code <> 'STR'                                                
+                                                            order by  Total desc, locechipa
+                        ) X where locechipa < 4
+                    order by Total desc , locechipa)
+                    table1
+                    group by Team
+                    order by Total desc
+                    limit 0,3 ";
+
+
                 return DB::select(str_replace(':CompetitionId', $CompetitionId, $sql));
             }
         
