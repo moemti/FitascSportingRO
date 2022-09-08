@@ -658,7 +658,7 @@ class Competition extends BObject{
         }
 
         public static function getCompetitionInfo($Item){
-            return DB::select("select concat(c.Name , ' ' , r.Name , ' ' , c.StartDate) as NumeLung,
+            return DB::select("select concat(c.Name , ' ' , r.Name , ' ' , c.StartDate) as NumeLung, Status,
                 StartDate, EndDate from competition c inner join `range` r on r.RangeId = c.RangeId where c.CompetitionId = $Item")[0];
         }
 

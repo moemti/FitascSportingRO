@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Cell\DataType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Controllers\MasterController;
@@ -107,12 +108,8 @@ class CompetitiiController extends MasterController
     
 
     public function registerCompetitor(Request $request){
-
-       
-
         $CompetitionId = $request->CompetitionId;
         $PersonId = $request->PersonId;
-      
         $params =
         [
             "CompetitionId" => $CompetitionId, 
@@ -269,15 +266,12 @@ class CompetitiiController extends MasterController
 
         $spreadsheet->getDefaultStyle()->getNumberFormat()->setFormatCode('#');
 
-
-
         $sheet->setCellValue(IncColumn($col).$row, 'BIB');
         $sheet->setCellValue(IncColumn($col).$row, 'Serie');
         $sheet->setCellValue(IncColumn($col).$row, 'Nume');
         $sheet->setCellValue(IncColumn($col).$row, 'Categorie');
         $sheet->setCellValue(IncColumn($col).$row, 'Echipa');
        
-
         IncRow($row);
         $col = 'B';
 
@@ -362,14 +356,10 @@ class CompetitiiController extends MasterController
 
         $sheet2 = $spreadsheet2->getSheet(1);
         $sheet2->setTitle('Seria 1');
-
     
         $sheet2->setCellValue('A2','Seria '. $nr + 1);
         $sheet2->setCellValue('C1',$title);
         $sheet2->setCellValue('AC1',$date);
-        
-
- 
 
         foreach($dataset as $d){
 
@@ -419,6 +409,367 @@ class CompetitiiController extends MasterController
         die;
 
 
+    }
+
+
+    public function ExportCompetitie($CompetitionId){
+        $dataset = $this->BObject()->GetClasament($CompetitionId);
+        $info = Competition::getCompetitionInfo($CompetitionId);
+
+        $status = $info->Status;
+
+
+
+
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // header
+        $row = 4;
+        $col = 'B';
+        $sheet->setCellValue('B2', $status == 'Open'?'Lista inscrisi':($status=='Preparation'? 'Lista inscrisi':'Clasament'));
+
+        function IncColumn(&$column){
+            $loc = $column;
+            $column++;
+            return $loc;
+        }
+
+        function IncRow(&$row){
+            $loc = $row;
+
+            $row++;            
+            return $loc;
+        }
+
+
+        $spreadsheet->getDefaultStyle()->getNumberFormat()->setFormatCode('#');
+
+
+        if ($status == 'Open')
+            $sheet->setCellValue(IncColumn($col).$row, 'Nr'); 
+        if ($status == 'Preparation')   { 
+            $sheet->setCellValue(IncColumn($col).$row, 'BIB'); 
+            $sheet->setCellValue(IncColumn($col).$row, 'Serie'); 
+
+        }
+
+        if (in_array($status, ['Finished', 'Progress']))   
+            $sheet->setCellValue(IncColumn($col).$row, 'Loc'); 
+
+        $sheet->setCellValue(IncColumn($col).$row, 'Sportiv');
+        $sheet->setCellValue(IncColumn($col).$row, 'Categorie');
+        $sheet->setCellValue(IncColumn($col).$row, 'Club');
+        $sheet->setCellValue(IncColumn($col).$row, 'Echipa');
+ 
+       if (in_array($status, ['Finished', 'Progress'])){
+            $sheet->setCellValue(IncColumn($col).$row, strval('M1'));
+            $sheet->setCellValue(IncColumn($col).$row, strval('M2'));
+            $sheet->setCellValue(IncColumn($col).$row, strval('M3'));
+            $sheet->setCellValue(IncColumn($col).$row, strval('M4'));
+            $sheet->setCellValue(IncColumn($col).$row, strval('Total 1'));
+            $sheet->setCellValue(IncColumn($col).$row, strval('M5'));
+            $sheet->setCellValue(IncColumn($col).$row, strval('M6'));
+            $sheet->setCellValue(IncColumn($col).$row, strval('M7'));
+            $sheet->setCellValue(IncColumn($col).$row, strval('M8'));
+            $sheet->setCellValue(IncColumn($col).$row, strval('Total 2'));
+            $sheet->setCellValue(IncColumn($col).$row, strval('Total'));
+            $sheet->setCellValue(IncColumn($col).$row, strval('Procent'));
+            $sheet->setCellValue(IncColumn($col).$row, strval('ShootOff'));
+            $sheet->setCellValue(IncColumn($col).$row, strval('Rezultat Cat'));
+       }
+
+
+
+        IncRow($row);
+        $col = 'B';
+
+        foreach($dataset as $d){
+
+            if (in_array($status, ['Open', 'Finished', 'Progress']))
+                $sheet->setCellValue(IncColumn($col).$row, strval($d->Position));
+            if (in_array($status, ['Preparation'])) {
+                $sheet->setCellValue(IncColumn($col).$row, strval($d->BIB)); 
+                $sheet->setCellValue(IncColumn($col).$row, strval($d->NrSerie)); 
+            }
+           
+
+
+
+            $sheet->setCellValue(IncColumn($col).$row, strval($d->Person));
+            $sheet->setCellValue(IncColumn($col).$row, strval($d->Category));
+            $sheet->setCellValue(IncColumn($col).$row, strval($d->Team));
+            $sheet->setCellValue(IncColumn($col).$row, strval($d->TeamName));
+
+            if (in_array($status, ['Finished', 'Progress'])){
+                $sheet->setCellValue(IncColumn($col).$row, strval($d->M1));
+                $sheet->setCellValue(IncColumn($col).$row, strval($d->M2));
+                $sheet->setCellValue(IncColumn($col).$row, strval($d->M3));
+                $sheet->setCellValue(IncColumn($col).$row, strval($d->M4));
+                $sheet->setCellValue(IncColumn($col).$row, strval($d->Total1));
+                $sheet->setCellValue(IncColumn($col).$row, strval($d->M5));
+                $sheet->setCellValue(IncColumn($col).$row, strval($d->M6));
+                $sheet->setCellValue(IncColumn($col).$row, strval($d->M7));
+                $sheet->setCellValue(IncColumn($col).$row, strval($d->M8));
+                $sheet->setCellValue(IncColumn($col).$row, strval($d->Total2));
+                $sheet->setCellValue(IncColumn($col).$row, strval($d->Total));
+                $sheet->setCellValue(IncColumn($col).$row, strval($d->Procent));
+                $sheet->setCellValue(IncColumn($col).$row, strval($d->ShootOffS));
+                $sheet->setCellValue(IncColumn($col).$row, strval($d->ResultatCat));
+                
+
+            }
+               
+         
+
+
+            $col = 'B';
+            IncRow($row);
+        }
+
+        $col = 'B';
+        for ($i = 1; $i <= 20; $i++) {
+            $sheet->getStyle($col)->getAlignment()->setHorizontal('left');
+            $sheet->getColumnDimension(IncColumn($col))->setAutoSize(true);
+        }
+
+
+        ob_clean();
+        $writer = new Xlsx($spreadsheet);
+
+        $filename = 'Competitie.xlsx';
+        
+        
+        header('Content-Description: File Transfer');
+        header('Content-Type:  application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header("Content-Disposition: attachment; filename=$filename");
+
+        ob_end_clean();
+        $writer->save('php://output');
+        die;
+    }
+
+
+
+    public function ExportClasamente($CompetitionId){
+            
+            function IncColumn(&$column){
+                $loc = $column;
+                $column++;
+                return $loc;
+            }
+
+            function IncRow(&$row){
+                $loc = $row;
+
+                $row++;            
+                return $loc;
+            }
+            function GetCol($col, $nr){
+  
+                return chr(ord($col) + $nr);
+            }
+
+            function ChangeColor($color){
+
+                $color2 = 'd5e7f7';
+                $color1 = 'ebf4fc';
+
+                if ($color == $color1)
+                    $color = $color2;
+                else 
+                    $color = $color1;
+
+                return $color;
+
+            }
+
+        $dataset = $this->BObject()->GetClasament($CompetitionId);
+        $info = Competition::getCompetitionInfo($CompetitionId);
+        
+        $dsCategorie = $this->BObject()->GetClasamentCategory($CompetitionId);
+        $dsTeam = $this->BObject()->GetClasamentTeams($CompetitionId);
+       
+        $status = $info->Status;
+
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // header
+        $row = 4;
+        $col = 'B';
+        $sheet->setCellValue($col.$row, 'Clasament pe categorii');
+        $sheet->getStyle($col.$row)->getFont()->applyFromArray(['bold' => TRUE,]);
+
+
+
+
+        $spreadsheet->getDefaultStyle()->getNumberFormat()->setFormatCode('#');
+
+        // Clasament pe categorii
+        IncRow($row);
+        $sheet->getStyle($col.$row.':'.GetCol($col,3).$row)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('76b9f5');
+        $sheet->setCellValue(IncColumn($col).$row, 'Loc'); 
+        $sheet->setCellValue(IncColumn($col).$row, 'Categorie');
+        $sheet->setCellValue(IncColumn($col).$row, 'Sportiv');
+        $sheet->setCellValue(IncColumn($col).$row, strval('Total'));
+       
+
+        IncRow($row);
+        $col = 'B';
+
+        $OldCat = '';
+        $color = '';
+        ChangeColor($color);
+
+        foreach($dsCategorie as $d){
+
+            $sheet->setCellValue(IncColumn($col).$row, strval($d->loc));
+            $sheet->setCellValue(IncColumn($col).$row, strval($d->Category));
+            $sheet->setCellValue(IncColumn($col).$row, strval($d->Person));
+            $sheet->setCellValue(IncColumn($col).$row, strval($d->Total));
+  
+
+            if ($d->Category != $OldCat){
+                $color = ChangeColor($color);
+                $OldCat = $d->Category;
+            }
+
+            $sheet->getStyle('B'.$row.':E'.$row)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB($color);
+
+            $col = 'B';
+            IncRow($row);
+        }
+
+
+         // Clasament pe echipe
+         $col = 'B';
+        IncRow($row);
+        $sheet->setCellValue($col.$row, 'Clasament pe echipe');
+        $sheet->getStyle($col.$row)->getFont()->applyFromArray(['bold' => TRUE,]);
+
+        IncRow($row);
+        $col = 'B';
+        $sheet->getStyle($col.$row.':'.GetCol($col,3).$row)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('76b9f5');
+         $sheet->setCellValue(IncColumn($col).$row, 'Loc'); 
+         $sheet->setCellValue(IncColumn($col).$row, 'Echipa');
+         $sheet->setCellValue(IncColumn($col).$row, 'Membrii');
+         $sheet->setCellValue(IncColumn($col).$row, strval('Toal'));
+
+ 
+         IncRow($row);
+         $col = 'B';
+ 
+         foreach($dsTeam as $d){
+             $sheet->setCellValue(IncColumn($col).$row, strval($d->Loc));
+             $sheet->setCellValue(IncColumn($col).$row, strval($d->Team));
+             $sheet->setCellValue(IncColumn($col).$row, strval($d->Members));
+             $sheet->setCellValue(IncColumn($col).$row, strval($d->Total));
+ 
+             $col = 'B';
+             IncRow($row);
+         }
+
+
+        // open
+        $col = 'B';
+        IncRow($row);
+        $sheet->setCellValue($col.$row, 'Clasament Open');
+        $sheet->getStyle($col.$row)->getFont()->applyFromArray(['bold' => TRUE,]);
+
+        IncRow($row);
+        $col = 'B';
+        $sheet->getStyle($col.$row.':'.GetCol($col,18).$row)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('76b9f5');
+        $sheet->setCellValue(IncColumn($col).$row, 'Loc'); 
+        $sheet->setCellValue(IncColumn($col).$row, 'Sportiv');
+        $sheet->setCellValue(IncColumn($col).$row, 'Club');
+        $sheet->setCellValue(IncColumn($col).$row, 'Categorie');
+        $sheet->setCellValue(IncColumn($col).$row, 'Echipa');
+
+        $sheet->setCellValue(IncColumn($col).$row, strval('1'));
+        $sheet->setCellValue(IncColumn($col).$row, strval('2'));
+        $sheet->setCellValue(IncColumn($col).$row, strval('3'));
+        $sheet->setCellValue(IncColumn($col).$row, strval('4'));
+        $sheet->setCellValue(IncColumn($col).$row, strval('Tot 1'));
+        $sheet->setCellValue(IncColumn($col).$row, strval('5'));
+        $sheet->setCellValue(IncColumn($col).$row, strval('6'));
+        $sheet->setCellValue(IncColumn($col).$row, strval('7'));
+        $sheet->setCellValue(IncColumn($col).$row, strval('8'));
+        $sheet->setCellValue(IncColumn($col).$row, strval('Tot 2'));
+        $sheet->setCellValue(IncColumn($col).$row, strval('Total'));
+        $sheet->setCellValue(IncColumn($col).$row, strval('Procent'));
+        $sheet->setCellValue(IncColumn($col).$row, strval('ShOff'));
+        $sheet->setCellValue(IncColumn($col).$row, strval('Rez Cat'));
+     
+
+
+
+        IncRow($row);
+        $col = 'B';
+
+        foreach($dataset as $i=>$d){
+            if ($i < 3)
+                $sheet->getStyle($col.$row.':'.GetCol($col,18).$row)->getFont()->getColor()->setARGB('cc6016');
+
+            $sheet->setCellValue(IncColumn($col).$row, strval($d->Position));
+            $sheet->setCellValue(IncColumn($col).$row, strval($d->Person));
+            $sheet->setCellValue(IncColumn($col).$row, strval($d->Team));
+            $sheet->setCellValue(IncColumn($col).$row, strval($d->Category));
+            $sheet->setCellValue(IncColumn($col).$row, strval($d->TeamName));
+
+            $d->M1==25? ($sheet->getStyle($col.$row)->getFont()->getColor()->setARGB('ff0000')):'';
+            $sheet->setCellValue(IncColumn($col).$row, strval($d->M1));
+            $d->M2==25? ($sheet->getStyle($col.$row)->getFont()->getColor()->setARGB('ff0000')):'';
+            $sheet->setCellValue(IncColumn($col).$row, strval($d->M2));
+            $d->M3==25? ($sheet->getStyle($col.$row)->getFont()->getColor()->setARGB('ff0000')):'';
+            $sheet->setCellValue(IncColumn($col).$row, strval($d->M3));
+            $d->M4==25? ($sheet->getStyle($col.$row)->getFont()->getColor()->setARGB('ff0000')):'';
+            $sheet->setCellValue(IncColumn($col).$row, strval($d->M4));
+
+            $sheet->setCellValue(IncColumn($col).$row, strval($d->Total1));
+            $d->M5==25? ($sheet->getStyle($col.$row)->getFont()->getColor()->setARGB('ff0000')):'';
+            $sheet->setCellValue(IncColumn($col).$row, strval($d->M5));
+            $d->M6==25? ($sheet->getStyle($col.$row)->getFont()->getColor()->setARGB('ff0000')):'';
+            $sheet->setCellValue(IncColumn($col).$row, strval($d->M6));
+            $d->M7==25? ($sheet->getStyle($col.$row)->getFont()->getColor()->setARGB('ff0000')):'';
+            $sheet->setCellValue(IncColumn($col).$row, strval($d->M7));
+            $d->M8==25? ($sheet->getStyle($col.$row)->getFont()->getColor()->setARGB('ff0000')):'';
+            $sheet->setCellValue(IncColumn($col).$row, strval($d->M8));
+            $sheet->setCellValue(IncColumn($col).$row, strval($d->Total2));
+            $sheet->setCellValue(IncColumn($col).$row, strval($d->Total));
+            $sheet->getStyle($col.$row)->getNumberFormat()->setFormatCode('0.00');
+            $sheet->setCellValueExplicit(IncColumn($col).$row, $d->Procent, DataType::TYPE_NUMERIC);
+            $sheet->setCellValue(IncColumn($col).$row, strval($d->ShootOffS));
+            $sheet->setCellValue(IncColumn($col).$row, strval($d->ResultatCat));
+ 
+            $col = 'B';
+            IncRow($row);
+        }
+
+        $col = 'E';
+        $sheet->getColumnDimension('B')->setWidth(30, 'pt');
+        $sheet->getColumnDimension('C')->setWidth(150, 'pt');
+        $sheet->getColumnDimension('D')->setWidth(150, 'pt');
+
+        for ($i = 1; $i <= 20; $i++) {
+            $sheet->getStyle($col)->getAlignment()->setHorizontal('left');
+            $sheet->getColumnDimension(IncColumn($col))->setAutoSize(true);
+        }
+
+
+        ob_clean();
+        $writer = new Xlsx($spreadsheet);
+
+        $filename = 'ClasamentFinal.xlsx';
+        
+        
+        header('Content-Description: File Transfer');
+        header('Content-Type:  application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header("Content-Disposition: attachment; filename=$filename");
+
+        ob_end_clean();
+        $writer->save('php://output');
+        die;
     }
 
 }

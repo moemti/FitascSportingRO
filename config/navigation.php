@@ -22,6 +22,7 @@ return  [
                                         ['gallery/14', 'Etapa 2 Lugoj 9,10-04-2022'],
                                         ['gallery/15', 'Etapa 3 Bucuresti 21,22-05-2022'],
                                         ['gallery/16', 'Etapa 4 Lugoj 11,12-06-2022'],
+                                        ['gallery/18', 'Etapa 6 Ludus 20,21-08-2022'],
                 
                                 ], 'Galerii foto'
                 

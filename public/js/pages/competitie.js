@@ -487,9 +487,13 @@
         $("#btnUnRegister").on('click', unRegisterMe);
         $("#addCompetitor").on('click', addCompetitor);
        
-        $("#exportexcel").click(function () {
-            $("#jqxGrid").jqxGrid('exportdata', 'xlsx', 'jqxGrid');           
-        });
+        $("#exportexcel").on('click', downloadDetailExcel);
+
+
+        function downloadDetailExcel() {
+            document.location.href = '/ExportCompetitie/' + $('#CompetitionId').val();
+        }
+
         
         $("#exportpdf").click(function () {
             $("#jqxGrid").jqxGrid('exportdata', 'pdf', 'jqxGrid');

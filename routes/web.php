@@ -62,6 +62,9 @@ Route::group(['middleware' => 'options'], function () {
 
         Route::post('/changeCompetitionStatus', 'App\Http\Controllers\CompetitiiController@changeCompetitionStatus');
         Route::post('/doCompetitionSquads', 'App\Http\Controllers\CompetitiiController@doCompetitionSquads');
+        Route::get('/ExportCompetitie/{id}', 'App\Http\Controllers\CompetitiiController@ExportCompetitie');
+        Route::get('/competitionResultsDown/{id}', 'App\Http\Controllers\CompetitiiController@ExportClasamente');
+        
         
 
         Route::post('/registerMe', 'App\Http\Controllers\CompetitiiController@registerMe');

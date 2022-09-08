@@ -181,7 +181,10 @@
                       
                         @if (session("IsSuperUser") == 1)
                             <button id="btnOngoingR"  data-status="Progress" class="cmpStatusChange btn btn-secondary btn-outline mb-2">Reopen competition</button>
+                            
                         @endif
+                        
+                        <a id="btnDownloadResultsAll" href="{{url('/competitionResultsDown/').'/'.$master[0]->CompetitionId}}" data-type="Diff" class=" btn btn-danger btn-outline mb-2">{{transex('Download clasamente')}}</a>
                         @break
 
                 @endswitch
