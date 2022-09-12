@@ -150,7 +150,8 @@ class Competition extends BObject{
                 ";
 
     public $ClasamentSelect = "
-        SELECT row_number() over(order by Total desc, ShootOff desc, d8.Result desc, d7.Result  desc, d6.Result desc, d5.Result desc, d4.Result desc, d3.Result desc, d2.Result desc, d1.Result desc, r.BIB)  as Position, 
+    SELECT row_number() over(order by ifnull(sof.Total,0) desc, ifnull(sof.ShootOff, 0) desc, ifnull(d8.Result, 0) desc, ifnull(d7.Result, 0)  desc, ifnull(d6.Result, 0) desc, ifnull(d5.Result, 0) desc, ifnull(d4.Result, 0) desc, ifnull(d3.Result, 0) desc, 
+                    ifnull(d2.Result, 0) desc, ifnull(d1.Result, 0) desc, r.BIB)  as Position, 
             p.PersonId, p.Name as Person, sc.Code as Category, t.Name as Team , r.ResultId, r.BIB, 
             r.IsInTeam, r.NrSerie,  p.SerieNrCI, p.CNP, p.SeriePermisArma, p.DataExpPermis, p.MarcaArma, p.SerieArma, p.CalibruArma, r.TeamName,
                         Round(Percent,2) as Procent,
@@ -658,7 +659,7 @@ class Competition extends BObject{
         }
 
         public static function getCompetitionInfo($Item){
-            return DB::select("select concat(c.Name , ' ' , r.Name , ' ' , c.StartDate) as NumeLung, Status,
+            return DB::select("select concat(c.Name , ' ' , r.Name , ' ' , c.StartDate) as NumeLung, Status,  concat(c.Name , ' ' , r.Name , ' ' , DATE_FORMAT(StartDate, '%d/%m'), ' - ', DATE_FORMAT(EndDate, '%d/%m %Y')) as NumeSuperLung,
                 StartDate, EndDate from competition c inner join `range` r on r.RangeId = c.RangeId where c.CompetitionId = $Item")[0];
         }
 
@@ -1153,6 +1154,85 @@ class Competition extends BObject{
                 return $e->getMessage();
             }
 
+
+        }
+
+        public static function outputFiles($path){
+            $menu = [];
+
+            if(file_exists($path) && is_dir($path)){
+                $result = scandir($path);
+                $dirs = array_diff($result, array('.', '..'));               
+                if(count($dirs) > 0){
+                    foreach($dirs as $file){
+                        if(!is_file("$path/$file")){
+                            $id = $file;
+                            $str = self::getCompetitionInfo($id)->NumeSuperLung;
+                            array_push($menu, ["gallery/$id", "$str"]); 
+                        }
+                    } 
+                }
+             }
+             return $menu;
+        }
+
+
+       
+
+        public static function getGaleries(){
+            // iau directoarele din folderul de galerii
+            return self::outputFiles("img/gallery/competitions");
+        }
+
+
+        public static function getCurrentCompetition(){
+        
+            $res = [];
+
+            $sql = "select c.CompetitionId,  concat(c.Name , ' ' , r.Name , ' ' , DATE_FORMAT(StartDate, '%d/%m'), ' - ', DATE_FORMAT(EndDate, '%d/%m %Y')) as NumeSuperLung, r.Link
+                    from competition c
+                    inner join `range` r on r.RangeId = c.RangeId  
+                        where c.StartDate < date_add(now(), interval 7 day) 
+                        order by c.StartDate desc 
+                        limit 0,1";
+
+            $r = DB::select($sql)[0];
+
+            $id = $r->CompetitionId;
+
+            $path = "img/gallery/competitions/$id";
+
+          
+            $i = 0;
+
+            if(file_exists($path) && is_dir($path)){
+                $result = scandir($path);
+                natcasesort($result );
+                $files = array_diff($result, array('.', '..'));
+
+                if(count($files) > 0){
+                    foreach($files as $file){
+                        if ($i == 3)
+                            break;
+
+                        if(is_file("$path/$file")){
+                            $url = $file;
+                            $i++;
+                           
+                            array_push($res, (object) array_merge( (array)$r, array( 'Image' => $url ) ));
+                        } 
+                    }
+                } 
+            }
+
+         
+
+            for ($j = $i; $j < 3; $j++ ){
+                array_push($res, $r);
+            }
+
+         
+            return $res;
 
         }
 

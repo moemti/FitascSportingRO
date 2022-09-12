@@ -20,64 +20,47 @@
         <div class="owl-stage-outer">
             <div class="owl-stage">
 
+                @php
+                       $current = getCurrentCompetition();
+                @endphp
+
                 <!-- Carousel Slide 1 -->
-                <div class="owl-item position-relative overflow-hidden" style="background-image:  url(img/gallery/competitions/18/1.jpeg); background-size: cover; background-position: 60% 40%; background-position: 60% 40%;">
+
+                @foreach ($current as $cur)
+
+                @php
+
+                    if (isset($cur->Image))
+                        $image = "img/gallery/competitions/".$cur->CompetitionId."/".$cur->Image;
+                    else   
+                        $image = "img/gallery/competitions/13/12.jpeg";
+                @endphp
+
+
+                <div class="owl-item position-relative overflow-hidden" style="background-image:  url({{$image}} ); background-size: cover; background-position: 60% 40%; background-position: 60% 40%;">
                     <div class="container position-relative z-index-3 h-100">
                         <div class="row align-items-center justify-content-center h-100">
                             <div class="col-lg-7">
                                 <div class="d-flex flex-column justify-content-center align-items-center text-center h-100">
                                     <span class="position-relative text-color-light text-6 line-height-5 font-weight-medium custom-secondary-font pe-4 mb-0 " data-appear-animation="fadeInDownShorter" data-appear-animation-delay="500" data-plugin-options="{'minWindowWidth': 0}">
-                                    {{transex('Etapa')}} a VI-a Ludus 20-21 August
+                                    {{$cur->NumeSuperLung}}
                                     </span>
                                     <h1 class="text-color-light font-weight-extra-bold text-13 line-height-1 mb-2" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="750" data-plugin-options="{'minWindowWidth': 0}">{{transex('Competitiile continua')}}</h1>
                                     <p class="text-5 text-color-light font-weight-light custom-secondary-font mb-5 " data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1000">{{transex('Vezi clasament si galeria de poze')}}</p>
-                                    <a href="{{url('/clasamentdata/2022-08-20')}}" class="btn btn-primary font-weight-bold btn-py-2 btn-px-4 " data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1250">{{transex('Vezi mai mult')}}</a> 
-                                     <a class="text-5  text-color-light appear-animation"    data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1350" href="https://www.facebook.com/poligon.opristiberiu" target="_blank" title="Facebook">
-                                    <i style="color:blue !important;" class="fab fa-facebook-f"></i>Facebook</a> 
+                                    <a href="{{url('/clasament/'.$cur->CompetitionId)}}" class="btn btn-primary font-weight-bold btn-py-2 btn-px-4 " data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1250">{{transex('Vezi mai mult')}}</a> 
+                                    @if (isset($cur->Link))
+                                        <a class="text-5  text-color-light appear-animation"    data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1350" href="{{$cur->Link}}" target="_blank" title="Facebook">
+                                        <i style="color:blue !important;" class="fab fa-facebook-f"></i>Facebook</a> 
+                                    @endif
                                     
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="owl-item position-relative overflow-hidden" style="background-image:  url(img/gallery/competitions/18/1.jpeg); background-size: cover; background-position: 60% 40%; background-position: 60% 40%;">
-                    <div class="container position-relative z-index-3 h-100">
-                        <div class="row align-items-center justify-content-center h-100">
-                            <div class="col-lg-7">
-                                <div class="d-flex flex-column justify-content-center align-items-center text-center h-100">
-                                    <span class="position-relative text-color-light text-6 line-height-5 font-weight-medium custom-secondary-font pe-4 mb-0 " data-appear-animation="fadeInDownShorter" data-appear-animation-delay="500" data-plugin-options="{'minWindowWidth': 0}">
-                                    {{transex('Etapa')}} a VI-a Ludus 20-21 August
-                                    </span>
-                                    <h1 class="text-color-light font-weight-extra-bold text-13 line-height-1 mb-2" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="750" data-plugin-options="{'minWindowWidth': 0}">{{transex('Competitiile continua')}}</h1>
-                                    <p class="text-5 text-color-light font-weight-light custom-secondary-font mb-5 " data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1000">{{transex('Vezi clasament si galeria de poze')}}</p>
-                                    <a href="{{url('/clasamentdata/2022-08-20')}}" class="btn btn-primary font-weight-bold btn-py-2 btn-px-4 " data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1250">{{transex('Vezi mai mult')}}</a> 
-                                     <a class="text-5  text-color-light appear-animation"    data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1350" href="https://www.facebook.com/poligon.opristiberiu" target="_blank" title="Facebook">
-                                    <i style="color:blue !important;" class="fab fa-facebook-f"></i>Facebook</a> 
-                                    
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="owl-item position-relative overflow-hidden" style="background-image:  url(img/gallery/competitions/18/1.jpeg); background-size: cover; background-position: 60% 40%; background-position: 60% 40%;">
-                    <div class="container position-relative z-index-3 h-100">
-                        <div class="row align-items-center justify-content-center h-100">
-                            <div class="col-lg-7">
-                                <div class="d-flex flex-column justify-content-center align-items-center text-center h-100">
-                                    <span class="position-relative text-color-light text-6 line-height-5 font-weight-medium custom-secondary-font pe-4 mb-0 " data-appear-animation="fadeInDownShorter" data-appear-animation-delay="500" data-plugin-options="{'minWindowWidth': 0}">
-                                    {{transex('Etapa')}} a VI-a Ludus 20-21 August
-                                    </span>
-                                    <h1 class="text-color-light font-weight-extra-bold text-13 line-height-1 mb-2" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="750" data-plugin-options="{'minWindowWidth': 0}">{{transex('Competitiile continua')}}</h1>
-                                    <p class="text-5 text-color-light font-weight-light custom-secondary-font mb-5 " data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1000">{{transex('Vezi clasament si galeria de poze')}}</p>
-                                    <a href="{{url('/clasamentdata/2022-08-20')}}" class="btn btn-primary font-weight-bold btn-py-2 btn-px-4 " data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1250">{{transex('Vezi mai mult')}}</a> 
-                                     <a class="text-5  text-color-light appear-animation"    data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1350" href="https://www.facebook.com/poligon.opristiberiu" target="_blank" title="Facebook">
-                                    <i style="color:blue !important;" class="fab fa-facebook-f"></i>Facebook</a> 
-                                    
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                
+
+                @endforeach
 
                 <!-- Carousel Slide 2
                 <div class="owl-item position-relative overflow-hidden" style="background-image:  url(img/gallery/competitions/18/1.jpeg); background-size: cover; background-position: 60% 40%; background-position: 60% 40%;">

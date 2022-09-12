@@ -123,7 +123,7 @@
 
 	
 
-      $menus = config('navigation.MENU') 
+      $menus = getMenu();
     @endphp
 		<div class="body">
 			<header id="header" class="header-effect-shrink" data-plugin-options="{'stickyEnabled': true, 'stickyEffect': 'shrink', 'stickyEnableOnBoxed': true, 'stickyEnableOnMobile': false, 'stickyChangeLogo': false, 'stickyStartAt': 100, 'stickyHeaderContainerHeight': 70}">

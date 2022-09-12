@@ -643,7 +643,7 @@ class CompetitiiController extends MasterController
 
 
          // Clasament pe echipe
-         $col = 'B';
+        $col = 'B';
         IncRow($row);
         $sheet->setCellValue($col.$row, 'Clasament pe echipe');
         $sheet->getStyle($col.$row)->getFont()->applyFromArray(['bold' => TRUE,]);

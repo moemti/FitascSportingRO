@@ -28,7 +28,9 @@
             "Database\\Seeders\\": "database/seeders/"
         },
         "files": [
-            "app/Classes/TransEx.php"
+            "app/Classes/TransEx.php",
+            "app/Classes/Menu.php"
+
         ]
     },
     "autoload-dev": {
@@ -37,7 +39,10 @@
         }
         ,
         "files": [
-            "app/Classes/TransEx.php"
+            "app/Classes/TransEx.php",
+            "app/Classes/Menu.php"
+
+            
         ]
     },
 
