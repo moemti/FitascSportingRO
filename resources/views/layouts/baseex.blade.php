@@ -41,7 +41,7 @@
 
 		<!-- Theme CSS -->
 		<link rel="stylesheet" href="{{asset('css/theme/theme.css')}}">
-		<link rel="stylesheet" href="{{asset('css/theme/theme-elements.css')}}">
+		<link rel="stylesheet" href="{{asset('css/theme/theme-elements.css?v=1')}}">
 		<link rel="stylesheet" href="{{asset('css/theme/theme-blog.css')}}">
 		<link rel="stylesheet" href="{{asset('css/theme/theme-shop.css')}}">
 
@@ -625,7 +625,7 @@
         <script src="{{asset('js/scripts-init/blockui.min.js')}}"></script>
 
         
-        <link rel="stylesheet" href="{{asset('css/style.css?v=1')}}">
+        <link rel="stylesheet" href="{{asset('css/style.css?v=2')}}">
 
 	    @stack('footerscripts')
 

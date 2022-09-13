@@ -8525,7 +8525,7 @@ input[type="search" i]::-webkit-search-cancel-button {
 h1, h2, h3, h4, h5, h6 {
 	color: #212529;
 	font-weight: 200;
-	letter-spacing: -.05em;
+	letter-spacing: .05em;
 	margin: 0;
 	-webkit-font-smoothing: antialiased;
 }

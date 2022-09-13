@@ -452,24 +452,28 @@ button.toast-close-button {
   background-image: linear-gradient(to left, #048004, #fffefb) !important; }
 
 .clRedFontB {
-  color: #480404 !important;
-  background-image: linear-gradient(to left, rgba(255, 0, 0, 0.508) white) !important; }
+  color: #700000 !important;
+  /* background-image: linear-gradient(to left, rgba(255, 0, 0, 0.508) white) !important;  */
+}
 
 .clBlueFontB {
-  color: #041146 !important;
-  background-image: linear-gradient(to left, #fff6ee, white) !important; }
-
+  color: #001e96 !important;
+  /* background-image: linear-gradient(to left, #fff6ee, white) !important; } */
+}
 .clOrangeRedFontB {
-  color: #541903 !important;
-  background-image: linear-gradient(to left, #ffd9d0, white) !important; }
+  color: #d73900 !important;
+  /* background-image: linear-gradient(to left, #ffd9d0, white) !important;  */
+}
 
 .clGreenFontB {
-  color: #0d2707 !important;
-  background-image: linear-gradient(to left, #fbfee4, white) !important; }
+  color: #1da100 !important;
+  /* background-image: linear-gradient(to left, #fbfee4, white) !important;  */
+}
 
 .clBrownFontB {
-  color: #0d2707 !important;
-  background-image: linear-gradient(to left, #ffbb88, white) !important; }
+  color: #290f00 !important;
+  /* background-image: linear-gradient(to left, #ffbb88, white) !important;  */
+}
 
 .curPointer {
   cursor: pointer !important; }
@@ -909,21 +913,21 @@ button.toast-close-button {
   background-color: #c5c5c5; }
 
 .compet_status {
-  text-decoration: none;
+  text-decoration: solid;
   padding: 3px 1rem;
   display: inline-block;
   border-radius: .5rem;
   transition: all .2s;
   position: absolute;
   color: #050000;
-  background-image: linear-gradient(to top left, rgba(136, 70, 0, 0.9), rgba(250, 247, 242, 0.95));
+  /* background-image: linear-gradient(to top left, rgba(136, 70, 0, 0.9), rgba(250, 247, 242, 0.95)); */
   border: none; }
   .compet_status.Open {
-    background-image: linear-gradient(to top left, rgba(26, 95, 5, 0.7), rgba(4, 100, 4, 0.2)); }
+    color: rgb(2, 102, 2);}
   .compet_status.Progress {
-    background-image: linear-gradient(to top left, rgba(120, 35, 4, 0.7), rgba(134, 38, 3, 0.2)); }
+    color: rgb(189, 0, 0);}
   .compet_status.Finished {
-    background-image: linear-gradient(to top left, rgba(83, 37, 18, 0.7), rgba(246, 214, 184, 0.2)); }
+    color: rgb(0, 0, 209)}
 
 .cdetailbtn {
   padding: 2px;
