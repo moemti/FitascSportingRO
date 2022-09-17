@@ -94,13 +94,16 @@
                     @if ( file_exists('img/gallery/competitions/'.$master[0]->CompetitionId ))
                         <a href="{{url('/gallery/').'/'.$master[0]->CompetitionId}}" class = "btn-galerie btn btn-primary btn-outline mb-2" >{{transex('Vezi galerie')}}</a>
                     @endif
+                    @if (getCompetitionRight($master[0]->CompetitionId))
+                        <a href="{{url('/editgallery/').'/'.$master[0]->CompetitionId}}" class = " btn btn-danger btn-outline ms-2 mb-2" >{{transex('Editeaza galerie')}}</a>
+                    @endif
                    
             </div>
                 <div class="btnwrapper m-2">
                     @switch($master[0]->Status)
                         @case('Closed')
                         
-                            @if (session("IsSuperUser") == 1)
+                            @if (getCompetitionRight($master[0]->CompetitionId))
                             <button id="btnOpen" data-status="Open" class = "cmpStatusChange btn btn-primary btn-outline mb-2" >{{transex('Deschide')}}</button>
                             @endif
                             @break
@@ -131,7 +134,7 @@
                                  <button id="btnRegister" class = "btn-register btn btn-primary btn-outline mb-2" >{{transex('Ma inscriu')}}</button>
                             @endif
 
-                            @if (session("IsSuperUser") == 1)
+                            @if (getCompetitionRight($master[0]->CompetitionId))
                              <button id="btnOngoing"  data-status="Preparation" class="cmpStatusChange btn btn-secondary btn-outline mb-2">Close subscription</button>
                             @endif
                         @endif
@@ -140,7 +143,7 @@
 
                       
 
-                        @if (session("IsSuperUser") == 1)
+                        @if (getCompetitionRight($master[0]->CompetitionId))
                             <button id="btnClose"  data-status="Closed" class="cmpStatusChange btn btn-secondary btn-outline mb-2">{{transex('Close')}}</button>
                             <button id="btnOpen" data-status="Open" class = "cmpStatusChange btn btn-secondary btn-outline mb-2" >Open</button>
                             <button id="btnOngoing"  data-status="Progress" class="cmpStatusChange btn btn-secondary btn-outline mb-2">Start competition</button>
@@ -164,7 +167,7 @@
 
                         
                     @case('Progress')     
-                         @if (session("IsSuperUser") == 1)
+                         @if (getCompetitionRight($master[0]->CompetitionId))
                             <button id="btnOngoing"  data-status="Preparation" class="cmpStatusChange btn btn-secondary btn-outline mb-2">Open to preparation</button>
                             <button id="btnFinish"  data-status="Finished" class="cmpStatusChange btn btn-secondary btn-outline mb-2">Finish competition</button>
                             <a id="btnDownloadListaSquad1" href="{{url('/competitionDownSquads/').'/'.$master[0]->CompetitionId}}/1" data-type="Diff" class=" btn btn-secondary btn-outline mb-2">Ziua 1</a>
@@ -179,7 +182,7 @@
 
                     @case('Finished')
                       
-                        @if (session("IsSuperUser") == 1)
+                        @if (getCompetitionRight($master[0]->CompetitionId))
                             <button id="btnOngoingR"  data-status="Progress" class="cmpStatusChange btn btn-secondary btn-outline mb-2">Reopen competition</button>
                             
                         @endif

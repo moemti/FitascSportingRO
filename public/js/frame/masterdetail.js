@@ -954,7 +954,10 @@
 		    		$(".tab-content" ).removeValidator();
 		    		AfterSave(data);
 
-	            }
+	            },
+				error: function (error){
+					ShowError(error.responseJSON.message);
+				}
 	        });
 		}
 
@@ -1060,10 +1063,6 @@
 				columns: listdatacolumns,
 			});
 
-
-		
-
-		
 
 		}
 
@@ -1276,7 +1275,7 @@
 
 ////////////
 
-		$(document).ready(function () {
+		$(function () {
 			GetDictionaries();
 			if (!IsOneMaster){
 				OnLoadMaster(data);

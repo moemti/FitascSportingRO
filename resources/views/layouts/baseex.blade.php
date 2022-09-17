@@ -101,10 +101,6 @@
 
 				if (!r){
 
-					
-
-
-
 				}
 
 			}
@@ -147,18 +143,8 @@
 											</div>
 											</div>
 
-							
-
-
-
 								</div>
 								<div class="col-auto d-flex align-items-center">
-								
-								
-
-								
-
-
 
 									<nav>
 										<ul class="list list-unstyled d-flex text-1 mb-0  social-icons-medium  me-2 mb-0 ms-1">
@@ -212,7 +198,7 @@
                                                 @php
                                                         foreach($menus as $menu){
                                                 @endphp
-                                                    @if ((count($menu) === 2) || (($menu[2] == 'super') && (session('IsSuperUser') == 1) ) )
+                                                    @if ((count($menu) === 2) || (session($menu[2]) > 0) || ($menu[2] == 'PERMITED') )
                                                         <li 
                                                                 @if (is_array($menu[0]))
                                                                         class="dropdown dropdown-full-color dropdown-primary">
@@ -224,11 +210,13 @@
                                                                                 foreach($menu[0] as $submenu) {
                                                                         @endphp
 																	
+																			@if ((count($submenu) === 2) || (session($submenu[2]) > 0) || ($submenu[2] == 'PERMITED') )
 															                     <li>
 																					 
                                                                                		<a href={{url($submenu[0])}} class="dropdown-item" >{{transex($submenu[1])}}</a> 
 																						
                                                                                 </li>
+																			@endif
 
                                                                         @php
                                                                                 }
@@ -238,20 +226,14 @@
 															>
 															<a href={{url($menu[0])}} class="navmenu">{{transex($menu[1])}}</a>
 
-														
-
-
 														@endif
                                                         	</li>
-
                                                     @endif
 
 												@php
 														}
 												@endphp  
                                                  
-
-
 												</ul>
 											</nav>
 										</div>
@@ -263,10 +245,6 @@
 							</div>
 						</div>
 					</div>
-
-								
-
-
 				</div>
 			</header>
 
@@ -348,35 +326,25 @@
                  show-dots-md nav-inside nav-inside-edge show-nav-hover custom-carousel-arrows-style-1 mb-1" data-plugin-options="{'autoplayTimeout': 5000}"  style="height: 8vh;">
                     <div class="owl-stage-outer">
                         <div class="owl-stage">
-
                         
-
-
                             @php
 								
-
-
-
 							function outputFiles2($path){
 								
 								
-
 								if(file_exists($path) && is_dir($path)){
 								
 								
 									$result = scandir($path);
 									
 								
-
 									$files = array_diff($result, array('.', '..'));
 									
 								
 									if(count($files) > 0){
 									
 										foreach($files as $file){
-
 										
-
 											if(is_file("$path/$file")){
 											
 												$url = url($path.'/'.$file);
@@ -396,12 +364,7 @@
 
 
 											} else {
-
-											
-
-											
 													outputFiles2("$path/$file");
-												
 											}
 										}
 									} 

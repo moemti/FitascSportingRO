@@ -135,13 +135,13 @@ class Dictionary{
     public static function getPersons($OrganizationId, $role = null){
         $filter = "";
 
-        $filter =  $role != null ? "and f.Code = '". $role ."'" : "";
+        $filter =  $role != null ? " f.Code = '". $role ."'" : " 1 = 1 ";
 
         $sql = "SELECT p.PersonId, p.Name, p.Email, GROUP_CONCAT(f.Name SEPARATOR ', ') as Function 
                 from person p
                 left join personxrole x on x.PersonId = p.PersonId
                 left join role f on f.RoleId = x.RoleId
-                where p.OrganizationId = {$OrganizationId} ".$filter."
+                where  ".$filter."
                 group by  p.PersonId, p.Name, p.Email
                 order by p.Name"  ;
         return DB::select($sql);

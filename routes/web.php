@@ -101,6 +101,7 @@ Route::group(['middleware' => 'options'], function () {
 
 
         Route::get('/poligon/{id}', 'App\Http\Controllers\NavigationController@getPoligon');
+       
 
         Route::middleware(['guest'])->group(function(){
 
@@ -118,6 +119,25 @@ Route::group(['middleware' => 'options'], function () {
             Route::post('getpersonajax', 'App\Http\Controllers\PersonController@getitemajax');
             Route::post('deletepersonajax', 'App\Http\Controllers\PersonController@deleteitemajax');
             Route::post('getpersondetaillistajax', 'App\Http\Controllers\PersonController@getdetaillistajax');
+
+            // poligoane
+
+            Route::get('poligoaneedit', 'App\Http\Controllers\PoligonController@getList');
+            Route::post('savepoligonajax', 'App\Http\Controllers\PoligonController@saveitemajax');
+            Route::post('getpoligonsajax', 'App\Http\Controllers\PoligonController@getitemsajax');
+            Route::post('getpoligonajax', 'App\Http\Controllers\PoligonController@getitemajax');
+            Route::post('deletepoligonajax', 'App\Http\Controllers\PoligonController@deleteitemajax');
+            Route::post('getpoligondetaillistajax', 'App\Http\Controllers\PoligonController@getdetaillistajax');
+
+
+            //
+            Route::get('/editgallery/{id}', 'App\Http\Controllers\CompetitiiController@geteditgallery');
+            Route::post('/galleryDelete', 'App\Http\Controllers\CompetitiiController@deleteGallery');
+            Route::post('/galleryUpload', 'App\Http\Controllers\CompetitiiController@galleryUpload');
+            
+            
+
+
 
         });
 

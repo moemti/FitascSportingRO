@@ -211,7 +211,7 @@ class BObject{
     public function afterSaveInTran($ItemId, $fields){}
     public function afterSave($ItemId, $fields){}
     public function beforeSaveInTran($fields){}
-    private function validatebeforeSave($fields){
+    protected function validatebeforeSave($fields){
 
         foreach($this->MasterFixedFields() as $field){
             $new = $fields[$field];

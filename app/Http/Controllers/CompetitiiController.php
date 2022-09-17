@@ -142,11 +142,47 @@ class CompetitiiController extends MasterController
         return view('modules.pages.welcome', ["competitions" => $competitions]);
     }
 
+    // ==============  Gallery
+
     public function getgallery($CompetitionId){
+
+    
         $images = scandir("img/gallery/competitions/$CompetitionId");
         return view('modules.pages.gallery', ["images" => $images, "competition" => $CompetitionId]);
     }
 
+    public function geteditgallery($CompetitionId){
+
+        if (!file_exists("img/gallery/competitions/$CompetitionId")) {
+            mkdir("img/gallery/competitions/$CompetitionId", 0777, true);
+        }
+        $images = scandir("img/gallery/competitions/$CompetitionId");
+        return view('modules.pages.gallery', ["images" => $images, "competition" => $CompetitionId, "edit" => true]);
+    }
+
+    public function deleteGallery(Request $request){
+
+        $toDelete = $request->toDelete;
+        foreach($toDelete as $file){
+            if (file_exists("img/gallery/competitions/$file")) {
+                unlink("img/gallery/competitions/$file");
+            }
+        }
+    }
+
+    function galleryUpload(Request $request){
+  
+            $CompetitionId = $request->CompetitionId;
+            $countfiles = count($_FILES['file']['name']);
+           
+            for($i=0;$i<$countfiles;$i++){
+                $filename = $_FILES['file']['name'][$i];
+                move_uploaded_file($_FILES['file']['tmp_name'][$i],"img/gallery/competitions/$CompetitionId/$filename");
+            }
+        
+    }
+
+    //============================
 
     public function getClasamentList ($CompetitionId){
    
