@@ -56,12 +56,9 @@ class Person extends BObject{
                         MarcaArma = ':MarcaArma',
                         SerieArma = ':SerieArma',
                         CalibruArma = ':CalibruArma'
-
                         WHERE PersonId = :PersonId;
                         
-                        update user set IsSuperUser = :IsSuperUser
-                        WHERE PersonId = :PersonId;
-                        
+                       
                     
 
                         ";
@@ -325,7 +322,27 @@ class Person extends BObject{
             return $r[0];
         else
             return null ;
-}
+    }
     
+    public function echivalarepersoana($badId, $goodId){
+
+      
+
+        try {
+
+            DB::beginTransaction();
+
+            DB::select('call spConcatPersons( ?, ?)', [$badId, $goodId]);
+                
+            DB::commit();
+        }
+        catch(\Exception $e){
+                DB::rollBack();
+
+             
+               return $e;
+        }
+
+    }
 
 }

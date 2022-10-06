@@ -210,8 +210,6 @@ class UserPerson extends BObject{
 
         $result = DB::select($sql);
 
-        
-
         if (count($result) == 0){
 
            return 'There is no registration with this token!';
@@ -220,13 +218,7 @@ class UserPerson extends BObject{
         else{
             $confirmedEmail = $result[0]->Email;
         }
-
-
         $sql = "update register set Status = 0 where `Token` = '$passtoken' and Status is null";
-       
-
-    
-
         try {
             DB::select($sql);
             return 'OK';

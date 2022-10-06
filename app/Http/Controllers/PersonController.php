@@ -42,12 +42,25 @@ class PersonController extends MasterController
         $password = $request['Password'];
 
         $password = crypt($password, $password);
-         $this->BObject()->setPassword($PersonId, $password);
+        $this->BObject()->setPassword($PersonId, $password);
         return 'OK';
         
     }
 
+    public function echivalarepersoana(Request $request){
 
+      
+
+            $badId = $request['badId'];
+            $goodId = $request['goodId'];
+    
+            
+            return  $this->BObject()->echivalarepersoana($badId, $goodId);
+    
+       
+
+        
+    }
     
 
 

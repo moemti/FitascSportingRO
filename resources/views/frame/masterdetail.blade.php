@@ -310,6 +310,8 @@
                             
                         @stack('afterdetail')
                     </form> 
+
+                        @stack('afterdetailform')
                </div>
             </div>
         </div>

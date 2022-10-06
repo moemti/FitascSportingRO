@@ -103,13 +103,46 @@
         <div class="col-md-2">
              <label for="HasUser">Are user</label><input name="HasUser" id="HasUser"  type="checkbox"  class="form-check-input" >
         </div>
-        <div class="col-md-2">
-            <label for="IsSuperUser">Este super user</label><input name="IsSuperUser" id="IsSuperUser"  type="checkbox" class="form-check-input" >
-        </div>
+
+        @if (session("IsSuperUser") == 1)
+             
+            <div class="col-md-2">
+                <label for="IsSuperUser">Este super user</label><input name="IsSuperUser" id="IsSuperUser"  type="checkbox" class="form-check-input" >
+            </div>
+        @endif
 
         
     </div>
 
+    
 
+
+@endpush
+
+
+@push('afterdetailform')
+    @if (session("IsSuperUser") == 1)
+
+    <div class="form-row">
+        <div class="col-12 col-md-6">
+            <form id="echivalarepersoana" action=""  class="position-relative form-group  ">
+                @csrf
+                <label class= "" for="OldPersonId">Alege persoana care va fi stearsa si echivalata cu persoana curenta</label>
+                
+                <select name="OldPersonId" id="OldPersonId"  type="text" class="form-control" required >
+                <option value=""></option>
+                    @foreach($masterlist as $r)
+                        <option value="{{$r->PersonId}}">{{$r->Name}}</option>
+                    @endforeach
+                </select>
+            
+                <div class="text-left ">
+                    <button type="submit" class="btn-wide btn-pill btn-shadow btn-hover-shine btn btn-danger btn-lg">{{transex('Echivaleaza')}}</button>
+            
+                </div>
+            </form>
+        </div>
+    </div>
+    @endif
 
 @endpush

@@ -37,6 +37,7 @@
         let dsClasament= @Json($clasament);
         let dsClasamentCat = @Json($clasamentcategorie);
         let dsClasamentTeam = @Json($clasamentteams);
+        let HasCompetitionRight = '{{getCompetitionRight($master[0]->CompetitionId)}}'  == '1';
 
         let Status = '{{$master[0]->Status}}' ; 
 
@@ -239,7 +240,7 @@
 
         <div class="d-flex text-right">
 
-            @if ((session('IsSuperUser') == 1) && (in_array(  $master[0]->Status,  array("Open","Progress"))  ))
+            @if ((getCompetitionRight($master[0]->CompetitionId)) && (in_array(  $master[0]->Status,  array("Open","Progress"))  ))
 
                 <div class='row'>
                     <button id="addCompetitor" class = "btn-add btn btn-sm" >Adauga</button>

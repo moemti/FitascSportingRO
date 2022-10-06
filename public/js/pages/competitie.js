@@ -31,7 +31,7 @@
                 clClasament = [      
                     { text: 'Nr', dataField: 'Position', width: '5%' }, 
                    
-                    { text: translate('Sportiv'), dataField: 'Person', width: (IsSuperUser === 1)?'55%':'60%' , cellclassname: cellclassUser},
+                    { text: translate('Sportiv'), dataField: 'Person', width: (HasCompetitionRight) ?'55%':'60%' , cellclassname: cellclassUser},
                     { text: translate('Cat'), dataField: 'Category', width: '10%' },
                     { text: translate('Team'), dataField: 'Team', width: '25%' },
                   
@@ -41,7 +41,7 @@
                 clClasament = [      
                     { text: 'BIB', dataField: 'BIB', width: '5%' },  
                     { text: translate('Serie'), dataField: 'NrSerie', width: '5%' },     
-                    { text: translate('Sportiv'), dataField: 'Person', width: (IsSuperUser === 1)?'50%':'55%'  , cellclassname: cellclassUser},
+                    { text: translate('Sportiv'), dataField: 'Person', width: (HasCompetitionRight )?'50%':'55%'  , cellclassname: cellclassUser},
                     { text: translate('Cat'), dataField: 'Category', width: '10%' },
                     { text: translate('Team'), dataField: 'Team', width: '20%' },
                     { text: translate('In Echipa'), dataField: 'TeamName', width: '5%' },
@@ -53,7 +53,7 @@
             else{
                 clClasament = [
                     { text: translate('Loc'), dataField: 'Position', width: '5%' },
-                    { text: translate('Sportiv'), dataField: 'Person', width:  (IsSuperUser === 1)?'45%':'50%'  , cellclassname: cellclassUser},
+                    { text: translate('Sportiv'), dataField: 'Person', width:  (HasCompetitionRight )?'45%':'50%'  , cellclassname: cellclassUser},
                     { text: translate('Cat'), dataField: 'Category', width: '10%' },
                     { text: translate('Team'), dataField: 'Team', width: '15%' },
                     { text: translate('Total'), dataField: 'Total', width: '15%' },               
@@ -66,7 +66,7 @@
             if (Status == 'Open'){
                 clClasament = [      
                     { text: 'Nr', dataField: 'Position', width: '5%' },  
-                    { text: translate('Sportiv'), dataField: 'Person', width: (IsSuperUser === 1)?'55%':'60%'  , cellclassname: cellclassUser},
+                    { text: translate('Sportiv'), dataField: 'Person', width: (HasCompetitionRight )?'55%':'60%'  , cellclassname: cellclassUser},
                     { text: translate('Cat'), dataField: 'Category', width: '10%' },
                     { text: translate('Team'), dataField: 'Team', width: '20%' },
                     { text: translate('In Echipa'), dataField: 'TeamName', width: '5%' },
@@ -76,7 +76,7 @@
                 clClasament = [      
                     { text: 'BIB', dataField: 'BIB', width: '5%' },  
                     { text: translate('Serie'), dataField: 'NrSerie', width: '5%' },     
-                    { text: translate('Sportiv'), dataField: 'Person', width: (IsSuperUser === 1)?'50%':'55%'  , cellclassname: cellclassUser},
+                    { text: translate('Sportiv'), dataField: 'Person', width: (HasCompetitionRight )?'50%':'55%'  , cellclassname: cellclassUser},
                     { text: translate('Cat'), dataField: 'Category', width: '10%' },
                     { text: translate('Team'), dataField: 'Team', width: '20%' },
                     { text: translate('In Echipa'), dataField: 'TeamName', width: '5%' },
@@ -93,7 +93,7 @@
                         { text: translate('Loc'), dataField: 'Position', width: '5%' },
                         { text: translate('Sportiv'), dataField: 'Person', width: '10%', cellclassname: cellclassUser },
                         { text: translate('Cat'), dataField: 'Category', width: '5%' },
-                        { text: translate('Team'), dataField: 'Team', width: IsSuperUser===1?'5%':'10%' },
+                        { text: translate('Team'), dataField: 'Team', width: HasCompetitionRight?'5%':'10%' },
                         { text: 'M1', dataField: 'M1', width: '5%' ,cellclassname: cellclass,},
                         { text: 'M2', dataField: 'M2', width: '5%' ,cellclassname: cellclass,},
                         { text: 'M3', dataField: 'M3', width: '5%' ,cellclassname: cellclass,},
@@ -114,7 +114,7 @@
         }
 
 
-        if (IsSuperUser === 1){
+        if (HasCompetitionRight){
             clClasament.push(
                 { text: '', dataField: 'ResultId', width: '5%',
             

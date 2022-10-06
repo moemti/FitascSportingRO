@@ -22,15 +22,11 @@ listdatafields=
     [
         { name: 'RangeId', type: 'integer'},
         { name: 'Name', type: 'string'},
-       
-       
-
     ]
 
 listdatacolumns=
     [
-        { text: 'Poligon', datafield: 'Name', width: '100%'},
-   
+        { text: 'Poligon', datafield: 'Name', width: '100%'}, 
         { text: 'RangeId', datafield: 'RangeId', hidden: true},
     ]
 
@@ -38,12 +34,7 @@ listdatacolumns=
 detaildatafields= [
   
 
-
         { name: 'RangexpersonId', type: 'integer'},
-     
-    
-        
-
         { name: 'RangeId', type: 'integer'},
         { name: 'PersonId', type: 'integer'},
         { name: 'Range', type: 'string'},

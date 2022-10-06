@@ -1,6 +1,6 @@
 @extends('layouts.baseex')
 
-@push('scripts')
+@push('footscripts')
 
 <script type="text/javascript" src="{{asset('js/components/jqwidgets/jqxcore.js')}}"></script>
     <script type="text/javascript" src="{{asset('js/components/jqwidgets/jqxdata.js')}}"></script> 
@@ -17,21 +17,12 @@
     <script type="text/javascript" src="{{asset('js/components/jqwidgets/jqxgrid.selection.js')}}"></script> 
     <script type="text/javascript" src="{{asset('js/components/jqwidgets/jqxgrid.edit.js')}}"></script> 
     <script type="text/javascript" src="{{asset('js/components/jqwidgets/jqxgrid.filter.js')}}"></script> 
-    <script type="text/javascript" src="{{asset('js/form-components/form-validation.min.js')}}"></script> 
-
+  //  <script type="text/javascript" src="{{asset('js/form-components/form-validation.min.js')}}"></script> 
 
     <script>
-
             let persons = @Json($persons);
-            
-
     </script>
-
-
     <script  src="{{asset('js/pages/registere.js')}}"></script>
-
-
-
 
 @endpush
 
@@ -62,10 +53,6 @@
                         
                         </div>
                     </div>
-
-
-
-
                     <div class='row'>
                         <div class="form-group col-lg-6">
                 

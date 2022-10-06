@@ -27,10 +27,10 @@ use App\Models\Dictionaries\Poligon;
     
                             [
                                     [
-                                            ['persoane', 'Persoane', 'IsSuperUser'],
+                                            ['persoane', 'Persoane', hasRangesRight()],
                                             ['sezoane', 'Sezoane', 'IsSuperUser'],
-                                            ['registeries', 'Cereri inregistrare', 'IsSuperUser'],
-                                            ['translations', 'Traduceri', 'IsSuperUser'],
+                                            ['registeries', 'Cereri inregistrare', hasRangesRight()],
+                                            ['translations', 'Traduceri', hasRangesRight()],
                                             ['poligoaneedit', 'Poligoane', hasRangesRight()], 
                                     ], 'Administrare', 'PersonId'
                             ]

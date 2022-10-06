@@ -180,6 +180,8 @@ class BObject{
                     }                          
                 } 
 
+              //  self::PutNullValues($sql);
+
                 if ($this->IsUpdateUnprepared)    
                     DB::unprepared($sql);
                 else

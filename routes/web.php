@@ -119,6 +119,7 @@ Route::group(['middleware' => 'options'], function () {
             Route::post('getpersonajax', 'App\Http\Controllers\PersonController@getitemajax');
             Route::post('deletepersonajax', 'App\Http\Controllers\PersonController@deleteitemajax');
             Route::post('getpersondetaillistajax', 'App\Http\Controllers\PersonController@getdetaillistajax');
+            Route::post('echivalarepersoana', 'App\Http\Controllers\PersonController@echivalarepersoana');
 
             // poligoane
 

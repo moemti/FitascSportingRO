@@ -87,3 +87,54 @@ detailcolumns=  [
 
 
 
+
+
+   $(function () {
+
+    $( "#echivalarepersoana" ).submit(function( event ) {
+        event.preventDefault();
+        
+
+        confirm(translate("Doriti sa echivalati persoana?") , Echivaleaza);
+
+
+    });
+});
+
+function Echivaleaza(){
+
+    goodId = $("#PersonId").val();
+    badId = $("#OldPersonId").val();   
+
+    if (!badId){
+        ShowError('Alegeti o persoana pentru echivalare');
+        return;
+    }
+
+    if (!goodId){
+        ShowError('Spooky');
+        return;
+    }
+
+    if (goodId == badId){
+        ShowError('Alegeti o persoana diferita');
+        return;
+    }
+
+
+    let Data ={goodId: goodId, badId: badId};
+    
+    $.ajax({
+        type: 'POST',
+
+        url: baseUrl + '/echivalarepersoana',
+        data: Data,
+        success: function (data) {
+            ShowSuccess(translate('Persoana a fost echivalata'));
+        
+        },
+        error: function(data){
+            ShowError(data)
+        }
+    });
+}
