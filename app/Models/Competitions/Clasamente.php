@@ -76,9 +76,9 @@ class Clasamente extends BObject{
                     inner join competition c on c.CompetitionId = r.CompetitionId and c.Status = 'Finished'
 
                     inner join season s on Year(c.StartDate) = s.Year
-                    left join shooterxseason x on x.PersonId = r.PersonId and x.SeasonId = s.SeasonId 
+                    inner join shooterxseason x on x.PersonId = r.PersonId and x.SeasonId = s.SeasonId 
 
-                    left join shootercategory sc on sc.ShooterCategoryId = x.ShooterCategoryId 
+                    inner join shootercategory sc on sc.ShooterCategoryId = x.ShooterCategoryId and sc.Code <> 'STR'
                     left join team t on t.TeamId = x.TeamId 
                     
                     where year(c.StartDate) = :Year 

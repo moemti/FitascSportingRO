@@ -62,7 +62,8 @@
 							@if (!in_array($image , ['.', '..']))
 							<div class="form-row pb-2">
 								<div class="col-md-12">
-							
+
+
 									<img src=" {{url('img/gallery/competitions/').'/'.$competition.'/'.$image}}" width="75%" class="mr-4">
 									<input class= "checkpic ms-4 me-2" type="checkbox" data-image="{{$competition.'/'.$image}}">
 								
@@ -88,7 +89,7 @@
 
                                 @if (!in_array($image , ['.', '..']))
 
-                                <div style="background: url( {{url('img/gallery/competitions/').'/'.$competition.'/'.$image}})"></div> 
+                                <div style="background: url(' {{url('img/gallery/competitions/').'/'.$competition.'/'.$image}}')"></div> 
 								
                                 @endif
 
@@ -101,7 +102,7 @@
 
                                 @if (!in_array($image , ['.', '..']))
 
-                                <div style="background: url( {{url('img/gallery/competitions/').'/'.$competition.'/'.$image}})"></div> 
+                                <div style="background: url(' {{url('img/gallery/competitions/').'/'.$competition.'/'.$image}}')"></div> 
 
                                 @endif
 

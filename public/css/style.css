@@ -958,3 +958,7 @@ button.toast-close-button {
 
 .clTotal {
   background-color: #ffbc9d e !important; }
+
+  .welcome-text {
+    text-shadow: orangered -1px 1px !important;
+  }
