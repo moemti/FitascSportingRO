@@ -14,17 +14,19 @@
 	if (window.innerWidth > 900){
 		clClasament = [
 			{ text: translate('Loc'), dataField: 'Position', width: '5%' },
-			{ text: translate('Sportiv'), dataField: 'Person', width: '55%', cellclassname: cellclassUser },
+			{ text: translate('Sportiv'), dataField: 'Person', width: '45%', cellclassname: cellclassUser },
 			{ text: translate('Categorie'), dataField: 'Category', width: '10%' },
 			{ text: translate('Team'), dataField: 'Team', width: '20%' },
 			{ text: translate('Procent'), dataField: 'Procent', width: '10%' },
+			{ text: translate('Nr participari'), dataField: 'NrCompetitions', width: '10%' },
 		]
 	}else{
 		clClasament = [
 			{ text: '', dataField: 'Position', width: '5%' },
-			{ text: translate('Sportiv'), dataField: 'Person', width: '55%', cellclassname: cellclassUser },
+			{ text: translate('Sportiv'), dataField: 'Person', width: '45%', cellclassname: cellclassUser },
 			{ text: translate('Cat'), dataField: 'Category', width: '10%' },
-			{ text: translate('Procent'), dataField: 'Procent', width: '25%' },
+			{ text: translate('Procent'), dataField: 'Procent', width: '20%' },
+			{ text: translate('Nr participari'), dataField: 'NrCompetitions', width: '15%' },
 		]
 	}
 
@@ -79,7 +81,8 @@
 						{ name: 'Person', type: 'string' },
 						{ name: 'Category', type: 'string' },
 						{ name: 'Team', type: 'string'},
-						{ name: 'Procent', type: 'number' }
+						{ name: 'Procent', type: 'number' },
+						{ name: 'NrCompetitions', type: 'number' }
 			
 					]
 				
