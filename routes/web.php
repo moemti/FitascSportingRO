@@ -75,6 +75,8 @@ Route::group(['middleware' => 'options'], function () {
         Route::post('/getresultdetailsajax', 'App\Http\Controllers\CompetitiiController@getresultdetailsajax');
         Route::post('/saveresultdetail', 'App\Http\Controllers\ResultsController@saveitemajax');
         Route::post('/deleteresultajax', 'App\Http\Controllers\ResultsController@deleteitemajax');
+    
+        
         
         
         
@@ -87,7 +89,7 @@ Route::group(['middleware' => 'options'], function () {
         
 
         Route::get('/clasamente', 'App\Http\Controllers\ClasamenteController@getClasamente');
-
+        Route::post('/getResultsPersonyYear', 'App\Http\Controllers\ClasamenteController@getResultsPersonyYear');
         Route::post('/getClasamentByYear', 'App\Http\Controllers\ClasamenteController@getClasamentByYear');
 
 

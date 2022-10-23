@@ -76,9 +76,9 @@ class Clasamente extends BObject{
                     inner join competition c on c.CompetitionId = r.CompetitionId and c.Status = 'Finished'
 
                     inner join season s on Year(c.StartDate) = s.Year
-                    inner join shooterxseason x on x.PersonId = r.PersonId and x.SeasonId = s.SeasonId 
+                    left join shooterxseason x on x.PersonId = r.PersonId and x.SeasonId = s.SeasonId 
 
-                    inner join shootercategory sc on sc.ShooterCategoryId = x.ShooterCategoryId and sc.Code <> 'STR'
+                    left join shootercategory sc on sc.ShooterCategoryId = x.ShooterCategoryId 
                     left join team t on t.TeamId = x.TeamId 
                     
                     where year(c.StartDate) = :Year 
@@ -107,10 +107,8 @@ class Clasamente extends BObject{
     }
 
     public function GetClasament($Year){
-
-        $sql = str_replace( array(":Year") ,array($Year), $this->ClasamentSelect) ;
-
-        $result = DB::select($sql);
+      $sql = str_replace( array(":Year") ,array($Year), $this->ClasamentSelect) ;
+      $result = DB::select($sql);
 
         if (count($result) > 0)
             return $result;
@@ -119,6 +117,20 @@ class Clasamente extends BObject{
             return DB::select($sql);
         }
 
+
+    }
+
+    public function getResultsPersonyYear($PersonId, $year){
+        $sql = "SELECT p.PersonId,  Round(r.Percent, 2) as Percent , r.Total, concat(c.Name , ' ' , rr.Name , ' ' ,  concat(DATE_FORMAT(c.StartDate, '%d/%m'), ' - ', DATE_FORMAT(c.EndDate, '%d/%m %Y'))) as Name, r.Position as Loc, c.CompetitionId
+            FROM result r 
+            inner join person p on p.PersonId = r.PersonId 
+            inner join competition c on c.CompetitionId = r.CompetitionId and c.Status = 'Finished'  
+            inner join `range` rr on rr.RangeId = c.RangeId    
+            where year(c.StartDate) = {$year} and r.PersonId = {$PersonId}
+            order by c.StartDate"
+            ;
+        
+        return DB::select($sql); 
 
     }
 

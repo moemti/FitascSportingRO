@@ -438,6 +438,9 @@ button.toast-close-button {
   border-color: transparent;
   border-style: solid; }
 
+  .clRedBak{
+    background-image: linear-gradient(to left, #ff6969, #ff7373) !important; }
+
 .clRedFont {
   color: red !important; }
 

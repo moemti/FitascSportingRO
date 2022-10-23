@@ -7,7 +7,7 @@ use App\Models\Dictionaries\Poligon;
         return  [
         
            
-                            ['welcome', 'Pagina principala'],
+                          //  ['welcome', 'Pagina principala'],
                             ['competitii', 'Competitii'],
                             ['clasamente', 'Clasamente'],
                             ['regulamente', 'Regulamente'],
