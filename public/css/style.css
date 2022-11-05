@@ -965,3 +965,8 @@ button.toast-close-button {
   .welcome-text {
     text-shadow: orangered -1px 1px !important;
   }
+
+  #header .header-top{
+    flex-direction: column !important;
+    height: auto;
+  }

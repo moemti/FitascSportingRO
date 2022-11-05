@@ -176,6 +176,133 @@
 								</div>
 							</div>
 						</div>
+
+
+
+						<section id="marketing" class=" section-no-border m-0 p-0">
+					<div class="container">
+					    <div class="row justify-content-center text-center align-items-center ">
+								@php
+								function outputFiles($path){
+							
+									if(file_exists($path) && is_dir($path)){
+									
+									
+										$result = scandir($path);
+										
+									
+
+										$files = array_diff($result, array('.', '..'));
+										
+									
+										if(count($files) > 0){
+										
+											foreach($files as $file){
+
+											
+
+												if(is_file("$path/$file")){
+												
+													$url = url($path.'/'.$file);
+													$link = basename($path);
+												
+													echo " <div class='col-lg-2 col-sm-8 mb-3 mb-lg-0' 
+													style=' max-width: 100%; height: auto;  overflow: hidden;margin-bottom:4px !important;'>
+													<a href='//www.$link' target='_blank'>  
+														<img style='    width: 120px;
+				
+														float: center;
+														margin: 0px;
+														padding: 0px;' src= '$url'>
+													</a>
+												</div>";
+
+
+												} else {
+
+												
+
+												
+														outputFiles("$path/$file");
+													
+												}
+											}
+										} 
+									}
+								}
+								
+								outputFiles("img/marketing");
+
+						
+                                @endphp
+							
+						
+                        </div>	
+					</div>
+                 </section>
+
+
+
+
+                 <div id = "marketingphone"  class="owl-carousel owl-carousel-light owl-carousel-light-init-fadeIn owl-theme manual dots-inside dots-horizontal-center show-dots-hover show-dots-xs show-dots-sm 
+                 show-dots-md nav-inside nav-inside-edge show-nav-hover custom-carousel-arrows-style-1 mb-1" data-plugin-options="{'autoplayTimeout': 5000}" 
+				 
+				  style="height: 8vh;">
+                    <div class="owl-stage-outer">
+                        <div class="owl-stage">
+                        
+                            @php
+								
+							function outputFiles2($path){
+								
+								
+								if(file_exists($path) && is_dir($path)){
+								
+								
+									$result = scandir($path);
+									
+								
+									$files = array_diff($result, array('.', '..'));
+									
+								
+									if(count($files) > 0){
+									
+										foreach($files as $file){
+										
+											if(is_file("$path/$file")){
+											
+												$url = url($path.'/'.$file);
+												$link = basename($path);
+											
+												echo "  <div class='owl-item position-relative overflow-hidden text-center'>
+															<div class='container position-relative z-index-3 h-100'>
+															<a href='//www.$link' target='_blank' style='display: inline-flex;    float: center;'> 
+																<img style='   height: 8vh;
+                        
+																	float: center;
+																	margin: 0px;
+																	padding: 0px;' src= '$url'>
+															</a>
+															</div>
+														</div>";
+
+
+											} else {
+													outputFiles2("$path/$file");
+											}
+										}
+									} 
+								}
+							}
+							
+							outputFiles2("img/marketing");
+
+							@endphp
+                          
+                        </div>
+                    </div>
+
+                </div>
 					</div>
 					
 					<div class="header-container container">
@@ -251,138 +378,6 @@
 			<div role="main" class="main">
 
  
-
-                <section id="marketing" class=" section-no-border m-0 p-0">
-					<div class="container_">
-					    <div class="row justify-content-center text-center align-items-center ">
-								@php
-
-							
-
-								function outputFiles($path){
-								
-								
-
-									if(file_exists($path) && is_dir($path)){
-									
-									
-										$result = scandir($path);
-										
-									
-
-										$files = array_diff($result, array('.', '..'));
-										
-									
-										if(count($files) > 0){
-										
-											foreach($files as $file){
-
-											
-
-												if(is_file("$path/$file")){
-												
-													$url = url($path.'/'.$file);
-													$link = basename($path);
-												
-													echo " <div class='col-lg-2 col-sm-8 mb-3 mb-lg-0' 
-													style=' max-width: 100%; height: auto;  overflow: hidden;margin-bottom:4px !important;'>
-													<a href='//www.$link' target='_blank'>  
-														<img style='    width: 120px;
-				
-														float: center;
-														margin: 0px;
-														padding: 0px;' src= '$url'>
-													</a>
-												</div>";
-
-
-												} else {
-
-												
-
-												
-														outputFiles("$path/$file");
-													
-												}
-											}
-										} 
-									}
-								}
-								
-								outputFiles("img/marketing");
-
-						
-                                @endphp
-							
-						
-                        </div>	
-					</div>
-                 </section>
-
-
-
-
-                 <div id = "marketingphone"  class="owl-carousel owl-carousel-light owl-carousel-light-init-fadeIn owl-theme manual dots-inside dots-horizontal-center show-dots-hover show-dots-xs show-dots-sm 
-                 show-dots-md nav-inside nav-inside-edge show-nav-hover custom-carousel-arrows-style-1 mb-1" data-plugin-options="{'autoplayTimeout': 5000}"  style="height: 8vh;">
-                    <div class="owl-stage-outer">
-                        <div class="owl-stage">
-                        
-                            @php
-								
-							function outputFiles2($path){
-								
-								
-								if(file_exists($path) && is_dir($path)){
-								
-								
-									$result = scandir($path);
-									
-								
-									$files = array_diff($result, array('.', '..'));
-									
-								
-									if(count($files) > 0){
-									
-										foreach($files as $file){
-										
-											if(is_file("$path/$file")){
-											
-												$url = url($path.'/'.$file);
-												$link = basename($path);
-											
-												echo "  <div class='owl-item position-relative overflow-hidden text-center'>
-															<div class='container position-relative z-index-3 h-100'>
-															<a href='//www.$link' target='_blank' style='display: inline-flex;    float: center;'> 
-																<img style='   height: 8vh;
-                        
-																	float: center;
-																	margin: 0px;
-																	padding: 0px;' src= '$url'>
-															</a>
-															</div>
-														</div>";
-
-
-											} else {
-													outputFiles2("$path/$file");
-											}
-										}
-									} 
-								}
-							}
-							
-							outputFiles2("img/marketing");
-
-							@endphp
-                          
-                        </div>
-                    </div>
-
-                </div>
-
-
-
-
 
                  @stack('content')
 
@@ -588,7 +583,7 @@
         <script src="{{asset('js/scripts-init/blockui.min.js')}}"></script>
 
         
-        <link rel="stylesheet" href="{{asset('css/style.css?v=4')}}">
+        <link rel="stylesheet" href="{{asset('css/style.css?v=5')}}">
 
 	    @stack('footerscripts')
 

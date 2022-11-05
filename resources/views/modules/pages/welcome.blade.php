@@ -61,9 +61,6 @@
 
 
 
-                
-
-
                 <div class="owl-item position-relative overflow-hidden" style="background-image:  url('img/gallery/competitions/13/12.jpeg'); background-size: cover; background-position: 60% 40%; background-position: 60% 40%;">
                     <div class="container position-relative z-index-3 h-100">
                         <div class="row align-items-center justify-content-center h-100">
