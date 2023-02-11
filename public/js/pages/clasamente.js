@@ -222,41 +222,6 @@
 						rezultate.append(container);
 						getResultPersonYear(PersonId, item.label);
 					}
-
-
-
-
-                    // information = tabsdiv.find('.information');
-                    // notes = tabsdiv.find('.notes');
-                    // var title = tabsdiv.find('.title');
-                    // title.text(datarecord.Person);
-                    // var container = $('<div style="margin: 5px;"></div>')
-                    // container.appendTo($(information));
-                    // var photocolumn = $('<div style="float: left; width: 15%;"></div>');
-                    // var leftcolumn = $('<div style="float: left; width: 45%;"></div>');
-                    // var rightcolumn = $('<div style="float: left; width: 40%;"></div>');
-                    // container.append(photocolumn);
-                    // container.append(leftcolumn);
-                    // container.append(rightcolumn);
-                    // var photo = $("<div class='jqx-rc-all' style='margin: 10px;'><b>Photo:</b></div>");
-                    // var image = $("<div style='margin-top: 10px;'></div>");
-                    // var imgurl = '../../images/' + datarecord.Person.toLowerCase() + '.png';
-                  
-                    // image.append(img);
-                    // image.appendTo(photo);
-                    // photocolumn.append(photo);
-                    // var firstname = "<div style='margin: 10px;'><b>First Name:</b> " + datarecord.Person + "</div>";
-
-                    // $(leftcolumn).append(firstname);
-           
-                    // $(leftcolumn).append(title);
-              
-                    // var postalcode = "<div style='margin: 10px;'><b>Postal Code:</b> " + datarecord.Person + "</div>";
-
-                    // $(rightcolumn).append(postalcode);
-       
-                  //  var notescontainer = $('<div style="white-space: normal; margin: 5px;"><span>' + datarecord.Person + '</span></div>');
-                  //  $(notes).append(notescontainer);
                     $(tabsdiv).jqxTabs({ width: '90%', height: '90%'});
                 }
 	}

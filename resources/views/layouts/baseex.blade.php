@@ -583,7 +583,7 @@
         <script src="{{asset('js/scripts-init/blockui.min.js')}}"></script>
 
         
-        <link rel="stylesheet" href="{{asset('css/style.css?v=5')}}">
+        <link rel="stylesheet" href="{{asset('css/style.css?v=8')}}">
 
 	    @stack('footerscripts')
 

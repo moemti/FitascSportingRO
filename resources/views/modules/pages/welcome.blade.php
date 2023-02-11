@@ -70,9 +70,9 @@
                                 
                                     </span>
                                     <h1 class="text-color-light welcome-text font-weight-extra-bold text-13 line-height-1 mb-2 welcome-text " data-appear-animation="fadeInUpShorter" data-appear-animation-delay="750" data-plugin-options="{'minWindowWidth': 0}">
-                                    2022<br>{{transex('Final de sezon')}}</h1>
-                                    <p class="text-5 text-color-light font-weight-light custom-secondary-font mb-5 " data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1000">{{transex('Rezultate')}} 2022</p>
-                                    <a href="{{url('/clasamente/')}}" class="btn btn-primary font-weight-bold btn-py-2 btn-px-4 " data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1250">{{transex('Vezi clasament')}} 2022</a> 
+                                    <br>{{transex('Sezonul 2023')}}</h1>
+                                    {{-- <p class="text-5 text-color-light font-weight-light custom-secondary-font mb-5 " data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1000">{{transex('Rezultate')}} 2023</p> --}}
+                                    <a href="{{url('/clasamente/')}}" class="btn btn-primary font-weight-bold btn-py-2 btn-px-4 " data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1250">{{transex('Participantii pe categorii')}} 2023</a> 
                                     
                                     
                                 </div>

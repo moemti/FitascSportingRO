@@ -9,6 +9,7 @@
         "prod": "npm run production",
         "production": "mix --production",
         "watch:sass": "node-sass public/sass/main.scss public/css/style.css -w",
+        "compile-style:sass": "node-sass public/sass/main.scss public/css/style.css ",
         "devserver": "live-server",
         "start": "npm-run-all --parallel watch:sass watch:sass2",
         "compile:sass": "node-sass public/sass/main.scss public/css/style.comp.css",
