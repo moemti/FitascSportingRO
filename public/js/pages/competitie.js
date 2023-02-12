@@ -526,6 +526,7 @@
                             { name: 'Total1', type: 'number'},
                             { name: 'Total2', type: 'number'},
                             { name: 'Procent', type: 'number'},
+                            { name: 'ProcentR', type: 'number'},
                             { name: 'ShootOffS', type: 'string'},
                             { name: 'ResultatCat', type: 'string'},
                             { name: 'BIB', type: 'number'},
