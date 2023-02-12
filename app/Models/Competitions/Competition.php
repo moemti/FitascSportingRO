@@ -65,7 +65,7 @@ class Competition extends BObject{
         SELECT row_number() over(order by Total desc, ShootOff desc, d8.Result desc, d7.Result  desc, d6.Result desc, d5.Result desc, d4.Result desc, d3.Result desc, d2.Result desc, d1.Result desc, r.BIB)  as Position, 
             p.PersonId, p.Name as Person, sc.Code as Category, t.Name as Team , r.ResultId, NULL AS BIB, 
             r.IsInTeam, NULL AS NrSerie,  p.SerieNrCI, p.CNP, p.SeriePermisArma, p.DataExpPermis, p.MarcaArma, p.SerieArma, p.CalibruArma, r.TeamName,
-                        Round(Percent,2) as Procent,
+                        Round(Percent,2) as Procent, Round(PercentR,2) as ProcentR,
                         
                         nullif(d1.Result, 0) as M1,
                         nullif(d2.Result, 0) as M2,
@@ -154,7 +154,7 @@ class Competition extends BObject{
                     ifnull(d2.Result, 0) desc, ifnull(d1.Result, 0) desc, r.BIB)  as Position, 
             p.PersonId, p.Name as Person, sc.Code as Category, t.Name as Team , r.ResultId, r.BIB, 
             r.IsInTeam, r.NrSerie,  p.SerieNrCI, p.CNP, p.SeriePermisArma, p.DataExpPermis, p.MarcaArma, p.SerieArma, p.CalibruArma, r.TeamName,
-                        Round(Percent,2) as Procent,
+                        Round(Percent,2) as Procent, Round(PercentR,2) as ProcentR,
                         
                         nullif(d1.Result, 0) as M1,
                         nullif(d2.Result, 0) as M2,
@@ -244,7 +244,7 @@ class Competition extends BObject{
                     r.BIB,
                     
                     r.IsInTeam, r.NrSerie,  p.SerieNrCI, p.CNP, p.SeriePermisArma, p.DataExpPermis, p.MarcaArma, p.SerieArma, p.CalibruArma, r.TeamName,
-                                Round(Percent,2) as Procent,
+                                Round(Percent,2) as Procent, Round(PercentR,2) as ProcentR,
                                 
                                 d1.Result as M1,
                                 d2.Result as M2,
@@ -881,7 +881,7 @@ class Competition extends BObject{
         }
 
         public function getresultDetail($ResultId){
-            $sql = "select p.Name, coalesce(r.ShooterCategoryId, x.ShooterCategoryId) as ShooterCategoryId, coalesce(r.TeamId, x.TeamId) as TeamId, r.Aborted, Position, Total, Percent, ResultId, p.PersonId,
+            $sql = "select p.Name, coalesce(r.ShooterCategoryId, x.ShooterCategoryId) as ShooterCategoryId, coalesce(r.TeamId, x.TeamId) as TeamId, r.Aborted, Position, Total, Percent, ResultId, p.PersonId, PercentR,
                 r.BIB, r.IsInTeam, r.NrSerie, r.TeamName,  p.SerieNrCI, p.CNP, p.SeriePermisArma, p.DataExpPermis, p.MarcaArma, p.SerieArma, p.CalibruArma
             from result r 
             inner join person p on p.PersonId = r.PersonId

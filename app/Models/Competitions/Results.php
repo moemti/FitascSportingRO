@@ -26,7 +26,7 @@ class Results extends BObject{
 
     public $MasterSelect = " ";
 
-    public $MasterItemSelect = "select p.Name, coalesce(r.ShooterCategoryId, x.ShooterCategoryId) as ShooterCategoryId, coalesce(r.TeamId, x.TeamId) as TeamId, r.Aborted, Position, Total, Percent, ResultId,
+    public $MasterItemSelect = "select p.Name, coalesce(r.ShooterCategoryId, x.ShooterCategoryId) as ShooterCategoryId, coalesce(r.TeamId, x.TeamId) as TeamId, r.Aborted, Position, Total, Percent, ResultId, PercentR,
             r.BIB, r.NrSerie, r.TeamName
             from result r 
             inner join person p on p.PersonId = r.PersonId
@@ -145,7 +145,7 @@ class Results extends BObject{
         }
 
         public function getresultDetail($ResultId){
-            $sql = "select p.Name, coalesce(r.ShooterCategoryId, x.ShooterCategoryId) as ShooterCategoryId, coalesce(r.TeamId, x.TeamId) as TeamId, r.Aborted, Position, Total, Percent, ResultId,
+            $sql = "select p.Name, coalesce(r.ShooterCategoryId, x.ShooterCategoryId) as ShooterCategoryId, coalesce(r.TeamId, x.TeamId) as TeamId, r.Aborted, Position, Total, Percent, ResultId, PercentR,
             r.BIB, r.TeamName, r.NrSerie
             from result r 
             inner join person p on p.PersonId = r.PersonId

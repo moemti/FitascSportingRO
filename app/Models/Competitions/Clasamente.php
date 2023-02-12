@@ -24,7 +24,8 @@ class Clasamente extends BObject{
 
     public $MasterSelect = "
             SELECT row_number() over(order by Procent desc) as Position, p.Name as Person, Min(sc.Code) as Category, max(t.Name) as Team , p.PersonId, 
-            Round(Avg(case when ifNull(r.Aborted,1) = 0 then Percent else null end),2) as Procent 
+            Round(Avg(case when ifNull(r.Aborted,1) = 0 then Percent else null end),2) as Procent,
+            Round(Avg(case when ifNull(r.Aborted,1) = 0 then PercentR else null end),2) as ProcentR, 
             FROM result r 
             inner join person p on p.PersonId = r.PersonId 
             inner join competition c on c.CompetitionId = r.CompetitionId 
@@ -70,7 +71,9 @@ class Clasamente extends BObject{
 
     public $ClasamentSelect = "
                     SELECT row_number() over(order by Procent desc) as Position, p.Name as Person, Min(sc.Code) as Category, max(t.Name) as Team , p.PersonId, 
-                    Round(Avg(case when ifNull(r.Aborted,1) = 0 then Percent else null end),2) as Procent , count(distinct r.ResultId) as NrCompetitions
+                    Round(Avg(case when ifNull(r.Aborted,1) = 0 then Percent else null end),2) as Procent , 
+                    Round(Avg(case when ifNull(r.Aborted,1) = 0 then PercentR else null end),2) as ProcentR, 
+                    count(distinct r.ResultId) as NrCompetitions
                     FROM result r 
                     inner join person p on p.PersonId = r.PersonId 
                     inner join competition c on c.CompetitionId = r.CompetitionId and c.Status = 'Finished'
@@ -121,7 +124,7 @@ class Clasamente extends BObject{
     }
 
     public function getResultsPersonyYear($PersonId, $year){
-        $sql = "SELECT p.PersonId,  Round(r.Percent, 2) as Percent , r.Total, concat(c.Name , ' ' , rr.Name , ' ' ,  concat(DATE_FORMAT(c.StartDate, '%d/%m'), ' - ', DATE_FORMAT(c.EndDate, '%d/%m %Y'))) as Name, r.Position as Loc, c.CompetitionId
+        $sql = "SELECT p.PersonId,  Round(r.Percent, 2) as Percent, Round(r.PercentR, 2) as PercentR, r.Total, concat(c.Name , ' ' , rr.Name , ' ' ,  concat(DATE_FORMAT(c.StartDate, '%d/%m'), ' - ', DATE_FORMAT(c.EndDate, '%d/%m %Y'))) as Name, r.Position as Loc, c.CompetitionId
             FROM result r 
             inner join person p on p.PersonId = r.PersonId 
             inner join competition c on c.CompetitionId = r.CompetitionId and c.Status = 'Finished'  
