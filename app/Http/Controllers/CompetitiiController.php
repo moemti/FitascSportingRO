@@ -41,11 +41,19 @@ class CompetitiiController extends MasterController
                                                             'MasterPrimaryKeyValue' => $ResultId,
                                                             'teams' => $this->BObject()->getTeams(),
                                                             'categories' => $this->BObject()->getShootingCategories(),
+                                                            'persons' => $this->BObject()->GetClasamentSerii( $this->BObject()->getCompetitionByResult($ResultId))
                                                         
                                                         ]);
     }
 
+    public function switchPersons(Request $request){
+        $CompetitionId = $request->CompetitionId;
+        $PersonId1 = $request->PersonId1;
+        $PersonId2 = $request->PersonId2; 
 
+        return $this->BObject()->switchPersons($CompetitionId, $PersonId1, $PersonId2);
+
+    }
 
 
 

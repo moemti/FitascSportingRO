@@ -439,17 +439,12 @@
                 data = data[0][0];
                 let fields = [];
 
-                let ShooterCategoryId = $( "#PersonId option:selected" ).attr('data-ShooterCategoryId');
-                let TeamId = $( "#PersonId option:selected" ).attr('data-TeamId');
+                let ShooterCategoryId = $( "#PersonId option:selected" ).attr('data-shootercategoryid');
+                let TeamId = $( "#PersonId option:selected" ).attr('data-teamid');
 
 
-
-
-                let selector = `#ShooterCategoryId option[value='${ShooterCategoryId}']`;
-                $(selector).attr('selected', 'selected');
-        
-                selector = `#TeamId option[value='${TeamId}']`;
-                $(selector).attr('selected', 'selected');
+                $('#ShooterCategoryId').val(ShooterCategoryId);
+                $('#TeamId').val(TeamId);
 
                 Object.keys(data).forEach(element => {
 					fields.push(element);

@@ -31,7 +31,8 @@ use App\Models\Dictionaries\Poligon;
                                             ['sezoane', 'Sezoane', 'IsSuperUser'],
                                             ['registeries', 'Cereri inregistrare', hasRangesRight()],
                                             ['translations', 'Traduceri', hasRangesRight()],
-                                            ['poligoaneedit', 'Poligoane', hasRangesRight()], 
+                                            ['poligoaneedit', 'Poligoane', hasRangesRight()],
+                                            ['clubedit', 'Club', hasRangesRight()],
                                     ], 'Administrare', 'PersonId'
                             ]
              

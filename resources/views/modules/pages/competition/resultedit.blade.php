@@ -15,6 +15,7 @@
 @push('DetailButtons')
         <a href="{{url('/clasament/').'/'.$CompetitionId}}" class="btn-wide btn btn-primary editable">Competitie</a>            
         <button id='btnDelete' class="btn-wide btn btn-danger editable">Delete</button>
+      
 @endpush
 
 
@@ -36,7 +37,30 @@
                 <input name="NrSerie" id="NrSerie" type="text" class="form-control" >
             </div>
         </div>
+
+
+        <div class="col-2 col-md-6">
+         <div class="position-relative form-group">
+            <label for="PersonId1">Schimba cu</label>
+            <select name="PersonId1" id="PersonId1"  type="text" class="form-control"  >
+                <option value=""></option>
+                    @foreach($persons as $r)
+                        <option value="{{$r->PersonId}}">{{'Serie: '.$r->NrSerie.' - '.$r->Person}}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+
+      <div class="col-2 col-md-2">
+             <div class="position-relative form-group">
+               <label id='btnSwitch' class="btn-wide btn btn-danger editable">Schimba</label>  
+            </div>
+        </div>
     </div>
+
+
+
+
 
     <div class="form-row">
         <div class="col-md-12">

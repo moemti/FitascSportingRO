@@ -64,6 +64,7 @@ Route::group(['middleware' => 'options'], function () {
         Route::post('/doCompetitionSquads', 'App\Http\Controllers\CompetitiiController@doCompetitionSquads');
         Route::get('/ExportCompetitie/{id}', 'App\Http\Controllers\CompetitiiController@ExportCompetitie');
         Route::get('/competitionResultsDown/{id}', 'App\Http\Controllers\CompetitiiController@ExportClasamente');
+        Route::post('/switchPersons', 'App\Http\Controllers\CompetitiiController@switchPersons');
         
         
 
@@ -139,6 +140,14 @@ Route::group(['middleware' => 'options'], function () {
             Route::post('/galleryUpload', 'App\Http\Controllers\CompetitiiController@galleryUpload');
             
             
+            // cluburi
+
+            Route::get('clubedit', 'App\Http\Controllers\ClubController@getList');
+            Route::post('saveclubajax', 'App\Http\Controllers\ClubController@saveitemajax');
+            Route::post('getclubsajax', 'App\Http\Controllers\ClubController@getitemsajax');
+            Route::post('getclubajax', 'App\Http\Controllers\ClubController@getitemajax');
+            Route::post('deleteclubajax', 'App\Http\Controllers\ClubController@deleteitemajax');
+            Route::post('echivalareclub', 'App\Http\Controllers\ClubController@echivalareclub');
 
 
 

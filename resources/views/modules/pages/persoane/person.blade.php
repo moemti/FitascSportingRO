@@ -87,6 +87,7 @@
     <div class="row">
             <div class="position-relative form-group col-12 col-md-6">
                 <label class= "form-label">Marca arma</label>
+                
                 <input name="MarcaArma" id="MarcaArma" class="form-control" >
             </div>
             <div class="position-relative form-group col-12 col-md-4">

@@ -325,24 +325,15 @@ class Person extends BObject{
     }
     
     public function echivalarepersoana($badId, $goodId){
-
-      
-
         try {
-
             DB::beginTransaction();
-
             DB::select('call spConcatPersons( ?, ?)', [$badId, $goodId]);
-                
             DB::commit();
         }
         catch(\Exception $e){
                 DB::rollBack();
-
-             
                return $e;
         }
-
     }
 
 }

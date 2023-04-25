@@ -131,11 +131,66 @@ detailcolumns = [
     }
 
   
+    function SwitchPersons(e){
+
+        function DoSwitch(){
+
+           
+
+
+
+            Data = {'CompetitionId': $('#CompetitionId').val(),
+                    'PersonId1': $('#PersonId').val(),
+                    'PersonId2': $('#PersonId1').val(),
+        
+        
+            }
+
+            $.ajax({
+                type: 'POST',
+
+                url: baseUrl + '/switchPersons',
+                data: Data,
+                success: function (data) {
+                    ShowSuccess('Modificat cu succes!');
+                 
+                    $("#detailform").resetChanges();
+		    		$(".tab-content" ).removeValidator();
+
+                    location.reload();
+
+                },
+                error: function(data){
+                    ShowError(data.responseJSON);
+                }
+            });
+        }
+
+        if ($('#PersonId1').val() == ''){
+            ShowError('Alegeti o persoana pentru a le schimba intre ele!');
+            return;
+        }
+
+        if ($('#PersonId1').val() == $('#PersonId').val()){
+            ShowError('Nu puteti alege persoana curenta!');
+            return;
+        }
+
+        detailform
+        confirm("Doriti sa schimbati persoanele intre ele?", DoSwitch);
+
+
+    }
+
+
+
+
+
     $(function () {
 
 
-
-   
           $("#btnDelete").on('click', DeleteResult);
+
+          $("#btnSwitch").on('click', SwitchPersons); 
         
       });

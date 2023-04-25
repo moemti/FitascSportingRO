@@ -359,16 +359,12 @@ class Competition extends BObject{
                 $sql = "call spResultsTotal(?)";
 
                 DB::select($sql, [$CompetitionId]);
-
-                
-
                 DB::Commit();
                 return 'OK';
             } catch (\Exception $e) {
                 DB::Rollback();
                 return $e->getMessage();
             }
-
         }
 
 
@@ -697,15 +693,9 @@ class Competition extends BObject{
         public function GetClasamentSerii($CompetitionId){
             return DB::select(str_replace(':CompetitionId', $CompetitionId,$this->ClasamentSelectSerii));
         }
-
-
         
 
         public function GetClasamentCategory($CompetitionId){
-
-           
-
-
         $sql =  "
         SELECT 
              p.Name as Person, sc.Code as Category, t.Name as Team ,loc, sof.Total, ShootOffS
@@ -1176,9 +1166,6 @@ class Competition extends BObject{
              return $menu;
         }
 
-
-       
-
         public static function getGaleries(){
             // iau directoarele din folderul de galerii
             return self::outputFiles("img/gallery/competitions");
@@ -1236,5 +1223,36 @@ class Competition extends BObject{
 
         }
 
+        public static function switchPersons ($CompetitionId, $PersonId1, $PersonId2){
+            $sql = "select BIB, NrSerie from result where PersonId = $PersonId1 and CompetitionId = $CompetitionId";
+            $r = DB::select($sql);
+
+            $BIB1 = $r[0]->BIB;
+            $NrSerie1 = $r[0]->NrSerie;
+
+            $sql = "select BIB, NrSerie from result where PersonId = $PersonId2 and CompetitionId = $CompetitionId";
+            $r = DB::select($sql);
+
+            $BIB2 = $r[0]->BIB;
+            $NrSerie2 = $r[0]->NrSerie;
+
+            try{
+
+                DB::beginTransaction();
+
+                $sql = "update result set  BIB = $BIB2, NrSerie = $NrSerie2 where PersonId = $PersonId1 and CompetitionId = $CompetitionId";
+                DB::select($sql);
+    
+                $sql = "update result set  BIB = $BIB1, NrSerie = $NrSerie1 where PersonId = $PersonId2 and CompetitionId = $CompetitionId";
+                DB::select($sql);
+
+                DB::Commit();
+
+                return 'OK';
+            } catch (\Exception $e) {
+                DB::Rollback();
+                return $e->getMessage();
+            }
+        }
 }
 
