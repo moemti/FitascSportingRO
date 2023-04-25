@@ -19,7 +19,7 @@
     <script type="text/javascript" src="{{asset('js/components/jqwidgets/jqxgrid.grouping.js')}}"></script> 
     <script type="text/javascript" src="{{asset('js/components/jqwidgets/jqxtabs.js')}}"></script> 
  
-    <script src="{{asset('js/pages/clasamente.js?v=1')}}"></script>
+    <script src="{{asset('js/pages/clasamente.js?v=2')}}"></script>
     <!-- <link rel="stylesheet" type="text/css" href="{{asset('css/pages/clasamente.css')}}"/> -->
     <link rel="stylesheet" href="{{asset('js/components/jqwidgets/styles/jqx.base.css')}}" type="text/css" />
 

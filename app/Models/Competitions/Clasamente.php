@@ -23,7 +23,7 @@ class Clasamente extends BObject{
 
 
     public $MasterSelect = "
-            SELECT row_number() over(order by Procent desc) as Position, p.Name as Person, Min(sc.Code) as Category, max(t.Name) as Team , p.PersonId, 
+            SELECT row_number() over(order by ProcentR desc) as Position, p.Name as Person, Min(sc.Code) as Category, max(t.Name) as Team , p.PersonId, 
             Round(Avg(case when ifNull(r.Aborted,1) = 0 then Percent else null end),2) as Procent,
             Round(Avg(case when ifNull(r.Aborted,1) = 0 then PercentR else null end),2) as ProcentR, 
             FROM result r 
@@ -39,7 +39,7 @@ class Clasamente extends BObject{
             where year(c.StartDate) = :Year 
             and p.CountryId = 1
             group by p.Name, p.PersonId
-            order by Procent desc
+            order by ProcentR desc
         ";
 
     public $MasterItemSelect = "SELECT `CompetitionId`, c.Name, `StartDate`, `EndDate`, c.`RangeId`, `Targets`, c.`SportFieldId` ,
@@ -70,7 +70,7 @@ class Clasamente extends BObject{
 
 
     public $ClasamentSelect = "
-                    SELECT row_number() over(order by Procent desc) as Position, p.Name as Person, Min(sc.Code) as Category, max(t.Name) as Team , p.PersonId, 
+                    SELECT row_number() over(order by ProcentR desc) as Position, p.Name as Person, Min(sc.Code) as Category, max(t.Name) as Team , p.PersonId, 
                     Round(Avg(case when ifNull(r.Aborted,1) = 0 then Percent else null end),2) as Procent , 
                     Round(Avg(case when ifNull(r.Aborted,1) = 0 then PercentR else null end),2) as ProcentR, 
                     count(distinct r.ResultId) as NrCompetitions
@@ -87,7 +87,7 @@ class Clasamente extends BObject{
                     where year(c.StartDate) = :Year 
                     and p.CountryId = 1
                     group by p.Name, p.PersonId
-                    order by Procent desc
+                    order by ProcentR desc
                 ";
 
 
