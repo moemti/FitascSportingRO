@@ -955,7 +955,7 @@ button.toast-close-button {
   background-color: #ffbc9d e !important; }
 
 .welcome-text {
-  text-shadow: orangered -1px 1px !important; }
+  text-shadow: rgb(149, 40, 0) -1px 1px !important; }
 
 #header .header-top {
   flex-direction: column !important;

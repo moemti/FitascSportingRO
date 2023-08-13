@@ -145,7 +145,7 @@ class Competition extends BObject{
                         inner join person p on p.PersonId = r.PersonId
                         left join shootercategory sc on sc.ShooterCategoryId = r.ShooterCategoryId
                         left join team t on t.TeamId = r.TeamId
-                        where r.CompetitionId = :CompetitionId
+                        where r.CompetitionId = :CompetitionId 
                         order by Position, p.Name;
                 ";
 
@@ -324,7 +324,7 @@ class Competition extends BObject{
                                 inner join person p on p.PersonId = r.PersonId
                                 left join shootercategory sc on sc.ShooterCategoryId = r.ShooterCategoryId
                                 left join team t on t.TeamId = r.TeamId
-                                where r.CompetitionId = :CompetitionId
+                                where r.CompetitionId = :CompetitionId and ifnull(r.Aborted,0) = 0
                                 order by BIB;
                         ";
 
@@ -514,7 +514,7 @@ class Competition extends BObject{
             // Nr of squads
             $S = ceil($nr/$MaxSquad);
             if ($S < 4)
-                if (floor($nr/4) < 3)
+              if (floor($nr/4) < 3)
                     $S = 2;
                 else    
                     $S = 3;
@@ -684,10 +684,10 @@ class Competition extends BObject{
         
         public function GetClasament($CompetitionId){
 
-        //    if (session('PersonId') == 195)
+         //   if (session('PersonId') == 195) // aici trebuie sa punem doar la preparation si admin a poligonului
                 return DB::select(str_replace(':CompetitionId', $CompetitionId,$this->ClasamentSelect));
-      //      else
-            //    return DB::select(str_replace(':CompetitionId', $CompetitionId,$this->ClasamentSelect2));
+         //   else
+           //    return DB::select(str_replace(':CompetitionId', $CompetitionId,$this->ClasamentSelect2));
         }
 
         public function GetClasamentSerii($CompetitionId){
@@ -755,7 +755,7 @@ class Competition extends BObject{
                         left join shootercategory sc on sc.ShooterCategoryId = r.ShooterCategoryId
                         left join team t on t.TeamId = r.TeamId
                         where r.CompetitionId = :CompetitionId
-                        and ResultatCat is not null
+                        and ResultatCat is not null and ifnull(r.Aborted,0) = 0
                         order by Category, loc
                 ";
             return DB::select(str_replace(':CompetitionId', $CompetitionId, $sql));
@@ -1156,9 +1156,14 @@ class Competition extends BObject{
                 if(count($dirs) > 0){
                     foreach($dirs as $file){
                         if(!is_file("$path/$file")){
-                            $id = $file;
-                            $str = self::getCompetitionInfo($id)->NumeSuperLung;
-                            array_push($menu, ["gallery/$id", "$str"]); 
+                            // sa verific daca exista fisiere    
+                            $result2 = scandir("$path/$file");
+                            $dirs2 = array_diff($result2, array('.', '..'));
+                            if (count($dirs2) > 0){
+                                $id = $file;
+                                $str = self::getCompetitionInfo($id)->NumeSuperLung;
+                                array_push($menu, ["gallery/$id", "$str"]); 
+                             }
                         }
                     } 
                 }
@@ -1176,11 +1181,18 @@ class Competition extends BObject{
         
             $res = [];
 
-            $sql = "select c.CompetitionId,  concat(c.Name , ' ' , r.Name , ' ' , DATE_FORMAT(StartDate, '%d/%m'), ' - ', DATE_FORMAT(EndDate, '%d/%m %Y')) as NumeSuperLung, r.Link
+            $sql = "select c.CompetitionId,  concat(c.Name , ' ' , r.Name , ' ' , DATE_FORMAT(StartDate, '%d/%m'), ' - ', DATE_FORMAT(EndDate, '%d/%m %Y')) as NumeSuperLung, r.Link,
+                    case 
+                        when c.EndDate >= now() and c.StartDate <= now() then 'Rezultate competitie'
+                        when c.StartDate > now()  then 'Urmatoarea competitie'
+                        when c.EndDate < now()  then 'Rezultate competitie terminata'
+                     else '' end
+                     as Mesaj
+
                     from competition c
                     inner join `range` r on r.RangeId = c.RangeId  
-                        where c.StartDate < date_add(now(), interval 7 day) 
-                        order by c.StartDate desc 
+                        where c.StartDate > date_add(now(), interval -5 day) 
+                        order by c.StartDate asc 
                         limit 0,1";
 
             $r = DB::select($sql)[0];

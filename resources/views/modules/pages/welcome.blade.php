@@ -16,7 +16,8 @@
          -->
     </div>
 
-    <div class="owl-carousel owl-carousel-light owl-carousel-light-init-fadeIn owl-theme manual dots-inside dots-horizontal-center show-dots-hover show-dots-xs show-dots-sm show-dots-md full-width nav-inside nav-inside-edge show-nav-hover custom-carousel-arrows-style-1 mb-0" data-plugin-options="{'autoplayTimeout': 7000}" data-dynamic-height="['600px','600px','600px','500px','500px']" style="height: 50vh;">
+    <div class="owl-carousel owl-carousel-light owl-carousel-light-init-fadeIn_ owl-theme manual dots-inside dots-horizontal-center show-dots-hover show-dots-xs show-dots-sm show-dots-md full-width nav-inside nav-inside-edge show-nav-hover custom-carousel-arrows-style-1 mb-0" data-plugin-options="{'autoplayTimeout': 9000000}" 
+                data-dynamic-height="['600px','600px','600px','500px','500px']" style="height: 30vh;">
         <div class="owl-stage-outer">
             <div class="owl-stage">
 
@@ -28,68 +29,47 @@
 
                 @foreach ($current as $cur)
 
-                @php
+                    @php
 
-                    if (isset($cur->Image))
-                        $image = "img/gallery/competitions/".$cur->CompetitionId."/".$cur->Image;
-                    else   
-                        $image = "img/gallery/competitions/13/12.jpeg";
-                @endphp
+                        if (isset($cur->Image))
+                            $image = "img/gallery/competitions/".$cur->CompetitionId."/".$cur->Image;
+                        else   
+                            $image = "img/gallery/competitions/13/12.jpeg";
+                    @endphp
 
 
-                <div class="owl-item position-relative overflow-hidden" style="background-image:  url('{{$image}} '); background-size: cover; background-position: 60% 40%; background-position: 60% 40%;">
-                    <div class="container position-relative z-index-3 h-100">
-                        <div class="row align-items-center justify-content-center h-100">
-                            <div class="col-lg-7">
-                                <div class="d-flex flex-column justify-content-center align-items-center text-center h-100">
-                                    <span class="position-relative text-color-light text-6 line-height-5 font-weight-medium custom-secondary-font pe-4 mb-0 welcome-text " data-appear-animation="fadeInDownShorter" data-appear-animation-delay="500" data-plugin-options="{'minWindowWidth': 0}">
-                                    {{$cur->NumeSuperLung}}
-                                    </span>
-                                    <h1 class="text-color-light welcome-text font-weight-extra-bold text-13 line-height-1 mb-2 welcome-text " data-appear-animation="fadeInUpShorter" data-appear-animation-delay="750" data-plugin-options="{'minWindowWidth': 0}">{{transex('Competitiile continua')}}</h1>
-                                    <p class="text-5 text-color-light font-weight-light custom-secondary-font mb-5 " data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1000">{{transex('Vezi clasament si galeria de poze')}}</p>
-                                    <a href="{{url('/clasament/'.$cur->CompetitionId)}}" class="btn btn-primary font-weight-bold btn-py-2 btn-px-4 " data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1250">{{transex('Vezi mai mult')}}</a> 
-                                    @if (isset($cur->Link))
-                                        <a class="text-5  text-color-light appear-animation"    data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1350" href="{{$cur->Link}}" target="_blank" title="Facebook">
-                                        <i style="color:blue !important;" class="fab fa-facebook-f"></i>Facebook</a> 
-                                    @endif
-                                    
+                    <div class="owl-item position-relative overflow-hidden" style="background-image:  url('{{$image}} '); background-size: cover; background-position: 60% 40%; background-position: 60% 40%;">
+                        <div class="container position-relative z-index-3 h-100">
+                            <div class="row align-items-center justify-content-center h-100">
+                                <div class="col-lg-7">
+                                    <div class="d-flex flex-column justify-content-center align-items-center text-center h-100">
+                                        <h1 class="text-color-light welcome-text font-weight-extra-bold text-13 line-height-1 mb-2 welcome-text " data-appear-animation="fadeInUpShorter" data-appear-animation-delay="750" data-plugin-options="{'minWindowWidth': 0}">
+                                        {{transex('Competitiile continua')}}
+                                        </h1>
+                                        <p class="text-5 text-color-light font-weight-light custom-secondary-font mb-5 " data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1000">
+                                        
+                                        {{transex($cur->Mesaj)}}</p>
+                                        <span class="position-relative text-color-light text-6 line-height-5 font-weight-medium custom-secondary-font pe-4 mb-0 welcome-text " data-appear-animation="fadeInDownShorter" data-appear-animation-delay="500" data-plugin-options="{'minWindowWidth': 0}">
+                                        {{$cur->NumeSuperLung}}
+                                        </span>
+                                        
+
+
+                                        <a href="{{url('/clasament/'.$cur->CompetitionId)}}" class="btn btn-primary font-weight-bold btn-py-2 btn-px-4 " data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1250">{{transex('Vezi mai mult')}}</a> 
+
+                                        @if (isset($cur->Link))
+                                            <a class="text-5  text-color-light appear-animation"    data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1350" href="{{$cur->Link}}" target="_blank" title="Facebook">
+                                            <i style="color:blue !important;" class="fab fa-facebook-f"></i>Facebook</a> 
+                                        @endif
+                                        
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-
-
-
-                {{-- <div class="owl-item position-relative overflow-hidden" style="background-image:  url('img/gallery/competitions/13/12.jpeg'); background-size: cover; background-position: 60% 40%; background-position: 60% 40%;">
-                    <div class="container position-relative z-index-3 h-100">
-                        <div class="row align-items-center justify-content-center h-100">
-                            <div class="col-lg-7">
-                                <div class="d-flex flex-column justify-content-center align-items-center text-center h-100">
-                                    <span class="position-relative text-color-light text-6 line-height-5 font-weight-medium custom-secondary-font pe-4 mb-0 welcome-text " data-appear-animation="fadeInDownShorter" data-appear-animation-delay="500" data-plugin-options="{'minWindowWidth': 0}">
-                                
-                                    </span>
-                                    <h1 class="text-color-light welcome-text font-weight-extra-bold text-13 line-height-1 mb-2 welcome-text " data-appear-animation="fadeInUpShorter" data-appear-animation-delay="750" data-plugin-options="{'minWindowWidth': 0}">
-                                    <br>{{transex('Sezonul 2023')}}</h1>
-                     
-                                    <a href="{{url('/clasamente/')}}" class="btn btn-primary font-weight-bold btn-py-2 btn-px-4 " data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1250">{{transex('Participantii pe categorii')}} 2023</a> 
-                                    
-                                    
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>  --}}
-                 
                 @endforeach
-
-
             </div>
         </div>
-        <!-- <div class="owl-nav">
-            <button type="button" role="presentation" class="owl-prev"></button>
-            <button type="button" role="presentation" class="owl-next"></button>
-        </div> -->
     </div>
     
 

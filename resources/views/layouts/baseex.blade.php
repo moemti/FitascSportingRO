@@ -179,66 +179,59 @@
 
 
 
-						<section id="marketing" class=" section-no-border m-0 p-0">
-					<div class="container">
-					    <div class="row justify-content-center text-center align-items-center ">
-								@php
-								function outputFiles($path){
-							
-									if(file_exists($path) && is_dir($path)){
-									
-									
-										$result = scandir($path);
-										
-									
-
-										$files = array_diff($result, array('.', '..'));
-										
-									
-										if(count($files) > 0){
-										
-											foreach($files as $file){
-
-											
-
-												if(is_file("$path/$file")){
-												
-													$url = url($path.'/'.$file);
-													$link = basename($path);
-												
-													echo " <div class='col-lg-2 col-sm-8 mb-3 mb-lg-0' 
-													style=' max-width: 100%; height: auto;  overflow: hidden;margin-bottom:4px !important;'>
-													<a href='//www.$link' target='_blank'>  
-														<img style='    width: 120px;
-				
-														float: center;
-														margin: 0px;
-														padding: 0px;' src= '$url'>
-													</a>
-												</div>";
-
-
-												} else {
-
-												
-
-												
-														outputFiles("$path/$file");
-													
-												}
-											}
-										} 
-									}
-								}
+					<section id="marketing" class=" section-no-border m-0 p-0">
+						<div class="container">
+							<div class="row justify-content-center text-center align-items-center ">
+									@php
+									function outputFiles($path){
 								
-								outputFiles("img/marketing");
+										if(file_exists($path) && is_dir($path)){
+										
+										
+											$result = scandir($path);
+											
+										
 
-						
-                                @endphp
+											$files = array_diff($result, array('.', '..'));
+											
+										
+											if(count($files) > 0){
+											
+												foreach($files as $file){
+
+												
+
+													if(is_file("$path/$file")){
+													
+														$url = url($path.'/'.$file);
+														$link = basename($path);
+													
+														echo " <div class='col-lg-2 col-sm-8 mb-3 mb-lg-0' 
+														style=' max-width: 100%; height: auto;  overflow: hidden;margin-bottom:4px !important;'>
+														<a href='//www.$link' target='_blank'>  
+															<img style='    width: 120px;
+					
+															float: center;
+															margin: 0px;
+															padding: 0px;' src= '$url'>
+														</a>
+													</div>";
+													} else {
+														outputFiles("$path/$file");
+													}
+												}
+											} 
+										}
+									}
+									
+									outputFiles("img/marketing");
+
 							
-						
-                        </div>	
-					</div>
+									@endphp
+								
+							
+							</div>	
+						</div>
                  </section>
 
 
@@ -277,10 +270,16 @@
 												echo "  <div class='owl-item position-relative overflow-hidden text-center'>
 															<div class='container position-relative z-index-3 h-100'>
 															<a href='//www.$link' target='_blank' style='display: inline-flex;    float: center;'> 
-																<img style='   height: 8vh;
-                        
+																<img style='   
+																	height: 8vh;
+																	aspect-ratio: auto;
 																	float: center;
 																	margin: 0px;
+																	display: block;
+  max-width:230px;
+  max-height:95px;
+  width: auto;
+ 
 																	padding: 0px;' src= '$url'>
 															</a>
 															</div>
@@ -464,6 +463,41 @@
 						</div>
 					</div>
 			</section>
+			<section id="marketing" class=" section-no-border m-0 p-0" style="background-color: #143d14; ">
+					<div class="container_">
+					    <div class="row justify-content-center text-center align-items-center ">
+							<a href="https://farkasconstruct.ro" target="_blank">  
+                                        <img style="   height: 5rem; 
+                                        float: center;
+                                        margin: 1rem;
+                                        padding: 0px;" src=" {{url('img/parteneri/farkas/farkas-logo.png')}}">
+										
+										<img style="   height: 5rem; 
+                                        float: center;
+                                        margin: 1rem;
+                                        padding: 0px;" src=" {{url('img/parteneri/farkas/BackgroundImage.jpg')}}">
+										<img style="   height: 5rem; 
+                                        float: center;
+                                        margin: 1rem;
+                                        padding: 0px;" src=" {{url('img/parteneri/farkas/BackgroundImage3.jpg')}}">
+										<img style="   height: 5rem; 
+                                        float: center;
+                                        margin: 1rem;
+                                        padding: 0px;" src=" {{url('img/parteneri/farkas/BackgroundImage2.jpg')}}">
+										<img style="   height: 5rem; 
+                                        float: center;
+                                        margin: 1rem;
+                                        padding: 0px;" src=" {{url('img/parteneri/farkas/BackgroundImage1.jpg')}}">
+										<img style="   height: 5rem; 
+                                        float: center;
+                                        margin: 1rem;
+                                        padding: 0px;" src=" {{url('img/parteneri/farkas/BackgroundImage4.jpg')}}">
+
+
+                                    </a>
+									</div>
+					</div>
+			</section>
 
 			<section id="marketingphone" class=" section-no-border m-0 p-0">
 					<div class="container_">
@@ -473,13 +507,47 @@
                                         float: center;
                                         margin: 0px;
 										
+										
                                         padding: 0px;" src=" {{url('img/parteneri/therme/mobile_size.jpg')}}">
                                     </a>
-						</div>
+									</div>
 					</div>
 			</section>
 
+		<section id="marketingphone" class=" section-no-border m-0 p-0" style="background-color: #143d14;">
+					<div class="container_">
+					    <div class="row justify-content-center text-center align-items-center ">
+						<a href="https://farkasconstruct.ro" target="_blank">  
+                                        <img style="   height: 5rem; 
+                                        float: center;
+                                        margin: 1rem;
+									
+                                        padding: 0px;" src=" {{url('img/parteneri/farkas/farkas-logo.png')}}">
+										<img style="   height: 5rem; 
+                                        float: center;
+                                        margin: 1rem;
+                                        padding: 0px;" src=" {{url('img/parteneri/farkas/BackgroundImage.jpg')}}">
+										<img style="   height: 5rem; 
+                                        float: center;
+                                        margin: 1rem;
+                                        padding: 0px;" src=" {{url('img/parteneri/farkas/BackgroundImage3.jpg')}}">
+										<img style="   height: 5rem; 
+                                        float: center;
+                                        margin: 1rem;
+                                        padding: 0px;" src=" {{url('img/parteneri/farkas/BackgroundImage2.jpg')}}">
+										<img style="   height: 5rem; 
+                                        float: center;
+                                        margin: 1rem;
+                                        padding: 0px;" src=" {{url('img/parteneri/farkas/BackgroundImage1.jpg')}}">
+										<img style="   height: 5rem; 
+                                        float: center;
+                                        margin: 1rem;
+                                        padding: 0px;" src=" {{url('img/parteneri/farkas/BackgroundImage4.jpg')}}">
 
+                                    </a>
+									</div>
+					</div>
+			</section>
 
 			<footer id="footer" class="bg-color-secondary custom-footer m-0" style="background: url({{asset('img/theme/footer-bg.jpg')}}); background-size: cover;">
 				<div class="container pt-3">
@@ -583,7 +651,7 @@
         <script src="{{asset('js/scripts-init/blockui.min.js')}}"></script>
 
         
-        <link rel="stylesheet" href="{{asset('css/style.css?v=8')}}">
+        <link rel="stylesheet" href="{{asset('css/style.css?v=9')}}">
 
 	    @stack('footerscripts')
 

@@ -11,7 +11,7 @@
         "watch:sass": "node-sass public/sass/main.scss public/css/style.css -w",
         "compile-style:sass": "node-sass public/sass/main.scss public/css/style.css ",
         "devserver": "live-server",
-        "start": "npm-run-all --parallel watch:sass watch:sass2",
+        "start": "npm-run-all --parallel watch:sass",
         "compile:sass": "node-sass public/sass/main.scss public/css/style.comp.css",
         "compile-church:sass": "node-sass public/less/theme/demos/demo-church.scss public/css/theme/demo-church.css",
         "compile-church:less": "lessc public/less/skin-church.less public/css/theme/skins/skin-church.css",
