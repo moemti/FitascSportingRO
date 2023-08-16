@@ -17,7 +17,7 @@
     </div>
 
     <div class="owl-carousel owl-carousel-light owl-carousel-light-init-fadeIn_ owl-theme manual dots-inside dots-horizontal-center show-dots-hover show-dots-xs show-dots-sm show-dots-md full-width nav-inside nav-inside-edge show-nav-hover custom-carousel-arrows-style-1 mb-0" data-plugin-options="{'autoplayTimeout': 9000000}" 
-                data-dynamic-height="['600px','600px','600px','500px','500px']" style="height: 30vh;">
+                data-dynamic-height="['600px','600px','600px','500px','500px']" style="height: 40vh;">
         <div class="owl-stage-outer">
             <div class="owl-stage">
 
@@ -28,9 +28,7 @@
                 <!-- Carousel Slide 1 -->
 
                 @foreach ($current as $cur)
-
                     @php
-
                         if (isset($cur->Image))
                             $image = "img/gallery/competitions/".$cur->CompetitionId."/".$cur->Image;
                         else   
@@ -44,24 +42,50 @@
                                 <div class="col-lg-7">
                                     <div class="d-flex flex-column justify-content-center align-items-center text-center h-100">
                                         <h1 class="text-color-light welcome-text font-weight-extra-bold text-13 line-height-1 mb-2 welcome-text " data-appear-animation="fadeInUpShorter" data-appear-animation-delay="750" data-plugin-options="{'minWindowWidth': 0}">
-                                        {{transex('Competitiile continua')}}
+
+                                        @if (isset($cur->CompetitionId)) 
+                                              {{transex('Competitiile continua')}}
+                                        @else
+                                               {{transex($cur->NumeSuperLung)}}
+                                        @endif
                                         </h1>
-                                        <p class="text-5 text-color-light font-weight-light custom-secondary-font mb-5 " data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1000">
-                                        
-                                        {{transex($cur->Mesaj)}}</p>
-                                        <span class="position-relative text-color-light text-6 line-height-5 font-weight-medium custom-secondary-font pe-4 mb-0 welcome-text " data-appear-animation="fadeInDownShorter" data-appear-animation-delay="500" data-plugin-options="{'minWindowWidth': 0}">
-                                        {{$cur->NumeSuperLung}}
-                                        </span>
-                                        
+
+                                        @if (isset($cur->CompetitionId)) 
+
+                                            <p class="text-5 text-color-light font-weight-light custom-secondary-font mb-5 " data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1000">
+                                                {{transex($cur->Mesaj)}}
+                                            </p>
+                                            <span class="position-relative text-color-light text-6 line-height-5 font-weight-medium custom-secondary-font pe-4 mb-0 welcome-text " data-appear-animation="fadeInDownShorter" data-appear-animation-delay="500" data-plugin-options="{'minWindowWidth': 0}">
+                                                    {{$cur->NumeSuperLung}}
+                                            </span>
+
+                                            <a href="{{url('/clasament/'.$cur->CompetitionId)}}" class="btn btn-primary font-weight-bold btn-py-2 btn-px-4 " data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1250">{{transex('Vezi mai mult')}}</a> 
+                                        @else
+                                            <a href="{{url('/competitii')}}" class="btn btn-primary custom-btn-style-1 text-uppercase">{{transex('Toate competitiile')}}</a>
+                                        @endif
+
+                                         @if(isset($cur->CompetitionId)) 
+                                            @php
+                                                $attachments = getCompetitionAttachments($cur->CompetitionId);
+                                            @endphp  
+
+                                                @foreach($attachments as $att)
+
+                                                        <a class="text-5  text-color-light appear-animation btn "    data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1350" href="{{url('/competitionattachment/'.$att->CompetitionattachId)}}" target="_blank" title="{{transex($att->Name)}}">
+
+                                                       <p style ="color: blue !important;
+                                                                text-shadow: rgb(256, 256, 256) -1px 1px !important;
+                                                                background: rgba(256,256,256,0.4); "> {{transex($att->Name)}}</p>
+                                                        </a>
+                                                @endforeach
 
 
-                                        <a href="{{url('/clasament/'.$cur->CompetitionId)}}" class="btn btn-primary font-weight-bold btn-py-2 btn-px-4 " data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1250">{{transex('Vezi mai mult')}}</a> 
+                                        @endif
 
                                         @if (isset($cur->Link))
                                             <a class="text-5  text-color-light appear-animation"    data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1350" href="{{$cur->Link}}" target="_blank" title="Facebook">
                                             <i style="color:blue !important;" class="fab fa-facebook-f"></i>Facebook</a> 
                                         @endif
-                                        
                                     </div>
                                 </div>
                             </div>

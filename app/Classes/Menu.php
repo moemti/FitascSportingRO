@@ -45,6 +45,10 @@ use App\Models\Dictionaries\Poligon;
         return Competition::getCurrentCompetition();
     }
 
+    function getCompetitionAttachments($CompetitionId){
+        return Competition::getCompetitionAttachments($CompetitionId);
+    }
+
     function hasRangesRight(){
 
         $PersonId = session('PersonId');

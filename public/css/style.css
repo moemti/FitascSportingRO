@@ -901,7 +901,8 @@ button.toast-close-button {
     color: black;
     padding: 2px 16px;
     text-decoration: none;
-    display: block; }
+    display: block; 
+    margin-top: -10px;}
 
 #jqxGrid .jqx-grid-column-header,
 #documentdetails .jqx-grid-column-header,

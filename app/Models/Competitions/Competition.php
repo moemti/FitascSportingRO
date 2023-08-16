@@ -345,6 +345,16 @@ class Competition extends BObject{
              return  DB::select($sql);
         }
 
+        public static function getCompetitionAttachments($CompetitionId){
+            $sql = "select CompetitionattachId,  Name, FileName from competitionattach where CompetitionId = $CompetitionId order by Name";
+            return  DB::select($sql);
+        }
+
+        public static function getCompetitionAttachment($CompetitionattachId){
+            $sql = "select CompetitionattachId, CompetitionId, Name, FileName from competitionattach where CompetitionattachId = $CompetitionattachId ";
+            return  DB::select($sql);
+        }
+
         public function changeCompetitionStatus($CompetitionId, $Status){
             $sql = "UPDATE `competition` 
                 set Status = '$Status'
@@ -1181,21 +1191,49 @@ class Competition extends BObject{
         
             $res = [];
 
-            $sql = "select c.CompetitionId,  concat(c.Name , ' ' , r.Name , ' ' , DATE_FORMAT(StartDate, '%d/%m'), ' - ', DATE_FORMAT(EndDate, '%d/%m %Y')) as NumeSuperLung, r.Link,
-                    case 
-                        when c.EndDate >= now() and c.StartDate <= now() then 'Rezultate competitie'
-                        when c.StartDate > now()  then 'Urmatoarea competitie'
-                        when c.EndDate < now()  then 'Rezultate competitie terminata'
-                     else '' end
-                     as Mesaj
+            $sql = "
+            SELECT
+                            *
+                        FROM
+                            (
+                            SELECT
+                                c.CompetitionId,
+                                CONCAT(
+                                    c.Name,
+                                    ' ',
+                                    r.Name,
+                                    ' ',
+                                    DATE_FORMAT(StartDate, '%d/%m'),
+                                    ' - ',
+                                    DATE_FORMAT(EndDate, '%d/%m %Y')
+                                ) AS NumeSuperLung,
+                                r.Link,
+                                CASE WHEN c.EndDate >= NOW() AND c.StartDate <= NOW() THEN 'Rezultate competitie' WHEN c.StartDate > NOW() THEN 'Urmatoarea competitie' WHEN c.EndDate < NOW() THEN 'Rezultate competitie terminata' ELSE ''
+                                END AS Mesaj
+                            FROM
+                                competition c
+                            INNER JOIN `range` r ON
+                                r.RangeId = c.RangeId
+                            WHERE
+                                c.StartDate > DATE_ADD(NOW(), INTERVAL -5 DAY)
+                            ORDER BY
+                                c.StartDate ASC
+                                LIMIT 0, 1) TT
 
-                    from competition c
-                    inner join `range` r on r.RangeId = c.RangeId  
-                        where c.StartDate > date_add(now(), interval -5 day) 
-                        order by c.StartDate asc 
-                        limit 0,1";
+                            UNION ALL
+                        SELECT NULL
+                            ,
+                            'Sfarsit de sezon',
+                            NULL,
+                            ''
+                        LIMIT 0, 1
+            "
+                     
+                     ;
 
             $r = DB::select($sql)[0];
+          
+
 
             $id = $r->CompetitionId;
 

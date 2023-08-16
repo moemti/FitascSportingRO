@@ -100,7 +100,7 @@ Route::group(['middleware' => 'options'], function () {
         Route::GET('/competitionListDown/{id}', 'App\Http\Controllers\CompetitiiController@getClasamentList');
         Route::GET('/competitionDownSquads/{id}/{day}', 'App\Http\Controllers\CompetitiiController@getClasamentSquads');
         Route::GET('/competitionListDownSerii/{id}', 'App\Http\Controllers\CompetitiiController@getClasamentListSerii');
-        
+        Route::get('/competitionattachment/{id}', 'App\Http\Controllers\CompetitiiController@getCompetitionAttachment');
 
 
         Route::get('/poligon/{id}', 'App\Http\Controllers\NavigationController@getPoligon');
