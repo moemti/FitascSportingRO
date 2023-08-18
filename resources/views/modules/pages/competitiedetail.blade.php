@@ -54,80 +54,65 @@
     <div class="container">
     <span class="compet_status {{$master[0]->Status}}">{{$master[0]->Status}}</span> 
         <div class="page_content_header text-center pt-3">
-         
-
              <input id="CompetitionId" value='{{$master[0]->CompetitionId}}' hidden> </input>
-
-
-
-
         <div class='row'>
-
-
             <div class="mb-12">
                 <h2 id="p_competitie" value='' > {{$master[0]->Name}}</h2>
-              
             </div>
         </div>
-
-
-            
         <div class='row'>
-        
             <div>
                 <h3 id="p_locatie" value=''> {{$master[0]->Range}}</h3>
             </div>
         </div>
-      
-
         <div class='row'>
-
             <div class="d-flex">
-
-
                <strong> <p id="p_startdate" value=''> {{$master[0]->StartDate}}</p></strong>
                <div class="ms-2  me-2">   -   </div> 
                 <strong>  <p id="p_enddate" value=''>{{$master[0]->EndDate}} </p> </strong> 
-
             </div>
 
             <div class='d-flex'>
                     @if ( file_exists('img/gallery/competitions/'.$master[0]->CompetitionId ))
                         <a href="{{url('/gallery/').'/'.$master[0]->CompetitionId}}" class = "btn-galerie btn btn-primary btn-outline mb-2" >{{transex('Vezi galerie')}}</a>
                     @endif
+
                     @if (getCompetitionRight($master[0]->CompetitionId))
                         <a href="{{url('/editgallery/').'/'.$master[0]->CompetitionId}}" class = " btn btn-danger btn-outline ms-2 mb-2" >{{transex('Editeaza galerie')}}</a>
                     @endif
-                   
+
+                    @php
+                        $attachments = getCompetitionAttachments($master[0]->CompetitionId);
+                    @endphp  
+
+                    @foreach($attachments as $att)
+                            <a class="text-5  text-color-light appear-animation btn "    data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1350" href="{{url('/competitionattachment/'.$att->CompetitionattachId)}}" target="_blank" title="{{transex($att->Name)}}">
+
+                            <p style ="color: blue !important;
+                                    text-shadow: rgb(256, 256, 256) -1px 1px !important;
+                                    background: rgba(256,256,256,0.4); "> {{transex($att->Name)}}</p>
+                            </a>
+                    @endforeach
             </div>
                 <div class="btnwrapper m-2">
                     @switch($master[0]->Status)
                         @case('Closed')
-                        
                             @if (getCompetitionRight($master[0]->CompetitionId))
                             <button id="btnOpen" data-status="Open" class = "cmpStatusChange btn btn-primary btn-outline mb-2" >{{transex('Deschide')}}</button>
                             @endif
                             @break
-
-
                         @case('Open')
 
                         @if (session("PersonId"))
-                       
                             @php 
-
                                 $exists = false;
-
                                 $cl =  $clasament;
                                 foreach( $cl as $person) {
                                     if ($person->PersonId === session("PersonId")){
                                         $exists = true;
                                         break;
-
                                     }
                                 }
-
-
                             @endphp    
                             @if ($exists)
                                 <button id="btnUnRegister" class = "btn-register btn btn-danger btn-outline mb-2" >{{transex('Nu mai particip')}}</button>
@@ -142,8 +127,6 @@
                         @break
                         @case('Preparation')
 
-                      
-
                         @if (getCompetitionRight($master[0]->CompetitionId))
                             <button id="btnClose"  data-status="Closed" class="cmpStatusChange btn btn-secondary btn-outline mb-2">{{transex('Close')}}</button>
                             <button id="btnOpen" data-status="Open" class = "cmpStatusChange btn btn-secondary btn-outline mb-2" >Open</button>
@@ -151,21 +134,18 @@
                             <button id="btnCreateSquadsAll"  data-type="All" class="createSquads btn btn-secondary btn-outline mb-2">Create squads all</button>
                             <button id="btnCreateSquadsDiff"  data-type="Diff" class="createSquads btn btn-secondary btn-outline mb-2">Create squads diff</button>
                             <button id="btnCreateSquadsEven"  data-type="Even" class="createSquads btn btn-secondary btn-outline mb-2">Create squads even</button>
-
-
                             <button id="btnDeleteSquads"  data-type="Clear" class="createSquads btn btn-secondary btn-outline mb-2">Clear squads</button>
                             <a id="btnDownloadListaAll" href="{{url('/competitionListDown/').'/'.$master[0]->CompetitionId}}" data-type="Diff" class=" btn btn-secondary btn-outline mb-2">Download lista</a>
                             <div class="row"> 
-                            <div class="btnwrapper m-2">
-                            <b>{{transex('Download serii')}}</b>
-                            <a id="btnDownloadListaSquad1" href="{{url('/competitionDownSquads/').'/'.$master[0]->CompetitionId}}/1" data-type="Diff" class=" btn btn-secondary btn-outline mb-2">{{transex('Ziua 1')}}</a>
-                            <a id="btnDownloadListaSquad2" href="{{url('/competitionDownSquads/').'/'.$master[0]->CompetitionId}}/2" data-type="Diff" class=" btn btn-secondary btn-outline mb-2">{{transex('Ziua 2')}}</a>
-                            </div>
+                                <div class="btnwrapper m-2">
+                                    <b>{{transex('Download serii')}}</b>
+                                    <a id="btnDownloadListaSquad1" href="{{url('/competitionDownSquads/').'/'.$master[0]->CompetitionId}}/1" data-type="Diff" class=" btn btn-secondary btn-outline mb-2">{{transex('Ziua 1')}}</a>
+                                    <a id="btnDownloadListaSquad2" href="{{url('/competitionDownSquads/').'/'.$master[0]->CompetitionId}}/2" data-type="Diff" class=" btn btn-secondary btn-outline mb-2">{{transex('Ziua 2')}}</a>
+                                </div>
                             </div>
                             <a id="btnDownloadListaAll" href="{{url('/competitionListDownSerii/').'/'.$master[0]->CompetitionId}}" data-type="Diff" class=" btn btn-secondary btn-outline mb-2">{{transex('Download serii')}}</a>
                         @endif
                         @break
-
                         
                     @case('Progress')     
                          @if (getCompetitionRight($master[0]->CompetitionId))
@@ -218,24 +198,17 @@
 
        @endif
        <div class="d-flex text-left">
-        @switch($master[0]->Status)
-            @case('Finished')
-
-
-               
-            @case('Progress')
-                <h4>{{transex('Clasament open')}}</h4>
-                @break
-        
-            @case('Open')
-                <h4>{{transex('Inscrisi')}}</h4>
-                @break
-        
-            @default
-                
-        @endswitch
-
-          </div>
+            @switch($master[0]->Status)
+                @case('Finished')
+                @case('Progress')
+                    <h4>{{transex('Clasament open')}}</h4>
+                    @break
+                @case('Open')
+                    <h4>{{transex('Inscrisi')}}</h4>
+                    @break
+                @default
+            @endswitch
+        </div>
 
 
         <div class="d-flex text-right">
