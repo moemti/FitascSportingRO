@@ -86,13 +86,17 @@
                     @endphp  
 
                     @foreach($attachments as $att)
-                            <a class="text-5  text-color-light appear-animation btn "    data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1350" href="{{url('/competitionattachment/'.$att->CompetitionattachId)}}" target="_blank" title="{{transex($att->Name)}}">
+                            <a class="text-2  text-color-light btn "  href="{{url('/competitionattachment/'.$att->CompetitionattachId)}}" target="_blank" title="{{transex($att->Name)}}">
 
                             <p style ="color: blue !important;
                                     text-shadow: rgb(256, 256, 256) -1px 1px !important;
                                     background: rgba(256,256,256,0.4); "> {{transex($att->Name)}}</p>
                             </a>
                     @endforeach
+
+                     @if (getCompetitionRight($master[0]->CompetitionId))
+                        <a href="{{url('/editattachments/').'/'.$master[0]->CompetitionId}}" class = " btn btn-danger btn-outline ms-2 mb-2" >{{transex('Editeaza atasamente')}}</a>
+                    @endif
             </div>
                 <div class="btnwrapper m-2">
                     @switch($master[0]->Status)

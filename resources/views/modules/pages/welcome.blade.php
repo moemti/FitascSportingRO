@@ -64,7 +64,7 @@
                                             <a href="{{url('/competitii')}}" class="btn btn-primary custom-btn-style-1 text-uppercase">{{transex('Toate competitiile')}}</a>
                                         @endif
 
-                                         @if(isset($cur->CompetitionId)) 
+                                        @if(isset($cur->CompetitionId)) 
                                             @php
                                                 $attachments = getCompetitionAttachments($cur->CompetitionId);
                                             @endphp  
@@ -148,10 +148,24 @@
                                                    
 
 										</span>
+
+                                        @php
+                                            $attachments = getCompetitionAttachments($competitions[0]->CompetitionId);
+                                        @endphp  
+
+                                        @foreach($attachments as $att)
+                                            <span class="thumb-info-caption-text">
+                                                <a class="text-2  text-color-light  btn "  href="{{url('/competitionattachment/'.$att->CompetitionattachId)}}" target="_blank" title="{{transex($att->Name)}}">
+
+                                                <p style ="color: blue !important;
+                                                        text-shadow: rgb(256, 256, 256) -1px 1px !important;
+                                                        background: rgba(256,256,256,0.4); "> {{transex($att->Name)}}</p>
+                                                </a>
+                                                </span>
+                                        @endforeach
 									</span>
 
                                   <div class = "p-2">
-
                                     @switch($competitions[0]->Status)
                                         @case('Closed')
                                             <button id="btnUnRegister" class = "btn-register btn btn-danger btn-outline mb-2" >{{transex('Inchis')}}</button>
@@ -159,17 +173,11 @@
                                             @break
                                         @case('Open')
 
-
-                                
-
                                         @if (session("PersonId"))
-                                    
                                             @php 
-
                                                 $exists = $competitions[0]->Inscris == '1';
-
-
                                             @endphp    
+                                            
                                             @if ($exists)
                                                 <button id="btnUnRegister" class = "btn-register btn btn-success btn-outline mb-2" >{{transex('Sunt inregistrat')}}</button>
                                             @else

@@ -355,6 +355,21 @@ class Competition extends BObject{
             return  DB::select($sql);
         }
 
+        public function deleteAttach($CompetitionattachId){
+            $sql = "delete from competitionattach where CompetitionattachId = $CompetitionattachId ";
+            return  DB::select($sql);
+        }
+
+        public function modifyAttach($CompetitionattachId, $Name){
+            $sql = "update competitionattach  set Name = '$Name' where CompetitionattachId = $CompetitionattachId ";
+            return  DB::select($sql);
+        }
+
+        public function addAttach($filename, $CompetitionId){
+            $sql = "INSERT INTO `competitionattach`( `CompetitionId`, `Name`, `FileName`) VALUES ($CompetitionId, '$filename', '$filename')";
+            return  DB::select($sql);
+        }
+
         public function changeCompetitionStatus($CompetitionId, $Status){
             $sql = "UPDATE `competition` 
                 set Status = '$Status'

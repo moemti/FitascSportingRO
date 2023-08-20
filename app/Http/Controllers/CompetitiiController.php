@@ -189,6 +189,7 @@ class CompetitiiController extends MasterController
             }
         
     }
+    // ===========  Atachments ==========
 
     function getCompetitionAttachment($CompetitionAttachmentId){
         $r = $this->BObject()->getCompetitionAttachment($CompetitionAttachmentId)[0];
@@ -221,6 +222,89 @@ class CompetitiiController extends MasterController
         
         
     }
+
+    function getCompetitionAttachmentByName($competition, $filename){
+        
+        $filename = "img/attachments/competitions/{$competition}/{$filename}";
+
+            if (file_exists($filename)) {     
+                
+                //Define header information
+                    header('Content-Description: File Transfer');
+                    header('Content-Type: application/octet-stream');
+                    header("Cache-Control: no-cache, must-revalidate");
+                    header("Expires: 0");
+                    header('Content-Disposition: attachment; filename="'.basename($filename).'"');
+                    header('Content-Length: ' . filesize($filename));
+                    header('Pragma: public');
+
+                    //Clear system output buffer
+                    flush();
+
+                    //Read the size of the file
+                    readfile($filename);
+
+                    //Terminate from the script
+                    die();
+            
+            }
+            else
+                echo $filename;
+        
+        
+    }
+
+    public function geteditattach($CompetitionId){
+        if (!file_exists("img/attachments/competitions/$CompetitionId")) {
+            mkdir("img/attachments/competitions/$CompetitionId", 0777, true);
+        }
+
+        $attachments =  getCompetitionAttachments($CompetitionId);
+        return view('modules.pages.attachments', ["attachments" => $attachments, "competition" => $CompetitionId, "edit" => true]);
+    }
+
+    public function deleteAttach(Request $request){
+
+        $toDelete = $request->toDelete;
+        $toDeleteIds =  $request->toDeleteIds;
+
+        foreach($toDelete as $file){
+         
+            if (file_exists("img/attachments/competitions/$file")) {
+                unlink("img/attachments/competitions/$file");
+            }
+        }
+
+        foreach($toDeleteIds as $fileId){
+            $this->BObject()->deleteAttach($fileId);
+        }
+    }
+
+    public function attachModify(Request $request){
+
+        $toModify = $request->toModify;
+
+        foreach($toModify as $file){
+            $this->BObject()->modifyAttach($file['id'], $file['name']);
+        }
+    }
+
+    
+
+    function attachUpload(Request $request){
+  
+            $CompetitionId = $request->CompetitionId;
+            $countfiles = count($_FILES['file']['name']);
+           
+            for($i=0;$i<$countfiles;$i++){
+                $filename = $_FILES['file']['name'][$i];
+                move_uploaded_file($_FILES['file']['tmp_name'][$i],"img/attachments/competitions/$CompetitionId/$filename");
+                $this->BObject()->addAttach($filename, $CompetitionId);
+            }
+        
+    }
+
+
 
 
     //============================

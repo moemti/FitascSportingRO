@@ -101,7 +101,14 @@ Route::group(['middleware' => 'options'], function () {
         Route::GET('/competitionDownSquads/{id}/{day}', 'App\Http\Controllers\CompetitiiController@getClasamentSquads');
         Route::GET('/competitionListDownSerii/{id}', 'App\Http\Controllers\CompetitiiController@getClasamentListSerii');
         Route::get('/competitionattachment/{id}', 'App\Http\Controllers\CompetitiiController@getCompetitionAttachment');
-
+        Route::get('/competitionattachment/{id}/{filename}', 'App\Http\Controllers\CompetitiiController@getCompetitionAttachmentByName');
+        
+ //
+        Route::get('/editattachments/{id}', 'App\Http\Controllers\CompetitiiController@geteditattach');
+        Route::post('/attachDelete', 'App\Http\Controllers\CompetitiiController@deleteAttach');
+        Route::post('/attachUpload', 'App\Http\Controllers\CompetitiiController@attachUpload');
+        Route::post('/attachModify', 'App\Http\Controllers\CompetitiiController@attachModify');
+        
 
         Route::get('/poligon/{id}', 'App\Http\Controllers\NavigationController@getPoligon');
        
