@@ -75,14 +75,14 @@
 
                                                        <p style ="color: blue !important;
                                                                 text-shadow: rgb(256, 256, 256) -1px 1px !important;
-                                                                background: rgba(256,256,256,0.4); "> {{transex($att->Name)}}</p>
-                                                        </a>
+                                                                background: rgba(256,256,256,0.4); 
+                                                                border-radius: 8px;
+                                                                padding-left: 5px;
+                                                                padding-right: 5px;"> {{transex($att->Name)}}</p>
+                                                                </a>
                                                 @endforeach
-
-
                                         @endif
-
-                                        @if (isset($cur->Link))
+                                        @if (isset($cur->Link) && ($cur->Link != '') )
                                             <a class="text-5  text-color-light appear-animation"    data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1350" href="{{$cur->Link}}" target="_blank" title="Facebook">
                                             <i style="color:blue !important;" class="fab fa-facebook-f"></i>Facebook</a> 
                                         @endif
@@ -159,7 +159,10 @@
 
                                                 <p style ="color: blue !important;
                                                         text-shadow: rgb(256, 256, 256) -1px 1px !important;
-                                                        background: rgba(256,256,256,0.4); "> {{transex($att->Name)}}</p>
+                                                        background: rgba(256,256,256,0.4); 
+                                                        border-radius: 8px;
+                                                        padding-left: 5px;
+                                                        padding-right: 5px;"> {{transex($att->Name)}}</p>
                                                 </a>
                                                 </span>
                                         @endforeach
@@ -177,7 +180,7 @@
                                             @php 
                                                 $exists = $competitions[0]->Inscris == '1';
                                             @endphp    
-                                            
+
                                             @if ($exists)
                                                 <button id="btnUnRegister" class = "btn-register btn btn-success btn-outline mb-2" >{{transex('Sunt inregistrat')}}</button>
                                             @else

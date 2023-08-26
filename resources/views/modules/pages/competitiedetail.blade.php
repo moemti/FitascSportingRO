@@ -90,7 +90,11 @@
 
                             <p style ="color: blue !important;
                                     text-shadow: rgb(256, 256, 256) -1px 1px !important;
-                                    background: rgba(256,256,256,0.4); "> {{transex($att->Name)}}</p>
+                                    background: rgba(256,256,256,0.4); 
+                                    border-radius: 8px;
+                                    padding-left: 5px;
+                                    padding-right: 5px;
+                                    "> {{transex($att->Name)}}</p>
                             </a>
                     @endforeach
 
