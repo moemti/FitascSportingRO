@@ -15,5 +15,5 @@
         ".*": false,
         "**/*.php": false
     },
-    "explorerExclude.backup": null
+    "explorerExclude.backup": {}
 }

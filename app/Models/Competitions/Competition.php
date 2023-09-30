@@ -20,8 +20,6 @@ class Competition extends BObject{
         return 'CompetitionId';
     } 
 
-
-
     public $MasterSelect = "SELECT `CompetitionId`, c.Name, `StartDate`, `EndDate`, c.`RangeId`, `Targets`, c.`SportFieldId` , 
                     r.name as `Range`, s.Name as SportField, year(StartDate) as Year,  concat(c.Name , ' ' , r.Name , ' ' , c.StartDate) as NumeLung,
                     concat(DATE_FORMAT(StartDate, '%d/%m'), ' - ', DATE_FORMAT(EndDate, '%d/%m %Y')) as Perioada, Status
@@ -57,8 +55,6 @@ class Competition extends BObject{
 
     public $MasterDelete = "delete from competition
             where CompetitionId = :CompetitionId"  ;
-
-
 
 
         public $ClasamentSelect2 = "
@@ -146,7 +142,7 @@ class Competition extends BObject{
                         left join shootercategory sc on sc.ShooterCategoryId = r.ShooterCategoryId
                         left join team t on t.TeamId = r.TeamId
                         where r.CompetitionId = :CompetitionId 
-                        order by Position, p.Name;
+                        order by  p.Name;
                 ";
 
     public $ClasamentSelect = "
@@ -373,7 +369,6 @@ class Competition extends BObject{
         public function changeCompetitionStatus($CompetitionId, $Status){
             $sql = "UPDATE `competition` 
                 set Status = '$Status'
-    
             where CompetitionId = $CompetitionId";
 
             try{
@@ -397,10 +392,7 @@ class Competition extends BObject{
             return 0;
         }
 
-
         public function doCompetitionSquadsEven($CompetitionId){
-            
-
             $MaxPerSquad = 6; // nr max de competitori
             $competitors = DB::select("select ResultId, BIB , c.Code as Cat
                                         from result r 
@@ -427,9 +419,6 @@ class Competition extends BObject{
                 array_push($Squads, [$N + $p, []]); // am pus in fiecare $Squads cati sunt si un array in care o sa intre competitorii
 
             }
-
-        
-         
 
             // punem in urne de catogorii
 
@@ -484,10 +473,7 @@ class Competition extends BObject{
                     else{
                         $snr += 1;
                     }
-                   
                 }
-
-                
             }
 
             $bib = 1;
@@ -504,12 +490,8 @@ class Competition extends BObject{
 
                $SS += 1;
            }
-
-
            return 'OK';
-
         }
-
 
 
         public function doCompetitionSquads($CompetitionId, $Type){
@@ -619,19 +601,11 @@ class Competition extends BObject{
                 ) TT on TT.PersonId = $PersonId and year(c.StartDate) = TT.Year
             where c.CompetitionId = $CompetitionId and not exists (select 1 from result where CompetitionId = $CompetitionId and PersonId = $PersonId)";
 
-
-      
-
             try{
-
                 DB::beginTransaction();
-
                 DB::select($sql);
-
              
                 $ResultId = DB::select("select LAST_INSERT_ID() as ResultId")[0]->ResultId;
-
-
 
                 $sql = "INSERT INTO resultdetail( ResultId, RoundNr, Targets, Result, Description) 
                   select $ResultId, Nr, 25, 0, null
@@ -646,8 +620,6 @@ class Competition extends BObject{
                   WHERE ResultId = $ResultId";
                 
                 DB::select($sql);
- 
-
                 DB::Commit();
                 return 'OK';
             } catch (\Exception $e) {
@@ -655,9 +627,6 @@ class Competition extends BObject{
                 return $e->getMessage();
             }
         }
-
-
-
 
 
         public function unRegisterMe($CompetitionId, $PersonId){
@@ -707,12 +676,27 @@ class Competition extends BObject{
             return DB::select($sql);
         }
         
-        public function GetClasament($CompetitionId){
+        public function IsCompetitionAdmin($CompetitionId, $PersonId){
+            $SuperUser = session('IsSuperUser') == 1?1:0;
+            
+            $sql = "SELECT 1 FROM `competition` c
+                inner join rangexperson r on c.RangeId = r.RangeId
+                where c.Status = 'Preparation' and ((c.CompetitionId = $CompetitionId and r.PersonId = $PersonId) or $SuperUser = 1 ) ";
 
-         //   if (session('PersonId') == 195) // aici trebuie sa punem doar la preparation si admin a poligonului
+            return count(DB::select($sql)) > 0;
+        }
+
+        public function GetClasament($CompetitionId){
+            $PersonId= session('PersonId');
+            if (!isset($PersonId))
+                $PersonId = 0;
+
+            $Status = self::getCompetitionInfo($CompetitionId)->Status;
+
+            if ($Status != 'Preparation'  || $this->IsCompetitionAdmin($CompetitionId,  $PersonId))
                 return DB::select(str_replace(':CompetitionId', $CompetitionId,$this->ClasamentSelect));
-         //   else
-           //    return DB::select(str_replace(':CompetitionId', $CompetitionId,$this->ClasamentSelect2));
+            else
+                return DB::select(str_replace(':CompetitionId', $CompetitionId,$this->ClasamentSelect2));
         }
 
         public function GetClasamentSerii($CompetitionId){
@@ -722,8 +706,8 @@ class Competition extends BObject{
 
         public function GetClasamentCategory($CompetitionId){
         $sql =  "
-        SELECT 
-             p.Name as Person, sc.Code as Category, t.Name as Team ,loc, sof.Total, ShootOffS
+            SELECT 
+                p.Name as Person, sc.Code as Category, t.Name as Team ,loc, sof.Total, ShootOffS
     
                         FROM result r
     
@@ -922,28 +906,18 @@ class Competition extends BObject{
         
         
         public function SaveResultsDetail($fields){
-          
-             
             $ItemId = $fields['ResultId'];
-          
             try {
-    
                 DB::beginTransaction();
-    
-
                 if (array_key_exists('delta', $fields)) 
                     $this->updateDetails($fields['delta'], $ItemId, $fields);
-    
-                    
                 DB::commit();
             }
             catch(\Exception $e){
                     DB::rollBack();
-    
                     $this->OnSaveError($e);
                     throw $e;
             }
-          
             return $this->getresults($ItemId);
         }
       
@@ -963,20 +937,14 @@ class Competition extends BObject{
                         break;
                     case "I": $this->insertDetail($d, $MasterId, $master);
                         break;    
-    
                 }
             }
-    
         }
 
 
         public function insertDetail($detail, $ItemId, $master){
-
-        
             $sql = "INSERT INTO resultdetail( ResultId, RoundNr, Targets, Result, Description) 
                     VALUES ($ItemId, :RoundNr, :Targets, :Result, ':Description')";
-    
-            
 
             foreach($detail as $key => $value){
                 $sql = self::paramreplace($key, $value, $sql); 
@@ -994,8 +962,6 @@ class Competition extends BObject{
         }
     
         public function updateDetail($detail, $master){
-    
-            
             $sql = "
                 UPDATE
                         `resultdetail`
@@ -1028,7 +994,6 @@ class Competition extends BObject{
                 WHERE
                     ResultDetailId = :ResultDetailId
                 ";
-           
           
             foreach($detail as $key => $value){
                 $sql = self::paramreplace($key, $value, $sql); 
@@ -1042,8 +1007,6 @@ class Competition extends BObject{
             return DB::unprepared($sql);
         }
 
-
-
         public function getUnregisteredPersons($CompetitionId){
             $sql = "select p.Name, Email, p.PersonId, x.ShooterCategoryId, x.TeamId
                     from person p 
@@ -1055,10 +1018,7 @@ class Competition extends BObject{
             return  DB::select($sql);
         }
 
-
         public function registerCompetitorDB($request){
-
-
             try{
 
             //    DB::beginTransaction();
