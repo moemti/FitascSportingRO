@@ -22,7 +22,15 @@ class Competition extends BObject{
 
     public $MasterSelect = "SELECT `CompetitionId`, c.Name, `StartDate`, `EndDate`, c.`RangeId`, `Targets`, c.`SportFieldId` , 
                     r.name as `Range`, s.Name as SportField, year(StartDate) as Year,  concat(c.Name , ' ' , r.Name , ' ' , c.StartDate) as NumeLung,
-                    concat(DATE_FORMAT(StartDate, '%d/%m'), ' - ', DATE_FORMAT(EndDate, '%d/%m %Y')) as Perioada, Status
+
+                    
+                    concat(case when month(StartDate) <> month(EndDate) then
+                                    DATE_FORMAT(StartDate, '%d/%m') else  DATE_FORMAT(StartDate, '%d') end,
+                                    '-',
+                                    DATE_FORMAT(EndDate, '%d/%m/%Y') 
+                                    ) as Perioada, 
+                    
+                    Status
                     FROM `competition` c
                     inner join `range` r on r.RangeId = c.RangeId
                     inner join sportfield s on s.SportFieldId = c.SportFieldId
@@ -31,7 +39,11 @@ class Competition extends BObject{
 
     public $MasterItemSelect = "SELECT `CompetitionId`, c.Name, `StartDate`, `EndDate`, c.`RangeId`, `Targets`, c.`SportFieldId` ,
                 r.name as `Range`, s.Name as SportField, year(StartDate) as Year,
-                concat(DATE_FORMAT(StartDate, '%d/%m'), ' - ', DATE_FORMAT(EndDate, '%d/%m %Y')) as Perioada, Status
+                concat(case when month(StartDate) <> month(EndDate) then
+                                    DATE_FORMAT(StartDate, '%d/%m') else  DATE_FORMAT(StartDate, '%d') end,
+                                    '-',
+                                    DATE_FORMAT(EndDate, '%d/%m/%Y') 
+                                    )as Perioada, Status
                 FROM `competition` c
                 inner join `range` r on r.RangeId = c.RangeId
                 inner join sportfield s on s.SportFieldId = c.SportFieldId
@@ -329,7 +341,11 @@ class Competition extends BObject{
             $sql = "SELECT  c.`CompetitionId`, c.Name, `StartDate`, `EndDate`, `Targets`, 
             r.name as `Range`, s.Name as SportField, concat(c.Name , ' ' , r.Name , ' ' ,  c.StartDate, ' ', c.EndDate) as NumeLung, year(c.StartDate) as Year, left(monthname(c.StartDate),3) as Month,
             day(c.StartDate) as Day,
-            concat(DATE_FORMAT(StartDate, '%d/%m'), ' - ', DATE_FORMAT(EndDate, '%d/%m %Y')) as Perioada, Status, 
+            concat(case when month(StartDate) <> month(EndDate) then
+                                    DATE_FORMAT(StartDate, '%d/%m') else  DATE_FORMAT(StartDate, '%d') end,
+                                    '-',
+                                    DATE_FORMAT(EndDate, '%d/%m/%Y') 
+                                    )as Perioada, Status, 
             case when re.PersonId is null then 0 else 1 end as Inscris, r.RangeId, r.Coordinates, r.Address, r.Phone, cy.Name as Country
             FROM `competition` c
             inner join `range` r on r.RangeId = c.RangeId
@@ -1178,12 +1194,13 @@ class Competition extends BObject{
                                     ' ',
                                     r.Name,
                                     ' ',
-                                    DATE_FORMAT(StartDate, '%d/%m'),
-                                    ' - ',
-                                    DATE_FORMAT(EndDate, '%d/%m %Y')
+                                    case when month(StartDate) <> month(EndDate) then
+                                    DATE_FORMAT(StartDate, '%d/%m') else  DATE_FORMAT(StartDate, '%d') end,
+                                    '-',
+                                    DATE_FORMAT(EndDate, '%d/%m/%Y') 
                                 ) AS NumeSuperLung,
                                 r.Link,
-                                CASE WHEN c.EndDate >= NOW() AND c.StartDate <= NOW() THEN 'Rezultate competitie' WHEN c.StartDate > NOW() THEN 'Urmatoarea competitie' WHEN c.EndDate < NOW() THEN 'Rezultate competitie terminata' ELSE ''
+                                CASE WHEN c.EndDate >= NOW() AND c.StartDate <= NOW() THEN 'Rezultate competitie (LIVE)' WHEN c.StartDate > NOW() THEN 'Urmatoarea competitie' WHEN c.EndDate < NOW() THEN 'Rezultate competitie' ELSE ''
                                 END AS Mesaj
                             FROM
                                 competition c

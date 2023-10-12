@@ -9,6 +9,8 @@ Route::group(['middleware' => 'options'], function () {
 
         Route::get('/',  'App\Http\Controllers\CompetitiiController@returnWelcome')->name('welcome');
 
+     
+
         Route::get('/welcome',  'App\Http\Controllers\CompetitiiController@returnWelcome')->name('welcome');
 
 
@@ -96,6 +98,9 @@ Route::group(['middleware' => 'options'], function () {
 
         //Route::POST('/competition', 'App\Http\Controllers\CompetitiiController@getItemAjax');
         Route::GET('/clasament/{id}', 'App\Http\Controllers\CompetitiiController@getClasament');
+        Route::GET('/clasamentAPI/{id}', 'App\Http\Controllers\CompetitiiController@getClasamentAPI');
+
+
         Route::GET('/clasamentdata/{id}', 'App\Http\Controllers\CompetitiiController@getClasamentdata');
         Route::GET('/competitionListDown/{id}', 'App\Http\Controllers\CompetitiiController@getClasamentList');
         Route::GET('/competitionDownSquads/{id}/{day}', 'App\Http\Controllers\CompetitiiController@getClasamentSquads');

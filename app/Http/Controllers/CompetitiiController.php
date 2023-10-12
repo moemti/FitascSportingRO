@@ -27,11 +27,26 @@ class CompetitiiController extends MasterController
         return view( 'modules.pages.competitiedetail',['master' => $this->BObject()->getMaster($ItemId), 'clasament' => $this->BObject()->GetClasament($ItemId),
         'clasamentcategorie' => $this->BObject()->GetClasamentCategory($ItemId),
         'clasamentteams' => $this->BObject()->GetClasamentTeams($ItemId)
-    
-        
-    ]);
+         ]);
 
 
+    }
+
+    public function getClasamentAPI($ItemId){
+        $Nume = '';
+        $Descriere = '';
+        if ($ItemId == 0){
+            $competitie =  Competition::getCurrentCompetition()[0];
+            $ItemId = $competitie->CompetitionId;
+            $Nume = $competitie->NumeSuperLung;
+            $Descriere = $competitie->Mesaj;
+        }
+
+
+
+       $clasament = $this->BObject()->GetClasament($ItemId);
+
+       return ['clasament' => $clasament, 'nume' => $Nume, 'descriere' => $Descriere];
     }
 
     public function editresult($ResultId){
