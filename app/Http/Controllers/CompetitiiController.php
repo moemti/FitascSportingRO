@@ -43,7 +43,7 @@ class CompetitiiController extends MasterController
         }
 
 
-
+        
        $clasament = $this->BObject()->GetClasament($ItemId);
 
        return ['clasament' => $clasament, 'nume' => $Nume, 'descriere' => $Descriere];

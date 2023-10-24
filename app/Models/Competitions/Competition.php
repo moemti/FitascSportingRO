@@ -62,7 +62,6 @@ class Competition extends BObject{
                 `RangeId` = :RangeId, 
                 `Targets` = :Targets, 
                 `SportId` = :SportId
-    
             where CompetitionId = :CompetitionId";
 
     public $MasterDelete = "delete from competition
@@ -74,7 +73,6 @@ class Competition extends BObject{
             p.PersonId, p.Name as Person, sc.Code as Category, t.Name as Team , r.ResultId, NULL AS BIB, 
             r.IsInTeam, NULL AS NrSerie,  p.SerieNrCI, p.CNP, p.SeriePermisArma, p.DataExpPermis, p.MarcaArma, p.SerieArma, p.CalibruArma, r.TeamName,
                         Round(Percent,2) as Procent, Round(PercentR,2) as ProcentR,
-                        
                         nullif(d1.Result, 0) as M1,
                         nullif(d2.Result, 0) as M2,
                         nullif(d3.Result, 0) as M3,
@@ -88,10 +86,7 @@ class Competition extends BObject{
                         nullif(sof.Total1, 0) as Total1,
                         nullif(sof.Total2, 0) as Total2,
                         cps.ResultatCat
-    
-    
                         FROM result r
-    
                         left join resultdetail d1 on r.ResultId = d1.ResultId and d1.RoundNr = 1
                         left join resultdetail d2 on r.ResultId = d2.ResultId and d2.RoundNr = 2
                         left join resultdetail d3 on r.ResultId = d3.ResultId and d3.RoundNr = 3
@@ -100,56 +95,37 @@ class Competition extends BObject{
                         left join resultdetail d6 on r.ResultId = d6.ResultId and d6.RoundNr = 6
                         left join resultdetail d7 on r.ResultId = d7.ResultId and d7.RoundNr = 7
                         left join resultdetail d8 on r.ResultId = d8.ResultId and d8.RoundNr = 8
-    
-    
                         left join (
                             select GROUP_CONCAT(case when d.RoundNr > 8 then d.Result else null end  order by d.RoundNr) as ShootOffS,
                                     sum(case when d.RoundNr > 8 then d.Result/(10 *( d.RoundNr - 8))  else 0 end ) as ShootOff, 
                                     sum(case when d.RoundNr <= 8 then d.Result else 0 end ) as Total,
                                     sum(case when d.RoundNr <= 4 then d.Result else 0 end ) as Total1,
                                     sum(case when d.RoundNr <= 8 and d.RoundNr > 4 then d.Result else 0 end ) as Total2,
-                            
                             d.ResultId
                             from resultdetail d 
                             group by ResultId
                             order by d.RoundNr 
                         ) sof on sof.ResultId = r.ResultId 
-    
-    
                         left join (select concat(loc,' ' , vvv.Code ) as ResultatCat , ResultId from (
-    
                             SELECT  
                                     ROW_NUMBER() OVER (
                                       PARTITION BY sc.Code 
                                       ORDER BY sof.Total desc, ShootOff desc) as loc ,
-    
                                       r.ResultId, sc.Code
-    
-    
                                                 FROM result r
-    
-    
-    
                                                 left join (
                                                     select GROUP_CONCAT(case when d.RoundNr > 8 then d.Result else null end  order by d.RoundNr) as ShootOffS,
                                                             sum(case when d.RoundNr > 8 then d.Result/(10 *( d.RoundNr - 8))  else 0 end ) as ShootOff, 
                                                             sum(case when d.RoundNr <= 8 then d.Result else 0 end ) as Total,
-    
-    
                                                     d.ResultId
                                                     from resultdetail d 
                                                     group by ResultId
                                                     order by d.RoundNr 
                                                 ) sof on sof.ResultId = r.ResultId 
-    
                                                 left join shootercategory sc on sc.ShooterCategoryId = r.ShooterCategoryId
-    
                                                 where r.CompetitionId = :CompetitionId and sc.code <> 'STR'
                                                 order by sc.Code, loc )vvv
-    
                                                 where loc < 4) cps on cps.ResultId = r.ResultId
-    
-    
                         inner join person p on p.PersonId = r.PersonId
                         left join shootercategory sc on sc.ShooterCategoryId = r.ShooterCategoryId
                         left join team t on t.TeamId = r.TeamId
@@ -177,10 +153,7 @@ class Competition extends BObject{
                         nullif(sof.Total1, 0) as Total1,
                         nullif(sof.Total2, 0) as Total2,
                         cps.ResultatCat
-    
-    
                         FROM result r
-    
                         left join resultdetail d1 on r.ResultId = d1.ResultId and d1.RoundNr = 1
                         left join resultdetail d2 on r.ResultId = d2.ResultId and d2.RoundNr = 2
                         left join resultdetail d3 on r.ResultId = d3.ResultId and d3.RoundNr = 3
@@ -189,56 +162,37 @@ class Competition extends BObject{
                         left join resultdetail d6 on r.ResultId = d6.ResultId and d6.RoundNr = 6
                         left join resultdetail d7 on r.ResultId = d7.ResultId and d7.RoundNr = 7
                         left join resultdetail d8 on r.ResultId = d8.ResultId and d8.RoundNr = 8
-    
-    
                         left join (
                             select GROUP_CONCAT(case when d.RoundNr > 8 then d.Result else null end  order by d.RoundNr) as ShootOffS,
                                     sum(case when d.RoundNr > 8 then d.Result/(10 *( d.RoundNr - 8))  else 0 end ) as ShootOff, 
                                     sum(case when d.RoundNr <= 8 then d.Result else 0 end ) as Total,
                                     sum(case when d.RoundNr <= 4 then d.Result else 0 end ) as Total1,
                                     sum(case when d.RoundNr <= 8 and d.RoundNr > 4 then d.Result else 0 end ) as Total2,
-                            
                             d.ResultId
                             from resultdetail d 
                             group by ResultId
                             order by d.RoundNr 
                         ) sof on sof.ResultId = r.ResultId 
-    
-    
                         left join (select concat(loc,' ' , vvv.Code ) as ResultatCat , ResultId from (
-    
                             SELECT  
                                     ROW_NUMBER() OVER (
                                       PARTITION BY sc.Code 
                                       ORDER BY sof.Total desc, ShootOff desc) as loc ,
-    
                                       r.ResultId, sc.Code
-    
-    
                                                 FROM result r
-    
-    
-    
                                                 left join (
                                                     select GROUP_CONCAT(case when d.RoundNr > 8 then d.Result else null end  order by d.RoundNr) as ShootOffS,
                                                             sum(case when d.RoundNr > 8 then d.Result/(10 *( d.RoundNr - 8))  else 0 end ) as ShootOff, 
                                                             sum(case when d.RoundNr <= 8 then d.Result else 0 end ) as Total,
-    
-    
                                                     d.ResultId
                                                     from resultdetail d 
                                                     group by ResultId
                                                     order by d.RoundNr 
                                                 ) sof on sof.ResultId = r.ResultId 
-    
                                                 left join shootercategory sc on sc.ShooterCategoryId = r.ShooterCategoryId
-    
                                                 where r.CompetitionId = :CompetitionId and sc.code <> 'STR'
                                                 order by sc.Code, loc )vvv
-    
                                                 where loc < 4) cps on cps.ResultId = r.ResultId
-    
-    
                         inner join person p on p.PersonId = r.PersonId
                         left join shootercategory sc on sc.ShooterCategoryId = r.ShooterCategoryId
                         left join team t on t.TeamId = r.TeamId
@@ -250,10 +204,8 @@ class Competition extends BObject{
                 SELECT row_number() over(order by Total desc, ShootOff desc, d8.Result desc, d7.Result  desc, d6.Result desc, d5.Result desc, d4.Result desc, d3.Result desc, d2.Result desc, d1.Result desc, r.BIB)  as Position, 
                     p.PersonId, p.Name as Person, sc.Code as Category, t.Name as Team , r.ResultId,
                     r.BIB,
-                    
                     r.IsInTeam, r.NrSerie,  p.SerieNrCI, p.CNP, p.SeriePermisArma, p.DataExpPermis, p.MarcaArma, p.SerieArma, p.CalibruArma, r.TeamName,
                                 Round(Percent,2) as Procent, Round(PercentR,2) as ProcentR,
-                                
                                 d1.Result as M1,
                                 d2.Result as M2,
                                 d3.Result as M3,
@@ -267,10 +219,7 @@ class Competition extends BObject{
                                 sof.Total1,
                                 sof.Total2,
                                 cps.ResultatCat
-            
-            
                                 FROM result r
-            
                                 left join resultdetail d1 on r.ResultId = d1.ResultId and d1.RoundNr = 1
                                 left join resultdetail d2 on r.ResultId = d2.ResultId and d2.RoundNr = 2
                                 left join resultdetail d3 on r.ResultId = d3.ResultId and d3.RoundNr = 3
@@ -279,56 +228,37 @@ class Competition extends BObject{
                                 left join resultdetail d6 on r.ResultId = d6.ResultId and d6.RoundNr = 6
                                 left join resultdetail d7 on r.ResultId = d7.ResultId and d7.RoundNr = 7
                                 left join resultdetail d8 on r.ResultId = d8.ResultId and d8.RoundNr = 8
-            
-            
                                 left join (
                                     select GROUP_CONCAT(case when d.RoundNr > 8 then d.Result else null end  order by d.RoundNr) as ShootOffS,
                                             sum(case when d.RoundNr > 8 then d.Result/(10 *( d.RoundNr - 8))  else 0 end ) as ShootOff, 
                                             sum(case when d.RoundNr <= 8 then d.Result else 0 end ) as Total,
                                             sum(case when d.RoundNr <= 4 then d.Result else 0 end ) as Total1,
                                             sum(case when d.RoundNr <= 8 and d.RoundNr > 4 then d.Result else 0 end ) as Total2,
-                                    
                                     d.ResultId
                                     from resultdetail d 
                                     group by ResultId
                                     order by d.RoundNr 
                                 ) sof on sof.ResultId = r.ResultId 
-            
-            
                                 left join (select concat(loc,' ' , vvv.Code ) as ResultatCat , ResultId from (
-            
                                     SELECT  
                                             ROW_NUMBER() OVER (
                                               PARTITION BY sc.Code 
                                               ORDER BY sof.Total desc, ShootOff desc) as loc ,
-            
                                               r.ResultId, sc.Code
-            
-            
                                                         FROM result r
-            
-            
-            
                                                         left join (
                                                             select GROUP_CONCAT(case when d.RoundNr > 8 then d.Result else null end  order by d.RoundNr) as ShootOffS,
                                                                     sum(case when d.RoundNr > 8 then d.Result/(10 *( d.RoundNr - 8))  else 0 end ) as ShootOff, 
                                                                     sum(case when d.RoundNr <= 8 then d.Result else 0 end ) as Total,
-            
-            
                                                             d.ResultId
                                                             from resultdetail d 
                                                             group by ResultId
                                                             order by d.RoundNr 
                                                         ) sof on sof.ResultId = r.ResultId 
-            
                                                         left join shootercategory sc on sc.ShooterCategoryId = r.ShooterCategoryId
-            
                                                         where r.CompetitionId = :CompetitionId and sc.code <> 'STR'
                                                         order by sc.Code, loc )vvv
-            
                                                         where loc < 4) cps on cps.ResultId = r.ResultId
-            
-            
                                 inner join person p on p.PersonId = r.PersonId
                                 left join shootercategory sc on sc.ShooterCategoryId = r.ShooterCategoryId
                                 left join team t on t.TeamId = r.TeamId
@@ -724,58 +654,38 @@ class Competition extends BObject{
         $sql =  "
             SELECT 
                 p.Name as Person, sc.Code as Category, t.Name as Team ,loc, sof.Total, ShootOffS
-    
                         FROM result r
-    
-    
                         left join (
                             select GROUP_CONCAT(case when d.RoundNr > 8 then d.Result else null end  order by d.RoundNr) as ShootOffS,
                                     sum(case when d.RoundNr > 8 then d.Result/(10 *( d.RoundNr - 8))  else 0 end ) as ShootOff, 
                                     sum(case when d.RoundNr <= 8 then d.Result else 0 end ) as Total,
                                     sum(case when d.RoundNr <= 4 then d.Result else 0 end ) as Total1,
                                     sum(case when d.RoundNr <= 8 and d.RoundNr > 4 then d.Result else 0 end ) as Total2,
-                            
                             d.ResultId
                             from resultdetail d 
                             group by ResultId
                             order by d.RoundNr 
                         ) sof on sof.ResultId = r.ResultId 
-    
-    
                         left join (select concat(loc,' ' , vvv.Code ) as ResultatCat , loc, ResultId from (
-    
                             SELECT  
                                     ROW_NUMBER() OVER (
                                       PARTITION BY sc.Code 
                                       ORDER BY sof.Total desc, ShootOff desc) as loc ,
-    
                                       r.ResultId, sc.Code
-    
-    
                                                 FROM result r
-    
-    
-    
                                                 left join (
                                                     select GROUP_CONCAT(case when d.RoundNr > 8 then d.Result else null end  order by d.RoundNr) as ShootOffS,
                                                             sum(case when d.RoundNr > 8 then d.Result/(10 *( d.RoundNr - 8))  else 0 end ) as ShootOff, 
                                                             sum(case when d.RoundNr <= 8 then d.Result else 0 end ) as Total,
-    
-    
                                                     d.ResultId
                                                     from resultdetail d 
                                                     group by ResultId
                                                     order by d.RoundNr 
                                                 ) sof on sof.ResultId = r.ResultId 
-    
                                                 left join shootercategory sc on sc.ShooterCategoryId = r.ShooterCategoryId
-    
                                                 where r.CompetitionId = :CompetitionId and sc.code <> 'STR'
                                                 order by sc.Code, loc )vvv
-    
                                                 where loc < 4) cps on cps.ResultId = r.ResultId
-    
-    
                         inner join person p on p.PersonId = r.PersonId
                         left join shootercategory sc on sc.ShooterCategoryId = r.ShooterCategoryId
                         left join team t on t.TeamId = r.TeamId
@@ -798,29 +708,20 @@ class Competition extends BObject{
                     select ROW_NUMBER() OVER ( order by sum(Total) desc ) as Loc, sum(Total) as Total, Team , GROUP_CONCAT(person order by locechipa SEPARATOR ', ') as Members  
                     from   
                     ( select * from (
-                                                            
                                                             select    ROW_NUMBER() OVER (
-                                                            
                                                                 Partition by Team
                                                                 order by Team desc ,soft.Total desc
                                                             ) as locechipa, rr.ResultId, soft.Total, rr.PersonId, p.Name as Person, rr.TeamId, IfNull(TeamName, t.Name) as Team
-                                                            
                                                             FROM result rr
                                                             inner join person p on p.PersonId = rr.PersonId
-                                                            
                                                             inner join (
                                                                     select GROUP_CONCAT(case when d.RoundNr > 8 then d.Result else null end  order by d.RoundNr) as ShootOffS,
                                                                                 sum(case when d.RoundNr > 8 then d.Result/(10 *( d.RoundNr - 8))  else 0 end ) as ShootOff, 
                                                                                 sum(case when d.RoundNr <= 8 then d.Result else 0 end ) as Total,
-
-
                                                                         d.ResultId
                                                                         from resultdetail d 
                                                                         group by ResultId
-
-
                                                                     ) soft on soft.ResultId = rr.ResultId 
-                
                                                             left join shootercategory sc on sc.ShooterCategoryId = rr.ShooterCategoryId
                                                             left join team t on t.TeamId = rr.TeamId
                                                             where rr.CompetitionId = :CompetitionId and sc.code <> 'STR'  and TeamName is not null                                                    
@@ -831,36 +732,25 @@ class Competition extends BObject{
                     group by Team
                     order by Total desc
                     limit 0,3 ";
-
                 else
-
                     $sql =  "
                     select ROW_NUMBER() OVER ( order by sum(Total) desc ) as Loc, sum(Total) as Total, Team , GROUP_CONCAT(person order by locechipa SEPARATOR ', ') as Members  
                     from   
                     ( select * from (
-                                                            
                                                             select    ROW_NUMBER() OVER (
-                                                            
                                                                 Partition by Team
                                                                 order by Team desc ,soft.Total desc
                                                             ) as locechipa, rr.ResultId, soft.Total, rr.PersonId, p.Name as Person, rr.TeamId, IfNull(TeamName, t.Name) as Team
-                                                            
                                                             FROM result rr
                                                             inner join person p on p.PersonId = rr.PersonId
-                                                            
                                                             inner join (
                                                                     select GROUP_CONCAT(case when d.RoundNr > 8 then d.Result else null end  order by d.RoundNr) as ShootOffS,
                                                                                 sum(case when d.RoundNr > 8 then d.Result/(10 *( d.RoundNr - 8))  else 0 end ) as ShootOff, 
                                                                                 sum(case when d.RoundNr <= 8 then d.Result else 0 end ) as Total,
-
-
                                                                         d.ResultId
                                                                         from resultdetail d 
                                                                         group by ResultId
-
-
                                                                     ) soft on soft.ResultId = rr.ResultId 
-                
                                                             left join shootercategory sc on sc.ShooterCategoryId = rr.ShooterCategoryId
                                                             left join team t on t.TeamId = rr.TeamId
                                                             where rr.CompetitionId = :CompetitionId and sc.code <> 'STR'                                                
@@ -903,7 +793,6 @@ class Competition extends BObject{
             inner join competition c on c.CompetitionId = r.CompetitionId
             inner join season s on Year(c.StartDate) = s.Year
             left join shooterxseason x on x.PersonId = r.PersonId and x.SeasonId = s.SeasonId 
-            
             where r.ResultId = $ResultId";
             return DB::select($sql);
         }
@@ -1177,11 +1066,8 @@ class Competition extends BObject{
             return self::outputFiles("img/gallery/competitions");
         }
 
-
         public static function getCurrentCompetition(){
-        
             $res = [];
-
             $sql = "
             SELECT
                             *
@@ -1220,17 +1106,13 @@ class Competition extends BObject{
                             ''
                         LIMIT 0, 1
             "
-                     
                      ;
 
             $r = DB::select($sql)[0];
-          
-
 
             $id = $r->CompetitionId;
 
             $path = "img/gallery/competitions/$id";
-
           
             $i = 0;
 
@@ -1254,12 +1136,9 @@ class Competition extends BObject{
                 } 
             }
 
-         
-
             for ($j = $i; $j < 3; $j++ ){
                 array_push($res, $r);
             }
-
          
             return $res;
 
