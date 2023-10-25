@@ -28,7 +28,7 @@
 			{ text: translate('Categorie'), dataField: 'Category', width: '10%' },
 			{ text: translate('Team'), dataField: 'Team', width: '15%' },
 			{ text: translate('Procent'), dataField: 'ProcentR', width: '10%' },
-			{ text: translate('Proc open'), dataField: 'Procent', width: '10%' },
+			{ text: translate('Proc clasa'), dataField: 'Procent', width: '10%' },
 			{ text: translate('Nr participari'), dataField: 'NrCompetitions', width: '10%' , cellclassname:  cellclasscomp},
 			{ text: "PersonId", dataField: 'PersonId', width: '10%',  hidden: true},
 		]
@@ -38,7 +38,7 @@
 			{ text: translate('Sportiv'), dataField: 'Person', width: '45%', cellclassname: cellclassUser },
 			{ text: translate('Cat'), dataField: 'Category', width: '10%' },
 			{ text: translate('Procent'), dataField: 'ProcentR', width: '10%' },
-			{ text: translate('Proc open'), dataField: 'Procent', width: '10%' },
+			{ text: translate('Proc clasa'), dataField: 'Procent', width: '10%' },
 			{ text: translate('Nr participari'), dataField: 'NrCompetitions', width: '15%',cellclassname:  cellclasscomp },
 			{ text: "PersonId", dataField: 'PersonId', width: '10%',  hidden: true },
 		]
@@ -116,7 +116,7 @@
 	//		{ text: translate('Loc'), dataField: 'Loc', width: '15%'},
 			{ text: translate('Total'), dataField: 'Total', width: '15%' },
 			{ text: translate('Procent'), dataField: 'PercentR', width: '7%' },
-			{ text: translate('Proc open'), dataField: 'Percent', width: '8%' },
+			{ text: translate('Proc clasa'), dataField: 'Percent', width: '8%' },
 			{ text: translate('Vezi rezultate'), dataField: 'CompetitionId', width: '10%', 
 						columntype:'button', cellsrenderer: function () {
 							return "Vezi...";	

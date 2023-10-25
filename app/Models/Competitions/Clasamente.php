@@ -25,7 +25,7 @@ class Clasamente extends BObject{
     public $MasterSelect = "
             SELECT row_number() over(order by ProcentR desc) as Position, p.Name as Person, Min(sc.Code) as Category, max(t.Name) as Team , p.PersonId, 
             Round(Avg(case when ifNull(r.Aborted,1) = 0 then Percent else null end),2) as Procent,
-            Round(Avg(case when ifNull(r.Aborted,1) = 0 then PercentR else null end),2) as ProcentR, 
+            Round(Avg(case when ifNull(r.Aborted,1) = 0 then PercentR else null end),2) as ProcentR
             FROM result r 
             inner join person p on p.PersonId = r.PersonId 
             inner join competition c on c.CompetitionId = r.CompetitionId 
@@ -71,7 +71,7 @@ class Clasamente extends BObject{
 
     public $ClasamentSelect = "
                     SELECT row_number() over(order by ProcentR desc) as Position, p.Name as Person, Min(sc.Code) as Category, max(t.Name) as Team , p.PersonId, 
-                    Round(Avg(case when ifNull(r.Aborted,1) = 0 then Percent else null end),2) as Procent , 
+                   aa.Percent as Procent,-- Round(Avg(case when ifNull(r.Aborted,1) = 0 then Percent else null end),2) as Procent , 
                     Round(Avg(case when ifNull(r.Aborted,1) = 0 then PercentR else null end),2) as ProcentR, 
                     count(distinct r.ResultId) as NrCompetitions
                     FROM result r 
@@ -83,6 +83,26 @@ class Clasamente extends BObject{
 
                     left join shootercategory sc on sc.ShooterCategoryId = x.ShooterCategoryId 
                     left join team t on t.TeamId = x.TeamId 
+
+                    left join (
+                        select avg(PercentR) as Percent, PersonId from (
+
+                         SELECT p.PersonId, PercentR, row_number() OVER (
+                            PARTITION BY p.PersonId ORDER BY PercentR DESC
+
+                            ) AS row_num
+                      FROM result r 
+                                        inner join person p on p.PersonId = r.PersonId 
+                                        inner join competition c on c.CompetitionId = r.CompetitionId and c.Status = 'Finished'
+                                        where year(c.StartDate) =  :Year 
+                                        and p.CountryId = 1
+
+
+                      ORDER BY p.PersonId, PercentR desc
+                            ) T where row_num <= 3
+                      group by PersonId
+                  ) aa on aa.PersonId = p.PersonId
+
                     
                     where year(c.StartDate) = :Year 
                     and p.CountryId = 1

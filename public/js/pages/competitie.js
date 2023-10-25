@@ -106,7 +106,7 @@
                         { text: translate('Total 2'), dataField: 'Total2', width: '5%' },
                         { text: translate('Total'), dataField: 'Total', width: '5%' },
                         { text: translate('Procent'), dataField: 'ProcentR', width: '5%'},
-                        { text: translate('Proc open'), dataField: 'Procent', width: '5%'},
+                    { text: translate('Proc clasa'), dataField: 'Procent', width: '5%' },
                         { text: 'ShOff', dataField: 'ShootOffS', width: '5%' },  
                         { text: translate('Cat'), dataField: 'ResultatCat', width: '5%' },  
                            
