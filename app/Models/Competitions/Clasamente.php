@@ -95,7 +95,7 @@ class Clasamente extends BObject{
                                         inner join person p on p.PersonId = r.PersonId 
                                         inner join competition c on c.CompetitionId = r.CompetitionId and c.Status = 'Finished'
                                         where year(c.StartDate) =  :Year 
-                                        and p.CountryId = 1
+                                        and p.CountryId = 1 and ifNull(r.Aborted,0) = 0 
 
 
                       ORDER BY p.PersonId, PercentR desc
@@ -105,7 +105,7 @@ class Clasamente extends BObject{
 
                     
                     where year(c.StartDate) = :Year 
-                    and p.CountryId = 1
+                    and p.CountryId = 1 and ifNull(r.Aborted,0) = 0 
                     group by p.Name, p.PersonId
                     order by ProcentR desc
                 ";
@@ -144,7 +144,7 @@ class Clasamente extends BObject{
     }
 
     public function getResultsPersonyYear($PersonId, $year){
-        $sql = "SELECT p.PersonId,  Round(r.Percent, 2) as Percent, Round(r.PercentR, 2) as PercentR, r.Total, concat(c.Name , ' ' , rr.Name , ' ' ,  concat(DATE_FORMAT(c.StartDate, '%d/%m'), ' - ', DATE_FORMAT(c.EndDate, '%d/%m %Y'))) as Name, r.Position as Loc, c.CompetitionId
+        $sql = "SELECT p.PersonId,  Round(case when ifNull(r.Aborted,1) = 0 then Percent else null end, 2) as Percent, Round(case when ifNull(r.Aborted,1) = 0 then PercentR else null end, 2) as PercentR, r.Total, concat(c.Name , ' ' , rr.Name , ' ' ,  concat(DATE_FORMAT(c.StartDate, '%d/%m'), ' - ', DATE_FORMAT(c.EndDate, '%d/%m %Y'))) as Name, r.Position as Loc, c.CompetitionId
             FROM result r 
             inner join person p on p.PersonId = r.PersonId 
             inner join competition c on c.CompetitionId = r.CompetitionId and c.Status = 'Finished'  
