@@ -71,7 +71,7 @@ class Clasamente extends BObject{
 
     public $ClasamentSelect = "
                     SELECT row_number() over(order by ProcentR desc) as Position, p.Name as Person, Min(sc.Code) as Category, max(t.Name) as Team , p.PersonId, 
-                   aa.Percent as Procent,-- Round(Avg(case when ifNull(r.Aborted,1) = 0 then Percent else null end),2) as Procent , 
+                   Round(aa.Percent,2) as Procent,-- Round(Avg(case when ifNull(r.Aborted,1) = 0 then Percent else null end),2) as Procent , 
                     Round(Avg(case when ifNull(r.Aborted,1) = 0 then PercentR else null end),2) as ProcentR, 
                     count(distinct r.ResultId) as NrCompetitions
                     FROM result r 
