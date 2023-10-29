@@ -116,7 +116,7 @@
 	//		{ text: translate('Loc'), dataField: 'Loc', width: '15%'},
 			{ text: translate('Total'), dataField: 'Total', width: '15%' },
 			{ text: translate('Procent'), dataField: 'PercentR', width: '7%' },
-			{ text: translate('Proc clasa'), dataField: 'Percent', width: '8%' },
+			{ text: translate('Proc open'), dataField: 'Percent', width: '8%' },
 			{ text: translate('Vezi rezultate'), dataField: 'CompetitionId', width: '10%', 
 						columntype:'button', cellsrenderer: function () {
 							return "Vezi...";	

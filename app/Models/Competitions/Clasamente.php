@@ -158,4 +158,13 @@ class Clasamente extends BObject{
     }
 
 
+    function getClasamentYearsAPI(){
+        return $this->getCompetitionYears();
+    }
+    
+    function getClasamentByYearAPI($year){
+        return $this->GetClasament($year);
+    }
+
+
 }

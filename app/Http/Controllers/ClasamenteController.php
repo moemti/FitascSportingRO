@@ -40,4 +40,12 @@ class ClasamenteController extends MasterController
         return  $this->BObject()->getResultsPersonyYear($PersonId, $year);
     }
 
+    function getClasamentYearsAPI(){
+        return $this->BObject()->getClasamentYearsAPI();
+    }
+    
+    function getClasamentByYearAPI($year){
+        return $this->BObject()->getClasamentByYearAPI($year);
+    }
+
 }
