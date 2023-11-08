@@ -1251,5 +1251,26 @@ class Competition extends BObject{
                 return $e->getMessage();
             }
         }
+
+        public function getCompetitiiAPI(){
+            $sql = "SELECT `CompetitionId`, c.Name as Competition, `StartDate`, `EndDate`, c.`RangeId`, `Targets`, 
+            r.name as `Range`, s.Name as SportField, year(StartDate) as Year,  concat(c.Name , ' ' , r.Name , ' ' , c.StartDate) as NumeLung,
+
+            
+            concat(case when month(StartDate) <> month(EndDate) then
+                            DATE_FORMAT(StartDate, '%d/%m') else  DATE_FORMAT(StartDate, '%d') end,
+                            '-',
+                            DATE_FORMAT(EndDate, '%d/%m/%Y') 
+                            ) as Perioada, 
+            
+            Status
+            FROM `competition` c
+            inner join `range` r on r.RangeId = c.RangeId
+            inner join sportfield s on s.SportFieldId = c.SportFieldId
+            order by Year desc, c.StartDate ";
+
+          return DB::select($sql);
+
+        }
 }
 

@@ -25,7 +25,9 @@ class PoligonController extends MasterController
         return [ 'countries' =>  Dictionary::getCountries(), 'persons' => Dictionary::getPersons($OrganizationId)];
     }
 
-
+    public function getRangesAPI(){
+        return $this->BObject()->getRangesAPI();
+    }
 
     
 

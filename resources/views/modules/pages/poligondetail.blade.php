@@ -19,7 +19,7 @@
          <div class="row justify-content-center text-center">
             <div class="col-lg-6 custom-sm-margin-bottom-1">
                 <h2> {{$poligon->Name}}</h2>
-                <a href='{{$poligon->Coordinates}}' target="_blank" class="a a__medium">
+                <a href='{{$poligon->MapLink}}' target="_blank" class="a a__medium">
                     <i class="fas fa-map-marker-alt text-color-primary custom-icon-size-1"></i>
                     
                     <p class="custom-text-color-2 alternative-font-4 text-3-5">

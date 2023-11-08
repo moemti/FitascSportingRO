@@ -43,10 +43,6 @@ class LoginController extends Controller
             return view("auth/changepassword")->with(["mesaj" => ['mesaj' =>transex('Ai introdus parole diferite. Incearca inca o data')], "_passtoken"=>$passtoken]);    
 
         $password = crypt($password, $password);
-
-
-
-
         $message = User::setPassword($password, $passtoken);
 
         if ($message == 'OK')
@@ -184,51 +180,81 @@ class LoginController extends Controller
   
     
     public function authenticate(Request $request){
-        
-        
         $parola = crypt($request->input('password'), $request->input('password'));
-        
         $user = Login::Login($request->input('username'));
 
         if (($request->input('password') === null) || ($request->input('username') === null)){
             return view("auth/login")->with(["mesaj" =>[ 'password'=> transex('Introduceti emailul si parola')]]);
         }
-        
-        
-        
+
         if (!empty($user)) {
             if ($user[0]->Password !==  $parola){
                 return view("auth/login")->with(["mesaj" =>[ 'password'=> transex('Parola incorecta')]]);
             }
             else{
-                
                 $request->session()->put('PersonId', $user[0]->PersonId);
                 $request->session()->put('IsSuperUser', $user[0]->IsSuperUser);
                 $request->session()->put('username', $request->input('username'));
                 $request->session()->put('name', $user[0]->Name);
                 $request->session()->put('function', $user[0]->Function);
                 $request->session()->put('email', $user[0]->Email);
-                
-                
-                
-                // get last login
-                
-              //  $lastUrl = Utilities::getLastUrl($user[0]->PersonId);
-
-             //   if (count($lastUrl) == 0)
                 return redirect("/");
-
-                // if ($lastUrl[0]->Location == "logout")
-                //     return redirect("welcome");
-                // else    
-                //     return redirect($lastUrl[0]->Location);
             }
         }
         else{
             return view("auth/login")->with(["mesaj" =>[ 'password'=> transex('Email inexistent in baza de date')]]);
         }
-        
     }
+
+    public function loginApi(Request $request){
+
+        $parola = crypt($request->password, $request->password);
+        $user =$request->email;
+
+        $user = Login::Login($user);
+       
+        if (!empty($user)) {
+            if ($user[0]->Password !==  $parola){
+                return ["status" => "Error", "Mesaj" => transex('Parola incorecta')];
+            }
+            else{
+                return ["status" => "OK",
+                    "data" => [
+                        "Token" => Login::getUserToken($user[0]->PersonId),
+                        "PersonId" => $user[0]->PersonId, 
+                        "Name" => $user[0]->Name
+                    ]];
+            }
+        }
+        else{
+            return ["status" => "Error", "Mesaj" => transex('Email inexistent')];
+        }
+    }
+
+    public function loginApiToken(Request $request){
+      
+        $token =$request->token;
+        $user = Login::loginApiToken($token);
+       
+        if (!empty($user)) {
+            return ["status" => "OK",
+                "data" => [
+                    "Token" => $token,
+                    "PersonId" => $user[0]->PersonId, 
+                    "Name" => $user[0]->Name
+                ]];
+            
+        }
+        else{
+            return ["status" => "Error", "Mesaj" => transex('token inexistent')];
+        }
+    }
+
+    public function logoutApi($token){
+        return Login::logoutToken($token); 
+
+    }
+
     
     public function logout(Request $request){
         

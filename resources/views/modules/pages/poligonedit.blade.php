@@ -50,6 +50,11 @@
         </div>     
         <div class="col-md-6">          
             <div class="position-relative form-group"><label for="Phone">Phone</label><input name="Phone" id="Phone"  type="text" class="form-control" ></div>
+            
+        </div>
+        <div class="position-relative form-group col-12 col-md-6">
+            <label class= "form-label">Map link</label>
+            <input name="MapLink" id="MapLink" class="form-control" >
         </div>
     </div>
 
@@ -60,7 +65,7 @@
             <input name="Coordinates" id="Coordinates" class="form-control" >
         </div>
         <div class="position-relative form-group col-12 col-md-6">
-            <label class= "form-label">Link</label>
+            <label class= "form-label">Site link</label>
             <input name="Link" id="Link" class="form-control" >
         </div>
     </div >

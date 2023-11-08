@@ -26,6 +26,32 @@ class Login
          
     }    
 
+    public static function getUserToken($PersonId){
+        $token =  uniqid();
+        $sql = "update user set Token = '{$token}' where PersonId = {$PersonId}";
+        DB::select($sql);
+        return $token;
+
+    }
+
+  
+
+    public static function loginApiToken($token){
+        $sql = "select p.PersonId, p.Name, u.IsSuperUser
+            from 
+            user u
+            inner join person p on p.PersonId = u.Personid
+            where u.Token = '{$token}'" ;
+            $user = DB::select($sql);
+            return $user;
+
+    }
+
+    public static function logoutApi($token){
+        $sql = "update user set Token = null where Token = '{$token}'" ;
+        return "OK";
+    }
+   
 
     public static function EmailExists($email){
         $sql = "select email from user u inner join person p on p.PersonId = u.PersonId where p.Email = '$email'";

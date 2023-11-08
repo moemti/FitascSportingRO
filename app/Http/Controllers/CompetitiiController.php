@@ -42,11 +42,14 @@ class CompetitiiController extends MasterController
             $Descriere = $competitie->Mesaj;
         }
 
+       $clasamentTeams = $this->BObject()->GetClasamentTeams($ItemId);
+       $clasamentCat = $this->BObject()->GetClasamentCategory($ItemId);
 
-        
        $clasament = $this->BObject()->GetClasament($ItemId);
 
-       return ['clasament' => $clasament, 'nume' => $Nume, 'descriere' => $Descriere];
+       $Info = Competition::getCompetitionInfo($ItemId);
+
+       return [ 'nume' => $Nume, 'descriere' => $Descriere, 'clasament' => $clasament, 'clasamentTeams' => $clasamentTeams, 'clasamentCat' => $clasamentCat, 'Info' =>  $Info];
     }
 
     public function editresult($ResultId){
@@ -946,6 +949,11 @@ class CompetitiiController extends MasterController
         ob_end_clean();
         $writer->save('php://output');
         die;
+    }
+
+
+    public function getCompetitiiAPI(){
+        return $this->BObject()->getCompetitiiAPI();
     }
 
 }

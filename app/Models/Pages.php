@@ -18,13 +18,13 @@ class Pages {
 
 
     public static function getPoligoane(){
-        $sql = 'SELECT r.RangeId, r.`Name`, `Address`, `Contact`, c.Code as Country, `Phone`, `Coordinates` 
+        $sql = 'SELECT r.RangeId, r.`Name`, `Address`, `Contact`, c.Code as Country, `Phone`, `Coordinates`, MapLink
             FROM `range` r inner join country c on c.CountryId = r.CountryId order by r.Name' ;
         return  DB::select($sql); 
     }
 
     public static function getPoligon($RangeId){
-        $sql = "SELECT r.RangeId, r.`Name`, `Address`, `Contact`, c.Code as Country, `Phone`, `Coordinates` 
+        $sql = "SELECT r.RangeId, r.`Name`, `Address`, `Contact`, c.Code as Country, `Phone`, `Coordinates`, MapLink
                 FROM `range` r inner join country c on c.CountryId = r.CountryId where RangeId = {$RangeId}" ;
             return  DB::select($sql); 
     }

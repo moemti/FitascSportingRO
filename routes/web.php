@@ -103,6 +103,20 @@ Route::group(['middleware' => 'options'], function () {
         Route::GET('/ClasamentByYearAPI/{Year}', 'App\Http\Controllers\ClasamenteController@getClasamentByYearAPI');
 
 
+        /************    API     *******/
+
+        Route::GET('/CompetitionsAPI', 'App\Http\Controllers\CompetitiiController@getCompetitiiAPI');
+
+        Route::GET('/rangesAPI', 'App\Http\Controllers\PoligonController@getRangesAPI');
+
+
+        Route::get('/loginApi', 'App\Http\Controllers\Auth\LoginController@loginApi');
+        Route::get('/loginApiToken', 'App\Http\Controllers\Auth\LoginController@loginApiToken');
+        Route::get('/logoutApi', 'App\Http\Controllers\Auth\LoginController@logoutApi');
+
+        /******************/
+
+
 
         Route::GET('/clasamentdata/{id}', 'App\Http\Controllers\CompetitiiController@getClasamentdata');
         Route::GET('/competitionListDown/{id}', 'App\Http\Controllers\CompetitiiController@getClasamentList');

@@ -22,15 +22,15 @@ class Poligon extends BObject{
 
 
     public $MasterSelect = 
-                "SELECT `RangeId`, `Name`, `Address`, `Contact`, `CountryId`, `Phone`, `Coordinates`, `Link` FROM `range` 
+                "SELECT `RangeId`, `Name`, `Address`, `Contact`, `CountryId`, `Phone`, `Coordinates`, `Link`, MapLink FROM `range` 
                 order by Name"  ;
 
-    public $MasterItemSelect = "SELECT `RangeId`, `Name`, `Address`, `Contact`, `CountryId`, `Phone`, `Coordinates`, `Link` FROM `range` 
+    public $MasterItemSelect = "SELECT `RangeId`, `Name`, `Address`, `Contact`, `CountryId`, `Phone`, `Coordinates`, `Link`, MapLink FROM `range` 
                 where RangeId = :RangeId" ;
                                         
 
-    public $MasterInsert = "INSERT INTO `range`(`Name`, `Address`, `Contact`, `CountryId`, `Phone`, `Coordinates`, `Link`)  
-                                values ( ':Name', ':Address', ':Contact', :CountryId, ':Phone', ':Coordinates', ':Link')";         
+    public $MasterInsert = "INSERT INTO `range`(`Name`, `Address`, `Contact`, `CountryId`, `Phone`, `Coordinates`, `Link`, MapLink)  
+                                values ( ':Name', ':Address', ':Contact', :CountryId, ':Phone', ':Coordinates', ':Link', 'MapLink')";         
    
 
     public $MasterUpdate = "UPDATE `range` SET
@@ -40,7 +40,8 @@ class Poligon extends BObject{
                         Phone = ':Phone', 
                         CountryId = :CountryId,
                         Coordinates = ':Coordinates',
-                        Link = ':Link'
+                        Link = ':Link',
+                        MapLink = ':MapLink'
                         WHERE RangeId = :RangeId;
                         ";
 
@@ -102,5 +103,13 @@ class Poligon extends BObject{
     public static function hasCompetitionRight($PersonId, $CompetitionId){
         return count( DB::select("select 1 from rangexperson x inner join competition c on c.RangeId = x.RangeId where PersonId = $PersonId and CompetitionId = $CompetitionId")) > 0;
     }
+
+    public function getRangesAPI(){
+        $sql =       "SELECT `RangeId`, r.`Name` as RangeName, `Address`, `Contact`, c.Name as Country, `Phone`, `Coordinates`, `Link`, MapLink FROM `range` r
+        inner join country c on c.CountryId = r.CountryId
+        order by Country, RangeName"  ;
+
+        return DB::Select($sql);
+    }   
 
 }
