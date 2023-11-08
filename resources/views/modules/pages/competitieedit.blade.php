@@ -50,23 +50,45 @@
     <div class="row">
 
         <div class="col-md-2">
-            <div class="position-relative form-group"><label for="Oficial">Competitie oficiala</label><input name="Oficial" id="Oficial" class="form-control" type="check"></div>
+            <div class="position-relative form-group"><label for="Oficial">Competitie oficiala</label><input name="Oficial" id="Oficial" class="form-check-input" type="checkbox"></div>
         </div>
         <div class="col-md-2">
-            <div class="position-relative form-group"><label for="IsEtapa">Etapa</label><input name="IsEtapa" id="IsEtapa" class="form-control" type="check"></div>
+            <div class="position-relative form-group"><label for="IsEtapa">Etapa</label><input name="IsEtapa" id="IsEtapa" class="form-check-input" type="checkbox"></div>
         </div>
         <div class="col-md-2">
-            <div class="position-relative form-group"><label for="IsFinala">Finala campionat</label><input name="IsFinala" id="IsFinala" class="form-control" type="check"></div>
+            <div class="position-relative form-group"><label for="IsFinala">Finala campionat</label><input name="IsFinala" id="IsFinala" class="form-check-input" type="checkbox"></div>
         </div>
         <div class="col-md-2">
-            <div class="position-relative form-group"><label for="InSupercupa">Puncte supercupa</label><input name="InSupercupa" id="InSupercupa" class="form-control" type="check"></div>
+            <div class="position-relative form-group"><label for="InSupercupa">Puncte supercupa</label><input name="InSupercupa" id="InSupercupa" class="form-check-input" type="checkbox"></div>
         </div>
 
-     </div>    
+     </div> 
+
+
+      <div class="row">
+        <div class="col-md-3">
+            <div class="position-relative form-group"><label for="Targets">Nr talere</label><input name="Targets" id="Targets" class="form-control" type="number" ></div>
+        </div>
+      
+        <div class="col-6 col-md-6">
+            <div class="position-relative form-group  ">
+                
+                <label class= "" for="SportFieldId">Tip competitie</label>
+                
+                <select name="SportFieldId" id="SportFieldId"  type="text" class="form-control" required >
+                <option value=""></option>
+                    @foreach($sportfields as $r)
+                        <option value="{{$r->SportFieldId}}">{{$r->Name}}</option>
+                    @endforeach
+                </select>             
+            </div>
+        </div>     
+    </div>
+
       <div class="row">
 
         <div class="col-md-12">          
-            <div class="position-relative form-group"><label for="Descriere">Phone</label><input name="Descriere" id="Descriere"  type="text" class="form-control" ></div>
+            <div class="position-relative form-group"><label for="Descriere">Descriere</label><textarea name="Descriere" id="Descriere"   class="form-control" ></textarea></div>
             
         </div>
        

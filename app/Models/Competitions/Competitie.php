@@ -45,8 +45,8 @@ class Competitie extends BObject{
                 c.CompetitionId = :CompetitionId ";
                                     
 
-    public $MasterInsert = "INSERT INTO `competition`(`OrganizationId`, Name, `StartDate`, `EndDate`, `RangeId`, `Targets`, `SportId`, IsOficial, IsEtapa, IsFinala, InSupercupa, Descriere)  
-        values  (:_OrganizationId_, ':Name', ':StartDate',  ':EndDate', :RangeId, :Targets, :SportId, , :IsOficial, :IsEtapa, :IsFinala, :InSupercupa, ':Descriere')";            
+    public $MasterInsert = "INSERT INTO `competition`( Name, `StartDate`, `EndDate`, `RangeId`, `Targets`, `SportFieldId`, Oficial, IsEtapa, IsFinala, InSupercupa, Descriere, Status)  
+        values  ( ':Name', ':StartDate',  ':EndDate', :RangeId, :Targets, :SportFieldId,  :Oficial, :IsEtapa, :IsFinala, :InSupercupa, ':Descriere', 'Closed')";            
    
 
     public $MasterUpdate = "UPDATE `competition` 
@@ -55,7 +55,7 @@ class Competitie extends BObject{
                 `EndDate` = ':EndDate', 
                 `RangeId` = :RangeId, 
                 `Targets` = :Targets, 
-                `SportId` = :SportId,
+                `SportFieldId` = :SportFieldId,
                  Oficial = :Oficial, 
                  IsEtapa = :IsEtapa, 
                  IsFinala = :IsFinala, 
