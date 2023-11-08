@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Dictionaries;
+namespace App\Models\Competitions;
 use Illuminate\Support\Facades\DB;
 use App\Models\BObject;
 
@@ -24,7 +24,7 @@ class Competitie extends BObject{
                                     DATE_FORMAT(EndDate, '%d/%m/%Y') 
                                     ) as Perioada, 
                     
-                    Status, IsOficial, IsEtapa, IsFinala, InSupercupa
+                    Status, Oficial, IsEtapa, IsFinala, InSupercupa, Descriere
                     FROM `competition` c
                     inner join `range` r on r.RangeId = c.RangeId
                     inner join sportfield s on s.SportFieldId = c.SportFieldId
@@ -37,7 +37,7 @@ class Competitie extends BObject{
                                     DATE_FORMAT(StartDate, '%d/%m') else  DATE_FORMAT(StartDate, '%d') end,
                                     '-',
                                     DATE_FORMAT(EndDate, '%d/%m/%Y') 
-                                    )as Perioada, Status, IsOficial, IsEtapa, IsFinala, InSupercupa, Descriere
+                                    )as Perioada, Status, Oficial, IsEtapa, IsFinala, InSupercupa, Descriere
                 FROM `competition` c
                 inner join `range` r on r.RangeId = c.RangeId
                 inner join sportfield s on s.SportFieldId = c.SportFieldId
@@ -56,7 +56,7 @@ class Competitie extends BObject{
                 `RangeId` = :RangeId, 
                 `Targets` = :Targets, 
                 `SportId` = :SportId,
-                 IsOficial = :IsOficial, 
+                 Oficial = :Oficial, 
                  IsEtapa = :IsEtapa, 
                  IsFinala = :IsFinala, 
                  InSupercupa = :InSupercupa,

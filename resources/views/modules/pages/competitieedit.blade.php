@@ -8,7 +8,7 @@
   
     <script>
         let poligoane = @JSON($poligoane);   
-  //      let sportfields = @JSON($sportfields);     
+        let sportfields = @JSON($sportfields);     
     </script>                   
 
 @endsection

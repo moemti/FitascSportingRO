@@ -217,8 +217,8 @@ class Dictionary{
     }
 
     public static function getSports($OrganizationId){
-        $sql = "SELECT SportId, Name
-        FROM sport order by Name";
+        $sql = "SELECT SportFieldId, Name
+        FROM sportfield order by Name";
         return DB::select($sql);
     
     }

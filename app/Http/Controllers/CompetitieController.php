@@ -22,7 +22,7 @@ class CompetitieController extends MasterController
     public function getDictionaries(){
         $OrganizationId = session('organizationId');
  
-        return [ 'poligoane' =>  Dictionary::getRanges($OrganizationId)];
+        return [ 'poligoane' =>  Dictionary::getRanges($OrganizationId), 'sportfields' =>  Dictionary::getSports($OrganizationId)];
     }
 
 
