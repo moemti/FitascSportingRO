@@ -33,6 +33,7 @@ use App\Models\Dictionaries\Poligon;
                                             ['translations', 'Traduceri', hasRangesRight()],
                                             ['poligoaneedit', 'Poligoane', hasRangesRight()],
                                             ['clubedit', 'Club', hasRangesRight()],
+                                            ['competitieedit', 'Competitie', hasRangesRight()],
                                     ], 'Administrare', 'PersonId'
                             ]
              

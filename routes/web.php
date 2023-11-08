@@ -179,6 +179,15 @@ Route::group(['middleware' => 'options'], function () {
             Route::post('echivalareclub', 'App\Http\Controllers\ClubController@echivalareclub');
 
 
+            // competitie
+
+            Route::get('competitieedit', 'App\Http\Controllers\CompetitieController@getList');
+            Route::post('getcompetitiiajax', 'App\Http\Controllers\CompetitieController@getitemsajax');
+            Route::post('getcompetitieajax', 'App\Http\Controllers\CompetitieController@getitemajax');
+            Route::post('savecompetitieajax', 'App\Http\Controllers\CompetitieController@saveitemajax');
+
+
+
 
         });
 

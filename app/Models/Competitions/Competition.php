@@ -30,7 +30,7 @@ class Competition extends BObject{
                                     DATE_FORMAT(EndDate, '%d/%m/%Y') 
                                     ) as Perioada, 
                     
-                    Status
+                    Status, IsOficial, IsEtapa, IsFinala, InSupercupa
                     FROM `competition` c
                     inner join `range` r on r.RangeId = c.RangeId
                     inner join sportfield s on s.SportFieldId = c.SportFieldId
@@ -43,7 +43,7 @@ class Competition extends BObject{
                                     DATE_FORMAT(StartDate, '%d/%m') else  DATE_FORMAT(StartDate, '%d') end,
                                     '-',
                                     DATE_FORMAT(EndDate, '%d/%m/%Y') 
-                                    )as Perioada, Status
+                                    )as Perioada, Status, IsOficial, IsEtapa, IsFinala, InSupercupa, Descriere
                 FROM `competition` c
                 inner join `range` r on r.RangeId = c.RangeId
                 inner join sportfield s on s.SportFieldId = c.SportFieldId
@@ -51,8 +51,8 @@ class Competition extends BObject{
                 c.CompetitionId = :CompetitionId ";
                                     
 
-    public $MasterInsert = "INSERT INTO `competition`(`OrganizationId`, Name, `StartDate`, `EndDate`, `RangeId`, `Targets`, `SportId`)  
-        values  (:_OrganizationId_, ':Name', ':StartDate',  ':EndDate', :RangeId, :Targets, :SportId)";            
+    public $MasterInsert = "INSERT INTO `competition`(`OrganizationId`, Name, `StartDate`, `EndDate`, `RangeId`, `Targets`, `SportId`, IsOficial, IsEtapa, IsFinala, InSupercupa, Descriere)  
+        values  (:_OrganizationId_, ':Name', ':StartDate',  ':EndDate', :RangeId, :Targets, :SportId, , :IsOficial, :IsEtapa, :IsFinala, :InSupercupa, ':Descriere')";            
    
 
     public $MasterUpdate = "UPDATE `competition` 
@@ -61,7 +61,12 @@ class Competition extends BObject{
                 `EndDate` = ':EndDate', 
                 `RangeId` = :RangeId, 
                 `Targets` = :Targets, 
-                `SportId` = :SportId
+                `SportId` = :SportId,
+                 IsOficial = :IsOficial, 
+                 IsEtapa = :IsEtapa, 
+                 IsFinala = :IsFinala, 
+                 InSupercupa = :InSupercupa,
+                 Descriere  = ':Descriere'
             where CompetitionId = :CompetitionId";
 
     public $MasterDelete = "delete from competition
