@@ -115,6 +115,7 @@
                             @php 
                                 $exists = false;
                                 $cl =  $clasament;
+                                if ($cl)
                                 foreach( $cl as $person) {
                                     if ($person->PersonId === session("PersonId")){
                                         $exists = true;
