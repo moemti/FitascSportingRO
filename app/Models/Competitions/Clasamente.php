@@ -37,7 +37,7 @@ class Clasamente extends BObject{
             
             
             where year(c.StartDate) = :Year 
-            and p.CountryId = 1
+            and p.CountryId = 1 and c.Oficial = 1
             group by p.Name, p.PersonId
             order by ProcentR desc
         ";
@@ -93,7 +93,7 @@ class Clasamente extends BObject{
                             ) AS row_num
                       FROM result r 
                                         inner join person p on p.PersonId = r.PersonId 
-                                        inner join competition c on c.CompetitionId = r.CompetitionId and c.Status = 'Finished'
+                                        inner join competition c on c.CompetitionId = r.CompetitionId and c.Status = 'Finished' and c.Oficial = 1
                                         where year(c.StartDate) =  :Year 
                                         and p.CountryId = 1 and ifNull(r.Aborted,0) = 0 
 

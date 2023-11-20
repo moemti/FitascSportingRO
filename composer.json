@@ -11,7 +11,8 @@
         "laravel/framework": "^8.65",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
-        "phpoffice/phpspreadsheet": "^1.22"
+        "phpoffice/phpspreadsheet": "^1.22",
+        "simplesoftwareio/simple-qrcode": "^4.2"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
@@ -41,8 +42,6 @@
         "files": [
             "app/Classes/TransEx.php",
             "app/Classes/Menu.php"
-
-            
         ]
     },
 

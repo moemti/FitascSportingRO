@@ -1,5 +1,6 @@
 
 
+
     let smcolumns = [];
     let dsCompetitiiY = [];
 
@@ -19,40 +20,22 @@
 
     if (window.innerWidth > 900){
         smcolumns = [
-            { text: translate('Nume'), dataField: 'Name', width: '35%' },
-            { text: translate('Locatie'), dataField: 'Range', width: '30%' },
+            { text: translate('Nume'), dataField: 'Name', width: '30%' },
+            { text: translate('Tip'), dataField: 'Tip', width: '10%' },
+            { text: translate('Locatie'), dataField: 'Range', width: '25%' },
             { text: translate('Perioada'), dataField: 'Perioada', width: '20%' },
             { text: translate('Stare'), dataField: 'Status', width: '10%', cellclassname: cellclassStatus},// ,filtertype: 'checkedlist', filteritems: [...new Set(dsCompetitii.Year)]},
-            { text: '', dataField: 'CompetitionId', width: '5%', 
-                      //  columntype:'button', 
-                            cellsrenderer: cellsrenderer,
-                            
-                            
-                        //     function () {
-                        // return "...";                 
-                        // }, 
-             
-               
-                }
+            {
+                text: '', dataField: 'CompetitionId', width: '5%',
+                cellsrenderer: cellsrenderer,
+            }
         ]
     }
     else{
             smcolumns = [ { text: translate('Nume'), dataField: 'NumeLung', width: '70%' },
             { text: translate('Stare'), dataField: 'Status', width: '15%' , cellclassname: cellclassStatus},
             { text: '', dataField: 'CompetitionId', width: '15%', 
-              cellsrenderer: cellsrenderer,
-            
-            // buttonclick: function (row) {
-            // // open the popup window when the user clicks a button.
-            //     let editrow = row;
-            //     // var offset = $("#grid").offset();
-            //     var dataRecord = $("#jqxGrid").jqxGrid('getrowdata', editrow);
-            //     const CompetitionId = dataRecord.CompetitionId
-
-            //         document.location.href = `clasament/${CompetitionId}`;
-            // }
-        
-
+                cellsrenderer: cellsrenderer,
             }
         ]
     }
@@ -84,12 +67,13 @@
 			localdata: dsCompetitiiY,
 			dataFields:
 					[
-						{ name: 'Name', type: 'string' },
-						{ name: 'NumeLung', type: 'string' },
-						{ name: 'Range', type: 'string' },
-						{ name: 'CompetitionId', type: 'number'},
-						{ name: 'Perioada', type: 'string' },
-                        { name: 'Status', type: 'string'},
+                    { name: 'Name', type: 'string' },
+                    { name: 'NumeLung', type: 'string' },
+                    { name: 'Range', type: 'string' },
+                    { name: 'CompetitionId', type: 'number' },
+                    { name: 'Perioada', type: 'string' },
+                    { name: 'Status', type: 'string' },
+                    { name: 'Tip', type: 'string' },
 					]			
 		};
 		
@@ -131,7 +115,17 @@
 		};
         var dataAdapterY = new $.jqx.dataAdapter(dsYears2);
 
-        $("#jqxYear").jqxDropDownList({source: dataAdapterY ,selectedIndex: 0, displayMember: "Year", valueMember: "Year", width: '200px', height: '25px'});
+        let selectedindex = 0;
+
+        let now = new Date().getFullYear()
+
+
+
+        selectedindex = dsYears2.localdata.findIndex(function (y) {
+            return y.Year == now
+        });
+
+        $("#jqxYear").jqxDropDownList({ source: dataAdapterY, selectedIndex: selectedindex, displayMember: "Year", valueMember: "Year", width: '200px', height: '25px' });
 
         $('#jqxYear').on('select', function (event) {
 

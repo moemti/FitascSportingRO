@@ -114,6 +114,13 @@ Route::group(['middleware' => 'options'], function () {
         Route::get('/loginApiToken', 'App\Http\Controllers\Auth\LoginController@loginApiToken');
         Route::get('/logoutApi', 'App\Http\Controllers\Auth\LoginController@logoutApi');
 
+        Route::GET('/imregisteredAPI/{CompetitionId}/{PersonId}', 'App\Http\Controllers\CompetitiiController@imregisteredAPI');
+        Route::GET('/registermeAPI/{CompetitionId}/{PersonId}', 'App\Http\Controllers\CompetitiiController@registermeAPI');
+        Route::GET('/listaParticipantiAPI/{CompetitionId}', 'App\Http\Controllers\CompetitiiController@listaParticipantiAPI');
+        
+
+
+
         /******************/
 
 
@@ -122,8 +129,16 @@ Route::group(['middleware' => 'options'], function () {
         Route::GET('/competitionListDown/{id}', 'App\Http\Controllers\CompetitiiController@getClasamentList');
         Route::GET('/competitionDownSquads/{id}/{day}', 'App\Http\Controllers\CompetitiiController@getClasamentSquads');
         Route::GET('/competitionListDownSerii/{id}', 'App\Http\Controllers\CompetitiiController@getClasamentListSerii');
+        Route::GET('/competitionTimetable/{id}', 'App\Http\Controllers\CompetitiiController@competitionTimetable');
+        Route::POST('/generateTimetable', 'App\Http\Controllers\CompetitiiController@generateTimetable');
+
+        
+        
         Route::get('/competitionattachment/{id}', 'App\Http\Controllers\CompetitiiController@getCompetitionAttachment');
         Route::get('/competitionattachment/{id}/{filename}', 'App\Http\Controllers\CompetitiiController@getCompetitionAttachmentByName');
+
+        Route::get('/competitieQRCode', 'App\Http\Controllers\CompetitiiController@getBarCode');
+
         
  //
         Route::get('/editattachments/{id}', 'App\Http\Controllers\CompetitiiController@geteditattach');

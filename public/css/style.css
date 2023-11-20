@@ -911,13 +911,15 @@ button.toast-close-button {
 
 .compet_status {
   text-decoration: solid;
-  padding: 3px 1rem;
-  display: inline-block;
+  padding: 3px, 0, 0, 2rem;
+  display: flex;
   border-radius: .5rem;
   transition: all .2s;
   position: absolute;
   color: #050000;
-  border: none; }
+  border: none; 
+  min-width: 100%;
+justify-content: flex-end;}
   .compet_status.Open {
     color: #026602; }
   .compet_status.Progress {

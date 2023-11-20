@@ -311,46 +311,62 @@
     function addCompetitor(){
         let Data = {};
         Data.CompetitionId = $('#CompetitionId').val();
-       
-
         $.ajax({
             type: 'POST',
-    
             url: baseUrl + '/registerCompetitor',
             data: Data,
             success: function (data) {
-                
-                    $("#popup_body").html(data);
-
+                $("#popup_body").html(data);
                     $("#popupDialog").modal({
                         backdrop: 'static',
                         keyboard: false
                     }).show();
-                    
                     $('#btnPopupCloseModal').off().on('click', 
                          ()=>{
                         $("#popupDialog").modal({
                             backdrop: 'static',
                             keyboard: false
                         }).hide();
-                    }
-                    
-                    
+                         }
                     );
                     
                     $('#btnPopupSaveModal').off().on('click', addCompetitorDB);
-                    $('#PersonId').off().on('change', onChangePerson);
-     
-            
+                $('#PersonId').off().on('change', onChangePerson);
             },
             error: function(e){
                 ShowError(e);
             }
         });
+}
+
+function genereazaTimetable() {
+    confirm('Doriti sa generati programul?', genereazaTimetableDo);
+}
+
+function genereazaTimetableDo() {
 
 
-       
-    }        
+
+    let Data = {};
+    Data.CompetitionId = $('#CompetitionId').val();
+    $.ajax({
+        type: 'POST',
+        url: baseUrl + '/generateTimetable',
+        data: Data,
+
+        success: function (data) {
+            if (data === 'OK') {
+                ShowSuccess('S-a adaugat cu success');
+            } else {
+                ShowError(data);
+            }
+        },
+        error: function (e) {
+            ShowError(e);
+        }
+    });
+}    
+
 
 
     function RetrieveFields(){
@@ -484,6 +500,9 @@
         $("#addCompetitor").on('click', addCompetitor);
        
         $("#exportexcel").on('click', downloadDetailExcel);
+
+        $("#btnGenTimetable").on('click', genereazaTimetable);
+
 
 
         function downloadDetailExcel() {

@@ -1,10 +1,13 @@
 <?php
 
+
 namespace App\Http\Controllers;
 
 
 
+
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Cell\DataType;
 use Illuminate\Http\Request;
@@ -12,6 +15,8 @@ use Illuminate\Support\Facades\Redirect;
 use App\Http\Controllers\MasterController;
 use App\Models\Dictionaries\Dictionary;
 use App\Models\Competitions\Competition;
+use QrCode;
+use Storage;
 
 class CompetitiiController extends MasterController
 {
@@ -197,15 +202,12 @@ class CompetitiiController extends MasterController
     }
 
     function galleryUpload(Request $request){
-  
             $CompetitionId = $request->CompetitionId;
             $countfiles = count($_FILES['file']['name']);
-           
             for($i=0;$i<$countfiles;$i++){
                 $filename = $_FILES['file']['name'][$i];
                 move_uploaded_file($_FILES['file']['tmp_name'][$i],"img/gallery/competitions/$CompetitionId/$filename");
             }
-        
     }
     // ===========  Atachments ==========
 
@@ -215,7 +217,6 @@ class CompetitiiController extends MasterController
         $filename = "img/attachments/competitions/{$r->CompetitionId}/{$r->FileName}";
 
             if (file_exists($filename)) {     
-                
                 //Define header information
                     header('Content-Description: File Transfer');
                     header('Content-Type: application/octet-stream');
@@ -233,41 +234,35 @@ class CompetitiiController extends MasterController
 
                     //Terminate from the script
                     die();
-            
             }
             else
                 echo $filename;
-        
-        
     }
 
     function getCompetitionAttachmentByName($competition, $filename){
-        
         $filename = "img/attachments/competitions/{$competition}/{$filename}";
-
-            if (file_exists($filename)) {     
-                
-                //Define header information
-                    header('Content-Description: File Transfer');
-                    header('Content-Type: application/octet-stream');
-                    header("Cache-Control: no-cache, must-revalidate");
-                    header("Expires: 0");
-                    header('Content-Disposition: attachment; filename="'.basename($filename).'"');
-                    header('Content-Length: ' . filesize($filename));
-                    header('Pragma: public');
-
-                    //Clear system output buffer
-                    flush();
-
-                    //Read the size of the file
-                    readfile($filename);
-
-                    //Terminate from the script
-                    die();
+        if (file_exists($filename)) {     
             
-            }
-            else
-                echo $filename;
+            //Define header information
+                header('Content-Description: File Transfer');
+                header('Content-Type: application/octet-stream');
+                header("Cache-Control: no-cache, must-revalidate");
+                header("Expires: 0");
+                header('Content-Disposition: attachment; filename="'.basename($filename).'"');
+                header('Content-Length: ' . filesize($filename));
+                header('Pragma: public');
+
+                //Clear system output buffer
+                flush();
+
+                //Read the size of the file
+                readfile($filename);
+
+                //Terminate from the script
+                die();
+        }
+        else
+            echo $filename;
         
         
     }
@@ -540,6 +535,20 @@ class CompetitiiController extends MasterController
         $sheet2->setCellValue('C1',$title);
         $sheet2->setCellValue('AC1',$date);
 
+
+        $drawing = new Drawing();
+        $drawing->setName('Paid');
+        $drawing->setDescription('Paid');
+        $drawing->setPath(storage_path().'/app/img/qr-code/img-1.svg'); /* put your path and image here img-1'  . '.svg */
+        $drawing->setCoordinates('AE2');
+      //  $drawing->setOffsetX(110);
+    //    $drawing->setRotation(25);
+        $drawing->getShadow()->setVisible(true);
+   //     $drawing->getShadow()->setDirection(45);
+        $drawing->setWorksheet($sheet2);
+     
+      //  $sheet2->setCellValue('AC1',$drawing);
+
         foreach($dataset as $d){
 
             if ($nr + 1 < $d->NrSerie){
@@ -559,6 +568,19 @@ class CompetitiiController extends MasterController
                 $sheet2->setCellValue('A2', 'Seria '. $d->NrSerie);
                 $sheet2->setCellValue('C1',$title);
                 $sheet2->setCellValue('AC1',$date);
+
+        //         $drawing = new Drawing();
+        //         $drawing->setName('Paid');
+        //         $drawing->setDescription('Paid');
+        //         $drawing->setPath(storage_path().'/app/img/qr-code/img-1.svg'); /* put your path and image here img-1'  . '.svg */
+        //         $drawing->setCoordinates('AE2');
+        //       //  $drawing->setOffsetX(110);
+        //     //    $drawing->setRotation(25);
+        //         $drawing->getShadow()->setVisible(true);
+        //    //     $drawing->getShadow()->setDirection(45);
+        //         $drawing->setWorksheet($sheet2);
+
+
                 $row = 7;
 
 
@@ -658,8 +680,6 @@ class CompetitiiController extends MasterController
             $sheet->setCellValue(IncColumn($col).$row, strval('Rezultat Cat'));
        }
 
-
-
         IncRow($row);
         $col = 'B';
 
@@ -671,9 +691,6 @@ class CompetitiiController extends MasterController
                 $sheet->setCellValue(IncColumn($col).$row, strval($d->BIB)); 
                 $sheet->setCellValue(IncColumn($col).$row, strval($d->NrSerie)); 
             }
-           
-
-
 
             $sheet->setCellValue(IncColumn($col).$row, strval($d->Person));
             $sheet->setCellValue(IncColumn($col).$row, strval($d->Category));
@@ -695,12 +712,7 @@ class CompetitiiController extends MasterController
                 $sheet->setCellValue(IncColumn($col).$row, strval($d->Procent));
                 $sheet->setCellValue(IncColumn($col).$row, strval($d->ShootOffS));
                 $sheet->setCellValue(IncColumn($col).$row, strval($d->ResultatCat));
-                
-
             }
-               
-         
-
 
             $col = 'B';
             IncRow($row);
@@ -954,6 +966,97 @@ class CompetitiiController extends MasterController
 
     public function getCompetitiiAPI(){
         return $this->BObject()->getCompetitiiAPI();
+    }
+
+    public function imregisteredAPI($CompetitionId, $PersonId){
+        return  $this->BObject()->imregisteredAPI($CompetitionId, $PersonId);
+    }
+
+    public function registermeAPI($CompetitionId, $PersonId){
+        return  $this->BObject()->registermeAPI($CompetitionId, $PersonId);
+    }
+
+    public function listaParticipantiAPI($CompetitionId){
+        return  $this->BObject()->listaParticipantiAPI($CompetitionId);
+
+    }
+
+    public function getBarCode(){
+     
+     
+        // outputs image directly into browser, as PNG stream
+        $image = QrCode::size(300)->generate('https://techvblogs.com/blog/generate-qr-code-laravel-8') ;
+        $output_file = '/img/qr-code/img-1'  . '.svg';
+        Storage::disk('local')->put($output_file, $image); //storage/app/public/img/qr-code/img-1557309130.png
+
+    }
+
+
+
+    public function generateTimetable(Request $request){
+        $CompetitionId = $request->CompetitionId;
+        return  $this->BObject()->generateTimetable($CompetitionId); 
+    }
+
+
+    public function competitionTimetable($CompetitionId, $Day){
+        $dataset = $this->BObject()->geCompetitionTimetable($CompetitionId, $Day);
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // header
+        $row = 4;
+        $col = 'B';
+        $sheet->setCellValue('B2', "Program ziua {$Day}");
+
+        function IncColumn(&$column){
+            $loc = $column;
+            $column++;
+            return $loc;
+        }
+
+        function IncRow(&$row){
+            $loc = $row;
+            $row++;            
+            return $loc;
+        }
+        $spreadsheet->getDefaultStyle()->getNumberFormat()->setFormatCode('#');
+
+        $sheet->setCellValue(IncColumn($col).$row, 'BIB');
+        $sheet->setCellValue(IncColumn($col).$row, 'Serie');
+        $sheet->setCellValue(IncColumn($col).$row, 'Nume');
+        $sheet->setCellValue(IncColumn($col).$row, 'Categorie');
+        $sheet->setCellValue(IncColumn($col).$row, 'Echipa');
+       
+        IncRow($row);
+        $col = 'B';
+
+        foreach($dataset as $d){
+            $sheet->setCellValue(IncColumn($col).$row, strval($d->BIB));
+            $sheet->setCellValue(IncColumn($col).$row, strval($d->NrSerie));
+            $sheet->setCellValue(IncColumn($col).$row, strval($d->Person));
+            $sheet->setCellValue(IncColumn($col).$row, strval($d->Category));
+            $sheet->setCellValue(IncColumn($col).$row, strval($d->Team));
+            $col = 'B';
+            IncRow($row);
+        }
+        $col = 'B';
+        for ($i = 1; $i <= 20; $i++) {
+            $sheet->getStyle($col)->getAlignment()->setHorizontal('left');
+            $sheet->getColumnDimension(IncColumn($col))->setAutoSize(true);
+        }
+        ob_clean();
+        $writer = new Xlsx($spreadsheet);
+        $filename = 'program.xlsx';
+        
+        header('Content-Description: File Transfer');
+        header('Content-Type:  application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header("Content-Disposition: attachment; filename=$filename");
+
+        ob_end_clean();
+        $writer->save('php://output');
+        die;
+
     }
 
 }

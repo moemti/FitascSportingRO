@@ -37,7 +37,12 @@ class Competitie extends BObject{
                                     DATE_FORMAT(StartDate, '%d/%m') else  DATE_FORMAT(StartDate, '%d') end,
                                     '-',
                                     DATE_FORMAT(EndDate, '%d/%m/%Y') 
-                                    )as Perioada, Status, Oficial, IsEtapa, IsFinala, InSupercupa, Descriere
+                                    )as Perioada, Status, Oficial, IsEtapa, IsFinala, InSupercupa, Descriere, ScheduleType,
+                 ScheduleInterval ,
+                 NrPoligoane,
+                 NrPosturiPoligon,
+                 DATE_FORMAT(FirstDayStartTime, '%H:%i') as FirstDayStartTime,
+                 DATE_FORMAT(SecondDayStartTime, '%H:%i' )as SecondDayStartTime
                 FROM `competition` c
                 inner join `range` r on r.RangeId = c.RangeId
                 inner join sportfield s on s.SportFieldId = c.SportFieldId
@@ -45,8 +50,20 @@ class Competitie extends BObject{
                 c.CompetitionId = :CompetitionId ";
                                     
 
-    public $MasterInsert = "INSERT INTO `competition`( Name, `StartDate`, `EndDate`, `RangeId`, `Targets`, `SportFieldId`, Oficial, IsEtapa, IsFinala, InSupercupa, Descriere, Status)  
-        values  ( ':Name', ':StartDate',  ':EndDate', :RangeId, :Targets, :SportFieldId,  :Oficial, :IsEtapa, :IsFinala, :InSupercupa, ':Descriere', 'Closed')";            
+    public $MasterInsert = "INSERT INTO `competition`( Name, `StartDate`, `EndDate`, `RangeId`, `Targets`, `SportFieldId`, Oficial, IsEtapa, IsFinala, InSupercupa, Descriere, Status,
+                 ScheduleType,
+                 ScheduleInterval ,
+                 NrPoligoane,
+                 NrPosturiPoligon,
+                 FirstDayStartTime,
+                 SecondDayStartTime)  
+        values  ( ':Name', ':StartDate',  ':EndDate', :RangeId, :Targets, :SportFieldId,  :Oficial, :IsEtapa, :IsFinala, :InSupercupa, ':Descriere', 'Closed',
+                ':ScheduleType',
+                 :ScheduleInterval ,
+                 :NrPoligoane,
+                 :NrPosturiPoligon,
+                 ':FirstDayStartTime',
+                 ':SecondDayStartTime')";            
    
 
     public $MasterUpdate = "UPDATE `competition` 
@@ -60,7 +77,14 @@ class Competitie extends BObject{
                  IsEtapa = :IsEtapa, 
                  IsFinala = :IsFinala, 
                  InSupercupa = :InSupercupa,
-                 Descriere  = ':Descriere'
+                 Descriere  = ':Descriere',
+                 ScheduleType = ':ScheduleType',
+                 ScheduleInterval = :ScheduleInterval, 
+                 NrPoligoane = :NrPoligoane, 
+                 NrPosturiPoligon = :NrPosturiPoligon ,
+                 FirstDayStartTime = '1900-01-01 :FirstDayStartTime :00',
+                 SecondDayStartTime = '1900-01-01 :SecondDayStartTime :00'
+
             where CompetitionId = :CompetitionId";
 
     public $MasterDelete = "delete from competition

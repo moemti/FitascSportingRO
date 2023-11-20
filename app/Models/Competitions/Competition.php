@@ -30,7 +30,7 @@ class Competition extends BObject{
                                     DATE_FORMAT(EndDate, '%d/%m/%Y') 
                                     ) as Perioada, 
                     
-                    Status, Oficial, IsEtapa, IsFinala, InSupercupa
+                    Status, Oficial, IsEtapa, IsFinala, InSupercupa, case when Oficial then 'Oficiala' else 'Locala' end as Tip
                     FROM `competition` c
                     inner join `range` r on r.RangeId = c.RangeId
                     inner join sportfield s on s.SportFieldId = c.SportFieldId
@@ -74,7 +74,7 @@ class Competition extends BObject{
 
 
         public $ClasamentSelect2 = "
-        SELECT row_number() over(order by r.BIB, p.Name)  as Position, 
+        SELECT row_number() over(order by p.Name)  as Position, 
             p.PersonId, p.Name as Person, sc.Code as Category, t.Name as Team , r.ResultId, NULL AS BIB, 
             r.IsInTeam, NULL AS NrSerie,  p.SerieNrCI, p.CNP, p.SeriePermisArma, p.DataExpPermis, p.MarcaArma, p.SerieArma, p.CalibruArma, r.TeamName,
                         Round(Percent,2) as Procent, Round(PercentR,2) as ProcentR,
@@ -347,7 +347,8 @@ class Competition extends BObject{
                                     '-',
                                     DATE_FORMAT(EndDate, '%d/%m/%Y') 
                                     )as Perioada, Status, 
-            case when re.PersonId is null then 0 else 1 end as Inscris, r.RangeId, r.Coordinates, r.Address, r.Phone, cy.Name as Country
+            case when re.PersonId is null then 0 else 1 end as Inscris, r.RangeId, r.Coordinates, r.Address, r.Phone, cy.Name as Country,
+            Oficial, IsEtapa, IsFinala, InSupercupa, case when Oficial then 'Oficiala' else 'Locala' end as Tip
             FROM `competition` c
             inner join `range` r on r.RangeId = c.RangeId
             inner join sportfield s on s.SportFieldId = c.SportFieldId
@@ -719,6 +720,8 @@ class Competition extends BObject{
             if (in_array($Status, ['Finished', 'Progress'])){
                 return DB::select(str_replace(':CompetitionId', $CompetitionId,$this->ClasamentSelectOpen));
             }
+            if ($Status == 'Open' )
+             return DB::select(str_replace(':CompetitionId', $CompetitionId,$this->ClasamentSelect2));
 
 
 
@@ -1277,5 +1280,130 @@ class Competition extends BObject{
           return DB::select($sql);
 
         }
-}
 
+        public function imregisteredAPI($CompetitionId, $PersonId){
+            $sql = " select 1 from result
+            where CompetitionId = $CompetitionId and PersonId = $PersonId";
+            return ["Registered" => count(DB::select($sql)) > 0];
+        }
+    
+        public function registermeAPI($CompetitionId, $PersonId){
+            $registered = $this->imregisteredAPI($CompetitionId, $PersonId)["Registered"];
+            if ($registered == true){
+                 $this->unRegisterMe($CompetitionId, $PersonId);
+            }
+            else{
+                 $this->registerMe($CompetitionId, $PersonId);
+            }
+            return $this->imregisteredAPI($CompetitionId, $PersonId);
+        }
+
+        public function listaParticipantiAPI($CompetitionId){
+            return DB::select(str_replace(':CompetitionId', $CompetitionId,$this->ClasamentSelect2));
+        }
+
+        public function geCompetitionTimetable($CompetitionId, $Day){
+            $sql = "
+            select Day, Ora, Poligon, Post, Serie
+            from schedule s
+            where s.CompetitionId = {$CompetitionId} and s.Day = {$Day}
+            order by Day, Ora, Poligon , Post, Serie
+            ";
+
+            return DB::select($sql);
+        }
+
+        public function generateTimetable ($CompetitionId){
+            // stergem daca exista
+            try {
+                DB::select ("delete from schedule where CompetitionId = {$CompetitionId} ");
+
+                $ds =  DB::select ("select ScheduleType,
+                    ScheduleInterval ,
+                    NrPoligoane,
+                    NrPosturiPoligon,
+                    DATE_FORMAT(FirstDayStartTime, '%H:%i') as FirstDayStartTime,
+                    DATE_FORMAT(SecondDayStartTime, '%H:%i' )as SecondDayStartTime
+                    from competition where CompetitionId = {$CompetitionId} ");
+
+                $NrSerii = DB::select("select Max(NrSerie) as NrSerii from result where  CompetitionId = {$CompetitionId}")[0]->NrSerii;
+
+                if (count($ds) == 0)
+                    return 'No schedule';
+
+                generateTimetableDay($CompetitionId, 1, $ds[0], $NrSerii);
+                generateTimetableDay($CompetitionId, 2, $ds[0], $NrSerii);
+                return 'OK';
+            } catch (\Exception $e) {
+                return $e->getMessage();
+            }
+        }
+
+        public function generateTimetableDay ($CompetitionId, $Day, $ds, $NrSerii){
+            $OraIncepere = ($Day == 1)?$ds->FirstDayStartTime:$ds[0]->SecondDayStartTime;
+            $Interval = $ds->ScheduleInterval;
+            $NrPoligoane =  $ds->NrPoligoane;
+            $NrPost =  $ds->NrPosturiPoligon;
+            $ScheduleType = $ds->ScheduleType;
+            $poligoane = [];
+            $ADone = [];
+            $ora = '';
+            $min = '';
+
+            if ($ScheduleType == "Normal"){
+                $Ora = $OraIncepere;
+                $Seria = 1;
+
+                // initializam arrrayul de poligoane
+                for ($p = 1; $p <= $NrPoligoane ; $p++) {
+                    array_push($poligoane, []);
+                    array_push($ADone, false);
+
+                }
+
+                $Done = false;
+                $p = 1;
+                $seria = 1;
+                while (!$Done){
+                    if (count($poligoane[$p]) < $NrSerii){
+                        while (in_array($seria , $poligoane[$p])){
+                            $seria = ($seria + 1) % $NrSerii;
+                        }
+
+                        array_push($poligoane[$p], $seria);
+                    }else{
+                        $ADone[$p] = true;
+                    }
+
+                    // verific daca toate s-au termniat
+                    $Done = true;
+                    for ($p = 1; $p <= $NrPoligoane ; $p++) {
+                        $Done = $Done && $ADone[$p];
+                    }
+
+                    $p = ($p + 1) % $NrPoligoane;
+
+                }
+
+                $ora = substr($OraIncepere, 0, 2); 
+                $min = substr($OraIncepere, 3, 2); 
+                for ($s = 1; $s <= $NrSerii ; $s++) {
+                    $DeLa = "1900-01-01 $ora:$min";
+
+                    for ($p = 1; $p <= $NrPoligoane ; $p++) {
+                        $sql = "INSERT INTO `schedule`(`CompetitionId`, `Day`, `Poligon`, `Post`, `Ora`, `Serie`) values ($CompetitionId, $Day, $p, 1, $DeLa, $poligoane[$s])";
+                        DB::select($sql);
+                    }
+
+                    $min = (($min * 1) + $interval) % 60;
+                    $ora = ($ora * 1 ) + $min / 60;
+
+                    $min = str_pad($min, 2, "0", STR_PAD_LEFT);
+                    $ora = str_pad($ora, 2, "0", STR_PAD_LEFT);
+                }
+            }
+
+
+        }
+    
+}
