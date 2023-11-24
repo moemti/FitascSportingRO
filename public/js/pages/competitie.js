@@ -356,7 +356,7 @@ function genereazaTimetableDo() {
 
         success: function (data) {
             if (data === 'OK') {
-                ShowSuccess('S-a adaugat cu success');
+                ShowSuccess('S-a creat programul cu success');
             } else {
                 ShowError(data);
             }

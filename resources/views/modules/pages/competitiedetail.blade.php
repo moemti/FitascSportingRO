@@ -174,8 +174,8 @@
                             <a id="btnAddResults"  href="{{url('/editresultsall/').'/'.$master[0]->CompetitionId}}" data-status="Finished" class=" btn btn-secondary btn-outline mb-2">Adauga rezultate</a>
                         @endif
                             <a id="btnDownloadListaAll" href="{{url('/competitionListDownSerii/').'/'.$master[0]->CompetitionId}}" data-type="Diff" class=" btn btn-secondary btn-outline mb-2">{{transex('Download serii')}}</a>
-                            <a id="btnDownloadProgram" href="{{url('/competitionTimetable/').'/'.$master[0]->CompetitionId}}"  class=" btn btn-secondary btn-outline mb-2">{{transex('Download program')}}</a>
-
+                            <a id="btnDownloadProgram" href="{{url('/competitionTimetable/').'/'.$master[0]->CompetitionId}}/1"  class=" btn btn-secondary btn-outline mb-2">{{transex('Download program ziua 1')}}</a>
+                            <a id="btnDownloadProgram" href="{{url('/competitionTimetable/').'/'.$master[0]->CompetitionId}}/2"  class=" btn btn-secondary btn-outline mb-2">{{transex('Download program ziua 2')}}</a>
                         @break
 
 
@@ -187,6 +187,8 @@
                         @endif
                         
                         <a id="btnDownloadResultsAll" href="{{url('/competitionResultsDown/').'/'.$master[0]->CompetitionId}}" data-type="Diff" class=" btn btn-danger btn-outline mb-2">{{transex('Download clasamente')}}</a>
+                              <a id="btnDownloadProgram" href="{{url('/competitionTimetable/').'/'.$master[0]->CompetitionId}}/1"  class=" btn btn-secondary btn-outline mb-2">{{transex('Download program ziua 1')}}</a>
+                            <a id="btnDownloadProgram" href="{{url('/competitionTimetable/').'/'.$master[0]->CompetitionId}}/2"  class=" btn btn-secondary btn-outline mb-2">{{transex('Download program ziua 2')}}</a>
                         @break
 
                 @endswitch

@@ -484,7 +484,6 @@ class CompetitiiController extends MasterController
     }
 
     public function getClasamentSquads ($CompetitionId, $Day){
-      
 
         $dataset = $this->BObject()->GetCompetitors($CompetitionId);
         $info = Competition::getCompetitionInfo($CompetitionId);
@@ -982,24 +981,31 @@ class CompetitiiController extends MasterController
     }
 
     public function getBarCode(){
-     
-     
         // outputs image directly into browser, as PNG stream
         $image = QrCode::size(300)->generate('https://techvblogs.com/blog/generate-qr-code-laravel-8') ;
         $output_file = '/img/qr-code/img-1'  . '.svg';
         Storage::disk('local')->put($output_file, $image); //storage/app/public/img/qr-code/img-1557309130.png
-
     }
-
-
 
     public function generateTimetable(Request $request){
         $CompetitionId = $request->CompetitionId;
         return  $this->BObject()->generateTimetable($CompetitionId); 
     }
 
-
     public function competitionTimetable($CompetitionId, $Day){
+
+            function IncColumn(&$column){
+                $loc = $column;
+                $column++;
+                return $loc;
+            }
+
+            function IncRow(&$row){
+                $loc = $row;
+                $row++;            
+                return $loc;
+            }
+
         $dataset = $this->BObject()->geCompetitionTimetable($CompetitionId, $Day);
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
@@ -1008,42 +1014,33 @@ class CompetitiiController extends MasterController
         $row = 4;
         $col = 'B';
         $sheet->setCellValue('B2', "Program ziua {$Day}");
-
-        function IncColumn(&$column){
-            $loc = $column;
-            $column++;
-            return $loc;
-        }
-
-        function IncRow(&$row){
-            $loc = $row;
-            $row++;            
-            return $loc;
-        }
         $spreadsheet->getDefaultStyle()->getNumberFormat()->setFormatCode('#');
+        $sheet->setCellValue(IncColumn($col).$row, 'Ora');
 
-        $sheet->setCellValue(IncColumn($col).$row, 'BIB');
-        $sheet->setCellValue(IncColumn($col).$row, 'Serie');
-        $sheet->setCellValue(IncColumn($col).$row, 'Nume');
-        $sheet->setCellValue(IncColumn($col).$row, 'Categorie');
-        $sheet->setCellValue(IncColumn($col).$row, 'Echipa');
-       
-        IncRow($row);
+        $OldPoligon = 0;
+
+        $poligoane = [];
+        foreach($dataset as $d){
+
+            if  (!in_array($d->Poligon , $poligoane)){
+                $p = $d->Poligon;
+                $sheet->setCellValue(IncColumn($col).$row, "P $p");
+                $OldPoligon = $d->Poligon;
+                array_push($poligoane, $d->Poligon);
+            }
+        }
         $col = 'B';
+        $IsNew = true;
+        $OldOra = "";
 
         foreach($dataset as $d){
-            $sheet->setCellValue(IncColumn($col).$row, strval($d->BIB));
-            $sheet->setCellValue(IncColumn($col).$row, strval($d->NrSerie));
-            $sheet->setCellValue(IncColumn($col).$row, strval($d->Person));
-            $sheet->setCellValue(IncColumn($col).$row, strval($d->Category));
-            $sheet->setCellValue(IncColumn($col).$row, strval($d->Team));
-            $col = 'B';
-            IncRow($row);
-        }
-        $col = 'B';
-        for ($i = 1; $i <= 20; $i++) {
-            $sheet->getStyle($col)->getAlignment()->setHorizontal('left');
-            $sheet->getColumnDimension(IncColumn($col))->setAutoSize(true);
+            if ($OldOra != $d->Ora){
+                $col = 'B';
+                IncRow($row);
+                $sheet->setCellValue(IncColumn($col).$row, strval( substr($d->Ora, 11, 5)));
+                $OldOra = $d->Ora;
+            }
+            $sheet->setCellValue(IncColumn($col).$row, strval($d->Serie));
         }
         ob_clean();
         $writer = new Xlsx($spreadsheet);

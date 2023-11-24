@@ -1314,7 +1314,6 @@ class Competition extends BObject{
         }
 
         public function generateTimetable ($CompetitionId){
-            // stergem daca exista
             try {
                 DB::select ("delete from schedule where CompetitionId = {$CompetitionId} ");
 
@@ -1323,7 +1322,7 @@ class Competition extends BObject{
                     NrPoligoane,
                     NrPosturiPoligon,
                     DATE_FORMAT(FirstDayStartTime, '%H:%i') as FirstDayStartTime,
-                    DATE_FORMAT(SecondDayStartTime, '%H:%i' )as SecondDayStartTime
+                    DATE_FORMAT(SecondDayStartTime, '%H:%i' ) as SecondDayStartTime
                     from competition where CompetitionId = {$CompetitionId} ");
 
                 $NrSerii = DB::select("select Max(NrSerie) as NrSerii from result where  CompetitionId = {$CompetitionId}")[0]->NrSerii;
@@ -1331,8 +1330,8 @@ class Competition extends BObject{
                 if (count($ds) == 0)
                     return 'No schedule';
 
-                generateTimetableDay($CompetitionId, 1, $ds[0], $NrSerii);
-                generateTimetableDay($CompetitionId, 2, $ds[0], $NrSerii);
+                $this->generateTimetableDay($CompetitionId, 1, $ds[0], $NrSerii);
+                $this->generateTimetableDay($CompetitionId, 2, $ds[0], $NrSerii);
                 return 'OK';
             } catch (\Exception $e) {
                 return $e->getMessage();
@@ -1340,7 +1339,7 @@ class Competition extends BObject{
         }
 
         public function generateTimetableDay ($CompetitionId, $Day, $ds, $NrSerii){
-            $OraIncepere = ($Day == 1)?$ds->FirstDayStartTime:$ds[0]->SecondDayStartTime;
+            $OraIncepere = ($Day == 1)?$ds->FirstDayStartTime:$ds->SecondDayStartTime;
             $Interval = $ds->ScheduleInterval;
             $NrPoligoane =  $ds->NrPoligoane;
             $NrPost =  $ds->NrPosturiPoligon;
@@ -1358,18 +1357,21 @@ class Competition extends BObject{
                 for ($p = 1; $p <= $NrPoligoane ; $p++) {
                     array_push($poligoane, []);
                     array_push($ADone, false);
-
                 }
-
                 $Done = false;
-                $p = 1;
-                $seria = 1;
+                $p = 0;
+                $seria = 0;
+                $count = 0;
+               
                 while (!$Done){
+                    $seria = ($seria + 1) % ($NrSerii + 1);
+                    $seria = $seria==0?1:$seria;
+
                     if (count($poligoane[$p]) < $NrSerii){
                         while (in_array($seria , $poligoane[$p])){
-                            $seria = ($seria + 1) % $NrSerii;
+                            $seria = ($seria + 1) % ($NrSerii + 1);
+                            $seria = $seria==0?1:$seria;
                         }
-
                         array_push($poligoane[$p], $seria);
                     }else{
                         $ADone[$p] = true;
@@ -1377,26 +1379,129 @@ class Competition extends BObject{
 
                     // verific daca toate s-au termniat
                     $Done = true;
-                    for ($p = 1; $p <= $NrPoligoane ; $p++) {
-                        $Done = $Done && $ADone[$p];
+
+                    for ($x = 0; $x < $NrPoligoane ; $x++) {
+                        $Done = $Done && $ADone[$x];
                     }
 
                     $p = ($p + 1) % $NrPoligoane;
+                    $count++;
 
+                    // asta nu ar mai fi nevoie
+                    if ($count > $NrSerii * $NrPoligoane)
+                        $Done = true;
                 }
 
+                $sqls = [];
                 $ora = substr($OraIncepere, 0, 2); 
                 $min = substr($OraIncepere, 3, 2); 
-                for ($s = 1; $s <= $NrSerii ; $s++) {
-                    $DeLa = "1900-01-01 $ora:$min";
 
-                    for ($p = 1; $p <= $NrPoligoane ; $p++) {
-                        $sql = "INSERT INTO `schedule`(`CompetitionId`, `Day`, `Poligon`, `Post`, `Ora`, `Serie`) values ($CompetitionId, $Day, $p, 1, $DeLa, $poligoane[$s])";
+                for ($s = 0; $s <    $NrSerii ; $s++) {
+                    $DeLa = "'1900-01-01 $ora:$min'";
+
+                    for ($p = 0; $p < $NrPoligoane ; $p++) {
+                        $seria = $poligoane[$p][$s];
+                        $polig = $p + 1;
+                        $sql = "INSERT INTO `schedule`(`CompetitionId`, `Day`, `Poligon`, `Post`, `Ora`, `Serie`) values ($CompetitionId, $Day, $polig, 1, $DeLa, $seria)";
                         DB::select($sql);
+                        array_push($sqls, $sql);
                     }
 
-                    $min = (($min * 1) + $interval) % 60;
-                    $ora = ($ora * 1 ) + $min / 60;
+                    $min = $min * 1 + $Interval;
+                    $ora = ($ora * 1 ) + intdiv($min, 60);
+                    $min = ($min * 1) % 60;
+
+                    $min = str_pad($min, 2, "0", STR_PAD_LEFT);
+                    $ora = str_pad($ora, 2, "0", STR_PAD_LEFT);
+                }
+
+            }else
+            
+            { // anormal :)
+                $Ora = $OraIncepere;
+                $Seria = 1;
+
+                // initializam arrrayul de poligoane
+                for ($p = 1; $p <= $NrPoligoane * $NrPost; $p++) {
+                    array_push($poligoane, []);
+                    array_push($ADone, false);
+                }
+                $Done = false;
+                $p = 0;
+                $seria = 0;
+                $count = 0;
+               
+                while (!$Done){
+                    $seria = ($seria + 1) % ($NrSerii + 1);
+                    $seria = $seria==0?1:$seria;
+
+                    if (count($poligoane[$p]) < $NrSerii * $NrPost){
+
+                        while (in_array($seria , $poligoane[$p])){
+                            $seria = ($seria + 1) % ($NrSerii + 1);
+                            $seria = $seria==0?1:$seria;
+                        }
+
+                        array_push($poligoane[$p], $seria);
+
+                        // pentru urmatoarele NrPost -1
+                        for ($x = 1; $x < $NrPost ; $x++) 
+                        {
+                            $p = ($p + 1) % ($NrPoligoane * $NrPost);
+                            array_push($poligoane[$p], 0);
+                        }
+
+                        $p = ($p + 1) % ($NrPoligoane * $NrPost);
+
+                        if (($p == 0) && (count($poligoane[$p]) == $NrSerii)){
+                          //  array_push($poligoane[$p], '-');
+                            $p = 1;
+                        }
+
+                    }else{
+                        $ADone[$p] = true;
+                    }
+
+                    // verific daca toate s-au termniat
+                    $Done = true;
+
+                    for ($x = 0; $x < $NrPoligoane * $NrPost ; $x++) {
+                        $Done = $Done && $ADone[$x];
+                    }
+
+
+
+                   
+                    $count++;
+
+                    // asta nu ar mai fi nevoie
+                    if ($count > $NrSerii * $NrPoligoane * $NrPost)
+                        $Done = true;
+                }
+
+
+
+
+                //return $poligoane;
+                $sqls = [];
+                $ora = substr($OraIncepere, 0, 2); 
+                $min = substr($OraIncepere, 3, 2); 
+
+                for ($s = 0; $s <  $NrSerii * $NrPost  ; $s++) {
+                    $DeLa = "'1900-01-01 $ora:$min'";
+
+                    for ($p = 0; $p < $NrPoligoane  * $NrPost; $p++) {
+                        $seria = $poligoane[$p][$s];
+                        $polig = $p + 1;
+                        $post = $p % $NrPost + 1;
+                        $sql = "INSERT INTO `schedule`(`CompetitionId`, `Day`, `Poligon`, `Post`, `Ora`, `Serie`) values ($CompetitionId, $Day, $polig, $post, $DeLa, $seria)";
+                        DB::select($sql);
+                        array_push($sqls, $sql);
+                    }
+
+                    $min = $min * 1 + $Interval;
+                    $ora = ($ora * 1 ) + intdiv($min, 60);
+                    $min = ($min * 1) % 60;
 
                     $min = str_pad($min, 2, "0", STR_PAD_LEFT);
                     $ora = str_pad($ora, 2, "0", STR_PAD_LEFT);
