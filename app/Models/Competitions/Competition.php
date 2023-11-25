@@ -1304,8 +1304,9 @@ class Competition extends BObject{
 
         public function geCompetitionTimetable($CompetitionId, $Day){
             $sql = "
-            select Day, Ora, Poligon, Post, Serie
+            select c.ScheduleType, c.NrPosturiPoligon,  Day, Ora, Poligon, Post, Serie
             from schedule s
+            inner join competition c on c.CompetitionId = s.CompetitionId
             where s.CompetitionId = {$CompetitionId} and s.Day = {$Day}
             order by Day, Ora, Poligon , Post, Serie
             ";
@@ -1436,10 +1437,15 @@ class Competition extends BObject{
                     $seria = $seria==0?1:$seria;
 
                     if (count($poligoane[$p]) < $NrSerii * $NrPost){
-
+                        $found = 0;
                         while (in_array($seria , $poligoane[$p])){
                             $seria = ($seria + 1) % ($NrSerii + 1);
                             $seria = $seria==0?1:$seria;
+                            $found++;
+                            if ($found > $NrSerii)
+                            {
+                                $p = ($p + 1) % ($NrPoligoane * $NrPost);
+                            }
                         }
 
                         array_push($poligoane[$p], $seria);
@@ -1453,10 +1459,15 @@ class Competition extends BObject{
 
                         $p = ($p + 1) % ($NrPoligoane * $NrPost);
 
-                        if (($p == 0) && (count($poligoane[$p]) == $NrSerii)){
+                        if (($p == 0) && (intdiv(count($poligoane[$p]),2) == intdiv($NrSerii,2))){
                           //  array_push($poligoane[$p], '-');
                             $p = 1;
                         }
+                        // if (($p == 0) && (count($poligoane[$p]) == 5)){
+                        //     //  array_push($poligoane[$p], '-');
+                        //       $p = 1;
+                        //   }
+
 
                     }else{
                         $ADone[$p] = true;
@@ -1482,7 +1493,7 @@ class Competition extends BObject{
 
 
 
-                //return $poligoane;
+            // return  $poligoane;
                 $sqls = [];
                 $ora = substr($OraIncepere, 0, 2); 
                 $min = substr($OraIncepere, 3, 2); 
@@ -1499,10 +1510,33 @@ class Competition extends BObject{
                         array_push($sqls, $sql);
                     }
 
+                    // pun pauza de masa daca este condensat
+                    if ($ScheduleType !== "Normal")
+                        if ($s == intdiv($NrSerii * $NrPost, 2) - 1){
+
+                            $min = $min * 1 + $Interval;
+                            $ora = ($ora * 1 ) + intdiv($min, 60);
+                            $min = ($min * 1) % 60;
+                            $min = str_pad($min, 2, "0", STR_PAD_LEFT);
+                            $ora = str_pad($ora, 2, "0", STR_PAD_LEFT);
+                            $DeLa = "'1900-01-01 $ora:$min'";
+
+                            for ($p = 0; $p < $NrPoligoane  * $NrPost; $p++) {
+                               
+                                $polig = $p + 1;
+                                $post = $p % $NrPost + 1;
+                                $sql = "INSERT INTO `schedule`(`CompetitionId`, `Day`, `Poligon`, `Post`, `Ora`, `Serie`) values ($CompetitionId, $Day, $polig, $post, $DeLa, 0)";
+                                DB::select($sql);
+                                array_push($sqls, $sql);
+                            }
+                        }
+
+
+
+
                     $min = $min * 1 + $Interval;
                     $ora = ($ora * 1 ) + intdiv($min, 60);
                     $min = ($min * 1) % 60;
-
                     $min = str_pad($min, 2, "0", STR_PAD_LEFT);
                     $ora = str_pad($ora, 2, "0", STR_PAD_LEFT);
                 }

@@ -10,6 +10,8 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Cell\DataType;
+
+use PhpOffice\PhpSpreadsheet\Style;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Controllers\MasterController;
@@ -1000,6 +1002,12 @@ class CompetitiiController extends MasterController
                 return $loc;
             }
 
+            function DecColumn(&$column){
+                $loc = $column;
+                $column--;
+                return $loc;
+            }
+
             function IncRow(&$row){
                 $loc = $row;
                 $row++;            
@@ -1009,23 +1017,47 @@ class CompetitiiController extends MasterController
         $dataset = $this->BObject()->geCompetitionTimetable($CompetitionId, $Day);
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
+        if (count($dataset) == 0)
+            return;
+
+        $ScheduleType = $dataset[0]->ScheduleType;
+        $NrPosturiPoligon = $dataset[0]->NrPosturiPoligon;
 
         // header
         $row = 4;
         $col = 'B';
         $sheet->setCellValue('B2', "Program ziua {$Day}");
         $spreadsheet->getDefaultStyle()->getNumberFormat()->setFormatCode('#');
+        $spreadsheet->getDefaultStyle()->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
         $sheet->setCellValue(IncColumn($col).$row, 'Ora');
 
-        $OldPoligon = 0;
+  
+    
+
+    //    $OldPoligon = 0;
 
         $poligoane = [];
         foreach($dataset as $d){
 
             if  (!in_array($d->Poligon , $poligoane)){
-                $p = $d->Poligon;
-                $sheet->setCellValue(IncColumn($col).$row, "P $p");
-                $OldPoligon = $d->Poligon;
+
+                if ($ScheduleType == 'Normal'){
+                    $p = "P $d->Poligon";
+                    $sheet->setCellValue(IncColumn($col).$row, $p);
+                }
+                else{
+                    $p =  "Poligon " . intdiv($d->Poligon + 1, 2);
+                    $post = ' P '. (($d->Poligon + 1) % 2) + 1 ;
+                    $lcol = $col;
+                    $sheet->setCellValue(IncColumn($col).$row - 1, $p);
+                    $sheet->setCellValue($lcol.$row, $post);
+
+                    if ($d->Poligon % 2 == 1) 
+                        $sheet->mergeCells($lcol.($row - 1).':'.($col).($row -1));
+
+
+                }
+
                 array_push($poligoane, $d->Poligon);
             }
         }
@@ -1040,7 +1072,7 @@ class CompetitiiController extends MasterController
                 $sheet->setCellValue(IncColumn($col).$row, strval( substr($d->Ora, 11, 5)));
                 $OldOra = $d->Ora;
             }
-            $sheet->setCellValue(IncColumn($col).$row, strval($d->Serie));
+            $sheet->setCellValue(IncColumn($col).$row, strval(($d->Serie == 0)?'':$d->Serie));
         }
         ob_clean();
         $writer = new Xlsx($spreadsheet);
