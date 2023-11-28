@@ -55,8 +55,9 @@ class CompetitiiController extends MasterController
        $clasament = $this->BObject()->GetClasament($ItemId);
 
        $Info = Competition::getCompetitionInfo($ItemId);
+       $timetable =  $this->competitionTimetableAPI($ItemId, 1);
 
-       return [ 'nume' => $Nume, 'descriere' => $Descriere, 'clasament' => $clasament, 'clasamentTeams' => $clasamentTeams, 'clasamentCat' => $clasamentCat, 'Info' =>  $Info];
+       return [ 'nume' => $Nume, 'descriere' => $Descriere, 'clasament' => $clasament, 'clasamentTeams' => $clasamentTeams, 'clasamentCat' => $clasamentCat, 'Info' =>  $Info, 'timetable' => $timetable];
     }
 
     public function editresult($ResultId){
@@ -1031,11 +1032,6 @@ class CompetitiiController extends MasterController
         $spreadsheet->getDefaultStyle()->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
         $sheet->setCellValue(IncColumn($col).$row, 'Ora');
 
-  
-    
-
-    //    $OldPoligon = 0;
-
         $poligoane = [];
         foreach($dataset as $d){
 
@@ -1087,5 +1083,101 @@ class CompetitiiController extends MasterController
         die;
 
     }
+
+
+    public function competitionTimetableAPI($CompetitionId, $Day){
+        function IncColumn(&$column){
+            $loc = $column;
+            $column++;
+            return $loc;
+        }
+
+        function DecColumn(&$column){
+            $loc = $column;
+            $column--;
+            return $loc;
+        }
+
+        function IncRow(&$row){
+            $loc = $row;
+            $row++;            
+            return $loc;
+        }
+
+        $dataset = $this->BObject()->geCompetitionTimetable($CompetitionId, $Day);
+        if (count($dataset) == 0)
+            return [];
+
+        $ScheduleType = $dataset[0]->ScheduleType;
+        $NrPosturiPoligon = $dataset[0]->NrPosturiPoligon;
+        $NrPoligoane = $dataset[0]->NrPoligoane;
+
+        $NrSerii = $this->BObject()->getCompetitionNrSerii($CompetitionId);
+
+
+        $title =  "Program ziua {$Day}";
+        $result = [];
+        $NrColoane = ($ScheduleType == 'Normal')? $NrPoligoane + 1 : $NrPoligoane * $NrPosturiPoligon + 1;
+
+        // initializam rezultatul
+
+        $Max = ($ScheduleType == 'Normal')? $NrSerii + 1 : $NrSerii * $NrPosturiPoligon + 3;
+   
+        // titlu
+        if ($ScheduleType == 'Normal'){
+            $titlu = [];
+            array_push($titlu, 'Ora');
+            for ($i = 1; $i <= $NrPoligoane; $i++) { 
+                array_push($titlu, "P $i");
+            }
+            array_push($result, $titlu);
+        }
+        else{
+            $titlu = [];
+            $titlu2 = [];
+            array_push($titlu, '');
+            array_push($titlu2, 'Ora');
+
+            for ($i = 1; $i <= $NrPoligoane * $NrPosturiPoligon; $i++) { 
+                $p =  ($i% 2 == 0) ?"": "Polig " . intdiv($i+ 1, 2);
+                $post = ' P '. (($i+ 1) % 2) + 1 ;
+                array_push($titlu, $p);
+                array_push($titlu2, $post);
+            }
+            array_push($result, $titlu);
+            array_push($result, $titlu2);
+        }
+
+
+
+        $IsNew = true;
+        $OldOra = "";
+        $row = [];
+        foreach($dataset as $d){
+            if ($OldOra != $d->Ora){
+                if (count($row) > 0)
+                    array_push($result, $row);  
+                $i = 0;
+                $row = [];
+                array_push($row,  substr($d->Ora, 11, 5));
+            }
+            $OldOra = $d->Ora;
+            array_push($row, ($d->Serie == 0)?'':$d->Serie);
+        }
+        array_push($result, $row);  
+        return  [ 'ScheduleType' => $ScheduleType, 'NrColoane' => $NrColoane, 'timetable' => $result];
+    }
+
+    public function MyCompetitionsAPI($PersonId){
+        return $this->BObject()->MyCompetitionsAPI($PersonId);
+
+    }
+
+    public function MyPersonalInfo($PersonId){
+        return $this->BObject()->MyPersonalInfo($PersonId);    
+    }
+
+
+
 
 }

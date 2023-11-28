@@ -1304,7 +1304,7 @@ class Competition extends BObject{
 
         public function geCompetitionTimetable($CompetitionId, $Day){
             $sql = "
-            select c.ScheduleType, c.NrPosturiPoligon,  Day, Ora, Poligon, Post, Serie
+            select c.ScheduleType, c.NrPosturiPoligon, c.NrPoligoane,  Day, Ora, Poligon, Post, Serie
             from schedule s
             inner join competition c on c.CompetitionId = s.CompetitionId
             where s.CompetitionId = {$CompetitionId} and s.Day = {$Day}
@@ -1312,6 +1312,10 @@ class Competition extends BObject{
             ";
 
             return DB::select($sql);
+        }
+
+        public function getCompetitionNrSerii($CompetitionId){
+            return DB::select("select Max(NrSerie) as NrSerii from result where  CompetitionId = {$CompetitionId}")[0]->NrSerii;
         }
 
         public function generateTimetable ($CompetitionId){
@@ -1326,7 +1330,7 @@ class Competition extends BObject{
                     DATE_FORMAT(SecondDayStartTime, '%H:%i' ) as SecondDayStartTime
                     from competition where CompetitionId = {$CompetitionId} ");
 
-                $NrSerii = DB::select("select Max(NrSerie) as NrSerii from result where  CompetitionId = {$CompetitionId}")[0]->NrSerii;
+                $NrSerii = $this->getCompetitionNrSerii($CompetitionId);
 
                 if (count($ds) == 0)
                     return 'No schedule';
@@ -1338,6 +1342,37 @@ class Competition extends BObject{
                 return $e->getMessage();
             }
         }
+
+
+
+        public function MyCompetitionsAPI($PersonId){
+            $sql = "SELECT c.`CompetitionId`, c.Name as Competition, `StartDate`, `EndDate`, c.`RangeId`, `Targets`, 
+            r.name as `Range`, s.Name as SportField, year(StartDate) as Year,  concat(c.Name , ' ' , r.Name , ' ' , c.StartDate) as NumeLung,
+
+            
+            concat(case when month(StartDate) <> month(EndDate) then
+                            DATE_FORMAT(StartDate, '%d/%m') else  DATE_FORMAT(StartDate, '%d') end,
+                            '-',
+                            DATE_FORMAT(EndDate, '%d/%m/%Y') 
+                            ) as Perioada, 
+            
+            Status, case when rr.PersonId is null then 'Neinscris' else 'Inscris' end as Inscris
+            FROM `competition` c
+            inner join `range` r on r.RangeId = c.RangeId
+            inner join sportfield s on s.SportFieldId = c.SportFieldId
+            left join result rr on rr.CompetitionId = c.CompetitionId and rr.PersonId = $PersonId
+            where c.Status in ('Open', 'Closed')
+            order by c.StartDate";
+
+          return DB::select($sql);
+    
+        }
+    
+        public function MyPersonalInfo($PersonId){
+            return $this->BObject()->MyPersonalInfo($PersonId);    
+        }
+
+
 
         public function generateTimetableDay ($CompetitionId, $Day, $ds, $NrSerii){
             $OraIncepere = ($Day == 1)?$ds->FirstDayStartTime:$ds->SecondDayStartTime;

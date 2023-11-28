@@ -99,6 +99,7 @@ Route::group(['middleware' => 'options'], function () {
         //Route::POST('/competition', 'App\Http\Controllers\CompetitiiController@getItemAjax');
         Route::GET('/clasament/{id}', 'App\Http\Controllers\CompetitiiController@getClasament');
         Route::GET('/clasamentAPI/{id}', 'App\Http\Controllers\CompetitiiController@getClasamentAPI');
+
         Route::GET('/ClasamentYears', 'App\Http\Controllers\ClasamenteController@getClasamentYearsAPI');
         Route::GET('/ClasamentByYearAPI/{Year}', 'App\Http\Controllers\ClasamenteController@getClasamentByYearAPI');
 
@@ -117,6 +118,11 @@ Route::group(['middleware' => 'options'], function () {
         Route::GET('/imregisteredAPI/{CompetitionId}/{PersonId}', 'App\Http\Controllers\CompetitiiController@imregisteredAPI');
         Route::GET('/registermeAPI/{CompetitionId}/{PersonId}', 'App\Http\Controllers\CompetitiiController@registermeAPI');
         Route::GET('/listaParticipantiAPI/{CompetitionId}', 'App\Http\Controllers\CompetitiiController@listaParticipantiAPI');
+        Route::GET('/competitionTimetableAPI/{CompetitionId}/{Day}', 'App\Http\Controllers\CompetitiiController@competitionTimetableAPI');
+        Route::GET('/MyCompetitionsAPI/{PersonId}', 'App\Http\Controllers\CompetitiiController@MyCompetitionsAPI');
+        Route::GET('/MyPersonalInfo/{PersonId}', 'App\Http\Controllers\CompetitiiController@MyPersonalInfo');
+       
+        
         
 
 
