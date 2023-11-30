@@ -3,7 +3,7 @@
 namespace App\Models\Competitions;
 use Illuminate\Support\Facades\DB;
 use App\Models\BObject;
-
+use App\Models\Competitions\Clasamente;
 class Competition extends BObject{
 
 
@@ -1369,7 +1369,26 @@ class Competition extends BObject{
         }
     
         public function MyPersonalInfo($PersonId){
-            return $this->BObject()->MyPersonalInfo($PersonId);    
+            $sql = "SELECT `PersonId`,  `SerieNrCI`, `CNP`, `SeriePermisArma`, `DataExpPermis`, `MarcaArma`, `SerieArma`, `CalibruArma`, `AltePrecizari` FROM `person` WHERE  PersonId = $PersonId" ; 
+
+            $personal = DB::select($sql);
+            $ob = new Clasamente;
+
+            $Year = date("Y");
+            $clasament = [];
+            do{
+
+                $r = $ob->getClasamentPersonalYear($PersonId, $Year);
+                if (!is_null($r) && count($r) > 0)
+                    $clasament = [...$clasament, $r];
+                $Year--;
+            }
+            while (!is_null($r) && count($r) > 0);
+
+            $rezultate = $ob->getResultsPerson($PersonId);
+            
+            return ["personal" => $personal, "clasament" => $clasament, "rezultate" => $rezultate];
+
         }
 
 

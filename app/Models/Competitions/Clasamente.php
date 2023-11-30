@@ -70,7 +70,7 @@ class Clasamente extends BObject{
 
 
     public $ClasamentSelect = "
-                    SELECT row_number() over(order by ProcentR desc) as Position, p.Name as Person, Min(sc.Code) as Category, max(t.Name) as Team , p.PersonId, 
+                SELECT row_number() over(order by ProcentR desc) as Position, p.Name as Person, Min(sc.Code) as Category, max(t.Name) as Team , p.PersonId, 
                    Round(aa.Percent,2) as Procent,-- Round(Avg(case when ifNull(r.Aborted,1) = 0 then Percent else null end),2) as Procent , 
                     Round(Avg(case when ifNull(r.Aborted,1) = 0 then PercentR else null end),2) as ProcentR, 
                     count(distinct r.ResultId) as NrCompetitions
@@ -144,7 +144,9 @@ class Clasamente extends BObject{
     }
 
     public function getResultsPersonyYear($PersonId, $year){
-        $sql = "SELECT p.PersonId,  Round(case when ifNull(r.Aborted,1) = 0 then Percent else null end, 2) as Percent, Round(case when ifNull(r.Aborted,1) = 0 then PercentR else null end, 2) as PercentR, r.Total, concat(c.Name , ' ' , rr.Name , ' ' ,  concat(DATE_FORMAT(c.StartDate, '%d/%m'), ' - ', DATE_FORMAT(c.EndDate, '%d/%m %Y'))) as Name, r.Position as Loc, c.CompetitionId
+        $sql = "SELECT p.PersonId,  Round(case when ifNull(r.Aborted,1) = 0 then Percent else null end, 2) as Percent, 
+            Round(case when ifNull(r.Aborted,1) = 0 then PercentR else null end, 2) as PercentR, r.Total, concat(c.Name , ' ' , rr.Name , ' ' ,  
+            concat(DATE_FORMAT(c.StartDate, '%d/%m'), ' - ', DATE_FORMAT(c.EndDate, '%d/%m %Y'))) as Name, r.Position as Loc, c.CompetitionId
             FROM result r 
             inner join person p on p.PersonId = r.PersonId 
             inner join competition c on c.CompetitionId = r.CompetitionId and c.Status = 'Finished'  
@@ -155,6 +157,155 @@ class Clasamente extends BObject{
         
         return DB::select($sql); 
 
+    }
+
+        public function getSQLClas($ResultId, $CompetitionId){
+            $sql = "select Y.* , concat(c.Name , ' ' , rr.Name , ' ' ,  
+                concat(DATE_FORMAT(c.StartDate, '%d/%m'), ' - ', DATE_FORMAT(c.EndDate, '%d/%m %Y'))) as Competitie
+                
+                from 
+                result r 
+                inner join person p on p.PersonId = r.PersonId 
+                inner join competition c on c.CompetitionId = r.CompetitionId and c.Status = 'Finished'  
+                inner join `range` rr on rr.RangeId = c.RangeId 
+                inner join 
+                (
+                
+                SELECT rank() over(order by ifnull(sof.Total,0) desc, ifnull(sof.ShootOff, 0) desc)  as Position, r.ResultId,
+                     sc.Code as Category, t.Name as Team ,  r.TeamName,
+                                    case when r.Aborted = 1 then null else Round(Percent,2) end as Procent, 
+                                    case when r.Aborted = 1 then null else Round(PercentR,2) end as ProcentR, 
+                                nullif(d1.Result, 0) as M1,
+                                nullif(d2.Result, 0) as M2,
+                                nullif(d3.Result, 0) as M3,
+                                nullif(d4.Result, 0) as M4,
+                                nullif(d5.Result, 0) as M5,
+                                nullif(d6.Result, 0) as M6,
+                                nullif(d7.Result, 0) as M7,
+                                nullif(d8.Result, 0) as M8,
+                                nullif(sof.Total, 0) as Total,
+                                sof.ShootOffS,
+                                nullif(sof.Total1, 0) as Total1,
+                                nullif(sof.Total2, 0) as Total2,
+                                cps.ResultatCat
+                                FROM result r
+                                left join resultdetail d1 on r.ResultId = d1.ResultId and d1.RoundNr = 1
+                                left join resultdetail d2 on r.ResultId = d2.ResultId and d2.RoundNr = 2
+                                left join resultdetail d3 on r.ResultId = d3.ResultId and d3.RoundNr = 3
+                                left join resultdetail d4 on r.ResultId = d4.ResultId and d4.RoundNr = 4
+                                left join resultdetail d5 on r.ResultId = d5.ResultId and d5.RoundNr = 5
+                                left join resultdetail d6 on r.ResultId = d6.ResultId and d6.RoundNr = 6
+                                left join resultdetail d7 on r.ResultId = d7.ResultId and d7.RoundNr = 7
+                                left join resultdetail d8 on r.ResultId = d8.ResultId and d8.RoundNr = 8
+                                left join (
+                                    select GROUP_CONCAT(case when d.RoundNr > 8 then d.Result else null end  order by d.RoundNr) as ShootOffS,
+                                            sum(case when d.RoundNr > 8 then d.Result/(10 *( d.RoundNr - 8))  else 0 end ) as ShootOff, 
+                                            sum(case when d.RoundNr <= 8 then d.Result else 0 end ) as Total,
+                                            sum(case when d.RoundNr <= 4 then d.Result else 0 end ) as Total1,
+                                            sum(case when d.RoundNr <= 8 and d.RoundNr > 4 then d.Result else 0 end ) as Total2,
+                                    d.ResultId
+                                    from resultdetail d 
+                                    group by ResultId
+                                    order by d.RoundNr 
+                                ) sof on sof.ResultId = r.ResultId 
+                                left join (select concat(loc,' ' , vvv.Code ) as ResultatCat , ResultId from (
+                                    SELECT  
+                                            ROW_NUMBER() OVER (
+                                              PARTITION BY sc.Code 
+                                              ORDER BY sof.Total desc, ShootOff desc) as loc ,
+                                              r.ResultId, sc.Code
+                                                        FROM result r
+                                                        left join (
+                                                            select GROUP_CONCAT(case when d.RoundNr > 8 then d.Result else null end  order by d.RoundNr) as ShootOffS,
+                                                                    sum(case when d.RoundNr > 8 then d.Result/(10 *( d.RoundNr - 8))  else 0 end ) as ShootOff, 
+                                                                    sum(case when d.RoundNr <= 8 then d.Result else 0 end ) as Total,
+                                                            d.ResultId
+                                                            from resultdetail d 
+                                                            group by ResultId
+                                                            order by d.RoundNr 
+                                                        ) sof on sof.ResultId = r.ResultId 
+                                                        left join shootercategory sc on sc.ShooterCategoryId = r.ShooterCategoryId
+                                                        where r.CompetitionId = $CompetitionId and sc.code <> 'STR'
+                                                        order by sc.Code, loc )vvv
+                                                        where loc < 4) cps on cps.ResultId = r.ResultId
+                                inner join person p on p.PersonId = r.PersonId
+                                left join shootercategory sc on sc.ShooterCategoryId = r.ShooterCategoryId
+                                left join team t on t.TeamId = r.TeamId
+                                where r.CompetitionId = $CompetitionId
+                                order by Position, p.Name
+                )Y on r.ResultId = Y.ResultId
+                where r.ResultId = $ResultId";
+                return $sql;
+            }
+           
+           
+    public function getResultsPerson($PersonId){
+           $sql2 = "select r.ResultId, r.CompetitionId
+                from result r 
+                inner join competition c on c.CompetitionId = r.CompetitionId and c.Status = 'Finished'  
+                where r.PersonId = $PersonId order by  c.StartDate  desc                                         
+            ";
+
+            $result = [];
+
+            $rez = DB::select($sql2); 
+
+            foreach($rez as $r){
+                $sql = $this->getSQLClas($r->ResultId, $r->CompetitionId);
+
+                $result = [...$result, DB::select($sql)];
+
+
+            }
+        
+            return $result;
+
+    }
+
+    public function getClasamentPersonalYear($PersonId, $Year){
+        $sql = "
+                select $Year as  An, Y.* from (
+                    SELECT row_number() over(order by ProcentR desc) as Position, p.Name as Person, Min(sc.Code) as Category, max(t.Name) as Team , p.PersonId, 
+                    Round(aa.Percent,2) as Procent,-- Round(Avg(case when ifNull(r.Aborted,1) = 0 then Percent else null end),2) as Procent , 
+                    Round(Avg(case when ifNull(r.Aborted,1) = 0 then PercentR else null end),2) as ProcentR, 
+                    count(distinct r.ResultId) as NrCompetitions
+                    FROM result r 
+                    inner join person p on p.PersonId = r.PersonId 
+                    inner join competition c on c.CompetitionId = r.CompetitionId and c.Status = 'Finished'
+
+                    inner join season s on Year(c.StartDate) = s.Year
+                    left join shooterxseason x on x.PersonId = r.PersonId and x.SeasonId = s.SeasonId 
+
+                    left join shootercategory sc on sc.ShooterCategoryId = x.ShooterCategoryId 
+                    left join team t on t.TeamId = x.TeamId 
+
+                    left join (
+                        select avg(PercentR) as Percent, PersonId from (
+
+                        SELECT p.PersonId, PercentR, row_number() OVER (
+                            PARTITION BY p.PersonId ORDER BY PercentR DESC
+
+                            ) AS row_num
+                        FROM result r 
+                                        inner join person p on p.PersonId = r.PersonId 
+                                        inner join competition c on c.CompetitionId = r.CompetitionId and c.Status = 'Finished' and c.Oficial = 1
+                                        where year(c.StartDate) =  $Year 
+                                        and p.CountryId = 1 and ifNull(r.Aborted,0) = 0 
+
+
+                    ORDER BY p.PersonId, PercentR desc
+                            ) T where row_num <= 3
+                    group by PersonId
+                ) aa on aa.PersonId = p.PersonId
+
+                    
+                    where year(c.StartDate) = $Year 
+                    and p.CountryId = 1 and ifNull(r.Aborted,0) = 0 
+                    group by p.Name, p.PersonId
+                    order by ProcentR desc
+                )Y where PersonId = $PersonId
+        ";
+        return DB::select($sql);  
     }
 
 
