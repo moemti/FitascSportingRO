@@ -32,6 +32,7 @@ class PersonController extends MasterController
     }
 
 
+
     public function savemyuser(Request $request){
         return $this->BObject()->saveMyUser($request);
         

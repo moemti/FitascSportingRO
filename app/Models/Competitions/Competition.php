@@ -1391,6 +1391,54 @@ class Competition extends BObject{
 
         }
 
+        public function currentCompetition($PersonId){
+            $sql = "SELECT r.BIB, r.NrSerie, c.CompetitionId, DATE_ADD(CURDATE() , INTERVAL 1 DAY) as EndDate 
+            FROM competition c
+            inner join result r on c.CompetitionId = r.CompetitionId
+             
+            where 
+                r.PersonId = {$PersonId} and c.CompetitionId = 22
+            -- and Status =  'Progress'
+            ";
+
+            $competition = DB::select($sql);
+
+            $CompetitionId = null;
+            $NrSerie = null;
+            $seriaMea = [];
+            $orar = [];
+
+            if (count($competition) > 0){
+                $CompetitionId = $competition[0]->CompetitionId;
+                $NrSerie = $competition[0]->NrSerie;
+
+                $sql = "SELECT r.BIB, p.Name, p.PersonId
+                FROM competition c
+                inner join result r on c.CompetitionId = r.CompetitionId
+                inner join person p on p.PersonId = r.PersonId
+                where 
+                    c.CompetitionId = {$CompetitionId} and 
+                    r.NrSerie = {$NrSerie}
+                    order by BIB";
+
+                    
+
+                $seriaMea = DB::select($sql);
+
+                $sql = "
+                    select  Day, Ora, Poligon, Post, Serie
+                    from schedule s
+                    inner join competition c on c.CompetitionId = s.CompetitionId
+                    where s.CompetitionId = {$CompetitionId} and s.Serie = {$NrSerie}
+                    order by Day, Ora, Poligon , Post, Serie
+                    ";
+                $orar = DB::select($sql);
+
+
+            }
+
+            return ["competition" => $competition, "seriaMea" => $seriaMea, "orar" => $orar];
+        }
 
 
         public function generateTimetableDay ($CompetitionId, $Day, $ds, $NrSerii){

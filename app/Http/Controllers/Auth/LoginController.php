@@ -8,7 +8,10 @@ use Illuminate\Support\Facades\Redirect;
 use App\Http\Controllers\Controller;
 
 use App\Models\Common\Login;
+
+use App\Models\Dictionaries\Dictionary;
 use App\Models\Users\User;
+use App\Models\Users\Person;
 use App\Models\Users\UserPerson;
 use App\Models\Common\Utilities;
 use App\Models\Competitions\Competition;
@@ -248,6 +251,33 @@ class LoginController extends Controller
         else{
             return ["status" => "Error", "Mesaj" => transex('token inexistent')];
         }
+    }
+
+
+    public function getmyusertoken(Request $request, $token){
+         $user = Login::loginApiToken($token);
+       
+
+     
+       
+        if (count($user) == 0) {
+           return redirect( "login");
+        }
+        else
+        {
+            $request->session()->put('PersonId', $user[0]->PersonId);
+            $request->session()->put('IsSuperUser', $user[0]->IsSuperUser);
+            $request->session()->put('username', $request->username);
+            $request->session()->put('name', $user[0]->Name);
+            $request->session()->put('function', $user[0]->Function);
+            $request->session()->put('email', $user[0]->Email);
+            $PersonId = $user[0]->PersonId;
+
+            $ob = new Person;
+
+            return view('modules.pages.editables/users/myuser', ['data' => $ob->getMyUser($PersonId),  'teams' => $ob->getTeams(),  'countries' =>  Dictionary::getCountries()]);
+        }
+      
     }
 
     public function logoutApi($token){

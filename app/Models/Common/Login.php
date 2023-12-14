@@ -37,11 +37,16 @@ class Login
   
 
     public static function loginApiToken($token){
-        $sql = "select p.PersonId, p.Name, u.IsSuperUser
+        $sql = "select  p.PersonId, u.Password, p.Name, p.Email,  u.IsSuperUser,
+                GROUP_CONCAT(f.Name SEPARATOR ', ') as Function 
             from 
             user u
             inner join person p on p.PersonId = u.Personid
-            where u.Token = '{$token}'" ;
+            left join personxrole x on x.PersonId = p.PersonId
+            left join role f on f.RoleId = x.RoleId
+            where u.Token = '{$token}'
+            GROUP BY p.PersonId, u.Password, p.Name, p.Email, u.IsSuperUser" ;
+
             $user = DB::select($sql);
             return $user;
 

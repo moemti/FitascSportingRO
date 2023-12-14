@@ -160,8 +160,13 @@ class Clasamente extends BObject{
     }
 
         public function getSQLClas($ResultId, $CompetitionId){
-            $sql = "select Y.* , concat(c.Name , ' ' , rr.Name , ' ' ,  
-                concat(DATE_FORMAT(c.StartDate, '%d/%m'), ' - ', DATE_FORMAT(c.EndDate, '%d/%m %Y'))) as Competitie
+            $sql = "select Y.* , concat(c.Name , ' ' , rr.Name ) as Competitie,
+                    concat(case when month(StartDate) <> month(EndDate) then
+                    DATE_FORMAT(StartDate, '%d/%m') else  DATE_FORMAT(StartDate, '%d') end,
+                    '-',
+                    DATE_FORMAT(EndDate, '%d/%m/%Y') 
+                    ) as Perioada,
+                year(c.StartDate) as An
                 
                 from 
                 result r 
@@ -171,7 +176,7 @@ class Clasamente extends BObject{
                 inner join 
                 (
                 
-                SELECT rank() over(order by ifnull(sof.Total,0) desc, ifnull(sof.ShootOff, 0) desc)  as Position, r.ResultId,
+                SELECT rank() over(order by ifnull(sof.Total,0) desc, ifnull(sof.ShootOff, 0) desc)  as Position, r.ResultId, r.CompetitionId,
                      sc.Code as Category, t.Name as Team ,  r.TeamName,
                                     case when r.Aborted = 1 then null else Round(Percent,2) end as Procent, 
                                     case when r.Aborted = 1 then null else Round(PercentR,2) end as ProcentR, 

@@ -1177,7 +1177,9 @@ class CompetitiiController extends MasterController
         return $this->BObject()->MyPersonalInfo($PersonId);    
     }
 
-
+    public function currentCompetition($PersonId){
+        return $this->BObject()->currentCompetition($PersonId);
+    }
 
 
 }
