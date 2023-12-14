@@ -33,7 +33,8 @@ class CompetitiiController extends MasterController
     public function getClasament($ItemId){
         return view( 'modules.pages.competitiedetail',['master' => $this->BObject()->getMaster($ItemId), 'clasament' => $this->BObject()->GetClasament($ItemId),
         'clasamentcategorie' => $this->BObject()->GetClasamentCategory($ItemId),
-        'clasamentteams' => $this->BObject()->GetClasamentTeams($ItemId)
+        'clasamentteams' => $this->BObject()->GetClasamentTeams($ItemId),
+        'clasamentSup' =>  $this->BObject()->GetClasamentSuperCupa($ItemId),
          ]);
 
 
@@ -51,13 +52,15 @@ class CompetitiiController extends MasterController
 
        $clasamentTeams = $this->BObject()->GetClasamentTeams($ItemId);
        $clasamentCat = $this->BObject()->GetClasamentCategory($ItemId);
+       $clasamentSup = $this->BObject()->GetClasamentSuperCupa($ItemId);
 
        $clasament = $this->BObject()->GetClasament($ItemId);
 
        $Info = Competition::getCompetitionInfo($ItemId);
        $timetable =  $this->competitionTimetableAPI($ItemId, 1);
 
-       return [ 'nume' => $Nume, 'descriere' => $Descriere, 'clasament' => $clasament, 'clasamentTeams' => $clasamentTeams, 'clasamentCat' => $clasamentCat, 'Info' =>  $Info, 'timetable' => $timetable];
+       return [ 'nume' => $Nume, 'descriere' => $Descriere, 'clasament' => $clasament, 'clasamentTeams' => $clasamentTeams, 'clasamentCat' => $clasamentCat, 'Info' =>  $Info, 'timetable' => $timetable,
+                    'clasamentSup' => $clasamentSup];
     }
 
     public function editresult($ResultId){

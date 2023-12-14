@@ -26,12 +26,13 @@ class ClasamenteController extends MasterController
     public function getClasamente(){
         $years = $this->getDictionaries();
         $year = $years["years"][0]->Year;
-        return view( 'modules.pages.clasamente',['clasament' => $this->BObject()->GetClasament($year)], $years);
+        $clasamentSup = $this->BObject()->GetClasamentSuperCupa($year);
+        return view( 'modules.pages.clasamente',['clasament' => $this->BObject()->GetClasament($year), 'clasamentsup' => $clasamentSup], $years);
     }
 
     public function getClasamentByYear(Request $request){
         $year = $request->Year;
-        return  $this->BObject()->GetClasament($year);
+        return  [$this->BObject()->GetClasament($year),  $this->BObject()->GetClasamentSuperCupa($year)];
     }
     
     public function getResultsPersonyYear(Request $request){

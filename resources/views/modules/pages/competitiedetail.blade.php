@@ -37,6 +37,7 @@
         let dsClasament= @Json($clasament);
         let dsClasamentCat = @Json($clasamentcategorie);
         let dsClasamentTeam = @Json($clasamentteams);
+        let dsClasamentSup = @Json($clasamentSup);
         let HasCompetitionRight = '{{getCompetitionRight($master[0]->CompetitionId)}}'  == '1';
 
         let Status = '{{$master[0]->Status}}' ; 
@@ -213,6 +214,11 @@
 
         <h6>{{transex('Clasamente pe echipe')}}</h6>
         <div id ="jqxGridTeam" class="gridnou">
+                    
+        </div> 
+
+         <h6>{{transex('Puncte Supercupa')}}</h6>
+        <div id ="jqxGridSup" class="gridnou">
                     
         </div> 
 

@@ -728,6 +728,55 @@ function genereazaTimetableDo() {
             });
 
 
+        // prepare the data
+        var sourcesup =
+        {
+            datatype: "array",
+            localdata: dsClasamentSup,
+            dataFields:
+
+                [
+                    { name: 'Position', type: 'number' },
+                    { name: 'Person', type: 'string' },
+                    { name: 'Total', type: 'Number' },
+                    { name: 'ShootOffS', type: 'string' },
+                    { name: 'Puncte', type: 'number' },
+
+                ]
+
+
+        };
+
+        var dataAdapterSup = new $.jqx.dataAdapter(sourcesup);
+
+        if ($("#jqxGridSup").length)
+            $("#jqxGridSup").jqxGrid(
+                {
+                    width: '100%',
+                    //height: '100%',
+                    source: dataAdapterSup,
+                    pageable: false,
+                    autoheight: true,
+                    sortable: false,
+                    altrows: true,
+                    enabletooltips: true,
+                    editable: false,
+                    autorowheight: false,
+                    showfilterrow: false,
+                    filterable: false,
+                    selectionmode: 'none',
+                    columns: [
+                        { text: translate('Position'), dataField: 'Position', width: '5%', cellclassname: cellclass, },
+                        { text: 'Persoana', dataField: 'Person', width: '70%', cellclassname: cellclass, },
+                        { text: 'Total', dataField: 'Total', width: '10%', cellclassname: cellclass, },
+                        { text: 'Shoot off', dataField: 'ShootOffS', width: '5%', cellclassname: cellclass, },
+                        { text: 'Puncte', dataField: 'Puncte', width: '10%', cellclassname: cellclass, },
+                    ]
+
+
+                });
+
+
 
 	});
 	   

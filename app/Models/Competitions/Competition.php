@@ -1441,6 +1441,48 @@ class Competition extends BObject{
         }
 
 
+        public function GetClasamentSuperCupa($CompetitionId){
+            $sql = "    
+            select * ,
+                                case YY.Position
+                                when 1 then 25
+                                when 2 then 18
+                                when 3 then 15
+                                when 4 then 12
+                                when 5 then 10
+                                when 6 then 8
+                                when 7 then 6
+                                when 8 then 4
+                                when 9 then 2
+                                when 10 then 1
+                                end as Puncte
+            from (
+            SELECT rank() over(order by ifnull(sof.Total,0) desc, ifnull(sof.ShootOff, 0) desc)  as Position, 
+                    p.PersonId, p.Name as Person,
+                                nullif(sof.Total, 0) as Total,
+                                sof.ShootOffS
+                                FROM result r
+                                left join (
+                                    select GROUP_CONCAT(case when d.RoundNr > 8 then d.Result else null end  order by d.RoundNr) as ShootOffS,
+                                            sum(case when d.RoundNr > 8 then d.Result/(10 *( d.RoundNr - 8))  else 0 end ) as ShootOff, 
+                                            sum(case when d.RoundNr <= 8 then d.Result else 0 end ) as Total,
+                                                ResultId
+                                    from resultdetail d 
+                                    group by ResultId
+                                    order by d.RoundNr 
+                                ) sof on sof.ResultId = r.ResultId 
+                              
+                                inner join person p on p.PersonId = r.PersonId
+                                left join shootercategory sc on sc.ShooterCategoryId = r.ShooterCategoryId
+                                left join team t on t.TeamId = r.TeamId
+                                where r.CompetitionId = $CompetitionId and sc.code <> 'STR'
+                                order by Position, p.Name)YY
+                                where Position <= 10
+                ";
+
+            return DB::select($sql);
+        }
+
         public function generateTimetableDay ($CompetitionId, $Day, $ds, $NrSerii){
             $OraIncepere = ($Day == 1)?$ds->FirstDayStartTime:$ds->SecondDayStartTime;
             $Interval = $ds->ScheduleInterval;
@@ -1646,5 +1688,7 @@ class Competition extends BObject{
 
 
         }
+
+
     
 }
