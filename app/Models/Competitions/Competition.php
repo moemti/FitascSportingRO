@@ -128,7 +128,7 @@ class Competition extends BObject{
                                                     order by d.RoundNr 
                                                 ) sof on sof.ResultId = r.ResultId 
                                                 left join shootercategory sc on sc.ShooterCategoryId = r.ShooterCategoryId
-                                                where r.CompetitionId = :CompetitionId and sc.code <> 'STR'
+                                                where r.CompetitionId = :CompetitionId and ifnull(sc.code, '') <> 'STR'
                                                 order by sc.Code, loc )vvv
                                                 where loc < 4) cps on cps.ResultId = r.ResultId
                         inner join person p on p.PersonId = r.PersonId
@@ -261,7 +261,7 @@ class Competition extends BObject{
                                                     order by d.RoundNr 
                                                 ) sof on sof.ResultId = r.ResultId 
                                                 left join shootercategory sc on sc.ShooterCategoryId = r.ShooterCategoryId
-                                                where r.CompetitionId = :CompetitionId and sc.code <> 'STR'
+                                                where r.CompetitionId = :CompetitionId and ifnull(sc.code, '') <> 'STR'
                                                 order by sc.Code, loc )vvv
                                                 where loc < 4) cps on cps.ResultId = r.ResultId
                         inner join person p on p.PersonId = r.PersonId
@@ -767,7 +767,7 @@ class Competition extends BObject{
                                                     order by d.RoundNr 
                                                 ) sof on sof.ResultId = r.ResultId 
                                                 left join shootercategory sc on sc.ShooterCategoryId = r.ShooterCategoryId
-                                                where r.CompetitionId = :CompetitionId and sc.code <> 'STR'
+                                                where r.CompetitionId = :CompetitionId and ifnull(sc.code, '') <> 'STR'
                                                 order by sc.Code, loc )vvv
                                                 where loc < 4) cps on cps.ResultId = r.ResultId
                         inner join person p on p.PersonId = r.PersonId
@@ -808,7 +808,7 @@ class Competition extends BObject{
                                                                     ) soft on soft.ResultId = rr.ResultId 
                                                             left join shootercategory sc on sc.ShooterCategoryId = rr.ShooterCategoryId
                                                             left join team t on t.TeamId = rr.TeamId
-                                                            where rr.CompetitionId = :CompetitionId and sc.code <> 'STR'  and TeamName is not null                                                    
+                                                            where rr.CompetitionId = :CompetitionId and ifnull(sc.code, '') <> 'STR'  and TeamName is not null                                                    
                                                             order by  Total desc, locechipa
                         ) X where locechipa < 4
                     order by Total desc , locechipa)
@@ -837,7 +837,7 @@ class Competition extends BObject{
                                                                     ) soft on soft.ResultId = rr.ResultId 
                                                             left join shootercategory sc on sc.ShooterCategoryId = rr.ShooterCategoryId
                                                             left join team t on t.TeamId = rr.TeamId
-                                                            where rr.CompetitionId = :CompetitionId and sc.code <> 'STR'                                                
+                                                            where rr.CompetitionId = :CompetitionId and ifnull(sc.code, '') <> 'STR'                                                
                                                             order by  Total desc, locechipa
                         ) X where locechipa < 4
                     order by Total desc , locechipa)
@@ -1375,6 +1375,7 @@ class Competition extends BObject{
             $ob = new Clasamente;
 
             $Year = date("Y");
+            $Init = $Year;
             $clasament = [];
             do{
 
@@ -1383,10 +1384,9 @@ class Competition extends BObject{
                     $clasament = [...$clasament, $r];
                 $Year--;
             }
-            while (!is_null($r) && count($r) > 0);
+            while ((!is_null($r) && count($r) > 0) || ($Init = $Year));
 
             $rezultate = $ob->getResultsPerson($PersonId);
-            
             return ["personal" => $personal, "clasament" => $clasament, "rezultate" => $rezultate];
 
         }
@@ -1397,8 +1397,8 @@ class Competition extends BObject{
             inner join result r on c.CompetitionId = r.CompetitionId
              
             where 
-                r.PersonId = {$PersonId} and c.CompetitionId = 22
-            -- and Status =  'Progress'
+                r.PersonId = {$PersonId} --and c.CompetitionId = 22
+             and Status =  'Progress'
             ";
 
             $competition = DB::select($sql);
@@ -1420,9 +1420,6 @@ class Competition extends BObject{
                     c.CompetitionId = {$CompetitionId} and 
                     r.NrSerie = {$NrSerie}
                     order by BIB";
-
-                    
-
                 $seriaMea = DB::select($sql);
 
                 $sql = "
@@ -1433,8 +1430,6 @@ class Competition extends BObject{
                     order by Day, Ora, Poligon , Post, Serie
                     ";
                 $orar = DB::select($sql);
-
-
             }
 
             return ["competition" => $competition, "seriaMea" => $seriaMea, "orar" => $orar];
@@ -1475,7 +1470,7 @@ class Competition extends BObject{
                                 inner join person p on p.PersonId = r.PersonId
                                 left join shootercategory sc on sc.ShooterCategoryId = r.ShooterCategoryId
                                 left join team t on t.TeamId = r.TeamId
-                                where r.CompetitionId = $CompetitionId and sc.code <> 'STR'
+                                where r.CompetitionId = $CompetitionId and ifnull(sc.code, '') <> 'STR'
                                 order by Position, p.Name)YY
                                 where Position <= 10
                 ";
@@ -1623,9 +1618,6 @@ class Competition extends BObject{
                     for ($x = 0; $x < $NrPoligoane * $NrPost ; $x++) {
                         $Done = $Done && $ADone[$x];
                     }
-
-
-
                    
                     $count++;
 
@@ -1633,9 +1625,6 @@ class Competition extends BObject{
                     if ($count > $NrSerii * $NrPoligoane * $NrPost)
                         $Done = true;
                 }
-
-
-
 
             // return  $poligoane;
                 $sqls = [];
@@ -1674,9 +1663,6 @@ class Competition extends BObject{
                                 array_push($sqls, $sql);
                             }
                         }
-
-
-
 
                     $min = $min * 1 + $Interval;
                     $ora = ($ora * 1 ) + intdiv($min, 60);

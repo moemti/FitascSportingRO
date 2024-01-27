@@ -212,18 +212,19 @@ class LoginController extends Controller
     public function loginApi(Request $request){
 
         $parola = crypt($request->password, $request->password);
-        $user =$request->email;
+        $user = $request->email;
+        $device = $request->device;
 
         $user = Login::Login($user);
        
         if (!empty($user)) {
-            if ($user[0]->Password !==  $parola){
+            if ($user[0]->Password !== $parola){
                 return ["status" => "Error", "Mesaj" => transex('Parola incorecta')];
             }
             else{
                 return ["status" => "OK",
                     "data" => [
-                        "Token" => Login::getUserToken($user[0]->PersonId),
+                        "Token" => Login::getUserToken($user[0]->PersonId, $device),
                         "PersonId" => $user[0]->PersonId, 
                         "Name" => $user[0]->Name
                     ]];

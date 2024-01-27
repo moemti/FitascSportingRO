@@ -151,7 +151,8 @@
                             <button id="btnCreateSquadsDiff"  data-type="Diff" class="createSquads btn btn-secondary btn-outline mb-2">Create squads diff</button>
                             <button id="btnCreateSquadsEven"  data-type="Even" class="createSquads btn btn-secondary btn-outline mb-2">Create squads even</button>
                             <button id="btnDeleteSquads"  data-type="Clear" class="createSquads btn btn-secondary btn-outline mb-2">Clear squads</button>
-                            <button id="btnGenTimetable"   class = btn btn-secondary btn-outline mb-2">Genereaza program</button>
+                            <button id="btnGenTimetable"   class = "btn btn-secondary btn-outline mb-2">Genereaza program</button>
+
                             <a id="btnDownloadListaAll" href="{{url('/competitionListDown/').'/'.$master[0]->CompetitionId}}" data-type="Diff" class=" btn btn-secondary btn-outline mb-2">Download lista</a>
                             <div class="row"> 
                                 <div class="btnwrapper m-2">
@@ -168,7 +169,7 @@
                          @if (getCompetitionRight($master[0]->CompetitionId))
                             <button id="btnOngoing"  data-status="Preparation" class="cmpStatusChange btn btn-secondary btn-outline mb-2">Open to preparation</button>
                             <button id="btnFinish"  data-status="Finished" class="cmpStatusChange btn btn-secondary btn-outline mb-2">Finish competition</button>
-                             <button id="btnGenTimetable"   class = btn btn-secondary btn-outline mb-2">Genereaza program</button>
+                             <button id="btnGenTimetable"   class = "btn btn-secondary btn-outline mb-2">Genereaza program</button>
                             <a id="btnDownloadListaSquad1" href="{{url('/competitionDownSquads/').'/'.$master[0]->CompetitionId}}/1" data-type="Diff" class=" btn btn-secondary btn-outline mb-2">Ziua 1</a>
                             <a id="btnDownloadListaSquad2" href="{{url('/competitionDownSquads/').'/'.$master[0]->CompetitionId}}/2" data-type="Diff" class=" btn btn-secondary btn-outline mb-2">Ziua 2</a>
                             <a id="btnDownloadListaAll" href="{{url('/competitionListDown/').'/'.$master[0]->CompetitionId}}" data-type="Diff" class=" btn btn-secondary btn-outline mb-2">Download lista</a>
@@ -184,7 +185,9 @@
                       
                         @if (getCompetitionRight($master[0]->CompetitionId))
                             <button id="btnOngoingR"  data-status="Progress" class="cmpStatusChange btn btn-secondary btn-outline mb-2">Reopen competition</button>
-                             <button id="btnGenTimetable"   class = btn btn-secondary btn-outline mb-2">Genereaza program</button>
+                             <button id="btnGenTimetable"   class = "btn btn-secondary btn-outline mb-2">Genereaza program</button>
+                             <button id="btnSeeTimetable"   class = "btn btn-secondary btn-outline mb-2">Editeaza program</button>
+                            
                         @endif
                         
                         <a id="btnDownloadResultsAll" href="{{url('/competitionResultsDown/').'/'.$master[0]->CompetitionId}}" data-type="Diff" class=" btn btn-danger btn-outline mb-2">{{transex('Download clasamente')}}</a>

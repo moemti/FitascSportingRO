@@ -146,7 +146,8 @@ class Clasamente extends BObject{
     public function getResultsPersonyYear($PersonId, $year){
         $sql = "SELECT p.PersonId,  Round(case when ifNull(r.Aborted,1) = 0 then Percent else null end, 2) as Percent, 
             Round(case when ifNull(r.Aborted,1) = 0 then PercentR else null end, 2) as PercentR, r.Total, concat(c.Name , ' ' , rr.Name , ' ' ,  
-            concat(DATE_FORMAT(c.StartDate, '%d/%m'), ' - ', DATE_FORMAT(c.EndDate, '%d/%m %Y'))) as Name, r.Position as Loc, c.CompetitionId
+            concat(DATE_FORMAT(c.StartDate, '%d/%m'), ' - ', DATE_FORMAT(c.EndDate, '%d/%m %Y'))) as Name, r.Position as Loc, c.CompetitionId,
+          
             FROM result r 
             inner join person p on p.PersonId = r.PersonId 
             inner join competition c on c.CompetitionId = r.CompetitionId and c.Status = 'Finished'  
@@ -176,7 +177,7 @@ class Clasamente extends BObject{
                 inner join 
                 (
                 
-                SELECT rank() over(order by ifnull(sof.Total,0) desc, ifnull(sof.ShootOff, 0) desc)  as Position, r.ResultId, r.CompetitionId,
+                SELECT rank() over(order by ifnull(sof.Total,0) desc, ifnull(sof.ShootOff, 0) desc)  as Position, r.ResultId, r.CompetitionId, r.PuncteSC,
                      sc.Code as Category, t.Name as Team ,  r.TeamName,
                                     case when r.Aborted = 1 then null else Round(Percent,2) end as Procent, 
                                     case when r.Aborted = 1 then null else Round(PercentR,2) end as ProcentR, 
@@ -273,37 +274,42 @@ class Clasamente extends BObject{
                     SELECT row_number() over(order by ProcentR desc) as Position, p.Name as Person, Min(sc.Code) as Category, max(t.Name) as Team , p.PersonId, 
                     Round(aa.Percent,2) as Procent,-- Round(Avg(case when ifNull(r.Aborted,1) = 0 then Percent else null end),2) as Procent , 
                     Round(Avg(case when ifNull(r.Aborted,1) = 0 then PercentR else null end),2) as ProcentR, 
-                    count(distinct r.ResultId) as NrCompetitions
+                    count(distinct r.ResultId) as NrCompetitions,
+                    PositionSC, SSC.PuncteSC
                     FROM result r 
                     inner join person p on p.PersonId = r.PersonId 
                     inner join competition c on c.CompetitionId = r.CompetitionId and c.Status = 'Finished'
-
                     inner join season s on Year(c.StartDate) = s.Year
                     left join shooterxseason x on x.PersonId = r.PersonId and x.SeasonId = s.SeasonId 
-
                     left join shootercategory sc on sc.ShooterCategoryId = x.ShooterCategoryId 
                     left join team t on t.TeamId = x.TeamId 
-
                     left join (
                         select avg(PercentR) as Percent, PersonId from (
-
                         SELECT p.PersonId, PercentR, row_number() OVER (
                             PARTITION BY p.PersonId ORDER BY PercentR DESC
-
                             ) AS row_num
                         FROM result r 
                                         inner join person p on p.PersonId = r.PersonId 
                                         inner join competition c on c.CompetitionId = r.CompetitionId and c.Status = 'Finished' and c.Oficial = 1
                                         where year(c.StartDate) =  $Year 
                                         and p.CountryId = 1 and ifNull(r.Aborted,0) = 0 
-
-
                     ORDER BY p.PersonId, PercentR desc
                             ) T where row_num <= 3
                     group by PersonId
-                ) aa on aa.PersonId = p.PersonId
+                    ) aa on aa.PersonId = p.PersonId
 
-                    
+                    left join (
+                        select  rank() over(order by PuncteSC desc) as PositionSC, PuncteSC, PersonId from 
+                        (
+                            select r.PersonId,  sum(PuncteSC) as PuncteSC  
+                                FROM result r
+                                inner join competition c on r.CompetitionId = c.CompetitionId and
+                                year(StartDate) = $Year and Status = 'Finished'
+                                group by r.PersonId
+                        )ZZ
+
+                    )SSC on SSC.PersonId = p.PersonId
+
                     where year(c.StartDate) = $Year 
                     and p.CountryId = 1 and ifNull(r.Aborted,0) = 0 
                     group by p.Name, p.PersonId
@@ -316,9 +322,9 @@ class Clasamente extends BObject{
 
     public function GetClasamentSuperCupa($Year){
        $sql = "
-            select  rank() over(order by Puncte desc) as Position, Person, Puncte from 
+            select  rank() over(order by Puncte desc) as Position, Person, Puncte, PersonId from 
             (
-                select
+                select PersonId,
                 Person, sum(Puncte) as Puncte from (
                     select * ,
                     case YY.Position
@@ -354,10 +360,10 @@ class Clasamente extends BObject{
                     inner join person p on p.PersonId = r.PersonId
                     left join shootercategory sc on sc.ShooterCategoryId = r.ShooterCategoryId
                     left join team t on t.TeamId = r.TeamId
-                    where  sc.code <> 'STR' and year(StartDate) = $Year
+                    where  Ifnull(sc.code, '') <> 'STR' and year(StartDate) = $Year and Status = 'Finished'
                     order by r.CompetitionId, Position, p.Name
                     )YY where Position <= 10
-                )XX group by Person
+                )XX group by Person, PersonId
             order by 2 desc
             )ZZ
        ";

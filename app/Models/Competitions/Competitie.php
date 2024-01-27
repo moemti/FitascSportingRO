@@ -90,6 +90,16 @@ class Competitie extends BObject{
     public $MasterDelete = "delete from competition
             where CompetitionId = :CompetitionId"  ;
 
-    
+    public $DetailSelect = "select cr.PersonId as OLD_PersonId , cr.PersonId as NEW_PersonId
+                            from competitionreferees cr
+                             inner join person p on p.PersonId = cr.PersonId   
+                            where cr.CompetitionId = :CompetitionId
+                            order by p.Name";
+    public $DetailInsert = 'insert into competitionreferees(CompetitionId, PersonId) values (:CompetitionId, :NEW_PersonId)';
+    public $DetailUpdate = 'update competitionreferees set PersonId = :NEW_PersonId where  CompetitionId = :CompetitionId and PersonId = :OLD_PersonId';
+    public $DetailDelete = 'delete from competitionreferees where CompetitionId = :CompetitionId and PersonId = :OLD_PersonId';
+
+
+
 
 }

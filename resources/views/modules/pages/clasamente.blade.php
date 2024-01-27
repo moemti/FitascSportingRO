@@ -44,12 +44,12 @@
        
 
             <div id = "jqxYear"></div>
+            
             <h4>Super cupa</h4>
-             <div id = "jqxGridSup"> 
-             <h4> Clasament general</h4>
-            <div id = "jqxGrid"> 
+             <div id = "jqxGridSup"> </div>
 
-            </div>
+             <h4> Clasament general</h4>
+            <div id = "jqxGrid"> </div>
      
 
     </div>

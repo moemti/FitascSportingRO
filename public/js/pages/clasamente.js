@@ -1,5 +1,6 @@
 let clClasament = [];
 	let source = undefined;
+let sourcesup = undefined;
 
 	var cellclassUser = function (row, columnfield, value) {
 		if (value === MyName) {
@@ -167,90 +168,99 @@ let clClasament = [];
 		if (source){
 			source.localdata = dsClasament;
 			$("#jqxGrid").jqxGrid('updatebounddata', 'cells');
-			return;
-		}
 
-        source =
-		{
-			datatype: "array",
-			localdata: dsClasament,
-			dataFields:
+		}
+		else {
+
+			source =
+			{
+				datatype: "array",
+				localdata: dsClasament,
+				dataFields:
 					[
 						{ name: 'Position', type: 'number' },
 						{ name: 'Person', type: 'string' },
 						{ name: 'Category', type: 'string' },
-						{ name: 'Team', type: 'string'},
+						{ name: 'Team', type: 'string' },
 						{ name: 'Procent', type: 'number' },
 						{ name: 'ProcentR', type: 'number' },
 						{ name: 'NrCompetitions', type: 'number' },
 						{ name: 'PersonId', type: 'number' }
-					]			
-		};
-		
-		var dataAdapter =  new $.jqx.dataAdapter(source);
-		// initialize jqxGrid
-		$("#jqxGrid").jqxGrid(
-		{
-			width:'100%',
-			
-			source: dataAdapter,                
-			pageable: false,
-			sortable: false,
-			altrows: true,
-			enabletooltips: true,
-			editable: false,
-			autorowheight: false,
-            autoheight: true,
-			selectionmode: 'none',
-			columns: clClasament,
-			filterable: true,
-			showfilterrow: true,
-			groupable: true,
-			rowdetails: true,          
-			rowdetailstemplate: { rowdetails: "<div style='margin: 0px;'> <ul style='margin-left: 30px;'>  <li>Rezultate</li> </ul> <div class='rezultate'></div> </div>", rowdetailsheight: 420 },
-			initrowdetails: initrowdetails,
-		});
+					]
+			};
 
-
-		// punem si supercupa
-
-		// prepare the data
-		var sourcesup =
-		{
-			datatype: "array",
-			localdata: dsClasamentSup,
-			dataFields:
-				[
-					{ name: 'Position', type: 'number' },
-					{ name: 'Person', type: 'string' },
-					{ name: 'Puncte', type: 'number' },
-				]
-		};
-
-		var dataAdapterSup = new $.jqx.dataAdapter(sourcesup);
-
-		if ($("#jqxGridSup").length)
-			$("#jqxGridSup").jqxGrid(
+			var dataAdapter = new $.jqx.dataAdapter(source);
+			// initialize jqxGrid
+			$("#jqxGrid").jqxGrid(
 				{
 					width: '100%',
-					//height: '100%',
-					source: dataAdapterSup,
+
+					source: dataAdapter,
 					pageable: false,
-					autoheight: true,
 					sortable: false,
 					altrows: true,
 					enabletooltips: true,
 					editable: false,
 					autorowheight: false,
-					showfilterrow: false,
-					filterable: false,
+					autoheight: true,
 					selectionmode: 'none',
-					columns: [
-						{ text: translate('Position'), dataField: 'Position', width: '5%', cellclassname: cellclass, },
-						{ text: 'Persoana', dataField: 'Person', width: '80%', cellclassname: cellclass, },
-						{ text: 'Puncte', dataField: 'Puncte', width: '15%', cellclassname: cellclass, },
-					]
+					columns: clClasament,
+					filterable: true,
+					showfilterrow: true,
+					groupable: true,
+					rowdetails: true,
+					rowdetailstemplate: { rowdetails: "<div style='margin: 0px;'> <ul style='margin-left: 30px;'>  <li>Rezultate</li> </ul> <div class='rezultate'></div> </div>", rowdetailsheight: 420 },
+					initrowdetails: initrowdetails,
 				});
+		}
+
+		// punem si supercupa
+
+		// prepare the data
+
+		if (sourcesup) {
+			sourcesup.localdata = dsClasamentSup;
+			$("#jqxGridSup").jqxGrid('updatebounddata', 'cells');
+
+		}
+		else {
+			sourcesup =
+			{
+				datatype: "array",
+				localdata: dsClasamentSup,
+				dataFields:
+					[
+						{ name: 'Position', type: 'number' },
+						{ name: 'Person', type: 'string' },
+						{ name: 'Puncte', type: 'number' },
+					]
+			};
+
+			var dataAdapterSup = new $.jqx.dataAdapter(sourcesup);
+
+			if ($("#jqxGridSup").length)
+				$("#jqxGridSup").jqxGrid(
+					{
+						width: '100%',
+						//height: '100%',
+						source: dataAdapterSup,
+						pageable: false,
+						autoheight: true,
+						sortable: false,
+						altrows: true,
+						enabletooltips: true,
+						editable: false,
+						autorowheight: false,
+						showfilterrow: false,
+						filterable: false,
+						selectionmode: 'none',
+						columns: [
+							{ text: translate('Loc'), dataField: 'Position', width: '5%' },
+							{ text: 'Persoana', dataField: 'Person', width: '80%' },
+							{ text: 'Puncte', dataField: 'Puncte', width: '15%' },
+						]
+				});
+		}
     }
 
 

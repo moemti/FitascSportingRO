@@ -17,12 +17,18 @@ class RedirectIfAuthenticated
      * @param  string|null  ...$guards
      * @return mixed
      */
+
+
+     
+     
+
+
     public function handle(Request $request, Closure $next, ...$guards)
     {
         if (!$request->session()->has('PersonId')) {
             return redirect('/login');
         }
-        
+       
         return $next($request);
     }
 }

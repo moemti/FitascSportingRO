@@ -26,8 +26,4 @@ class CompetitieController extends MasterController
     }
 
 
-
-    
-
-
 }

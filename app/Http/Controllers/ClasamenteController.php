@@ -46,7 +46,8 @@ class ClasamenteController extends MasterController
     }
     
     function getClasamentByYearAPI($year){
-        return $this->BObject()->getClasamentByYearAPI($year);
+
+        return [$this->BObject()->getClasamentByYearAPI($year),  $this->BObject()->GetClasamentSuperCupa($year)];
     }
 
 }

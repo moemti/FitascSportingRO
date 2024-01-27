@@ -3,6 +3,10 @@
 use Illuminate\Support\Facades\Route;
 
 
+Route::get('/underconstruction', function(){
+    return view("paginainconstructie", ['pagina' => 'Site']);
+    });
+
 Route::group(['middleware' => 'options'], function () {
 
         Route::get('/debug', function(){  return view('debug');});

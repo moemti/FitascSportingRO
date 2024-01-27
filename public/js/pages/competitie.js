@@ -367,7 +367,40 @@ function genereazaTimetableDo() {
     });
 }    
 
+function saveSchedule() {
 
+}
+
+function seeTimetable() {
+    let Data = {};
+    Data.CompetitionId = $('#CompetitionId').val();
+    $.ajax({
+        type: 'POST',
+        url: baseUrl + '/getTimetable',
+        data: Data,
+        success: function (data) {
+            $("#popup_body").html(data);
+            $("#popupDialog").modal({
+                backdrop: 'static',
+                keyboard: false
+            }).show();
+
+            $('#btnPopupCloseModal').off().on('click',
+                () => {
+                    $("#popupDialog").modal({
+                        backdrop: 'static',
+                        keyboard: false
+                    }).hide();
+                }
+            );
+            $('#btnPopupSaveModal').off().on('click', saveSchedule);
+
+        },
+        error: function (e) {
+            ShowError(e);
+        }
+    });
+}
 
     function RetrieveFields(){
 
@@ -502,6 +535,7 @@ function genereazaTimetableDo() {
         $("#exportexcel").on('click', downloadDetailExcel);
 
         $("#btnGenTimetable").on('click', genereazaTimetable);
+        $("#btnSeeTimetable").on('click', seeTimetable);
 
 
 
