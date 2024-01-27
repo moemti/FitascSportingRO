@@ -344,9 +344,6 @@ function genereazaTimetable() {
 }
 
 function genereazaTimetableDo() {
-
-
-
     let Data = {};
     Data.CompetitionId = $('#CompetitionId').val();
     $.ajax({

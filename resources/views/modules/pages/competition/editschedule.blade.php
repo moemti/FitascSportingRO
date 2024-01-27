@@ -6,7 +6,7 @@
             <input Name = "CompetitionId" id="CompetitionId" value="{{$CompetitionId}}" hidden>
             <div class="row">
                 <div class="col-md-2"><label>Ora\Poligon</label></div>
-                @foreach ($poligoane as $p)
+                @foreach ($schedule as $p)
                     <label>{{$p->Name}}</label>
                 @endforeach
                 </select>

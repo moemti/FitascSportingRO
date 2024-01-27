@@ -144,6 +144,7 @@ Route::group(['middleware' => 'options'], function () {
         Route::GET('/competitionListDownSerii/{id}', 'App\Http\Controllers\CompetitiiController@getClasamentListSerii');
         Route::GET('/competitionTimetable/{id}/{day}', 'App\Http\Controllers\CompetitiiController@competitionTimetable');
         Route::POST('/generateTimetable', 'App\Http\Controllers\CompetitiiController@generateTimetable');
+        Route::POST('/getTimetable', 'App\Http\Controllers\CompetitiiController@getTimetable');
 
         
         
