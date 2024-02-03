@@ -12,13 +12,22 @@
                 </style>
 
 
-            <table id='table1'>
-              <tr class = 'mark'>
-                <td style='text-align: center;' ><label>Poligon</label></td>
-
+           
             @php
-               
-                    $day = 0;
+                for ($day = 0; $day < 2; $day++)
+                {               
+    
+
+                   $zi = $day + 1;
+                
+                       echo  "<div><h4>Ziua $zi </h4></div> ";
+
+
+                   echo " <table id='table$zi'>
+                     <tr class = 'mark'>
+                    <td style='text-align: center;' ><label>Poligon</label></td>";
+             
+
                     $dataset = $schedule[$day];
                      
                     if (count($dataset) == 0)
@@ -47,7 +56,7 @@
                             }
                         }
 
-                          echo "</tr><tr class = 'mark'>";
+                        echo "</tr><tr class = 'mark'>";
 
                         echo "<td style='text-align: center;'><label>Ora\Post</label></td>";
 
@@ -61,7 +70,7 @@
                         }
 
 
-                echo "</tr>";
+                        echo "</tr>";
 
                         // orarul
                         $IsNew = true;
@@ -90,38 +99,18 @@
                            
                         }
                         
-
-                        return;
+                      
+                    
                     }
 
-                    foreach($dataset as $d){
+                    echo '</table>';
 
-                        if  (!in_array($d->Poligon , $poligoane)){
+                }
 
-                            if ($ScheduleType == 'Normal'){
-                                $p = "P $d->Poligon";
-                                echo $p;
-                            }
-                            else{
-                                $p =  "Poligon " . intdiv($d->Poligon + 1, 2);
-                                $post = ' P '. (($d->Poligon + 1) % 2) + 1 ;
-                            
-                                echo '<div class="col-md-2"><label>';
-                                    echo $p;
-                                    echo $post;
-                                echo '</label></div>';
-                                
-
-                            }
-
-                            array_push($poligoane, $d->Poligon);
-                        }
-                    }
 
             @endphp
 
 
-                </select>
-            </div>    
+               
         </form>
 </div>
