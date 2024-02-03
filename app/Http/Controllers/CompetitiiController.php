@@ -999,11 +999,17 @@ class CompetitiiController extends MasterController
     }
 
     public function getTimetable(Request $request){
-        $CompetitionId = $request->CompetitionId;
-        $dataset1 = $this->BObject()->geCompetitionTimetable($CompetitionId, 1); 
-        $dataset2 = $this->BObject()->geCompetitionTimetable($CompetitionId, 2); 
-        
-        return view('modules.pages.competition.editschedule')->with(['CompetitionId'=>$CompetitionId, 'schedule'=>[$dataset1, $dataset2]]);
+     //   return 'Bla';
+        try{
+            $CompetitionId = $request->CompetitionId;
+            $dataset1 = $this->BObject()->geCompetitionTimetable($CompetitionId, 1); 
+            $dataset2 = $this->BObject()->geCompetitionTimetable($CompetitionId, 2); 
+            
+            return view('modules.pages.competition.editschedule', ['CompetitionId'=>$CompetitionId, 'schedule'=>[$dataset1, $dataset2]])->render();
+        }
+        catch (\Exception $e) {
+           return  $e->getMessage(); 
+        }
         
     }
 
