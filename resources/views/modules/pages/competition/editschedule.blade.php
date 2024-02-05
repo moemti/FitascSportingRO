@@ -16,17 +16,12 @@
             @php
                 for ($day = 0; $day < 2; $day++)
                 {               
-    
-
                    $zi = $day + 1;
-                
-                       echo  "<div><h4>Ziua $zi </h4></div> ";
 
-
-                   echo " <table id='table$zi'>
-                     <tr class = 'mark'>
-                    <td style='text-align: center;' ><label>Poligon</label></td>";
-             
+                   echo "<div><h4>Ziua $zi </h4></div> ";
+                   echo "<table id='table$zi'>
+                        <tr class = 'mark'>
+                        <td style='text-align: center;' ><label>Poligon</label></td>";
 
                     $dataset = $schedule[$day];
                      

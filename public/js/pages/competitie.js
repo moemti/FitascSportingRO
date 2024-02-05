@@ -278,7 +278,7 @@
 
             function unRegisterMe(){
              
-                confirm('Doriti sa renuntati?', unRegisterMeDo);
+                confirm(translate('Doriti sa renuntati?'), unRegisterMeDo);
             }
 
             function unRegisterMeDo(){
@@ -366,6 +366,11 @@ function genereazaTimetableDo() {
 
 function saveSchedule() {
 
+    confirm('Doriti sa salvati modificarile?', doSaveSchedule);
+}
+
+function doSaveSchedule() {
+    ShowSuccess('Saving');
 }
 
 function seeTimetable() {

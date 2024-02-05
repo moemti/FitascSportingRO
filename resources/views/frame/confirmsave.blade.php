@@ -1,6 +1,6 @@
-<div id="confirmsavedialog" class="modal bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+<div id="confirmsavedialog" class="modalconfirm modal bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog"   >
-        <div class="modal-content panel-primary">
+        <div class="modalconfirmcontent modal-content panel-primary">
             <div class="modal-header panel-heading" >
                 Mesaj
             </div>
