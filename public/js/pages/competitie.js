@@ -250,31 +250,7 @@
               
             }
 
-            // function registerMeDo(){
-            //     let Data = {};
-            //     Data.CompetitionId = $('#CompetitionId').val();
-            //     Data.Register = 1;
 
-            //     $.ajax({
-            //         type: 'POST',
-            
-            //         url: baseUrl + '/registerMe',
-            //         data: Data,
-            //         success: function (data) {
-            //             if (data === 'OK'){
-            //                 ShowSuccess('Ati fost inregistrat cu succes');
-            //                 setTimeout(window.location.reload(), 300)
-                            
-            //             }
-            //             else    
-            //                 ShowError(data)
-                    
-            //         },
-            //         error: function(e){
-            //             ShowError(e);
-            //         }
-            //     });
-            // }
 
             function unRegisterMe(){
              
@@ -370,10 +346,56 @@ function saveSchedule() {
 }
 
 function doSaveSchedule() {
-    ShowSuccess('Saving');
+    ShowSuccess('Saving...');
+    let Data = {};
+
+    let Serii = $('.scheduledata').map(function () {
+        let a = {};
+        a['day'] = $(this).attr('data-day');
+        a['poligon'] = $(this).attr('data-poly');
+        a['post'] = $(this).attr('data-pos');
+        a['ora'] = $(this).attr('data-ora');
+        a['seria'] = $(this).val();
+
+        return a;
+    }).toArray();
+
+
+
+    Data.Serii = Serii;
+
+    Data.CompetitionId = $('#CompetitionId').val();
+
+    $.ajax({
+        type: 'POST',
+
+        url: baseUrl + '/saveSchedule',
+        data: Data,
+        success: function (data) {
+            if (data === 'OK') {
+                ShowSuccess('S-a salvat cu succes');
+
+            }
+            else
+                ShowError(data)
+
+        },
+        error: function (e) {
+            ShowError(e);
+        }
+    });
+
+}
+
+function veziProgram() {
+    seeTimetabledo(false);
 }
 
 function seeTimetable() {
+    seeTimetabledo(true);
+}
+
+function seeTimetabledo(editing) {
     let Data = {};
     Data.CompetitionId = $('#CompetitionId').val();
     $.ajax({
@@ -382,6 +404,9 @@ function seeTimetable() {
         data: Data,
         success: function (data) {
             $("#popup_body").html(data);
+            if (!editing) {
+                $("#popup_body :input").prop("disabled", !editing);
+            }
             $("#popupDialog").modal({
                 backdrop: 'static',
                 keyboard: false
@@ -395,7 +420,12 @@ function seeTimetable() {
                     }).hide();
                 }
             );
-            $('#btnPopupSaveModal').off().on('click', saveSchedule);
+            if (editing) {
+                $('#btnPopupSaveModal').off().on('click', saveSchedule);
+                $('#btnPopupSaveModal').show();
+            }
+            else
+                $('#btnPopupSaveModal').hide(); 
 
         },
         error: function (e) {
@@ -403,6 +433,8 @@ function seeTimetable() {
         }
     });
 }
+
+
 
     function RetrieveFields(){
 
@@ -538,6 +570,7 @@ function seeTimetable() {
 
         $("#btnGenTimetable").on('click', genereazaTimetable);
         $("#btnSeeTimetable").on('click', seeTimetable);
+        $("#btnVeziProgram").on('click', veziProgram);
 
 
 

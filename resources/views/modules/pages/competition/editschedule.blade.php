@@ -20,9 +20,8 @@
 
                    echo "<div><h4>Ziua $zi </h4></div> ";
                    echo "<table id='table$zi'>
-                        <tr class = 'mark'>
-                        <td style='text-align: center;' ><label>Poligon</label></td>";
-
+                        <tr class = 'mark'>";
+                      
                     $dataset = $schedule[$day];
                      
                     if (count($dataset) == 0)
@@ -34,6 +33,8 @@
                     $poligoane = [];
 
                     if ($ScheduleType != 'Normal'){ // condensat
+
+                         echo "<td style='text-align: center;' ><label>Poligon</label></td>";
 
                         // header
                         foreach($dataset as $d){
@@ -84,11 +85,11 @@
                                 echo '</label></td>';
                             }
 
-                            $p =  intdiv($d->Poligon + 1, $NrPosturiPoligon);
+                            $p =  $d->Poligon; //intdiv($d->Poligon + 1, $NrPosturiPoligon);
                             $post = (($d->Poligon + 1) % $NrPosturiPoligon) + 1 ;
                             $ora = $d->Ora;
                         
-                            echo "<td style='text-align: center;' class='col-md-1'><input data-day='$day' data-poly='$p' data-pos='$post' data-ora = '$ora' style='text-align: center; width:100%; border:0;' value='";
+                            echo "<td style='text-align: center;' ><input class='scheduledata' data-day='$zi' data-poly='$p' data-pos='$post' data-ora = '$ora' style='text-align: center; width:100%; border:0;' value='";
                             echo  strval(($d->Serie == 0)?'':$d->Serie);
                             echo "' type = 'number'/></td>";
                            
@@ -96,6 +97,57 @@
                         
                       
                     
+                    }
+                    else{
+                            echo "<td style='text-align: center;' ><label>Ora\Poligon</label></td>";
+                        // header
+                        foreach($dataset as $d){
+                                $p =  "Poligon " .$d->Poligon ;
+                              
+                            
+                            if  (!in_array($p , $poligoane)){
+
+                                echo "<td style='text-align: center;' ><label>";
+                                    echo $p;
+                                   
+                                echo '</label></td>';
+
+                                array_push($poligoane, $p);
+                            }
+                        }
+
+                       
+
+                        // orarul
+                        $IsNew = true;
+                        $OldOra = "";
+
+                        foreach($dataset as $d){
+                            if ($OldOra != strval( substr($d->Ora, 11, 5))){
+                               if (!$IsNew){
+                                    echo "</tr>";
+                               }
+                                $IsNew = false;
+                                $OldOra = strval( substr($d->Ora, 11, 5));
+                                echo '<tr>';
+                                echo '<td style="text-align: center;" class = "mark"><label>';
+                                echo $OldOra;
+                                echo '</label></td>';
+                            }
+
+                            $p =  $d->Poligon; //intdiv($d->Poligon + 1, $NrPosturiPoligon);
+                            $post = (($d->Poligon + 1) % $NrPosturiPoligon) + 1 ;
+                            $ora = $d->Ora;
+                        
+                            echo "<td style='text-align: center;'><input class='scheduledata' data-day='$zi' data-poly='$p' data-pos='$post' data-ora = '$ora' style='text-align: center; width:100%; border:0;' value='";
+                            echo  strval(($d->Serie == 0)?'':$d->Serie);
+                            echo "' type = 'number'/></td>";
+                           
+                        }
+                        
+                      
+
+
                     }
 
                     echo '</table>';

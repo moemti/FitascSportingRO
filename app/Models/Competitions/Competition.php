@@ -1675,6 +1675,36 @@ class Competition extends BObject{
 
         }
 
+        public function saveSchedule($CompetitionId, $Serii)
+        {
+            $sql = "delete from schedule where CompetitionId = $CompetitionId";
+            try{
+
+                DB::beginTransaction();
+                DB::select($sql);
+    
+                foreach($Serii as $s){
+
+                    $day = $s['day'];
+                    $post = $s['post'];
+                    $poligon = $s['poligon'];
+                    $ora = $s['ora'];
+                    $seria = $s['seria'];
+                    $seria = $seria>0?$seria:0;
+
+
+                    $sql2 = "INSERT INTO `schedule`(`CompetitionId`, `Day`, `Poligon`, `Post`, `Ora`, `Serie`) VALUES ($CompetitionId, $day, $poligon, $post, '$ora', $seria)";
+                    DB::select($sql2);
+                };
+                
+                DB::Commit();
+                
+                return 'OK';
+            } catch (\Exception $e) {
+                DB::Rollback();
+                return $e->getMessage();
+            }
+        }
 
     
 }

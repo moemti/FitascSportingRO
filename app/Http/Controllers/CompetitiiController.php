@@ -1187,6 +1187,15 @@ class CompetitiiController extends MasterController
         return  [ 'ScheduleType' => $ScheduleType, 'NrColoane' => $NrColoane, 'timetable' => $result];
     }
 
+
+    public function saveSchedule(Request $request){
+        $CompetitionId = $request->CompetitionId;
+        $Serii = $request->Serii;
+
+        return $this->BObject()->saveSchedule($CompetitionId, $Serii);
+
+    }
+
     public function MyCompetitionsAPI($PersonId){
         return $this->BObject()->MyCompetitionsAPI($PersonId);
 
