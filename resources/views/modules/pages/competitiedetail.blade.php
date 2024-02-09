@@ -170,7 +170,7 @@
                          @if (getCompetitionRight($master[0]->CompetitionId))
                             <button id="btnOngoing"  data-status="Preparation" class="cmpStatusChange btn btn-secondary btn-outline mb-2">Open to preparation</button>
                             <button id="btnFinish"  data-status="Finished" class="cmpStatusChange btn btn-secondary btn-outline mb-2">Finish competition</button>
-                             <button id="btnGenTimetable"   class = "btn btn-secondary btn-outline mb-2">Genereaza program</button>
+                            <button id="btnGenTimetable"   class = "btn btn-secondary btn-outline mb-2">Genereaza program</button>
                             <a id="btnDownloadListaSquad1" href="{{url('/competitionDownSquads/').'/'.$master[0]->CompetitionId}}/1" data-type="Diff" class=" btn btn-secondary btn-outline mb-2">Ziua 1</a>
                             <a id="btnDownloadListaSquad2" href="{{url('/competitionDownSquads/').'/'.$master[0]->CompetitionId}}/2" data-type="Diff" class=" btn btn-secondary btn-outline mb-2">Ziua 2</a>
                             <a id="btnDownloadListaAll" href="{{url('/competitionListDown/').'/'.$master[0]->CompetitionId}}" data-type="Diff" class=" btn btn-secondary btn-outline mb-2">Download lista</a>
@@ -178,7 +178,7 @@
                             <button id="btnSeeTimetable"  class = " btn btn-secondary btn-outline mb-2">Editeaza program</button>
                         @endif
                             <a id="btnDownloadListaAll" href="{{url('/competitionListDownSerii/').'/'.$master[0]->CompetitionId}}" data-type="Diff" class=" btn btn-secondary btn-outline mb-2">{{transex('Download serii')}}</a>
-                             <button id="btnVeziProgram"  class="btnVeziProgram btn btn-secondary btn-outline mb-2">Vezi program</button>
+                            <button id="btnVeziProgram"  class="btnVeziProgram btn btn-secondary btn-outline mb-2">Vezi program</button>
                             <a id="btnDownloadProgram" href="{{url('/competitionTimetable/').'/'.$master[0]->CompetitionId}}/1"  class=" btn btn-secondary btn-outline mb-2">{{transex('Download program ziua 1')}}</a>
                             <a id="btnDownloadProgram" href="{{url('/competitionTimetable/').'/'.$master[0]->CompetitionId}}/2"  class=" btn btn-secondary btn-outline mb-2">{{transex('Download program ziua 2')}}</a>
                         @break
@@ -193,12 +193,11 @@
                         <a id="btnDownloadResultsAll" href="{{url('/competitionResultsDown/').'/'.$master[0]->CompetitionId}}" data-type="Diff" class=" btn btn-danger btn-outline mb-2">{{transex('Download clasamente')}}</a>
 
                             {{-- Se va sterge --}}
-                             <button id="btnGenTimetable"   class = "btn btn-secondary btn-outline mb-2">Genereaza program</button>
-                           
+                             {{-- <button id="btnGenTimetable"   class = "btn btn-secondary btn-outline mb-2">Genereaza program</button>
                               <button id="btnSeeTimetable"   class = "btn btn-secondary btn-outline mb-2">Editeaza program</button>
                              <button id="btnVeziProgram"  class=" btn btn-secondary btn-outline mb-2">Vezi program</button>
                               <a id="btnDownloadProgram" href="{{url('/competitionTimetable/').'/'.$master[0]->CompetitionId}}/1"  class=" btn btn-secondary btn-outline mb-2">{{transex('Download program ziua 1')}}</a>
-                            <a id="btnDownloadProgram" href="{{url('/competitionTimetable/').'/'.$master[0]->CompetitionId}}/2"  class=" btn btn-secondary btn-outline mb-2">{{transex('Download program ziua 2')}}</a>
+                            <a id="btnDownloadProgram" href="{{url('/competitionTimetable/').'/'.$master[0]->CompetitionId}}/2"  class=" btn btn-secondary btn-outline mb-2">{{transex('Download program ziua 2')}}</a> --}}
 
                             {{-- pana aici --}}
 
