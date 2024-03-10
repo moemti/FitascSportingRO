@@ -323,6 +323,9 @@
 
 		function PutDetails(){
             
+			if (!HasDetails)
+				return;
+
 			if (detailsSource){
 				detailsSource.localdata = documentdetailsDB;
      			$('#documentdetails').jqxGrid('updatebounddata');

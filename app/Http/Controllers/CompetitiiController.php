@@ -133,7 +133,6 @@ class CompetitiiController extends MasterController
     
 
     public function registerMe(Request $request){
-
         $PersonId = session('PersonId');
         $Register = $request->Register == 1;
         $CompetitionId = $request->CompetitionId;

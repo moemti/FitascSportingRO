@@ -12,8 +12,8 @@
 @push('content')
 
     <div class="container">
-        <!-- <div class="announcement row alert alert-quaternary alert-sm justify-content-center"><a href="{{url('/regulamente')}}">{{transex('ATENTIE - Regulament intern 18-03-2022')}}</a></div>
-         -->
+      <div style = "background-color: orangered; "class="announcement row alert alert-quaternary alert-sm justify-content-center"><a style=" color: white;" href="{{url('/regulamente')}}">{{transex('ATENTIE - Regulament nou din 23-10-2023')}}</a></div>
+       
     </div>
 
     <div class="owl-carousel owl-carousel-light owl-carousel-light-init-fadeIn_ owl-theme manual dots-inside dots-horizontal-center show-dots-hover show-dots-xs show-dots-sm show-dots-md full-width nav-inside nav-inside-edge show-nav-hover custom-carousel-arrows-style-1 mb-0" data-plugin-options="{'autoplayTimeout': 9000000}" 
@@ -47,6 +47,7 @@
                                               {{transex('Competitiile continua')}}
                                         @else
                                                {{transex($cur->NumeSuperLung)}}
+                                               <br> {{$cur->SportField}} 
                                         @endif
                                         </h1>
 
@@ -60,6 +61,7 @@
                                                 {{($competitions[0]->Oficial == 1)?"Competitie oficiala":"Competitie locala" }}
                                             </div>
                                                     {{$cur->NumeSuperLung}}
+                                                      <br> {{$cur->SportField}} 
                                             </span>
 
                                             <a href="{{url('/clasament/'.$cur->CompetitionId)}}" class="btn btn-primary font-weight-bold btn-py-2 btn-px-4 " data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1250">{{transex('Vezi mai mult')}}</a> 
@@ -140,6 +142,7 @@
 												<a href="{{url('/clasament/') .'/'.$competitions[0]->CompetitionId}}" class="text-decoration-none custom-secondary-font text-color-dark">
                                                     {{$competitions[0]->NumeLung}}
 												</a>
+                                                <br> {{$competitions[0]->SportField}} 
 											</h4>
 											    <a href='{{$competitions[0]->Coordinates}}' target="_blank" class="a a__medium text-decoration-none">
                                                     <i class="fas fa-map-marker-alt text-color-primary custom-icon-size-1"></i>
@@ -259,6 +262,7 @@
 										<h4 class="font-weight-bold">
 											<a href="{{url('/clasament/') .'/'.$comp->CompetitionId}}" class="text-decoration-none custom-secondary-font text-color-dark">	{{$comp->NumeLung}}</a>
 										</h4>
+                                        <br> {{$competitions[0]->SportField}} 
 										<p>{{$comp->Perioada}}</p>
 									</div>
 								</article>

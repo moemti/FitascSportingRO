@@ -608,6 +608,21 @@ class Competition extends BObject{
 
 
         public function registerMe($CompetitionId, $PersonId){
+
+            // validare ora
+            $sql = "SELECT TIMESTAMPDIFF(minute, now(), StartDate) as Diferenta, now() as OraCurenta, StartDate, (24 + 6) * 60 DiferentaMin,  DATE_ADD(StartDAte, INTERVAL  -(24 + 6) * 60 MINUTE) AS MAXDATE
+                    FROM competition WHERE CompetitionId = $CompetitionId";
+
+            $validare = DB::select($sql);
+
+            if ($validare[0]->DiferentaMin > $validare[0]->Diferenta){
+
+                $max = $validare[0]->MAXDATE;
+                return "Inscrierea se poate face doar pana in ora $max. Contactati organizatorul pentru inscriere";
+            };
+
+
+
             $sql = "insert into result (CompetitionId, PersonId, ShooterCategoryId, TeamId)
             select c.CompetitionId, $PersonId, TT.ShooterCategoryId, TT.TeamId 
             from competition c
@@ -1008,6 +1023,9 @@ class Competition extends BObject{
         }
 
         public function registerCompetitorDB($request){
+          
+
+
             try{
 
             //    DB::beginTransaction();
@@ -1018,6 +1036,30 @@ class Competition extends BObject{
                 $ShooterCategoryId = $request['ShooterCategoryId'];
                 $CompetitionId = $request['CompetitionId'];
                 $Team = $request['Team'];
+
+
+                $sql = "SELECT TIMESTAMPDIFF(minute, now(), StartDate) as Diferenta, now() as OraCurenta, StartDate, (24 + 6) * 60 DiferentaMin,  DATE_ADD(StartDAte, INTERVAL  -(24 + 6) * 60 MINUTE) AS MAXDATE
+                FROM competition WHERE CompetitionId = $CompetitionId";
+    
+                $validare = DB::select($sql);
+    
+
+                $LogedId= session('PersonId');
+                if (!isset($LogedId))
+                    $LogedId = 0;
+    
+           
+                if (!$this->IsCompetitionAdmin($CompetitionId,  $LogedId))
+                    if ($validare[0]->DiferentaMin > $validare[0]->Diferenta){
+                        $max = $validare[0]->MAXDATE;
+                        return "Inscrierea se poate face doar pana in ora $max. Contactati organizatorul pentru inscriere";
+                    };
+    
+    
+
+
+
+
 
                 if ($PersonId == -1){
                     $sql = "INSERT INTO person(Name, Code, Email,   SerieNrCI, CNP, SeriePermisArma, DataExpPermis, MarcaArma, SerieArma, CalibruArma, CountryId) 
@@ -1169,6 +1211,7 @@ class Competition extends BObject{
                                     '-',
                                     DATE_FORMAT(EndDate, '%d/%m/%Y') 
                                 ) AS NumeSuperLung,
+                                s.Name as SportField,
                                 r.Link,
                                 CASE WHEN c.EndDate >= NOW() AND c.StartDate <= NOW() THEN 'Rezultate competitie (LIVE)' WHEN c.StartDate > NOW() THEN 'Urmatoarea competitie' WHEN c.EndDate < NOW() THEN 'Rezultate competitie' ELSE ''
                                 END AS Mesaj
@@ -1176,6 +1219,7 @@ class Competition extends BObject{
                                 competition c
                             INNER JOIN `range` r ON
                                 r.RangeId = c.RangeId
+                                inner join sportfield s on s.SportFieldId = c.SportFieldId
                             WHERE
                                 c.StartDate > DATE_ADD(NOW(), INTERVAL -5 DAY)
                             ORDER BY
@@ -1186,7 +1230,7 @@ class Competition extends BObject{
                         SELECT NULL
                             ,
                             'Sfarsit de sezon',
-                            NULL,
+                            NULL, NULL,
                             ''
                         LIMIT 0, 1
             "

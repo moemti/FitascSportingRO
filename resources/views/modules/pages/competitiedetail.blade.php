@@ -65,6 +65,11 @@
                 <h2 id="p_competitie" value='' > {{$master[0]->Name}}</h2>
             </div>
         </div>
+          <div class='row'>
+            <div class="mb-12">
+                <p id="p_sportfield" value='' > {{$master[0]->SportField}}</p>
+            </div>
+        </div>
         <div class='row'>
             <div>
                 <h3 id="p_locatie" value=''> {{$master[0]->Range}}</h3>

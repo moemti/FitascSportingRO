@@ -1,6 +1,5 @@
 
 
-
     let smcolumns = [];
     let dsCompetitiiY = [];
 
@@ -20,9 +19,10 @@
 
     if (window.innerWidth > 900){
         smcolumns = [
-            { text: translate('Nume'), dataField: 'Name', width: '30%' },
+            { text: translate('Nume'), dataField: 'Name', width: '25%' },
             { text: translate('Tip'), dataField: 'Tip', width: '10%' },
-            { text: translate('Locatie'), dataField: 'Range', width: '25%' },
+            { text: translate('Disciplina'), dataField: 'SportField', width: '10%' },
+            { text: translate('Locatie'), dataField: 'Range', width: '20%' },
             { text: translate('Perioada'), dataField: 'Perioada', width: '20%' },
             { text: translate('Stare'), dataField: 'Status', width: '10%', cellclassname: cellclassStatus},// ,filtertype: 'checkedlist', filteritems: [...new Set(dsCompetitii.Year)]},
             {
@@ -74,6 +74,7 @@
                     { name: 'Perioada', type: 'string' },
                     { name: 'Status', type: 'string' },
                     { name: 'Tip', type: 'string' },
+                    { name: 'SportField', type: 'string' },
 					]			
 		};
 		

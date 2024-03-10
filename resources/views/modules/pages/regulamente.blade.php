@@ -1,5 +1,47 @@
 @extends('layouts.baseex')
 
+
+
+@push('footerscripts')
+<script>
+
+    @switch(app()->getLocale())
+        @case('HU')
+            var lan = 'hu';
+            @break
+    
+        @case('EN')
+            var lan = 'en';
+            @break
+    
+        @default
+            var lan = 'ro';
+    @endswitch
+
+
+    function googleTranslateElementInit() {
+        new google.translate.TranslateElement({
+            pageLanguage: 'ro', 
+            includedLanguages: lan, 
+            autoDisplay: false
+        }, 'google_translate_element');
+
+        function ttr(ll) {
+   
+        var selectElement = document.querySelector('#google_translate_element select');
+        selectElement.value = ll;
+        selectElement.dispatchEvent(new Event('change'));
+      }
+     
+        setTimeout(ttr, 1000, lan);
+       
+    }
+</script>
+<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+@endpush
+
+
 @push('content')
 
 <section class="content-termeni section section-tertiary section-no-border m-0">
@@ -23,17 +65,18 @@
 <section class="content-termeni section section-tertiary section-no-border m-0">
     <div class="container">
 
+
     @switch(app()->getLocale())
         @case('HU')
-            @include('modules.pages.regulamentHU');
+            @include('modules.pages.regulamentRO')
             @break
     
         @case('EN')
-            @include('modules.pages.regulamentEN');
+            @include('modules.pages.regulamentRO')
             @break
     
         @default
-            @include('modules.pages.regulamentRO');
+            @include('modules.pages.regulamentRO')
     @endswitch
 
    
