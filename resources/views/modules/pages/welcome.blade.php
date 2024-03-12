@@ -142,7 +142,7 @@
 												<a href="{{url('/clasament/') .'/'.$competitions[0]->CompetitionId}}" class="text-decoration-none custom-secondary-font text-color-dark">
                                                     {{$competitions[0]->NumeLung}}
 												</a>
-                                                <br> {{$competitions[0]->SportField}} 
+                                                <p> {{$competitions[0]->SportField}} </p>
 											</h4>
 											    <a href='{{$competitions[0]->Coordinates}}' target="_blank" class="a a__medium text-decoration-none">
                                                     <i class="fas fa-map-marker-alt text-color-primary custom-icon-size-1"></i>
@@ -261,8 +261,10 @@
 										</h5>
 										<h4 class="font-weight-bold">
 											<a href="{{url('/clasament/') .'/'.$comp->CompetitionId}}" class="text-decoration-none custom-secondary-font text-color-dark">	{{$comp->NumeLung}}</a>
-										</h4>
-                                        <br> {{$competitions[0]->SportField}} 
+										
+                                       <p> {{$competitions[0]->SportField}}</p>
+                                        
+                                        </h4>
 										<p>{{$comp->Perioada}}</p>
 									</div>
 								</article>

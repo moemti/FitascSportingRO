@@ -146,7 +146,7 @@ class Clasamente extends BObject{
     public function getResultsPersonyYear($PersonId, $year){
         $sql = "SELECT p.PersonId,  Round(case when ifNull(r.Aborted,1) = 0 then Percent else null end, 2) as Percent, 
             Round(case when ifNull(r.Aborted,1) = 0 then PercentR else null end, 2) as PercentR, r.Total, concat(c.Name , ' ' , rr.Name , ' ' ,  
-            concat(DATE_FORMAT(c.StartDate, '%d/%m'), ' - ', DATE_FORMAT(c.EndDate, '%d/%m %Y'))) as Name, r.Position as Loc, c.CompetitionId,
+            concat(DATE_FORMAT(c.StartDate, '%d/%m'), ' - ', DATE_FORMAT(c.EndDate, '%d/%m %Y'))) as Name, r.Position as Loc, c.CompetitionId
           
             FROM result r 
             inner join person p on p.PersonId = r.PersonId 
