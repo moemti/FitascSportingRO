@@ -1405,7 +1405,7 @@ class Competition extends BObject{
             inner join `range` r on r.RangeId = c.RangeId
             inner join sportfield s on s.SportFieldId = c.SportFieldId
             left join result rr on rr.CompetitionId = c.CompetitionId and rr.PersonId = $PersonId
-            where c.Status in ('Open', 'Closed')
+            where c.Status in ('Open', 'Closed', 'Preparation')
             order by c.StartDate";
 
           return DB::select($sql);
