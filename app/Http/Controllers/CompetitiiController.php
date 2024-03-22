@@ -540,16 +540,16 @@ class CompetitiiController extends MasterController
         $sheet2->setCellValue('AC1',$date);
 
 
-        $drawing = new Drawing();
-        $drawing->setName('Paid');
-        $drawing->setDescription('Paid');
-        $drawing->setPath(storage_path().'/app/img/qr-code/img-1.svg'); /* put your path and image here img-1'  . '.svg */
-        $drawing->setCoordinates('AE2');
-      //  $drawing->setOffsetX(110);
-    //    $drawing->setRotation(25);
-        $drawing->getShadow()->setVisible(true);
-   //     $drawing->getShadow()->setDirection(45);
-        $drawing->setWorksheet($sheet2);
+//         $drawing = new Drawing();
+//         $drawing->setName('Paid');
+//         $drawing->setDescription('Paid');
+//         $drawing->setPath(storage_path().'/app/img/qr-code/img-1.svg'); /* put your path and image here img-1'  . '.svg */
+//         $drawing->setCoordinates('AE2');
+//       //  $drawing->setOffsetX(110);
+//     //    $drawing->setRotation(25);
+//         $drawing->getShadow()->setVisible(true);
+//    //     $drawing->getShadow()->setDirection(45);
+//         $drawing->setWorksheet($sheet2);
      
       //  $sheet2->setCellValue('AC1',$drawing);
 
