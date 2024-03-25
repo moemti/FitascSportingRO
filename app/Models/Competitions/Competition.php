@@ -1436,12 +1436,11 @@ class Competition extends BObject{
         }
 
         public function currentCompetition($PersonId){
-            $sql = "SELECT r.BIB, r.NrSerie, c.CompetitionId, DATE_ADD(CURDATE() , INTERVAL 1 DAY) as EndDate 
+            $sql = "SELECT r.BIB, r.NrSerie, c.CompetitionId, DATE_ADD(EndDate, INTERVAL 0 DAY) as EndDate 
             FROM competition c
             inner join result r on c.CompetitionId = r.CompetitionId
-             
             where 
-                r.PersonId = {$PersonId} --and c.CompetitionId = 22
+                r.PersonId = $PersonId 
              and Status =  'Progress'
             ";
 
@@ -1470,7 +1469,7 @@ class Competition extends BObject{
                     select  Day, Ora, Poligon, Post, Serie
                     from schedule s
                     inner join competition c on c.CompetitionId = s.CompetitionId
-                    where s.CompetitionId = {$CompetitionId} and s.Serie = {$NrSerie}
+                    where s.CompetitionId = {$CompetitionId} and s.Serie = {$NrSerie} 
                     order by Day, Ora, Poligon , Post, Serie
                     ";
                 $orar = DB::select($sql);
