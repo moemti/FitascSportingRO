@@ -200,7 +200,7 @@ class Competition extends BObject{
                         inner join person p on p.PersonId = r.PersonId
                         left join shootercategory sc on sc.ShooterCategoryId = r.ShooterCategoryId
                         left join team t on t.TeamId = r.TeamId
-                        where r.CompetitionId = :CompetitionId
+                        where r.CompetitionId = :CompetitionId and sc.code <> 'STR'
                         order by Position, p.Name;
                 ";
 
@@ -737,11 +737,6 @@ class Competition extends BObject{
             }
             if ($Status == 'Open' )
              return DB::select(str_replace(':CompetitionId', $CompetitionId,$this->ClasamentSelect2));
-
-
-
-
-
         }
 
         public function GetClasamentSerii($CompetitionId){
@@ -765,26 +760,32 @@ class Competition extends BObject{
                             group by ResultId
                             order by d.RoundNr 
                         ) sof on sof.ResultId = r.ResultId 
-                        left join (select concat(loc,' ' , vvv.Code ) as ResultatCat , loc, ResultId from (
-                            SELECT  
-                                    ROW_NUMBER() OVER (
-                                      PARTITION BY sc.Code 
-                                      ORDER BY sof.Total desc, ShootOff desc) as loc ,
-                                      r.ResultId, sc.Code
-                                                FROM result r
-                                                left join (
-                                                    select GROUP_CONCAT(case when d.RoundNr > 8 then d.Result else null end  order by d.RoundNr) as ShootOffS,
-                                                            sum(case when d.RoundNr > 8 then d.Result/(10 *( d.RoundNr - 8))  else 0 end ) as ShootOff, 
-                                                            sum(case when d.RoundNr <= 8 then d.Result else 0 end ) as Total,
-                                                    d.ResultId
-                                                    from resultdetail d 
-                                                    group by ResultId
-                                                    order by d.RoundNr 
-                                                ) sof on sof.ResultId = r.ResultId 
-                                                left join shootercategory sc on sc.ShooterCategoryId = r.ShooterCategoryId
-                                                where r.CompetitionId = :CompetitionId and ifnull(sc.code, '') <> 'STR'
-                                                order by sc.Code, loc )vvv
-                                                where loc < 4) cps on cps.ResultId = r.ResultId
+
+                        left join (
+                                select concat(loc,' ' , vvv.Code ) as ResultatCat , loc, ResultId , vvv.Code
+                                from (
+                                    SELECT  
+                                            ROW_NUMBER() OVER (
+                                            PARTITION BY sc.Code 
+                                            ORDER BY sof.Total desc, ShootOff desc) as loc ,
+                                            r.ResultId, sc.Code
+                                                        FROM result r
+                                                        left join (
+                                                            select GROUP_CONCAT(case when d.RoundNr > 8 then d.Result else null end  order by d.RoundNr) as ShootOffS,
+                                                                    sum(case when d.RoundNr > 8 then d.Result/(10 *( d.RoundNr - 8))  else 0 end ) as ShootOff, 
+                                                                    sum(case when d.RoundNr <= 8 then d.Result else 0 end ) as Total,
+                                                            d.ResultId
+                                                            from resultdetail d 
+                                                            group by ResultId
+                                                            order by d.RoundNr 
+                                                        ) sof on sof.ResultId = r.ResultId 
+
+                                                        left join shootercategory sc on sc.ShooterCategoryId = r.ShooterCategoryId
+                                                        where r.CompetitionId = :CompetitionId 
+                                                        order by sc.Code, loc 
+                                        ) vvv
+                                        where (loc < 4 or ifnull(Code, '') = 'STR')
+                                    ) cps on cps.ResultId = r.ResultId
                         inner join person p on p.PersonId = r.PersonId
                         left join shootercategory sc on sc.ShooterCategoryId = r.ShooterCategoryId
                         left join team t on t.TeamId = r.TeamId
@@ -792,7 +793,20 @@ class Competition extends BObject{
                         and ResultatCat is not null and ifnull(r.Aborted,0) = 0
                         order by Category, loc
                 ";
-            return DB::select(str_replace(':CompetitionId', $CompetitionId, $sql));
+            $clasament = DB::select(str_replace(':CompetitionId', $CompetitionId, $sql));
+            $result = [];
+            $cat = '';
+            
+            foreach ($clasament  as  $r){
+                if ($cat != '' && $cat != $r->Category){
+                    array_push($result, (object)[]);  
+                    
+                };
+                $cat = $r->Category;
+                array_push($result, $r);
+            }
+            return $result;
+
         }
         
 
@@ -1023,26 +1037,17 @@ class Competition extends BObject{
         }
 
         public function registerCompetitorDB($request){
-          
-
-
             try{
-
-            //    DB::beginTransaction();
-
-
                 $PersonId = $request['PersonId'];
                 $TeamId = $request['TeamId'];
                 $ShooterCategoryId = $request['ShooterCategoryId'];
                 $CompetitionId = $request['CompetitionId'];
                 $Team = $request['Team'];
 
-
                 $sql = "SELECT TIMESTAMPDIFF(minute, now(), StartDate) as Diferenta, now() as OraCurenta, StartDate, (24 + 6) * 60 DiferentaMin,  DATE_ADD(StartDAte, INTERVAL  -(24 + 6) * 60 MINUTE) AS MAXDATE
                 FROM competition WHERE CompetitionId = $CompetitionId";
     
                 $validare = DB::select($sql);
-    
 
                 $LogedId= session('PersonId');
                 if (!isset($LogedId))
@@ -1054,12 +1059,6 @@ class Competition extends BObject{
                         $max = $validare[0]->MAXDATE;
                         return "Inscrierea se poate face doar pana in ora $max. Contactati organizatorul pentru inscriere";
                     };
-    
-    
-
-
-
-
 
                 if ($PersonId == -1){
                     $sql = "INSERT INTO person(Name, Code, Email,   SerieNrCI, CNP, SeriePermisArma, DataExpPermis, MarcaArma, SerieArma, CalibruArma, CountryId) 
