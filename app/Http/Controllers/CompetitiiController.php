@@ -31,10 +31,12 @@ class CompetitiiController extends MasterController
     }
 
     public function getClasament($ItemId){
-        return view( 'modules.pages.competitiedetail',['master' => $this->BObject()->getMaster($ItemId), 'clasament' => $this->BObject()->GetClasament($ItemId),
+        return view( 'modules.pages.competitiedetail',['master' => $this->BObject()->getMaster($ItemId), 
+        'clasament' => $this->BObject()->GetClasament($ItemId),
         'clasamentcategorie' => $this->BObject()->GetClasamentCategory($ItemId),
         'clasamentteams' => $this->BObject()->GetClasamentTeams($ItemId),
         'clasamentSup' =>  $this->BObject()->GetClasamentSuperCupa($ItemId),
+        'clasamentStr' => $this->BObject()->GetClasamentStr($ItemId),
          ]);
 
 

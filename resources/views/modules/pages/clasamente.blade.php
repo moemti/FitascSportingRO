@@ -29,6 +29,7 @@
         let dsClasament = @Json($clasament);
         let dsClasamentSup =  @Json($clasamentsup);
         let dsYears = @Json($years);//.map(x =>  x.Year);
+       
            
 
 </script>

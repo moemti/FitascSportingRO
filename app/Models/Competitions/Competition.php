@@ -139,7 +139,7 @@ class Competition extends BObject{
                 ";
 
     public $ClasamentSelectOpen = "
-    SELECT rank() over(order by ifnull(sof.Total,0) desc, ifnull(sof.ShootOff, 0) desc)  as Position, 
+     SELECT rank() over(order by ifnull(sof.Total,0) desc, ifnull(sof.ShootOff, 0) desc)  as Position, 
             p.PersonId, p.Name as Person, sc.Code as Category, t.Name as Team , r.ResultId, r.BIB, 
             r.IsInTeam, r.NrSerie,  p.SerieNrCI, p.CNP, p.SeriePermisArma, p.DataExpPermis, p.MarcaArma, p.SerieArma, p.CalibruArma, r.TeamName,
                             case when r.Aborted = 1 then null else Round(Percent,2) end as Procent, 
@@ -201,8 +201,84 @@ class Competition extends BObject{
                         left join shootercategory sc on sc.ShooterCategoryId = r.ShooterCategoryId
                         left join team t on t.TeamId = r.TeamId
                         where r.CompetitionId = :CompetitionId and sc.code <> 'STR'
-                        order by Position, p.Name;
+                        order by Position, p.Name
+
+                       
+     
                 ";
+
+                public $ClasamentSelectOpenStr = "
+                SELECT rank() over(order by ifnull(sof.Total,0) desc, ifnull(sof.ShootOff, 0) desc)  as Position, 
+                       p.PersonId, p.Name as Person, sc.Code as Category, t.Name as Team , r.ResultId, r.BIB, 
+                       r.IsInTeam, r.NrSerie,  p.SerieNrCI, p.CNP, p.SeriePermisArma, p.DataExpPermis, p.MarcaArma, p.SerieArma, p.CalibruArma, r.TeamName,
+                                       case when r.Aborted = 1 then null else Round(Percent,2) end as Procent, 
+                                       case when r.Aborted = 1 then null else Round(PercentR,2) end as ProcentR, 
+                                   nullif(d1.Result, 0) as M1,
+                                   nullif(d2.Result, 0) as M2,
+                                   nullif(d3.Result, 0) as M3,
+                                   nullif(d4.Result, 0) as M4,
+                                   nullif(d5.Result, 0) as M5,
+                                   nullif(d6.Result, 0) as M6,
+                                   nullif(d7.Result, 0) as M7,
+                                   nullif(d8.Result, 0) as M8,
+                                   nullif(sof.Total, 0) as Total,
+                                   sof.ShootOffS,
+                                   nullif(sof.Total1, 0) as Total1,
+                                   nullif(sof.Total2, 0) as Total2,
+                                   cps.ResultatCat
+                                   FROM result r
+                                   left join resultdetail d1 on r.ResultId = d1.ResultId and d1.RoundNr = 1
+                                   left join resultdetail d2 on r.ResultId = d2.ResultId and d2.RoundNr = 2
+                                   left join resultdetail d3 on r.ResultId = d3.ResultId and d3.RoundNr = 3
+                                   left join resultdetail d4 on r.ResultId = d4.ResultId and d4.RoundNr = 4
+                                   left join resultdetail d5 on r.ResultId = d5.ResultId and d5.RoundNr = 5
+                                   left join resultdetail d6 on r.ResultId = d6.ResultId and d6.RoundNr = 6
+                                   left join resultdetail d7 on r.ResultId = d7.ResultId and d7.RoundNr = 7
+                                   left join resultdetail d8 on r.ResultId = d8.ResultId and d8.RoundNr = 8
+                                   left join (
+                                       select GROUP_CONCAT(case when d.RoundNr > 8 then d.Result else null end  order by d.RoundNr) as ShootOffS,
+                                               sum(case when d.RoundNr > 8 then d.Result/(10 *( d.RoundNr - 8))  else 0 end ) as ShootOff, 
+                                               sum(case when d.RoundNr <= 8 then d.Result else 0 end ) as Total,
+                                               sum(case when d.RoundNr <= 4 then d.Result else 0 end ) as Total1,
+                                               sum(case when d.RoundNr <= 8 and d.RoundNr > 4 then d.Result else 0 end ) as Total2,
+                                       d.ResultId
+                                       from resultdetail d 
+                                       group by ResultId
+                                       order by d.RoundNr 
+                                   ) sof on sof.ResultId = r.ResultId 
+                                   left join (select concat(loc,' ' , vvv.Code ) as ResultatCat , ResultId from (
+                                       SELECT  
+                                               ROW_NUMBER() OVER (
+                                                 PARTITION BY sc.Code 
+                                                 ORDER BY sof.Total desc, ShootOff desc) as loc ,
+                                                 r.ResultId, sc.Code
+                                                           FROM result r
+                                                           left join (
+                                                               select GROUP_CONCAT(case when d.RoundNr > 8 then d.Result else null end  order by d.RoundNr) as ShootOffS,
+                                                                       sum(case when d.RoundNr > 8 then d.Result/(10 *( d.RoundNr - 8))  else 0 end ) as ShootOff, 
+                                                                       sum(case when d.RoundNr <= 8 then d.Result else 0 end ) as Total,
+                                                               d.ResultId
+                                                               from resultdetail d 
+                                                               group by ResultId
+                                                               order by d.RoundNr 
+                                                           ) sof on sof.ResultId = r.ResultId 
+                                                           left join shootercategory sc on sc.ShooterCategoryId = r.ShooterCategoryId
+                                                           where r.CompetitionId = :CompetitionId and sc.code <> 'STR'
+                                                           order by sc.Code, loc )vvv
+                                                           where loc < 4) cps on cps.ResultId = r.ResultId
+                                   inner join person p on p.PersonId = r.PersonId
+                                   left join shootercategory sc on sc.ShooterCategoryId = r.ShooterCategoryId
+                                   left join team t on t.TeamId = r.TeamId
+                                   where r.CompetitionId = :CompetitionId and sc.code = 'STR'
+                                   order by Position, p.Name
+           
+                                  
+                
+                           ";
+           
+           
+           
+
 
                 public $ClasamentSelect = "
                     SELECT row_number() over(order by ifnull(sof.Total,0) desc, ifnull(sof.ShootOff, 0) desc, ifnull(d8.Result, 0) desc, ifnull(d7.Result, 0)  desc, ifnull(d6.Result, 0) desc, ifnull(d5.Result, 0) desc, ifnull(d4.Result, 0) desc, ifnull(d3.Result, 0) desc, 
@@ -742,6 +818,10 @@ class Competition extends BObject{
         public function GetClasamentSerii($CompetitionId){
             return DB::select(str_replace(':CompetitionId', $CompetitionId,$this->ClasamentSelectSerii));
         }
+
+        public function GetClasamentStr($CompetitionId){
+            return DB::select(str_replace(':CompetitionId', $CompetitionId,$this->ClasamentSelectOpenStr));
+        }
         
 
         public function GetClasamentCategory($CompetitionId){
@@ -784,7 +864,7 @@ class Competition extends BObject{
                                                         where r.CompetitionId = :CompetitionId 
                                                         order by sc.Code, loc 
                                         ) vvv
-                                        where (loc < 4 or ifnull(Code, '') = 'STR')
+                                        where (loc < 4)
                                     ) cps on cps.ResultId = r.ResultId
                         inner join person p on p.PersonId = r.PersonId
                         left join shootercategory sc on sc.ShooterCategoryId = r.ShooterCategoryId

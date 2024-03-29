@@ -38,6 +38,7 @@
         let dsClasamentCat = @Json($clasamentcategorie);
         let dsClasamentTeam = @Json($clasamentteams);
         let dsClasamentSup = @Json($clasamentSup);
+        let dsClasamentStr = @Json($clasamentStr);
         let HasCompetitionRight = '{{getCompetitionRight($master[0]->CompetitionId)}}'  == '1';
 
         let Status = '{{$master[0]->Status}}' ; 
@@ -238,6 +239,11 @@
         <div id ="jqxGridSup" class="gridnou">
                     
         </div> 
+
+         <h6>{{transex('Clasament straini')}}</h6>
+            <div id ="jqxGridStr" class="gridnou">
+                        
+            </div>
 
        @endif
        <div class="d-flex text-left">

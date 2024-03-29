@@ -846,6 +846,120 @@ function seeTimetabledo(editing) {
                 });
 
 
+        //  clasament straini separat
+
+        // prepare the data
+        var sourceStr =
+        {
+            datatype: "array",
+            localdata: dsClasamentStr,
+            dataFields:
+
+                [
+                    { name: 'Position', type: 'number' },
+                    { name: 'Person', type: 'string' },
+                    { name: 'Category', type: 'string' },
+                    { name: 'Team', type: 'string' },
+                    { name: 'ResultId', type: 'number' },
+                    { name: 'M1', type: 'number' },
+                    { name: 'M2', type: 'number' },
+                    { name: 'M3', type: 'number' },
+                    { name: 'M4', type: 'number' },
+                    { name: 'M5', type: 'number' },
+                    { name: 'M6', type: 'number' },
+                    { name: 'M7', type: 'number' },
+                    { name: 'M8', type: 'number' },
+                    { name: 'Total', type: 'number' },
+                    { name: 'Total1', type: 'number' },
+                    { name: 'Total2', type: 'number' },
+                    { name: 'Procent', type: 'number' },
+                    { name: 'ProcentR', type: 'number' },
+                    { name: 'ShootOffS', type: 'string' },
+                    { name: 'ResultatCat', type: 'string' },
+                    { name: 'BIB', type: 'number' },
+                    { name: 'TeamName', type: 'string' },
+                    { name: 'NrSerie', type: 'string' },
+
+                ]
+
+
+        };
+
+        var nestedGrids = new Array();
+        var initrowdetails = function (index, parentElement, gridElement, record) {
+
+            var grid = $($(parentElement).children()[0]);
+            nestedGrids[index] = grid;
+
+            var clasamentdetail = [];
+            clasamentdetail = dsClasamentStr.filter(data => data.ResultId === record.ResultId);
+            var detailsource = {
+                datafields:
+                    [
+                        { name: 'M1', type: 'number' },
+                        { name: 'M2', type: 'number' },
+                        { name: 'M3', type: 'number' },
+                        { name: 'M4', type: 'number' },
+                        { name: 'M5', type: 'number' },
+                        { name: 'M6', type: 'number' },
+                        { name: 'M7', type: 'number' },
+                        { name: 'M8', type: 'number' },
+                        { name: 'Total', type: 'number' },
+                        { name: 'ShootOffS', type: 'string' },
+                    ],
+                id: 'ResultId',
+                localdata: clasamentdetail
+            }
+            var nestedGridAdapter = new $.jqx.dataAdapter(detailsource);
+            if (grid != null) {
+                grid.jqxGrid({
+                    source: nestedGridAdapter,
+                    width: '100%',
+                    //height: 200,
+                    columns: [
+                        { text: 'M1', dataField: 'M1', width: '10%', cellclassname: cellclass, },
+                        { text: 'M2', dataField: 'M2', width: '10%', cellclassname: cellclass, },
+                        { text: 'M3', dataField: 'M3', width: '10%', cellclassname: cellclass, },
+                        { text: 'M4', dataField: 'M4', width: '10%', cellclassname: cellclass, },
+                        { text: 'M5', dataField: 'M5', width: '10%', cellclassname: cellclass, },
+                        { text: 'M6', dataField: 'M6', width: '10%', cellclassname: cellclass, },
+                        { text: 'M7', dataField: 'M7', width: '10%', cellclassname: cellclass, },
+                        { text: 'M8', dataField: 'M8', width: '10%', cellclassname: cellclass, },
+                        { text: 'ShOff', dataField: 'ShootOffS', width: '10%' },
+                    ]
+                });
+            }
+        }
+
+
+        var dataAdapter = new $.jqx.dataAdapter(sourceStr);
+        // initialize jqxGrid
+        $("#jqxGridStr").jqxGrid(
+            {
+                width: '100%',
+                //height: '100%',
+                source: dataAdapter,
+                pageable: false,
+                autoheight: true,
+                sortable: true,
+                altrows: true,
+                enabletooltips: true,
+                editable: false,
+                autorowheight: false,
+                showfilterrow: true,
+                filterable: true,
+                selectionmode: 'none',
+                columns: clClasament,
+                rowdetails: window.innerWidth < 900 && (Status !== 'Open') ? true : false,
+                initrowdetails: window.innerWidth < 900 && (Status !== 'Open') ? initrowdetails : undefined,
+                rowdetailstemplate: { rowdetails: "<div id='grid' style='margin: 1px;'></div>", rowdetailsheight: 80, rowdetailshidden: true },
+                ready: function () {
+                    $("#jqxGridStr").jqxGrid('showrowdetails', 0);
+                },
+
+            });
+
+
 
 	});
 	   
