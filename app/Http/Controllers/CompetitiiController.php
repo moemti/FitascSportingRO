@@ -55,6 +55,7 @@ class CompetitiiController extends MasterController
        $clasamentTeams = $this->BObject()->GetClasamentTeams($ItemId);
        $clasamentCat = $this->BObject()->GetClasamentCategory($ItemId);
        $clasamentSup = $this->BObject()->GetClasamentSuperCupa($ItemId);
+       $clasamentStr = $this->BObject()->GetClasamentStr($ItemId);
 
        $clasament = $this->BObject()->GetClasament($ItemId);
 
@@ -62,7 +63,7 @@ class CompetitiiController extends MasterController
        $timetable =  $this->competitionTimetableAPI($ItemId, 1);
 
        return [ 'nume' => $Nume, 'descriere' => $Descriere, 'clasament' => $clasament, 'clasamentTeams' => $clasamentTeams, 'clasamentCat' => $clasamentCat, 'Info' =>  $Info, 'timetable' => $timetable,
-                    'clasamentSup' => $clasamentSup];
+                    'clasamentSup' => $clasamentSup, 'clasamentstr' => $clasamentStr];
     }
 
     public function editresult($ResultId){

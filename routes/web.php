@@ -102,14 +102,14 @@ Route::group(['middleware' => 'options'], function () {
         
         //Route::POST('/competition', 'App\Http\Controllers\CompetitiiController@getItemAjax');
         Route::GET('/clasament/{id}', 'App\Http\Controllers\CompetitiiController@getClasament');
-        Route::GET('/clasamentAPI/{id}', 'App\Http\Controllers\CompetitiiController@getClasamentAPI');
-
+        
         Route::GET('/ClasamentYears', 'App\Http\Controllers\ClasamenteController@getClasamentYearsAPI');
         Route::GET('/ClasamentByYearAPI/{Year}', 'App\Http\Controllers\ClasamenteController@getClasamentByYearAPI');
-
-
+        
+        
         /************    API     *******/
-
+        
+        Route::GET('/clasamentAPI/{id}', 'App\Http\Controllers\CompetitiiController@getClasamentAPI');
         Route::GET('/CompetitionsAPI', 'App\Http\Controllers\CompetitiiController@getCompetitiiAPI');
 
         Route::GET('/rangesAPI', 'App\Http\Controllers\PoligonController@getRangesAPI');

@@ -38,7 +38,7 @@ class Login
         $tokens = explode(";", $tt);
 
         foreach($tokens as $key=>$t) {
-            $p = strpos( "##".$device, $t);
+            $p = strpos($t, "##".$device);
             if ($p > -1){
                 $found = true;
                 $tokens[$key] = $new;
@@ -53,10 +53,7 @@ class Login
         $sql = "update user set Token = '{$token_i}' where PersonId = {$PersonId}";
         DB::select($sql);
 
-
-
         return $token;
-
     }
 
   
