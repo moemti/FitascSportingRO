@@ -1459,7 +1459,7 @@ class Competition extends BObject{
                 if (count($ds) == 0)
                     return 'No schedule';
 
-              return  $this->generateTimetableDay($CompetitionId, 1, $ds[0], $NrSerii);
+                $this->generateTimetableDay($CompetitionId, 1, $ds[0], $NrSerii);
                 $this->generateTimetableDay($CompetitionId, 2, $ds[0], $NrSerii);
                 return 'OK';
             } catch (\Exception $e) {
@@ -1615,8 +1615,7 @@ class Competition extends BObject{
 
             if ($ScheduleType == "Normal"){
                 $Ora = $OraIncepere;
-                $Seria = 1;
-
+           
                 // initializam arrrayul de poligoane
                 for ($p = 1; $p <= $NrPoligoane ; $p++) {
                     array_push($poligoane, []);
@@ -1624,21 +1623,47 @@ class Competition extends BObject{
                 }
                 $Done = false;
                 $p = 0;
-                $seria = 0;
+                if ($Day == 1)
+                    $seria = 0;
+                else    
+                    $seria = $NrSerii + 1;
+
+
                 $count = 0;
                
                 while (!$Done){
-                    $seria = ($seria + 1) % ($NrSerii + 1);
-                    $seria = $seria==0?1:$seria;
+                    if ($Day == 1){
+                        $seria = ($seria + 1) % ($NrSerii + 1);
+                        $seria = $seria==0?1:$seria;
 
-                    if (count($poligoane[$p]) < $NrSerii){
-                        while (in_array($seria , $poligoane[$p])){
-                            $seria = ($seria + 1) % ($NrSerii + 1);
-                            $seria = $seria==0?1:$seria;
+                        if (count($poligoane[$p]) < $NrSerii){
+                            while (in_array($seria , $poligoane[$p])){
+                                $seria = ($seria + 1) % ($NrSerii + 1);
+                                $seria = $seria==0?1:$seria;
+                            }
+                            array_push($poligoane[$p], $seria);
+                        }else{
+                            $ADone[$p] = true;
                         }
-                        array_push($poligoane[$p], $seria);
-                    }else{
-                        $ADone[$p] = true;
+                    }
+                    else{
+                        $seria = ($seria - 1);
+                        if ($seria == 0)
+                            $seria = $NrSerii;
+
+                        if (count($poligoane[$p]) < $NrSerii){
+                            while (in_array($seria , $poligoane[$p])){
+                                $seria = ($seria - 1);
+                                if ($seria == 0)
+                                    $seria = $NrSerii;
+                            }
+                            array_push($poligoane[$p], $seria);
+                        }else{
+                            $ADone[$p] = true;
+                        }
+
+
+
                     }
 
                     // verific daca toate s-au termniat
@@ -1660,7 +1685,7 @@ class Competition extends BObject{
                 $ora = substr($OraIncepere, 0, 2); 
                 $min = substr($OraIncepere, 3, 2); 
 
-                for ($s = 0; $s <    $NrSerii ; $s++) {
+                for ($s = 0; $s < $NrSerii ; $s++) {
                     $DeLa = "'1900-01-01 $ora:$min'";
 
                     for ($p = 0; $p < $NrPoligoane ; $p++) {
@@ -2007,7 +2032,7 @@ class Competition extends BObject{
  
  
                  $Done = false;
-                 $SerieBaza = 0;
+                 $SerieBaza = 1;
                  $PoligonBaza = 0 ;
                  $EstePar = 1; // imparele
                  $seria = $SerieBaza;
