@@ -271,49 +271,37 @@ class CompetitiiController extends MasterController
         }
         else
             echo $filename;
-        
-        
     }
 
     public function geteditattach($CompetitionId){
         if (!file_exists("img/attachments/competitions/$CompetitionId")) {
             mkdir("img/attachments/competitions/$CompetitionId", 0777, true);
         }
-
         $attachments =  getCompetitionAttachments($CompetitionId);
         return view('modules.pages.attachments', ["attachments" => $attachments, "competition" => $CompetitionId, "edit" => true]);
     }
 
     public function deleteAttach(Request $request){
-
         $toDelete = $request->toDelete;
         $toDeleteIds =  $request->toDeleteIds;
-
         foreach($toDelete as $file){
-         
             if (file_exists("img/attachments/competitions/$file")) {
                 unlink("img/attachments/competitions/$file");
             }
         }
-
         foreach($toDeleteIds as $fileId){
             $this->BObject()->deleteAttach($fileId);
         }
     }
 
     public function attachModify(Request $request){
-
         $toModify = $request->toModify;
-
         foreach($toModify as $file){
             $this->BObject()->modifyAttach($file['id'], $file['name']);
         }
     }
 
-    
-
     function attachUpload(Request $request){
-  
             $CompetitionId = $request->CompetitionId;
             $countfiles = count($_FILES['file']['name']);
            
@@ -322,10 +310,7 @@ class CompetitiiController extends MasterController
                 move_uploaded_file($_FILES['file']['tmp_name'][$i],"img/attachments/competitions/$CompetitionId/$filename");
                 $this->BObject()->addAttach($filename, $CompetitionId);
             }
-        
     }
-
-
 
 
     //============================

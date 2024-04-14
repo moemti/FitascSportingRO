@@ -108,21 +108,20 @@
                 </select>             
             </div>
         </div>   
-            <div class="col-md-3">          
-               <div class="position-relative form-group"><label for="NrPoligoane">Nr poligoane</label><input name="NrPoligoane" id="NrPoligoane" class="form-control" type="number" required ></div>
-            </div>
-             <div class="col-md-3">          
-               <div class="position-relative form-group"><label for="NrPosturiPoligon">Nr posturi pe poligon</label><input name="NrPosturiPoligon" id="NrPosturiPoligon" class="form-control" type="number" required ></div>
-            </div>
-             <div class="col-md-3">          
-               <div class="position-relative form-group"><label for="ScheduleInterval">Interval tragere (minute)</label><input name="ScheduleInterval" id="ScheduleInterval" class="form-control" type="number" required></div>
-            </div>
-        
+        <div class="col-md-3">          
+            <div class="position-relative form-group"><label for="NrPoligoane">Nr poligoane</label><input name="NrPoligoane" id="NrPoligoane" class="form-control" type="number" required ></div>
         </div>
-           
-            
-
-
+            <div class="col-md-3">          
+            <div class="position-relative form-group"><label for="NrPosturiPoligon">Nr posturi pe poligon</label><input name="NrPosturiPoligon" id="NrPosturiPoligon" class="form-control" type="number" required ></div>
+        </div>
+            <div class="col-md-3">          
+            <div class="position-relative form-group"><label for="ScheduleInterval">Interval tragere (minute)</label><input name="ScheduleInterval" id="ScheduleInterval" class="form-control" type="number" required></div>
+        </div>
+        <div class="col-md-3">          
+            <div class="position-relative form-group"><label for="ScheduleInterval">Minute pauza</label><input name="MinutePauza" id="MinutePauza" class="form-control" type="number" required></div>
+        </div>
+        
+    </div>
     <div class="row">
         <div class="col-md-12">          
             <div class="position-relative form-group"><label for="Descriere">Descriere</label><textarea name="Descriere" id="Descriere"   class="form-control" ></textarea></div>

@@ -60,7 +60,7 @@
     </div>
 
         <div class="page_content_header text-center pt-3">
-             <input id="CompetitionId" value='{{$master[0]->CompetitionId}}' hidden> </input>
+             <input id="CompetitionId" value='{{$master[0]->CompetitionId}}' hidden> 
         <div class='row'>
             <div class="mb-12">
                 <h2 id="p_competitie" value='' > {{$master[0]->Name}}</h2>
@@ -140,6 +140,7 @@
                                  <button id="btnRegister" class = "btn-register btn btn-primary btn-outline mb-2" >{{transex('Ma inscriu')}}</button>
                             @endif
                           
+                    
 
                             @if (getCompetitionRight($master[0]->CompetitionId))
                              <button id="btnOngoing"  data-status="Preparation" class="cmpStatusChange btn btn-secondary btn-outline mb-2">Start preperation</button>
@@ -211,6 +212,11 @@
                         @break
 
                 @endswitch
+                        @if (session("PersonId") == 195)
+                                 <button id="btnGenTimetable"   class = "btn btn-secondary btn-outline mb-2">Genereaza program</button>
+                                 <button id="btnSeeTimetable"  class = " btn btn-secondary btn-outline mb-2">Editeaza program</button>
+
+                            @endif
           
                 </div>
 

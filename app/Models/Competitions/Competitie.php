@@ -42,7 +42,8 @@ class Competitie extends BObject{
                  NrPoligoane,
                  NrPosturiPoligon,
                  DATE_FORMAT(FirstDayStartTime, '%H:%i') as FirstDayStartTime,
-                 DATE_FORMAT(SecondDayStartTime, '%H:%i' )as SecondDayStartTime
+                 DATE_FORMAT(SecondDayStartTime, '%H:%i' )as SecondDayStartTime,
+                 MinutePauza
                 FROM `competition` c
                 inner join `range` r on r.RangeId = c.RangeId
                 inner join sportfield s on s.SportFieldId = c.SportFieldId
@@ -56,14 +57,14 @@ class Competitie extends BObject{
                  NrPoligoane,
                  NrPosturiPoligon,
                  FirstDayStartTime,
-                 SecondDayStartTime)  
+                 SecondDayStartTime, MinutePauza)  
         values  ( ':Name', ':StartDate',  ':EndDate', :RangeId, :Targets, :SportFieldId,  :Oficial, :IsEtapa, :IsFinala, :InSupercupa, ':Descriere', 'Closed',
                 ':ScheduleType',
                  :ScheduleInterval ,
                  :NrPoligoane,
                  :NrPosturiPoligon,
                  ':FirstDayStartTime',
-                 ':SecondDayStartTime')";            
+                 ':SecondDayStartTime, :MinutePauza')";            
    
 
     public $MasterUpdate = "UPDATE `competition` 
@@ -83,7 +84,8 @@ class Competitie extends BObject{
                  NrPoligoane = :NrPoligoane, 
                  NrPosturiPoligon = :NrPosturiPoligon ,
                  FirstDayStartTime = '1900-01-01 :FirstDayStartTime :00',
-                 SecondDayStartTime = '1900-01-01 :SecondDayStartTime :00'
+                 SecondDayStartTime = '1900-01-01 :SecondDayStartTime :00',
+                 MinutePauza =:MinutePauza
 
             where CompetitionId = :CompetitionId";
 

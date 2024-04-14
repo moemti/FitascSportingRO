@@ -1449,6 +1449,7 @@ class Competition extends BObject{
                     ScheduleInterval ,
                     NrPoligoane,
                     NrPosturiPoligon,
+                    MinutePauza,
                     DATE_FORMAT(FirstDayStartTime, '%H:%i') as FirstDayStartTime,
                     DATE_FORMAT(SecondDayStartTime, '%H:%i' ) as SecondDayStartTime
                     from competition where CompetitionId = {$CompetitionId} ");
@@ -1458,7 +1459,7 @@ class Competition extends BObject{
                 if (count($ds) == 0)
                     return 'No schedule';
 
-                $this->generateTimetableDay($CompetitionId, 1, $ds[0], $NrSerii);
+              return  $this->generateTimetableDay($CompetitionId, 1, $ds[0], $NrSerii);
                 $this->generateTimetableDay($CompetitionId, 2, $ds[0], $NrSerii);
                 return 'OK';
             } catch (\Exception $e) {
@@ -1603,6 +1604,7 @@ class Competition extends BObject{
         public function generateTimetableDay ($CompetitionId, $Day, $ds, $NrSerii){
             $OraIncepere = ($Day == 1)?$ds->FirstDayStartTime:$ds->SecondDayStartTime;
             $Interval = $ds->ScheduleInterval;
+            $MinutePauza = $ds->MinutePauza;
             $NrPoligoane =  $ds->NrPoligoane;
             $NrPost =  $ds->NrPosturiPoligon;
             $ScheduleType = $ds->ScheduleType;
@@ -1681,18 +1683,510 @@ class Competition extends BObject{
             
             { // anormal :)
                 $Ora = $OraIncepere;
-                $Seria = 1;
+              
 
-                // initializam arrrayul de poligoane
+                // initializam arrra-yul de poligoane
                 for ($p = 1; $p <= $NrPoligoane * $NrPost; $p++) {
-                    array_push($poligoane, []);
+                    array_push($poligoane, []); // creez toate poligoanele
                     array_push($ADone, false);
                 }
-                $Done = false;
-                $p = 0;
-                $seria = 0;
-                $count = 0;
                
+                $count = 0;
+
+                // incepem cel nou
+                    //  --- presupunem ca sunt doua posturi pe poligon
+
+                // ***   1      primele poligoane post 1 - primele serii
+                $Done = false;
+                $SerieBaza = 1;
+                $PoligonBaza = 0;
+                $EstePar = 1; // primele
+                $seria = $SerieBaza;
+                $p = $PoligonBaza;
+                $count = 0;
+
+                for ($v = 1; $v < $NrPoligoane * $NrPost; $v++) {
+                    $ADone[$v] = false;
+                }
+
+            
+                while (!$Done){
+                    if (count($poligoane[$p]) < $NrSerii/ 2 ){
+                        if ($p % 2 == $EstePar) // este par si nu trebuie sa fie nimic aici
+                        {
+                            array_push($poligoane[$p], 0);
+                        }  
+                        else{  
+                            $found = 0;
+                            while (in_array($seria , $poligoane[$p])){
+                                $seria = ($seria + 1);
+                                if ($seria >= $NrSerii/2)
+                                    $seria = $SerieBaza;
+                            }
+                            array_push($poligoane[$p], $seria);
+
+                            if ($seria < $NrSerii - ($NrSerii/2))   //  14 - 7 = 7
+                                $seria = ($seria + 1);
+                            else
+                                $seria = $SerieBaza;
+                        }
+
+
+                        if ($p < $PoligonBaza + ($NrPoligoane - 1) ) // 1 + (6-1) = 6
+                            $p = ($p + 1);
+                        else 
+                            $p = $PoligonBaza;
+                    }else{
+                        $ADone[$p] = true;
+                    }
+
+                    // verific daca sunt gata toate din calup
+
+                    $Done = true;
+
+                    for ($x = 0; $x < $PoligonBaza + $NrPoligoane - 1; $x = $x + 2) {
+                        $Done = $Done && $ADone[$x];
+                    }
+                    $count++;
+
+                    // asta nu ar mai fi nevoie
+                    if ($count > $NrSerii * $NrPoligoane * $NrPost)
+                        $Done = true;
+                   
+                   
+                }
+
+
+              
+                // ***   2      ----------- poligon 1 seria 1
+
+
+                $Done = false;
+                $SerieBaza = $NrSerii/2 + 1;
+                $PoligonBaza = $NrPoligoane * $NrPost/2 ;
+                $EstePar = 1; // imparele
+                $seria = $SerieBaza;
+                $p = $PoligonBaza;
+                $count = 0;
+
+                for ($v = 1; $v < $NrPoligoane * $NrPost; $v++) {
+                    $ADone[$v] = false;
+                }
+
+                while (!$Done){
+                    if (count($poligoane[$p]) < $NrSerii/ 2 ){
+                        if ($p % 2 == $EstePar) // este par si nu trebuie sa fie nimic aici
+                        {
+                            array_push($poligoane[$p], 0);
+                        }  
+                        else{  
+                            $found = 0;
+                            while (in_array($seria , $poligoane[$p])){
+                                $seria = ($seria + 1);
+                                if ($seria >= $NrSerii) // diff
+                                    $seria = $SerieBaza;
+                            }
+
+                            array_push($poligoane[$p], $seria);
+
+                            if ($seria < $NrSerii)   //  14 // diff
+                                $seria = ($seria + 1);
+                            else
+                                $seria = $SerieBaza;
+                        }
+                        if ($p < $PoligonBaza + ($NrPoligoane - 1) ) // 6 + (6-1) = 11
+                            $p = $p + 1;
+                        else 
+                            $p = $PoligonBaza;
+                    }else{
+                        $ADone[$p] = true;
+                    }
+                   
+
+                    // verific daca sunt gata toate din calup
+
+                    $Done = true;
+
+                    for ($x = $PoligonBaza; $x < $PoligonBaza + $NrPoligoane - 1; $x = $x + 2) {
+                        $Done = $Done && $ADone[$x];
+                    }
+
+                    $count++;
+
+                    // asta nu ar mai fi nevoie
+                    if ($count > $NrSerii * $NrPoligoane * $NrPost)
+                        $Done = true;
+                   
+                }
+
+
+                     // ***   3      primele poligoane post 2 - primele serii
+
+                     $Done = false;
+                     $SerieBaza = 1;
+                     $PoligonBaza = 0;
+                     $EstePar = 0; // parele
+                     $seria = $SerieBaza;
+                     $p = $PoligonBaza;
+                     $count = 0;
+                     for ($v = 1; $v < $NrPoligoane * $NrPost; $v++) {
+                        $ADone[$v] = false;
+                    }
+                     while (!$Done){
+                         if (count($poligoane[$p]) < $NrSerii ){  // diff trebuie sa fie deja dublu
+                             if ($p % 2 == $EstePar) // este par si nu trebuie sa fie nimic aici
+                             {
+                                 array_push($poligoane[$p], 0);
+                             }  
+                             else{  
+                                 $found = 0;
+                                 while (in_array($seria , $poligoane[$p])){
+                                     $seria = ($seria + 1);
+                                     if ($seria >= $NrSerii/2)
+                                         $seria = $SerieBaza;
+                                 }
+                                 array_push($poligoane[$p], $seria);
+     
+                                 if ($seria < $NrSerii - ($NrSerii/2))   //  14 - 7 = 7
+                                     $seria = ($seria + 1);
+                                 else
+                                     $seria = $SerieBaza;
+                             }
+     
+     
+                             if ($p < $PoligonBaza + ($NrPoligoane - 1) ) // 1 + (6-1) = 6
+                                 $p = ($p + 1);
+                             else 
+                                 $p = $PoligonBaza;
+                         }else{
+                             $ADone[$p] = true;
+                         }
+     
+                         // verific daca sunt gata toate din calup
+     
+                         $Done = true;
+     
+                         for ($x = 0; $x < $PoligonBaza + $NrPoligoane - 1; $x = $x + 2) {
+                             $Done = $Done && $ADone[$x];
+                         }
+                         $count++;
+     
+                         // asta nu ar mai fi nevoie
+                         if ($count > $NrSerii * $NrPoligoane * $NrPost)
+                             $Done = true;
+                        
+                        
+                     }
+     
+                 // ***   4      ----------- poligon 1 seria 1
+
+
+                $Done = false;
+                $SerieBaza = $NrSerii/2 + 1;
+                $PoligonBaza = $NrPoligoane * $NrPost/2 ;
+                $EstePar = 0; // parele
+                $seria = $SerieBaza;
+                $p = $PoligonBaza;
+                $count = 0;
+                for ($v = 1; $v < $NrPoligoane * $NrPost; $v++) {
+                    $ADone[$v] = false;
+                }
+                while (!$Done){
+                    if (count($poligoane[$p]) < $NrSerii ){ // diff deja dublu
+                        if ($p % 2 == $EstePar) // este par si nu trebuie sa fie nimic aici
+                        {
+                            array_push($poligoane[$p], 0);
+                        }  
+                        else{  
+                            $found = 0;
+                            while (in_array($seria , $poligoane[$p])){
+                                $seria = ($seria + 1);
+                                if ($seria >= $NrSerii) // diff
+                                    $seria = $SerieBaza;
+                            }
+
+                            array_push($poligoane[$p], $seria);
+
+                            if ($seria < $NrSerii)   //  14 // diff
+                                $seria = ($seria + 1);
+                            else
+                                $seria = $SerieBaza;
+                        }
+                        if ($p < $PoligonBaza + ($NrPoligoane - 1) ) // 6 + (6-1) = 11
+                            $p = $p + 1;
+                        else 
+                            $p = $PoligonBaza;
+                    }else{
+                        $ADone[$p] = true;
+                    }
+                   
+
+                    // verific daca sunt gata toate din calup
+
+                    $Done = true;
+
+                    for ($x = $PoligonBaza; $x < $PoligonBaza + $NrPoligoane - 1; $x = $x + 2) {
+                        $Done = $Done && $ADone[$x];
+                    }
+
+                    $count++;
+
+                    // asta nu ar mai fi nevoie
+                    if ($count > $NrSerii * $NrPoligoane * $NrPost)
+                        $Done = true;
+                   
+                }
+
+                return  $poligoane; // pentru test
+
+                //   dupa masa
+
+                 // ***   5      primele poligoane post 1 - primele serii
+                 $Done = false;
+                 $SerieBaza = 1;
+                 $PoligonBaza = $NrSerii/2 + 1;;
+                 $EstePar = 1; // primele
+                 $seria = $SerieBaza;
+                 $p = $PoligonBaza;
+                 $count = 0;
+
+                 for ($v = 1; $v < $NrPoligoane * $NrPost; $v++) {
+                    $ADone[$v] = false;
+                }
+                 while (!$Done){
+                     if (count($poligoane[$p]) < $NrSerii +  $NrSerii/ 2 ){ // diff
+                         if ($p % 2 == $EstePar) // este par si nu trebuie sa fie nimic aici
+                         {
+                             array_push($poligoane[$p], 0);
+                         }  
+                         else{  
+                             $found = 0;
+                             while (in_array($seria , $poligoane[$p])){
+                                 $seria = ($seria + 1);
+                                 if ($seria >= $NrSerii/2)
+                                     $seria = $SerieBaza;
+                             }
+                             array_push($poligoane[$p], $seria);
+ 
+                             if ($seria < $NrSerii - ($NrSerii/2))   //  14 - 7 = 7
+                                 $seria = ($seria + 1);
+                             else
+                                 $seria = $SerieBaza;
+                         }
+ 
+ 
+                         if ($p < $PoligonBaza + ($NrPoligoane - 1) ) // 1 + (6-1) = 6
+                             $p = ($p + 1);
+                         else 
+                             $p = $PoligonBaza;
+                     }else{
+                         $ADone[$p] = true;
+                     }
+ 
+                     // verific daca sunt gata toate din calup
+ 
+                     $Done = true;
+ 
+                     for ($x = 0; $x < $PoligonBaza + $NrPoligoane - 1; $x = $x + 2) {
+                         $Done = $Done && $ADone[$x];
+                     }
+                     $count++;
+ 
+                     // asta nu ar mai fi nevoie
+                     if ($count > $NrSerii * $NrPoligoane * $NrPost)
+                         $Done = true;
+                    
+                    
+                 }
+ 
+                 
+ 
+                 return  $poligoane; // pentru test
+                 // ***   6      ----------- poligon 1 seria 1
+ 
+ 
+                 $Done = false;
+                 $SerieBaza = 0;
+                 $PoligonBaza = $NrPoligoane * $NrPost/2 ;
+                 $EstePar = 1; // imparele
+                 $seria = $SerieBaza;
+                 $p = $PoligonBaza;
+                 $count = 0;
+                 for ($v = 1; $v < $NrPoligoane * $NrPost; $v++) {
+                    $ADone[$v] = false;
+                }
+                 while (!$Done){
+                     if (count($poligoane[$p]) < $NrSerii +  $NrSerii/ 2 ){
+                         if ($p % 2 == $EstePar) // este par si nu trebuie sa fie nimic aici
+                         {
+                             array_push($poligoane[$p], 0);
+                         }  
+                         else{  
+                             $found = 0;
+                             while (in_array($seria , $poligoane[$p])){
+                                 $seria = ($seria + 1);
+                                 if ($seria >= $NrSerii) // diff
+                                     $seria = $SerieBaza;
+                             }
+ 
+                             array_push($poligoane[$p], $seria);
+ 
+                             if ($seria < $NrSerii)   //  14 // diff
+                                 $seria = ($seria + 1);
+                             else
+                                 $seria = $SerieBaza;
+                         }
+                         if ($p < $PoligonBaza + ($NrPoligoane - 1) ) // 6 + (6-1) = 11
+                             $p = $p + 1;
+                         else 
+                             $p = $PoligonBaza;
+                     }else{
+                         $ADone[$p] = true;
+                     }
+                    
+ 
+                     // verific daca sunt gata toate din calup
+ 
+                     $Done = true;
+ 
+                     for ($x = $PoligonBaza; $x < $PoligonBaza + $NrPoligoane - 1; $x = $x + 2) {
+                         $Done = $Done && $ADone[$x];
+                     }
+ 
+                     $count++;
+ 
+                     // asta nu ar mai fi nevoie
+                     if ($count > $NrSerii * $NrPoligoane * $NrPost)
+                         $Done = true;
+                    
+                 }
+ 
+ 
+                      // ***   7      primele poligoane post 2 - primele serii
+ 
+                      $Done = false;
+                      $SerieBaza = 1;
+                      $PoligonBaza = $NrPoligoane * $NrPost/2;
+                      $EstePar = 0; // parele
+                      $seria = $SerieBaza;
+                      $p = $PoligonBaza;
+                      $count = 0;
+                      for ($v = 1; $v < $NrPoligoane * $NrPost; $v++) {
+                        $ADone[$v] = false;
+                    }  
+                      while (!$Done){
+                          if (count($poligoane[$p]) < 2 *$NrSerii ){  // diff trebuie sa fie deja dublu
+                              if ($p % 2 == $EstePar) // este par si nu trebuie sa fie nimic aici
+                              {
+                                  array_push($poligoane[$p], 0);
+                              }  
+                              else{  
+                                  $found = 0;
+                                  while (in_array($seria , $poligoane[$p])){
+                                      $seria = ($seria + 1);
+                                      if ($seria >= $NrSerii/2)
+                                          $seria = $SerieBaza;
+                                  }
+                                  array_push($poligoane[$p], $seria);
+      
+                                  if ($seria < $NrSerii - ($NrSerii/2))   //  14 - 7 = 7
+                                      $seria = ($seria + 1);
+                                  else
+                                      $seria = $SerieBaza;
+                              }
+      
+      
+                              if ($p < $PoligonBaza + ($NrPoligoane - 1) ) // 1 + (6-1) = 6
+                                  $p = ($p + 1);
+                              else 
+                                  $p = $PoligonBaza;
+                          }else{
+                              $ADone[$p] = true;
+                          }
+      
+                          // verific daca sunt gata toate din calup
+      
+                          $Done = true;
+      
+                          for ($x = 0; $x < $PoligonBaza + $NrPoligoane - 1; $x = $x + 2) {
+                              $Done = $Done && $ADone[$x];
+                          }
+                          $count++;
+      
+                          // asta nu ar mai fi nevoie
+                          if ($count > $NrSerii * $NrPoligoane * $NrPost)
+                              $Done = true;
+                         
+                         
+                      }
+      
+                  // ***   8      ----------- poligon 1 seria 1
+ 
+ 
+                 $Done = false;
+                 $SerieBaza = $NrSerii/2 + 1;
+                 $PoligonBaza = 0 ;
+                 $EstePar = 0; // parele
+                 $seria = $SerieBaza;
+                 $p = $PoligonBaza;
+                 $count = 0;
+                 for ($v = 1; $v < $NrPoligoane * $NrPost; $v++) {
+                    $ADone[$v] = false;
+                }
+                 while (!$Done){
+                     if (count($poligoane[$p]) < 2* $NrSerii ){ // diff deja dublu
+                         if ($p % 2 == $EstePar) // este par si nu trebuie sa fie nimic aici
+                         {
+                             array_push($poligoane[$p], 0);
+                         }  
+                         else{  
+                             $found = 0;
+                             while (in_array($seria , $poligoane[$p])){
+                                 $seria = ($seria + 1);
+                                 if ($seria >= $NrSerii) // diff
+                                     $seria = $SerieBaza;
+                             }
+ 
+                             array_push($poligoane[$p], $seria);
+ 
+                             if ($seria < $NrSerii)   //  14 // diff
+                                 $seria = ($seria + 1);
+                             else
+                                 $seria = $SerieBaza;
+                         }
+                         if ($p < $PoligonBaza + ($NrPoligoane - 1) ) // 6 + (6-1) = 11
+                             $p = $p + 1;
+                         else 
+                             $p = $PoligonBaza;
+                     }else{
+                         $ADone[$p] = true;
+                     }
+                    
+ 
+                     // verific daca sunt gata toate din calup
+ 
+                     $Done = true;
+ 
+                     for ($x = $PoligonBaza; $x < $PoligonBaza + $NrPoligoane - 1; $x = $x + 2) {
+                         $Done = $Done && $ADone[$x];
+                     }
+ 
+                     $count++;
+ 
+                     // asta nu ar mai fi nevoie
+                     if ($count > $NrSerii * $NrPoligoane * $NrPost)
+                         $Done = true;
+                    
+                 }
+
+
+
+
+
+
+
+                ////  mai jos este cel vechi
+               $Done = true; // ca sa nu mai faca
                 while (!$Done){
                     $seria = ($seria + 1) % ($NrSerii + 1);
                     $seria = $seria==0?1:$seria;
@@ -1724,11 +2218,7 @@ class Competition extends BObject{
                           //  array_push($poligoane[$p], '-');
                             $p = 1;
                         }
-                        // if (($p == 0) && (count($poligoane[$p]) == 5)){
-                        //     //  array_push($poligoane[$p], '-');
-                        //       $p = 1;
-                        //   }
-
+         
 
                     }else{
                         $ADone[$p] = true;
@@ -1748,7 +2238,8 @@ class Competition extends BObject{
                         $Done = true;
                 }
 
-            // return  $poligoane;
+           //  return  $poligoane; // pentru test
+
                 $sqls = [];
                 $ora = substr($OraIncepere, 0, 2); 
                 $min = substr($OraIncepere, 3, 2); 
@@ -1769,7 +2260,7 @@ class Competition extends BObject{
                     if ($ScheduleType !== "Normal")
                         if ($s == intdiv($NrSerii * $NrPost, 2) - 1){
 
-                            $min = $min * 1 + $Interval;
+                            $min = $min * 1 + $MinutePauza;
                             $ora = ($ora * 1 ) + intdiv($min, 60);
                             $min = ($min * 1) % 60;
                             $min = str_pad($min, 2, "0", STR_PAD_LEFT);
