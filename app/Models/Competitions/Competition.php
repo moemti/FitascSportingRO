@@ -1744,7 +1744,7 @@ class Competition extends BObject{
 
                     $Done = true;
 
-                    for ($x = 0; $x < $PoligonBaza + $NrPoligoane - 1; $x = $x + 2) {
+                    for ($x = $PoligonBaza; $x < $PoligonBaza + $NrPoligoane - 1; $x = $x + 2) {
                         $Done = $Done && $ADone[$x];
                     }
                     $count++;
@@ -1866,7 +1866,7 @@ class Competition extends BObject{
      
                          $Done = true;
      
-                         for ($x = 0; $x < $PoligonBaza + $NrPoligoane - 1; $x = $x + 2) {
+                         for ($x = $PoligonBaza; $x < $PoligonBaza + $NrPoligoane - 1; $x = $x + 2) {
                              $Done = $Done && $ADone[$x];
                          }
                          $count++;
@@ -1937,14 +1937,14 @@ class Competition extends BObject{
                    
                 }
 
-                return  $poligoane; // pentru test
+              
 
                 //   dupa masa
 
                  // ***   5      primele poligoane post 1 - primele serii
                  $Done = false;
                  $SerieBaza = 1;
-                 $PoligonBaza = $NrSerii/2 + 1;;
+                 $PoligonBaza = $NrPoligoane * $NrPost/2;
                  $EstePar = 1; // primele
                  $seria = $SerieBaza;
                  $p = $PoligonBaza;
@@ -1953,6 +1953,8 @@ class Competition extends BObject{
                  for ($v = 1; $v < $NrPoligoane * $NrPost; $v++) {
                     $ADone[$v] = false;
                 }
+
+
                  while (!$Done){
                      if (count($poligoane[$p]) < $NrSerii +  $NrSerii/ 2 ){ // diff
                          if ($p % 2 == $EstePar) // este par si nu trebuie sa fie nimic aici
@@ -1987,7 +1989,7 @@ class Competition extends BObject{
  
                      $Done = true;
  
-                     for ($x = 0; $x < $PoligonBaza + $NrPoligoane - 1; $x = $x + 2) {
+                     for ($x = $PoligonBaza; $x < $PoligonBaza + $NrPoligoane - 1; $x = $x + 2) {
                          $Done = $Done && $ADone[$x];
                      }
                      $count++;
@@ -2001,13 +2003,12 @@ class Competition extends BObject{
  
                  
  
-                 return  $poligoane; // pentru test
                  // ***   6      ----------- poligon 1 seria 1
  
  
                  $Done = false;
                  $SerieBaza = 0;
-                 $PoligonBaza = $NrPoligoane * $NrPost/2 ;
+                 $PoligonBaza = 0 ;
                  $EstePar = 1; // imparele
                  $seria = $SerieBaza;
                  $p = $PoligonBaza;
@@ -2108,7 +2109,7 @@ class Competition extends BObject{
       
                           $Done = true;
       
-                          for ($x = 0; $x < $PoligonBaza + $NrPoligoane - 1; $x = $x + 2) {
+                          for ($x = $PoligonBaza; $x < $PoligonBaza + $NrPoligoane - 1; $x = $x + 2) {
                               $Done = $Done && $ADone[$x];
                           }
                           $count++;
@@ -2181,64 +2182,9 @@ class Competition extends BObject{
 
 
 
-
-
-
-
-                ////  mai jos este cel vechi
-               $Done = true; // ca sa nu mai faca
-                while (!$Done){
-                    $seria = ($seria + 1) % ($NrSerii + 1);
-                    $seria = $seria==0?1:$seria;
-
-                    if (count($poligoane[$p]) < $NrSerii * $NrPost){
-                        $found = 0;
-                        while (in_array($seria , $poligoane[$p])){
-                            $seria = ($seria + 1) % ($NrSerii + 1);
-                            $seria = $seria==0?1:$seria;
-                            $found++;
-                            if ($found > $NrSerii)
-                            {
-                                $p = ($p + 1) % ($NrPoligoane * $NrPost);
-                            }
-                        }
-
-                        array_push($poligoane[$p], $seria);
-
-                        // pentru urmatoarele NrPost -1
-                        for ($x = 1; $x < $NrPost ; $x++) 
-                        {
-                            $p = ($p + 1) % ($NrPoligoane * $NrPost);
-                            array_push($poligoane[$p], 0);
-                        }
-
-                        $p = ($p + 1) % ($NrPoligoane * $NrPost);
-
-                        if (($p == 0) && (intdiv(count($poligoane[$p]),2) == intdiv($NrSerii,2))){
-                          //  array_push($poligoane[$p], '-');
-                            $p = 1;
-                        }
-         
-
-                    }else{
-                        $ADone[$p] = true;
-                    }
-
-                    // verific daca toate s-au termniat
-                    $Done = true;
-
-                    for ($x = 0; $x < $NrPoligoane * $NrPost ; $x++) {
-                        $Done = $Done && $ADone[$x];
-                    }
-                   
-                    $count++;
-
-                    // asta nu ar mai fi nevoie
-                    if ($count > $NrSerii * $NrPoligoane * $NrPost)
-                        $Done = true;
-                }
-
            //  return  $poligoane; // pentru test
+
+           // scriemm in DB
 
                 $sqls = [];
                 $ora = substr($OraIncepere, 0, 2); 
@@ -2267,21 +2213,23 @@ class Competition extends BObject{
                             $ora = str_pad($ora, 2, "0", STR_PAD_LEFT);
                             $DeLa = "'1900-01-01 $ora:$min'";
 
-                            for ($p = 0; $p < $NrPoligoane  * $NrPost; $p++) {
+                            // for ($p = 0; $p < $NrPoligoane  * $NrPost; $p++) {
                                
-                                $polig = $p + 1;
-                                $post = $p % $NrPost + 1;
-                                $sql = "INSERT INTO `schedule`(`CompetitionId`, `Day`, `Poligon`, `Post`, `Ora`, `Serie`) values ($CompetitionId, $Day, $polig, $post, $DeLa, 0)";
-                                DB::select($sql);
-                                array_push($sqls, $sql);
-                            }
+                            //     $polig = $p + 1;
+                            //     $post = $p % $NrPost + 1;
+                            //     $sql = "INSERT INTO `schedule`(`CompetitionId`, `Day`, `Poligon`, `Post`, `Ora`, `Serie`) values ($CompetitionId, $Day, $polig, $post, $DeLa, 0)";
+                            //     DB::select($sql);
+                            //     array_push($sqls, $sql);
+                            // }
                         }
+                        else{
 
-                    $min = $min * 1 + $Interval;
-                    $ora = ($ora * 1 ) + intdiv($min, 60);
-                    $min = ($min * 1) % 60;
-                    $min = str_pad($min, 2, "0", STR_PAD_LEFT);
-                    $ora = str_pad($ora, 2, "0", STR_PAD_LEFT);
+                            $min = $min * 1 + $Interval;
+                            $ora = ($ora * 1 ) + intdiv($min, 60);
+                            $min = ($min * 1) % 60;
+                            $min = str_pad($min, 2, "0", STR_PAD_LEFT);
+                            $ora = str_pad($ora, 2, "0", STR_PAD_LEFT);
+                        }
                 }
             }
 
