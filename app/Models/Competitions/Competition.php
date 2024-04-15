@@ -1713,9 +1713,6 @@ class Competition extends BObject{
                         }else{
                             $ADone[$p] = true;
                         }
-
-
-
                     }
 
                     // verific daca toate s-au termniat
@@ -1794,23 +1791,8 @@ class Competition extends BObject{
                             array_push($poligoane[$p], 0);
                         }  
                         else{  
-                       
                             $this->getNextSerie($seria,  $poligoane[$p], $NrSerii, $SerieBaza, $Day);
-
-                           /* while (in_array($seria , $poligoane[$p])){
-                                $seria = ($seria + 1);
-                                if ($seria >= $NrSerii/2)
-                                    $seria = $SerieBaza;
-                            }
-                            array_push($poligoane[$p], $seria);
-
-
-                            if ($seria < $NrSerii - ($NrSerii/2))   //  14 - 7 = 7
-                                $seria = ($seria + 1);
-                            else
-                                $seria = $SerieBaza;*/
                         };
-
 
                         if ($p < $PoligonBaza + ($NrPoligoane - 1) ) // 1 + (6-1) = 6
                             $p = ($p + 1);
@@ -1832,13 +1814,9 @@ class Competition extends BObject{
                     // asta nu ar mai fi nevoie
                     if ($count > $NrSerii * $NrPoligoane * $NrPost)
                         $Done = true;
-                   
-                   
                 }
 
-              
                 // ***   2      ----------- poligon 1 seria 1
-
 
                 $Done = false;
                 $SerieBaza = $NrSerii/2 + 1;
@@ -1860,24 +1838,7 @@ class Competition extends BObject{
                         }  
                         else{  
                             $this->getNextSerie($seria,  $poligoane[$p], $NrSerii, $SerieBaza, $Day);
-
-
-                            // while (in_array($seria , $poligoane[$p])){
-                            //     $seria = ($seria + 1);
-                            //     if ($seria >= $NrSerii) // diff
-                            //         $seria = $SerieBaza;
-                            // }
-
-                            // array_push($poligoane[$p], $seria);
-
-                            // if ($seria < $NrSerii)   //  14 // diff
-                            //     $seria = ($seria + 1);
-                            // else
-                            //     $seria = $SerieBaza;
                         }
-
-
-
                         if ($p < $PoligonBaza + ($NrPoligoane - 1) ) // 6 + (6-1) = 11
                             $p = $p + 1;
                         else 
@@ -1886,8 +1847,6 @@ class Competition extends BObject{
                         $ADone[$p] = true;
                     }
                    
-
-                    // verific daca sunt gata toate din calup
 
                     $Done = true;
 
@@ -1924,21 +1883,7 @@ class Competition extends BObject{
                              }  
                              else{  
                                 $this->getNextSerie($seria,  $poligoane[$p], $NrSerii, $SerieBaza, $Day);
-
-                                //  while (in_array($seria , $poligoane[$p])){
-                                //      $seria = ($seria + 1);
-                                //      if ($seria >= $NrSerii/2)
-                                //          $seria = $SerieBaza;
-                                //  }
-                                //  array_push($poligoane[$p], $seria);
-     
-                                //  if ($seria < $NrSerii - ($NrSerii/2))   //  14 - 7 = 7
-                                //      $seria = ($seria + 1);
-                                //  else
-                                //      $seria = $SerieBaza;
                              }
-     
-     
                              if ($p < $PoligonBaza + ($NrPoligoane - 1) ) // 1 + (6-1) = 6
                                  $p = ($p + 1);
                              else 
@@ -1984,19 +1929,6 @@ class Competition extends BObject{
                         }  
                         else{  
                             $this->getNextSerie($seria,  $poligoane[$p], $NrSerii, $SerieBaza, $Day);
-
-                            // while (in_array($seria , $poligoane[$p])){
-                            //     $seria = ($seria + 1);
-                            //     if ($seria >= $NrSerii) // diff
-                            //         $seria = $SerieBaza;
-                            // }
-
-                            // array_push($poligoane[$p], $seria);
-
-                            // if ($seria < $NrSerii)   //  14 // diff
-                            //     $seria = ($seria + 1);
-                            // else
-                            //     $seria = $SerieBaza;
                         }
                         if ($p < $PoligonBaza + ($NrPoligoane - 1) ) // 6 + (6-1) = 11
                             $p = $p + 1;
@@ -2005,8 +1937,6 @@ class Competition extends BObject{
                     }else{
                         $ADone[$p] = true;
                     }
-                   
-
                     // verific daca sunt gata toate din calup
 
                     $Done = true;
@@ -2014,16 +1944,11 @@ class Competition extends BObject{
                     for ($x = $PoligonBaza; $x < $PoligonBaza + $NrPoligoane - 1; $x = $x + 2) {
                         $Done = $Done && $ADone[$x];
                     }
-
                     $count++;
-
                     // asta nu ar mai fi nevoie
                     if ($count > $NrSerii * $NrPoligoane * $NrPost)
                         $Done = true;
-                   
                 }
-
-              
 
                 //   dupa masa
 
@@ -2039,8 +1964,6 @@ class Competition extends BObject{
                  for ($v = 1; $v < $NrPoligoane * $NrPost; $v++) {
                     $ADone[$v] = false;
                 }
-
-
                  while (!$Done){
                      if (count($poligoane[$p]) < $NrSerii +  $NrSerii/ 2 ){ // diff
                          if ($p % 2 == $EstePar) // este par si nu trebuie sa fie nimic aici
@@ -2049,21 +1972,7 @@ class Competition extends BObject{
                          }  
                          else{  
                             $this->getNextSerie($seria,  $poligoane[$p], $NrSerii, $SerieBaza, $Day);
-
-                            //  while (in_array($seria , $poligoane[$p])){
-                            //      $seria = ($seria + 1);
-                            //      if ($seria >= $NrSerii/2)
-                            //          $seria = $SerieBaza;
-                            //  }
-                            //  array_push($poligoane[$p], $seria);
- 
-                            //  if ($seria < $NrSerii - ($NrSerii/2))   //  14 - 7 = 7
-                            //      $seria = ($seria + 1);
-                            //  else
-                            //      $seria = $SerieBaza;
                          }
- 
- 
                          if ($p < $PoligonBaza + ($NrPoligoane - 1) ) // 1 + (6-1) = 6
                              $p = ($p + 1);
                          else 
@@ -2075,7 +1984,6 @@ class Competition extends BObject{
                      // verific daca sunt gata toate din calup
  
                      $Done = true;
- 
                      for ($x = $PoligonBaza; $x < $PoligonBaza + $NrPoligoane - 1; $x = $x + 2) {
                          $Done = $Done && $ADone[$x];
                      }
@@ -2084,15 +1992,9 @@ class Competition extends BObject{
                      // asta nu ar mai fi nevoie
                      if ($count > $NrSerii * $NrPoligoane * $NrPost)
                          $Done = true;
-                    
-                    
                  }
  
-                 
- 
                  // ***   6      ----------- poligon 1 seria 1
- 
- 
                  $Done = false;
                  $SerieBaza =  $NrSerii/2 + 1;
                  $PoligonBaza = 0 ;
@@ -2111,19 +2013,6 @@ class Competition extends BObject{
                          }  
                          else{  
                             $this->getNextSerie($seria,  $poligoane[$p], $NrSerii, $SerieBaza, $Day);
-
-                            //  while (in_array($seria , $poligoane[$p])){
-                            //      $seria = ($seria + 1);
-                            //      if ($seria >= $NrSerii) // diff
-                            //          $seria = $SerieBaza;
-                            //  }
- 
-                            //  array_push($poligoane[$p], $seria);
- 
-                            //  if ($seria < $NrSerii)   //  14 // diff
-                            //      $seria = ($seria + 1);
-                            //  else
-                            //      $seria = $SerieBaza;
                          }
                          if ($p < $PoligonBaza + ($NrPoligoane - 1) ) // 6 + (6-1) = 11
                              $p = $p + 1;
@@ -2132,8 +2021,6 @@ class Competition extends BObject{
                      }else{
                          $ADone[$p] = true;
                      }
-                    
- 
                      // verific daca sunt gata toate din calup
  
                      $Done = true;
@@ -2143,15 +2030,11 @@ class Competition extends BObject{
                      }
  
                      $count++;
- 
                      // asta nu ar mai fi nevoie
                      if ($count > $NrSerii * $NrPoligoane * $NrPost)
                          $Done = true;
                     
                  }
- 
-              
- 
                       // ***   7      primele poligoane post 2 - primele serii
  
                       $Done = false;
@@ -2172,18 +2055,6 @@ class Competition extends BObject{
                               }  
                               else{  
                                 $this->getNextSerie($seria,  $poligoane[$p], $NrSerii, $SerieBaza, $Day);
-
-                                //   while (in_array($seria , $poligoane[$p])){
-                                //       $seria = ($seria + 1);
-                                //       if ($seria >= $NrSerii/2)
-                                //           $seria = $SerieBaza;
-                                //   }
-                                //   array_push($poligoane[$p], $seria);
-      
-                                //   if ($seria < $NrSerii - ($NrSerii/2))   //  14 - 7 = 7
-                                //       $seria = ($seria + 1);
-                                //   else
-                                //       $seria = $SerieBaza;
                               }
       
       
@@ -2207,15 +2078,9 @@ class Competition extends BObject{
                           // asta nu ar mai fi nevoie
                           if ($count > $NrSerii * $NrPoligoane * $NrPost)
                               $Done = true;
-                         
-                         
                       }
-      
-
 
                   // ***   8      ----------- poligon 1 seria 1
- 
- 
                  $Done = false;
                  $SerieBaza = $NrSerii/2 + 1;
                  $PoligonBaza = 0 ;
@@ -2234,19 +2099,6 @@ class Competition extends BObject{
                          }  
                          else{  
                             $this->getNextSerie($seria,  $poligoane[$p], $NrSerii, $SerieBaza, $Day);
-
-                            //  while (in_array($seria , $poligoane[$p])){
-                            //      $seria = ($seria + 1);
-                            //      if ($seria >= $NrSerii) // diff
-                            //          $seria = $SerieBaza;
-                            //  }
- 
-                            //  array_push($poligoane[$p], $seria);
- 
-                            //  if ($seria < $NrSerii)   //  14 // diff
-                            //      $seria = ($seria + 1);
-                            //  else
-                            //      $seria = $SerieBaza;
                          }
                          if ($p < $PoligonBaza + ($NrPoligoane - 1) ) // 6 + (6-1) = 11
                              $p = $p + 1;
@@ -2255,22 +2107,15 @@ class Competition extends BObject{
                      }else{
                          $ADone[$p] = true;
                      }
-                    
- 
                      // verific daca sunt gata toate din calup
- 
                      $Done = true;
- 
                      for ($x = $PoligonBaza; $x < $PoligonBaza + $NrPoligoane - 1; $x = $x + 2) {
                          $Done = $Done && $ADone[$x];
                      }
- 
                      $count++;
- 
                      // asta nu ar mai fi nevoie
                      if ($count > $NrSerii * $NrPoligoane * $NrPost)
                          $Done = true;
-                    
                  }
 
 
@@ -2304,15 +2149,6 @@ class Competition extends BObject{
                             $min = str_pad($min, 2, "0", STR_PAD_LEFT);
                             $ora = str_pad($ora, 2, "0", STR_PAD_LEFT);
                             $DeLa = "'1900-01-01 $ora:$min'";
-
-                            // for ($p = 0; $p < $NrPoligoane  * $NrPost; $p++) {
-                               
-                            //     $polig = $p + 1;
-                            //     $post = $p % $NrPost + 1;
-                            //     $sql = "INSERT INTO `schedule`(`CompetitionId`, `Day`, `Poligon`, `Post`, `Ora`, `Serie`) values ($CompetitionId, $Day, $polig, $post, $DeLa, 0)";
-                            //     DB::select($sql);
-                            //     array_push($sqls, $sql);
-                            // }
                         }
                         else{
 
