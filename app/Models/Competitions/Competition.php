@@ -640,6 +640,9 @@ class Competition extends BObject{
                 $bibs[] = $i;
             }
 
+
+            
+
             shuffle($bibs);
 
             // modificam intre ele acolo unde au deja pusi
@@ -1442,6 +1445,7 @@ class Competition extends BObject{
         }
 
         public function generateTimetable ($CompetitionId){
+
             try {
                 DB::select ("delete from schedule where CompetitionId = {$CompetitionId} ");
 
@@ -1455,6 +1459,35 @@ class Competition extends BObject{
                     from competition where CompetitionId = {$CompetitionId} ");
 
                 $NrSerii = $this->getCompetitionNrSerii($CompetitionId);
+
+                if ($NrSerii == null)
+                    return "Nu exista generate seriile";
+                   
+                $ScheduleType = $ds[0]->ScheduleType;
+
+                $vars = (array)($ds[0]);
+              
+
+                $lipsa = [];
+                foreach($vars as $key => $v){
+
+
+                    if ($v == null){
+                        if (!($key == 'MinutePauza' && ($ScheduleType == "Normal")))
+                            array_push($lipsa, $key);
+                    }
+
+
+                }
+
+                if ($lipsa != null)
+                    return 'Nu exista configurate valorile pentru generarea rogramului competitiei '.implode($lipsa);
+
+                if ($ScheduleType !== "Normal" && ($NrSerii % 2 == 1))
+                    return "Numarul de serii trebuie sa fie par pentru tipul de tragere condensat";
+
+          
+               
 
                 if (count($ds) == 0)
                     return 'No schedule';
@@ -1614,7 +1647,6 @@ class Competition extends BObject{
                     $seria = $serieMax;
             }
 
-
             while (in_array($seria , $poligon)){
                 if ($Day == 1)    
                     $seria = $seria + 1;
@@ -1628,7 +1660,6 @@ class Competition extends BObject{
                     if ($seria < $SerieBaza)
                         $seria = $serieMax;
                 }
-
 
                 array_push($serii, $seria);
                 $count++;
@@ -1653,6 +1684,49 @@ class Competition extends BObject{
             }
         }
 
+        function DoItBaby($NrPoligoane, $NrPost, $ADone, &$poligoane, $NrSerii, $SerieBaza, $PoligonBaza, $Day, $EstePar)
+        {
+            $seria = $SerieBaza - ($Day - 1);
+            $p = $PoligonBaza;
+
+            for ($v = 1; $v < $NrPoligoane * $NrPost; $v++) {
+                $ADone[$v] = false;
+            }
+
+            $count = 0;
+            $NrSeriiMax = count($poligoane[$p]);
+            $Done = false;
+            while (!$Done){
+                if (count($poligoane[$p]) < $NrSeriiMax + $NrSerii/ 2 ){
+                    if ($p % 2 == $EstePar) // este par si nu trebuie sa fie nimic aici
+                    {
+                        array_push($poligoane[$p], 0);
+                    }  
+                    else{  
+                        $this->getNextSerie($seria,  $poligoane[$p], $NrSerii, $SerieBaza, $Day);
+                    };
+
+                    if ($p < $PoligonBaza + ($NrPoligoane - 1) ) // 1 + (6-1) = 6
+                        $p = ($p + 1);
+                    else 
+                        $p = $PoligonBaza;
+                }else{
+                    $ADone[$p] = true;
+                }
+                // verific daca sunt gata toate din calup
+                $Done = true;
+                for ($x = $PoligonBaza; $x < $PoligonBaza + $NrPoligoane - 1; $x = $x + 2) {
+                    $Done = $Done && $ADone[$x];
+                }
+                $count++;
+                // asta nu ar mai fi nevoie
+                if ($count > $NrSerii * $NrPoligoane * $NrPost)
+                    $Done = true;
+            }
+
+
+        }
+
         public function generateTimetableDay ($CompetitionId, $Day, $ds, $NrSerii){
             $OraIncepere = ($Day == 1)?$ds->FirstDayStartTime:$ds->SecondDayStartTime;
             $Interval = $ds->ScheduleInterval;
@@ -1664,6 +1738,7 @@ class Competition extends BObject{
             $ADone = [];
             $ora = '';
             $min = '';
+            $NrSeriiMax = 0;
 
             if ($ScheduleType == "Normal"){
                 $Ora = $OraIncepere;
@@ -1765,359 +1840,59 @@ class Competition extends BObject{
                     array_push($ADone, false);
                 }
                
-                $count = 0;
 
                 // incepem cel nou
                     //  --- presupunem ca sunt doua posturi pe poligon
 
                 // ***   1      primele poligoane post 1 - primele serii
-                $Done = false;
                 $SerieBaza = 1;
                 $PoligonBaza = 0;
                 $EstePar = 1; // primele
-                $seria = $SerieBaza - ($Day - 1);
-                $p = $PoligonBaza;
-                $count = 0;
-
-                for ($v = 1; $v < $NrPoligoane * $NrPost; $v++) {
-                    $ADone[$v] = false;
-                }
-
-            
-                while (!$Done){
-                    if (count($poligoane[$p]) < $NrSerii/ 2 ){
-                        if ($p % 2 == $EstePar) // este par si nu trebuie sa fie nimic aici
-                        {
-                            array_push($poligoane[$p], 0);
-                        }  
-                        else{  
-                            $this->getNextSerie($seria,  $poligoane[$p], $NrSerii, $SerieBaza, $Day);
-                        };
-
-                        if ($p < $PoligonBaza + ($NrPoligoane - 1) ) // 1 + (6-1) = 6
-                            $p = ($p + 1);
-                        else 
-                            $p = $PoligonBaza;
-                    }else{
-                        $ADone[$p] = true;
-                    }
-
-                    // verific daca sunt gata toate din calup
-
-                    $Done = true;
-
-                    for ($x = $PoligonBaza; $x < $PoligonBaza + $NrPoligoane - 1; $x = $x + 2) {
-                        $Done = $Done && $ADone[$x];
-                    }
-                    $count++;
-
-                    // asta nu ar mai fi nevoie
-                    if ($count > $NrSerii * $NrPoligoane * $NrPost)
-                        $Done = true;
-                }
+                $this->DoItBaby($NrPoligoane, $NrPost, $ADone, $poligoane, $NrSerii, $SerieBaza, $PoligonBaza, $Day, $EstePar);
 
                 // ***   2      ----------- poligon 1 seria 1
-
-                $Done = false;
                 $SerieBaza = $NrSerii/2 + 1;
                 $PoligonBaza = $NrPoligoane * $NrPost/2 ;
                 $EstePar = 1; // imparele
-                $seria = $SerieBaza - ($Day - 1);
-                $p = $PoligonBaza;
-                $count = 0;
+                $this->DoItBaby($NrPoligoane, $NrPost, $ADone, $poligoane, $NrSerii, $SerieBaza, $PoligonBaza, $Day, $EstePar);
 
-                for ($v = 1; $v < $NrPoligoane * $NrPost; $v++) {
-                    $ADone[$v] = false;
-                }
-
-                while (!$Done){
-                    if (count($poligoane[$p]) < $NrSerii/ 2 ){
-                        if ($p % 2 == $EstePar) // este par si nu trebuie sa fie nimic aici
-                        {
-                            array_push($poligoane[$p], 0);
-                        }  
-                        else{  
-                            $this->getNextSerie($seria,  $poligoane[$p], $NrSerii, $SerieBaza, $Day);
-                        }
-                        if ($p < $PoligonBaza + ($NrPoligoane - 1) ) // 6 + (6-1) = 11
-                            $p = $p + 1;
-                        else 
-                            $p = $PoligonBaza;
-                    }else{
-                        $ADone[$p] = true;
-                    }
-                   
-
-                    $Done = true;
-
-                    for ($x = $PoligonBaza; $x < $PoligonBaza + $NrPoligoane - 1; $x = $x + 2) {
-                        $Done = $Done && $ADone[$x];
-                    }
-
-                    $count++;
-
-                    // asta nu ar mai fi nevoie
-                    if ($count > $NrSerii * $NrPoligoane * $NrPost)
-                        $Done = true;
-                   
-                }
-
-
-                     // ***   3      primele poligoane post 2 - primele serii
-
-                     $Done = false;
-                     $SerieBaza = 1;
-                     $PoligonBaza = 0;
-                     $EstePar = 0; // parele
-                     $seria = $SerieBaza - ($Day - 1);
-                     $p = $PoligonBaza;
-                     $count = 0;
-                     for ($v = 1; $v < $NrPoligoane * $NrPost; $v++) {
-                        $ADone[$v] = false;
-                    }
-                     while (!$Done){
-                         if (count($poligoane[$p]) < $NrSerii ){  // diff trebuie sa fie deja dublu
-                             if ($p % 2 == $EstePar) // este par si nu trebuie sa fie nimic aici
-                             {
-                                 array_push($poligoane[$p], 0);
-                             }  
-                             else{  
-                                $this->getNextSerie($seria,  $poligoane[$p], $NrSerii, $SerieBaza, $Day);
-                             }
-                             if ($p < $PoligonBaza + ($NrPoligoane - 1) ) // 1 + (6-1) = 6
-                                 $p = ($p + 1);
-                             else 
-                                 $p = $PoligonBaza;
-                         }else{
-                             $ADone[$p] = true;
-                         }
-     
-                         // verific daca sunt gata toate din calup
-     
-                         $Done = true;
-     
-                         for ($x = $PoligonBaza; $x < $PoligonBaza + $NrPoligoane - 1; $x = $x + 2) {
-                             $Done = $Done && $ADone[$x];
-                         }
-                         $count++;
-     
-                         // asta nu ar mai fi nevoie
-                         if ($count > $NrSerii * $NrPoligoane * $NrPost)
-                             $Done = true;
-                        
-                        
-                     }
+                // ***   3      primele poligoane post 2 - primele serii
+                $SerieBaza = 1;
+                $PoligonBaza = 0;
+                $EstePar = 0; // parele
+                $this->DoItBaby($NrPoligoane, $NrPost, $ADone, $poligoane, $NrSerii, $SerieBaza, $PoligonBaza, $Day, $EstePar);
      
                  // ***   4      ----------- poligon 1 seria 1
-
-
-                $Done = false;
                 $SerieBaza = $NrSerii/2 + 1;
                 $PoligonBaza = $NrPoligoane * $NrPost/2 ;
                 $EstePar = 0; // parele
-                $seria = $SerieBaza - ($Day - 1);
-                $p = $PoligonBaza;
-                $count = 0;
-                for ($v = 1; $v < $NrPoligoane * $NrPost; $v++) {
-                    $ADone[$v] = false;
-                }
-                while (!$Done){
-                    if (count($poligoane[$p]) < $NrSerii ){ // diff deja dublu
-                        if ($p % 2 == $EstePar) // este par si nu trebuie sa fie nimic aici
-                        {
-                            array_push($poligoane[$p], 0);
-                        }  
-                        else{  
-                            $this->getNextSerie($seria,  $poligoane[$p], $NrSerii, $SerieBaza, $Day);
-                        }
-                        if ($p < $PoligonBaza + ($NrPoligoane - 1) ) // 6 + (6-1) = 11
-                            $p = $p + 1;
-                        else 
-                            $p = $PoligonBaza;
-                    }else{
-                        $ADone[$p] = true;
-                    }
-                    // verific daca sunt gata toate din calup
-
-                    $Done = true;
-
-                    for ($x = $PoligonBaza; $x < $PoligonBaza + $NrPoligoane - 1; $x = $x + 2) {
-                        $Done = $Done && $ADone[$x];
-                    }
-                    $count++;
-                    // asta nu ar mai fi nevoie
-                    if ($count > $NrSerii * $NrPoligoane * $NrPost)
-                        $Done = true;
-                }
+                $this->DoItBaby($NrPoligoane, $NrPost, $ADone, $poligoane, $NrSerii, $SerieBaza, $PoligonBaza, $Day, $EstePar);
 
                 //   dupa masa
 
                  // ***   5      primele poligoane post 1 - primele serii
-                 $Done = false;
                  $SerieBaza = 1;
                  $PoligonBaza = $NrPoligoane * $NrPost/2;
                  $EstePar = 1; // primele
-                 $seria = $SerieBaza - ($Day - 1);
-                 $p = $PoligonBaza;
-                 $count = 0;
-
-                 for ($v = 1; $v < $NrPoligoane * $NrPost; $v++) {
-                    $ADone[$v] = false;
-                }
-                 while (!$Done){
-                     if (count($poligoane[$p]) < $NrSerii +  $NrSerii/ 2 ){ // diff
-                         if ($p % 2 == $EstePar) // este par si nu trebuie sa fie nimic aici
-                         {
-                             array_push($poligoane[$p], 0);
-                         }  
-                         else{  
-                            $this->getNextSerie($seria,  $poligoane[$p], $NrSerii, $SerieBaza, $Day);
-                         }
-                         if ($p < $PoligonBaza + ($NrPoligoane - 1) ) // 1 + (6-1) = 6
-                             $p = ($p + 1);
-                         else 
-                             $p = $PoligonBaza;
-                     }else{
-                         $ADone[$p] = true;
-                     }
- 
-                     // verific daca sunt gata toate din calup
- 
-                     $Done = true;
-                     for ($x = $PoligonBaza; $x < $PoligonBaza + $NrPoligoane - 1; $x = $x + 2) {
-                         $Done = $Done && $ADone[$x];
-                     }
-                     $count++;
- 
-                     // asta nu ar mai fi nevoie
-                     if ($count > $NrSerii * $NrPoligoane * $NrPost)
-                         $Done = true;
-                 }
+                 $this->DoItBaby($NrPoligoane, $NrPost, $ADone, $poligoane, $NrSerii, $SerieBaza, $PoligonBaza, $Day, $EstePar);
  
                  // ***   6      ----------- poligon 1 seria 1
-                 $Done = false;
                  $SerieBaza =  $NrSerii/2 + 1;
                  $PoligonBaza = 0 ;
                  $EstePar = 1; // imparele
-                 $seria = $SerieBaza - ($Day - 1);
-                 $p = $PoligonBaza;
-                 $count = 0;
-                 for ($v = 1; $v < $NrPoligoane * $NrPost; $v++) {
-                    $ADone[$v] = false;
-                }
-                 while (!$Done){
-                     if (count($poligoane[$p]) < $NrSerii +  $NrSerii/ 2 ){
-                         if ($p % 2 == $EstePar) // este par si nu trebuie sa fie nimic aici
-                         {
-                             array_push($poligoane[$p], 0);
-                         }  
-                         else{  
-                            $this->getNextSerie($seria,  $poligoane[$p], $NrSerii, $SerieBaza, $Day);
-                         }
-                         if ($p < $PoligonBaza + ($NrPoligoane - 1) ) // 6 + (6-1) = 11
-                             $p = $p + 1;
-                         else 
-                             $p = $PoligonBaza;
-                     }else{
-                         $ADone[$p] = true;
-                     }
-                     // verific daca sunt gata toate din calup
- 
-                     $Done = true;
- 
-                     for ($x = $PoligonBaza; $x < $PoligonBaza + $NrPoligoane - 1; $x = $x + 2) {
-                         $Done = $Done && $ADone[$x];
-                     }
- 
-                     $count++;
-                     // asta nu ar mai fi nevoie
-                     if ($count > $NrSerii * $NrPoligoane * $NrPost)
-                         $Done = true;
-                    
-                 }
-                      // ***   7      primele poligoane post 2 - primele serii
- 
-                      $Done = false;
-                      $SerieBaza = 1;
-                      $PoligonBaza = $NrPoligoane * $NrPost/2;
-                      $EstePar = 0; // parele
-                      $seria = $SerieBaza - ($Day - 1);
-                      $p = $PoligonBaza;
-                      $count = 0;
-                      for ($v = 1; $v < $NrPoligoane * $NrPost; $v++) {
-                        $ADone[$v] = false;
-                    }  
-                      while (!$Done){
-                          if (count($poligoane[$p]) < 2 *$NrSerii ){  // diff trebuie sa fie deja dublu
-                              if ($p % 2 == $EstePar) // este par si nu trebuie sa fie nimic aici
-                              {
-                                  array_push($poligoane[$p], 0);
-                              }  
-                              else{  
-                                $this->getNextSerie($seria,  $poligoane[$p], $NrSerii, $SerieBaza, $Day);
-                              }
-      
-      
-                              if ($p < $PoligonBaza + ($NrPoligoane - 1) ) // 1 + (6-1) = 6
-                                  $p = ($p + 1);
-                              else 
-                                  $p = $PoligonBaza;
-                          }else{
-                              $ADone[$p] = true;
-                          }
-      
-                          // verific daca sunt gata toate din calup
-      
-                          $Done = true;
-      
-                          for ($x = $PoligonBaza; $x < $PoligonBaza + $NrPoligoane - 1; $x = $x + 2) {
-                              $Done = $Done && $ADone[$x];
-                          }
-                          $count++;
-      
-                          // asta nu ar mai fi nevoie
-                          if ($count > $NrSerii * $NrPoligoane * $NrPost)
-                              $Done = true;
-                      }
+                 $this->DoItBaby($NrPoligoane, $NrPost, $ADone, $poligoane, $NrSerii, $SerieBaza, $PoligonBaza, $Day, $EstePar);
+              
+                 // ***   7      primele poligoane post 2 - primele serii
+                $SerieBaza = 1;
+                $PoligonBaza = $NrPoligoane * $NrPost/2;
+                $EstePar = 0; // parele
+                $this->DoItBaby($NrPoligoane, $NrPost, $ADone, $poligoane, $NrSerii, $SerieBaza, $PoligonBaza, $Day, $EstePar);
 
                   // ***   8      ----------- poligon 1 seria 1
-                 $Done = false;
                  $SerieBaza = $NrSerii/2 + 1;
                  $PoligonBaza = 0 ;
                  $EstePar = 0; // parele
-                 $seria = $SerieBaza - ($Day - 1);
-                 $p = $PoligonBaza;
-                 $count = 0;
-                 for ($v = 1; $v < $NrPoligoane * $NrPost; $v++) {
-                    $ADone[$v] = false;
-                }
-                 while (!$Done){
-                     if (count($poligoane[$p]) < 2* $NrSerii ){ // diff deja dublu
-                         if ($p % 2 == $EstePar) // este par si nu trebuie sa fie nimic aici
-                         {
-                             array_push($poligoane[$p], 0);
-                         }  
-                         else{  
-                            $this->getNextSerie($seria,  $poligoane[$p], $NrSerii, $SerieBaza, $Day);
-                         }
-                         if ($p < $PoligonBaza + ($NrPoligoane - 1) ) // 6 + (6-1) = 11
-                             $p = $p + 1;
-                         else 
-                             $p = $PoligonBaza;
-                     }else{
-                         $ADone[$p] = true;
-                     }
-                     // verific daca sunt gata toate din calup
-                     $Done = true;
-                     for ($x = $PoligonBaza; $x < $PoligonBaza + $NrPoligoane - 1; $x = $x + 2) {
-                         $Done = $Done && $ADone[$x];
-                     }
-                     $count++;
-                     // asta nu ar mai fi nevoie
-                     if ($count > $NrSerii * $NrPoligoane * $NrPost)
-                         $Done = true;
-                 }
-
+                 $this->DoItBaby($NrPoligoane, $NrPost, $ADone, $poligoane, $NrSerii, $SerieBaza, $PoligonBaza, $Day, $EstePar);
 
            //  return  $poligoane; // pentru test
 
