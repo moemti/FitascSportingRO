@@ -29,7 +29,7 @@
 
                     $ScheduleType = $dataset[0]->ScheduleType;
                     $NrPosturiPoligon = $dataset[0]->NrPosturiPoligon;
-                    
+                    $spantotal = $dataset[0]->NrPosturiPoligon * $dataset[0]->NrPoligoane + 1;
                     $poligoane = [];
 
                     if ($ScheduleType != 'Normal'){ // condensat
@@ -64,18 +64,21 @@
                               echo '</label></td>';
 
                         }
-
-
                         echo "</tr>";
 
                         // orarul
                         $IsNew = true;
                         $OldOra = "";
 
-                        foreach($dataset as $d){
+                        foreach($dataset as $key => $d){
                             if ($OldOra != strval( substr($d->Ora, 11, 5))){
                                if (!$IsNew){
                                     echo "</tr>";
+
+
+                                if ($key == count($dataset)/2 ){
+                                    echo "<tr><td  style='text-align: center;' class = 'mark' colspan ='$spantotal' >$MinutePauza minute pauza</td></tr>"; 
+                                }
                                }
                                 $IsNew = false;
                                 $OldOra = strval( substr($d->Ora, 11, 5));
@@ -92,18 +95,13 @@
                             echo "<td style='text-align: center;' ><input class='scheduledata' data-day='$zi' data-poly='$p' data-pos='$post' data-ora = '$ora' style='text-align: center; width:100%; border:0;' value='";
                             echo  strval(($d->Serie == 0)?'':$d->Serie);
                             echo "' type = 'number'/></td>";
-                           
                         }
-                        
-                      
-                    
                     }
                     else{
                             echo "<td style='text-align: center;' ><label>Ora\Poligon</label></td>";
                         // header
                         foreach($dataset as $d){
                                 $p =  "Poligon " .$d->Poligon ;
-                              
                             
                             if  (!in_array($p , $poligoane)){
 
@@ -115,17 +113,16 @@
                                 array_push($poligoane, $p);
                             }
                         }
-
-                       
-
                         // orarul
                         $IsNew = true;
                         $OldOra = "";
 
-                        foreach($dataset as $d){
+                        foreach($dataset as $key => $d){
                             if ($OldOra != strval( substr($d->Ora, 11, 5))){
                                if (!$IsNew){
                                     echo "</tr>";
+
+
                                }
                                 $IsNew = false;
                                 $OldOra = strval( substr($d->Ora, 11, 5));
@@ -135,6 +132,8 @@
                                 echo '</label></td>';
                             }
 
+                            
+
                             $p =  $d->Poligon; //intdiv($d->Poligon + 1, $NrPosturiPoligon);
                             $post = (($d->Poligon + 1) % $NrPosturiPoligon) + 1 ;
                             $ora = $d->Ora;
@@ -142,22 +141,12 @@
                             echo "<td style='text-align: center;'><input class='scheduledata' data-day='$zi' data-poly='$p' data-pos='$post' data-ora = '$ora' style='text-align: center; width:100%; border:0;' value='";
                             echo  strval(($d->Serie == 0)?'':$d->Serie);
                             echo "' type = 'number'/></td>";
-                           
+
+                         
                         }
-                        
-                      
-
-
                     }
-
                     echo '</table>';
-
                 }
-
-
             @endphp
-
-
-               
         </form>
 </div>

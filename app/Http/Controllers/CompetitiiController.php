@@ -340,14 +340,9 @@ class CompetitiiController extends MasterController
             $row++;            
             return $loc;
         }
-
-
         $spreadsheet->getDefaultStyle()->getNumberFormat()->setFormatCode('#');
 
-
-
         $sheet->setCellValue(IncColumn($col).$row, 'Nr');
-        
         $sheet->setCellValue(IncColumn($col).$row, 'Nume');
         $sheet->setCellValue(IncColumn($col).$row, 'Categorie');
         $sheet->setCellValue(IncColumn($col).$row, 'Echipa');
@@ -991,8 +986,10 @@ class CompetitiiController extends MasterController
             $CompetitionId = $request->CompetitionId;
             $dataset1 = $this->BObject()->geCompetitionTimetable($CompetitionId, 1); 
             $dataset2 = $this->BObject()->geCompetitionTimetable($CompetitionId, 2); 
+
+            $MinutePauza = Competition::getCompetitionInfo($CompetitionId)->MinutePauza;
             
-            return view('modules.pages.competition.editschedule', ['CompetitionId'=>$CompetitionId, 'schedule'=>[$dataset1, $dataset2]])->render();
+            return view('modules.pages.competition.editschedule', ['CompetitionId'=>$CompetitionId, 'schedule'=>[$dataset1, $dataset2], 'MinutePauza' => $MinutePauza])->render();
         }
         catch (\Exception $e) {
            return  $e->getMessage(); 

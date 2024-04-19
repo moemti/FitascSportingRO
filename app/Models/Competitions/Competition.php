@@ -501,15 +501,40 @@ class Competition extends BObject{
                 else    
                     $S = 3;
 
+            // vad daca este cu program compact si facem numar par de serii
+            if ($S % 2 == 1){
+                $tip =  DB::select("select c.ScheduleType from competition c where CompetitionId = $CompetitionId");
+                if ($tip[0]->ScheduleType != 'Normal'){
+                    $S = $S + 1;
+
+
+                }
+            }
             $Squads = [];
 
             // vad cate sunt peste minim 
 
-            $M = $nr % $S;
-            $N = floor($nr / $S);
+            $M = $nr % $S;  // cati sunt in plus fata de minim pe serie
+            $N = floor($nr / $S); // minim pe serie
+
+            // astea doar pentru condensat
+            $M1 = floor($M/2);
+            $M2 = $M - $M1;
             
             for ($i = 1; $i <= $S; $i++) {
-                $p = ($i <= $M?1:0);
+                if ($tip[0]->ScheduleType == 'Normal'){
+                     $p = ($i <= $M?1:0); // punem serii mai mari la inceput
+                }
+                else{   // daca este compensat trebuie sa punem cam la fel in prima si ultima jumatate
+                    $p = 0;
+
+                    if ($i <= $M1)
+                        $p = 1; 
+                    else
+                        if (($i > $S/2) && ($i <= $S/2 + $M2))
+                            $p = 1;
+                }
+
                 array_push($Squads, [$N + $p, []]); // am pus in fiecare $Squads cati sunt si un array in care o sa intre competitorii
 
             }
@@ -601,20 +626,16 @@ class Competition extends BObject{
             $bibs = array();
 
             // get Results (competitors)
-            $competitors = DB::select("select ResultId, BIB , c.Code
+            $competitors = DB::select("select ResultId, BIB , c.Code, r.NrSerie
                     from result r 
                     left join shootercategory c on r.ShooterCategoryId = c.ShooterCategoryId where CompetitionId = $CompetitionId");
 
             $nr = count($competitors);
 
-            // foreach ($competitors as $comp){
-            //     if (isset($comp->BIB))
-            //          array_push($bibs, $comp->BIB);
-            // }  -- eu zic ca nu mai trebuie
-
             // Nr of squads
             $S = ceil($nr/$MaxSquad);
-            if ($S < 4)
+
+            if ($S < 4)  // daca sunt mai putin de 4 serii
               if (floor($nr/4) < 3)
                     $S = 2;
                 else    
@@ -622,16 +643,39 @@ class Competition extends BObject{
 
             $Squads = [];
 
+            // vad daca este cu program compact si facem numar par de serii
+            if ($S % 2 == 1){
+                $tip =  DB::select("select c.ScheduleType from competition c where CompetitionId = $CompetitionId");
+
+                 if ($tip[0]->ScheduleType != 'Normal'){
+                    $S = $S + 1;
+                 }
+            }
+         
+
             // vad cate sunt peste minim 
 
             $M = $nr % $S;
             $N = floor($nr/$S);
             
 
+            // astea doar pentru condensat
+            $M1 = floor($M/2);
+            $M2 = $M - $M1;
+            
             for ($i = 1; $i <= $S; $i++) {
-                $p = ($i <= $M?1:0);
+                if ($tip[0]->ScheduleType == 'Normal'){
+                    $p = ($i <= $M?1:0); // punem serii mai mari la inceput
+                }
+                else{   // daca este compensat trebuie sa punem cam la fel in prima si ultima jumatate
+                    $p = 0;
+                    if ($i <= $M1)
+                        $p = 1; 
+                    else
+                        if (($i > $S/2) && ($i <= $S/2 + $M2))
+                            $p = 1;
+                }
                 array_push($Squads, [$N + $p]);
-
             }
 
             $bibs = array();
@@ -639,9 +683,6 @@ class Competition extends BObject{
             for ($i = 1;$i <= $nr; $i++) {
                 $bibs[] = $i;
             }
-
-
-            
 
             shuffle($bibs);
 
@@ -682,7 +723,6 @@ class Competition extends BObject{
                 $c += $nr;
             }
             return 'OK';
-
         }
 
 
@@ -762,7 +802,9 @@ class Competition extends BObject{
 
         public static function getCompetitionInfo($Item){
             return DB::select("select concat(c.Name , ' ' , r.Name , ' ' , c.StartDate) as NumeLung, Status,  concat(c.Name , ' ' , r.Name , ' ' , DATE_FORMAT(StartDate, '%d/%m'), ' - ', DATE_FORMAT(EndDate, '%d/%m %Y')) as NumeSuperLung,
-                StartDate, EndDate from competition c inner join `range` r on r.RangeId = c.RangeId where c.CompetitionId = $Item")[0];
+                StartDate, EndDate, MinutePauza 
+                from competition c 
+                inner join `range` r on r.RangeId = c.RangeId where c.CompetitionId = $Item")[0];
         }
 
 
@@ -811,9 +853,17 @@ class Competition extends BObject{
                 else
                     return DB::select(str_replace(':CompetitionId', $CompetitionId,$this->ClasamentSelect2));
             }
-            if (in_array($Status, ['Finished', 'Progress'])){
-                return DB::select(str_replace(':CompetitionId', $CompetitionId,$this->ClasamentSelectOpen));
-            }
+
+
+
+            if ($Status == 'Progress' && (!$Status->IsStarted))
+                return DB::select(str_replace(':CompetitionId', $CompetitionId,$this->ClasamentSelect));
+            else
+                if (in_array($Status, ['Finished', 'Progress'])){
+                    return DB::select(str_replace(':CompetitionId', $CompetitionId,$this->ClasamentSelectOpen));
+                }
+
+
             if ($Status == 'Open' )
              return DB::select(str_replace(':CompetitionId', $CompetitionId,$this->ClasamentSelect2));
         }
@@ -894,8 +944,6 @@ class Competition extends BObject{
         
 
         public function GetClasamentTeams($CompetitionId){
-
-
             $sql = "SELECT 1 FROM `result` WHERE TeamName is not null and CompetitionId = $CompetitionId";
 
             if (count(DB::select($sql)) > 0 )
@@ -1137,11 +1185,11 @@ class Competition extends BObject{
                     $LogedId = 0;
     
            
-                if (!$this->IsCompetitionAdmin($CompetitionId,  $LogedId))
-                    if ($validare[0]->DiferentaMin > $validare[0]->Diferenta){
-                        $max = $validare[0]->MAXDATE;
-                        return "Inscrierea se poate face doar pana in ora $max. Contactati organizatorul pentru inscriere";
-                    };
+                // if (!$this->IsCompetitionAdmin($CompetitionId,  $LogedId))
+                //     if ($validare[0]->DiferentaMin > $validare[0]->Diferenta){
+                //         $max = $validare[0]->MAXDATE;
+                //         return "Inscrierea se poate face doar pana in ora $max. Contactati organizatorul pentru inscriere";
+                //     };
 
                 if ($PersonId == -1){
                     $sql = "INSERT INTO person(Name, Code, Email,   SerieNrCI, CNP, SeriePermisArma, DataExpPermis, MarcaArma, SerieArma, CalibruArma, CountryId) 
@@ -1492,8 +1540,24 @@ class Competition extends BObject{
                 if (count($ds) == 0)
                     return 'No schedule';
 
+                $MinutePauza = $ds[0]->MinutePauza;
+                $NrPoligoane =  $ds[0]->NrPoligoane;
+                $NrPost =  $ds[0]->NrPosturiPoligon;
+
                 $this->generateTimetableDay($CompetitionId, 1, $ds[0], $NrSerii);
                 $this->generateTimetableDay($CompetitionId, 2, $ds[0], $NrSerii);
+
+                $sql = "
+                        update schedule set serie =  case when  Serie > $NrPoligoane + 1 then  (serie - $NrPoligoane + 1 ) * 2  else  serie * 2 - 1 end
+                        where CompetitionId = $CompetitionId and Serie > 0;
+                        
+                        update schedule set poligon = case when poligon < $NrPoligoane + 1 then (poligon + $NrPoligoane) else (poligon + $NrPoligoane) mod (2 * $NrPoligoane) end  + 100 where CompetitionId = $CompetitionId and Serie > 0 and Day = 2;
+                        update schedule set poligon = poligon - 100 where CompetitionId = $CompetitionId and Serie > 0 and Day = 2;
+                       
+                        ";
+
+                DB::select($sql);
+
                 return 'OK';
             } catch (\Exception $e) {
                 return $e->getMessage();

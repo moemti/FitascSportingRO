@@ -215,8 +215,7 @@
                         @if (session("PersonId") == 195)
                                  <button id="btnGenTimetable"   class = "btn btn-secondary btn-outline mb-2">Genereaza program</button>
                                  <button id="btnSeeTimetable"  class = " btn btn-secondary btn-outline mb-2">Editeaza program</button>
-
-                            @endif
+                         @endif
           
                 </div>
 
