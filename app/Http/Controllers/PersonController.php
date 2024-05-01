@@ -27,19 +27,27 @@ class PersonController extends MasterController
         return $this->BObject()->saveMyUser($request);
     }
 
+    public function deletemyuser(Request $request){
+        $r = $this->BObject()->deleteMyUser($request) ;
+        if($r == 'OK'){
+            $request->session()->flush();
+            return redirect('welcome');
+        }
+        else
+            return $r;
+    }
+
     public function changemypassvord(Request $request){
         $PersonId = session('PersonId');
         $password = $request['Password'];
-
         $password = crypt($password, $password);
         $this->BObject()->setPassword($PersonId, $password);
         return 'OK';
     }
 
     public function echivalarepersoana(Request $request){
-            $badId = $request['badId'];
-            $goodId = $request['goodId'];
-            
-            return  $this->BObject()->echivalarepersoana($badId, $goodId);
+        $badId = $request['badId'];
+        $goodId = $request['goodId'];
+        return  $this->BObject()->echivalarepersoana($badId, $goodId);
     }
 }

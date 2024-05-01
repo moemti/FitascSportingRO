@@ -64,7 +64,7 @@ class Competitie extends BObject{
                  :NrPoligoane,
                  :NrPosturiPoligon,
                  ':FirstDayStartTime',
-                 ':SecondDayStartTime, :MinutePauza')";            
+                 ':SecondDayStartTime', :MinutePauza)";            
    
 
     public $MasterUpdate = "UPDATE `competition` 

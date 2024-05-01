@@ -45,22 +45,26 @@ class CompetitiiController extends MasterController
     public function getClasamentAPI($ItemId){
         $Nume = '';
         $Descriere = '';
+        $CurrentDay = 1;
+        $competitie =  Competition::getCurrentCompetition()[0];
+        $CurrentDay = $competitie->CurrentDay;
+
         if ($ItemId == 0){
-            $competitie =  Competition::getCurrentCompetition()[0];
             $ItemId = $competitie->CompetitionId;
             $Nume = $competitie->NumeSuperLung;
             $Descriere = $competitie->Mesaj;
+
         }
+
 
        $clasamentTeams = $this->BObject()->GetClasamentTeams($ItemId);
        $clasamentCat = $this->BObject()->GetClasamentCategory($ItemId);
        $clasamentSup = $this->BObject()->GetClasamentSuperCupa($ItemId);
        $clasamentStr = $this->BObject()->GetClasamentStr($ItemId);
-
        $clasament = $this->BObject()->GetClasament($ItemId);
-
        $Info = Competition::getCompetitionInfo($ItemId);
-       $timetable =  $this->competitionTimetableAPI($ItemId, 1);
+
+       $timetable =  $this->competitionTimetableAPI($ItemId, $CurrentDay);
 
        return [ 'nume' => $Nume, 'descriere' => $Descriere, 'clasament' => $clasament, 'clasamentTeams' => $clasamentTeams, 'clasamentCat' => $clasamentCat, 'Info' =>  $Info, 'timetable' => $timetable,
                     'clasamentSup' => $clasamentSup, 'clasamentstr' => $clasamentStr];
@@ -74,7 +78,6 @@ class CompetitiiController extends MasterController
                                                             'teams' => $this->BObject()->getTeams(),
                                                             'categories' => $this->BObject()->getShootingCategories(),
                                                             'persons' => $this->BObject()->GetClasamentSerii( $this->BObject()->getCompetitionByResult($ResultId))
-                                                        
                                                         ]);
     }
 
@@ -986,17 +989,13 @@ class CompetitiiController extends MasterController
             $CompetitionId = $request->CompetitionId;
             $dataset1 = $this->BObject()->geCompetitionTimetable($CompetitionId, 1); 
             $dataset2 = $this->BObject()->geCompetitionTimetable($CompetitionId, 2); 
-
             $MinutePauza = Competition::getCompetitionInfo($CompetitionId)->MinutePauza;
-            
             return view('modules.pages.competition.editschedule', ['CompetitionId'=>$CompetitionId, 'schedule'=>[$dataset1, $dataset2], 'MinutePauza' => $MinutePauza])->render();
         }
         catch (\Exception $e) {
            return  $e->getMessage(); 
         }
-        
     }
-
 
     public function competitionTimetable($CompetitionId, $Day){
 
@@ -1050,11 +1049,8 @@ class CompetitiiController extends MasterController
                     $lcol = $col;
                     $sheet->setCellValue(IncColumn($col).$row - 1, $p);
                     $sheet->setCellValue($lcol.$row, $post);
-
                     if ($d->Poligon % 2 == 1) 
                         $sheet->mergeCells($lcol.($row - 1).':'.($col).($row -1));
-
-
                 }
 
                 array_push($poligoane, $d->Poligon);
@@ -1086,7 +1082,6 @@ class CompetitiiController extends MasterController
         die;
 
     }
-
 
     public function competitionTimetableAPI($CompetitionId, $Day){
         function IncColumn(&$column){

@@ -20,22 +20,15 @@ $(function () {
 
     $( "#changemypassword" ).submit(function( event ) {
         event.preventDefault();
-        
-
         if (!ValidatePasswords())
             return;
-
         let Data ={}
 
- 
-		
         $("#changemypassword :input").each(function(){
             let val;
             val =  $(this).val();
             Data[$(this).attr('id')] = val;
-        
         });
-
 
         $.ajax({
             type: 'POST',
@@ -51,4 +44,33 @@ $(function () {
             }
         });
     });
+
+    $("#deleteUser").on("click", (e) => {
+        confirm(`Doriti sa stergeti datele si contul personal? Numele si istoricul participarilor se vor pastra.`, deleteUser)
+
+    });
+
+
+    function deleteUser() {
+        data = {};
+
+        data['PersonId'] = $('#PersonId').val();
+
+        $.ajax({
+            type: 'POST',
+
+            url: baseUrl + '/deletemyuser',
+            data: data,
+            success: function (data) {
+                ShowSuccess(translate('S-au sters datele personale cu succes!'));
+                location.reload();
+
+            },
+            error: function (error) {
+                ShowError(error.responseJSON.message);
+            }
+        });
+    }
+
+
 });

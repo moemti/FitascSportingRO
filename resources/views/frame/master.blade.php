@@ -94,9 +94,9 @@
 
                         @stack('formcontent')
                         
-                        <div class="  text-right ">
+                       
+                        <div class="container  text-right ">
                             <button type="submit" class="btn-wide btn-pill btn-shadow btn-hover-shine btn btn-primary btn-lg">{{transex('Salveaza')}}</button>
-                
                         </div>
 
 

@@ -17,78 +17,50 @@
 
 
 @push('formcontent')
-
-
-  
 <div class="container">
-    <div class="row">
-        
+    <div class="row">       
         <input name="PersonId" id="PersonId" hidden>
-
-
         <div class= "position-relative form-group col-12 col-md-6">
             <label class= "form-label">Email</label>
             <input name="Email" id="Email" placeholder="{{transex('Email here')}}..." type="email" class="form-control " required>
         </div>
-
-
         <div class= "position-relative form-group col-12 col-md-6">
             <label class= "form-label">Nume intreg</label>
             <input name="Name" id="Name" placeholder="{{transex('Name here')}}..." type="text" class="form-control " required>
         </div>
     </div>
-
     <div class="row">  
     <div class="col-12 col-md-6">
-            <div class="position-relative form-group  ">
-                
-                <label class= "" for="CountryId">{{transex('Tara')}}</label>
-                
+            <div class="position-relative form-group  ">                
+                <label class= "" for="CountryId">{{transex('Tara')}}</label>                
                 <select name="CountryId" id="CountryId"  type="text" class="form-control" required >
                 <option value=""></option>
                     @foreach($countries as $r)
                         <option value="{{$r->CountryId}}">{{$r->Name}}</option>
                     @endforeach
-                </select>
-            
-                
+                </select>                
             </div>
         </div>
     </div>
 
     
     <div class="row">  
-
         <div class="position-relative form-group col-12 col-md-6">
             <label class= "form-label">{{transex('Nume')}}</label>
             <input name="NickName" id="NickName" class="form-control real_input" >
         </div>
 
         <div class="position-relative form-group  col-12 col-md-6">
-            
                 <label class= "form-label" for="TeamId">{{transex('Team 2022')}}</label>
-                
                 <select name="TeamId" id="TeamId"  type="text" class="form-control"  >
                 <option value=""></option>
                     @foreach($teams as $r)
                         <option value="{{$r->TeamId}}">{{$r->Name}}</option>
                     @endforeach
-                </select>
-            
-                
+                </select>              
         </div>
 
     </div>
-
-    <!-- <div class="row">    
-        <div class="position-relative form-group col-12 col-md-6">
-            <label class= "form-label">Roluri</label>
-            <input name="Role" id="Role" class="form-control real_input" disabled>
-        </div>
-
-
-    </div> -->
-
     <div class="row">
         <div class="position-relative form-group col-12 col-md-6">
             <label class= "form-label">{{transex('Serie si Nr CI')}}</label>
@@ -125,11 +97,6 @@
                 <input name="CalibruArma" id="CalibruArma" class="form-control" >
             </div>
     </div>
-
-    
-
-
-
 </div>
 @endpush
 
@@ -137,21 +104,24 @@
     <form id="changemypassword" action="" class="passwordchange mt-3">
         <div class="container">
             <div class="row">
-        
                 <div class="col-md-12">
                     <div class="position-relative form-group  col-12 col-md-4"><input name="password" id="Password" placeholder="{{transex('Password here')}}..." type="password" class="form-control real_input" required></div>
                 </div>
                 <div class="col-md-12">
                     <div class="position-relative form-group  col-12 col-md-4"><input name="password2" id="Password2" placeholder="{{transex('Repeat Password here')}}..." type="password" class="form-control real_input" required></div>
                 </div>
-
+            </div>
+            <div class="text-left ">
+               <button type="submit" class="btn-wide btn-pill btn-shadow btn-hover-shine btn btn-primary btn-lg">{{transex('Modifica parola')}}</button>
             </div>
         </div>
-        <div class="text-left ">
-            <button type="submit" class="btn-wide btn-pill btn-shadow btn-hover-shine btn btn-primary btn-lg">{{transex('Modifica parola')}}</button>
-    
-        </div>
-
     </form>
+    <br>
+    <div class="container">
+        <div class="text-right ">
+            <button id="deleteUser" class="btn-wide btn-shadow  btn btn-danger btn-lg">{{transex('Sterge utilizator si datele confidentiale')}}</button>
+        </div>
+    </div>
+
 
 @endpush

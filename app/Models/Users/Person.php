@@ -281,6 +281,20 @@ class Person extends BObject{
         return $this->getMyUser($PersonId)[0];
     }
 
+    public function deleteMyUser($request){
+        $PersonId = $request['PersonId'];
+        try {
+            DB::beginTransaction();
+            DB::select('call deleteUser(?)', [$PersonId]);
+            DB::commit();
+        }
+        catch(\Exception $e){
+            DB::rollBack();
+            return $e;
+        }
+        return 'OK';
+    }
+
     public function setPassword($PersonId, $password){
         $sql = "update user set Password = '$password' where PersonId = $PersonId";
 

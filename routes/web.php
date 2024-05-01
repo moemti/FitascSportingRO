@@ -174,6 +174,8 @@ Route::group(['middleware' => 'options'], function () {
             Route::post('/savemyuser', 'App\Http\Controllers\PersonController@savemyuser');
             Route::post('/getmyuserajax', 'App\Http\Controllers\PersonController@getmyuserajax');
             Route::post('/changemypassword', 'App\Http\Controllers\PersonController@changemypassvord');
+            Route::post('/deletemyuser', 'App\Http\Controllers\PersonController@deletemyuser');
+            
 
             // persoane
             Route::get('/persoane', 'App\Http\Controllers\PersonController@getList');

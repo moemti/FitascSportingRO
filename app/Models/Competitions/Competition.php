@@ -52,7 +52,7 @@ class Competition extends BObject{
                                     
 
     public $MasterInsert = "INSERT INTO `competition`(`OrganizationId`, Name, `StartDate`, `EndDate`, `RangeId`, `Targets`, `SportId`, Oficial, IsEtapa, IsFinala, InSupercupa, Descriere, Status)  
-        values  (:_OrganizationId_, ':Name', ':StartDate',  ':EndDate', :RangeId, :Targets, :SportId, , :Oficial, :IsEtapa, :IsFinala, :InSupercupa, ':Descriere', 'Closed')";            
+        values  (:_OrganizationId_, ':Name', ':StartDate',  ':EndDate', :RangeId, :Targets, :SportId,  :Oficial, :IsEtapa, :IsFinala, :InSupercupa, ':Descriere', 'Closed')";            
    
 
     public $MasterUpdate = "UPDATE `competition` 
@@ -137,6 +137,76 @@ class Competition extends BObject{
                         where r.CompetitionId = :CompetitionId 
                         order by  p.Name;
                 ";
+
+                
+            public $ClasamentSelectOpenAll = "
+                SELECT rank() over(order by ifnull(sof.Total,0) desc, ifnull(sof.ShootOff, 0) desc)  as Position, 
+                       p.PersonId, p.Name as Person, sc.Code as Category, t.Name as Team , r.ResultId, r.BIB, 
+                       r.IsInTeam, r.NrSerie,  p.SerieNrCI, p.CNP, p.SeriePermisArma, p.DataExpPermis, p.MarcaArma, p.SerieArma, p.CalibruArma, r.TeamName,
+                                       case when r.Aborted = 1 then null else Round(Percent,2) end as Procent, 
+                                       case when r.Aborted = 1 then null else Round(PercentR,2) end as ProcentR, 
+                                   nullif(d1.Result, 0) as M1,
+                                   nullif(d2.Result, 0) as M2,
+                                   nullif(d3.Result, 0) as M3,
+                                   nullif(d4.Result, 0) as M4,
+                                   nullif(d5.Result, 0) as M5,
+                                   nullif(d6.Result, 0) as M6,
+                                   nullif(d7.Result, 0) as M7,
+                                   nullif(d8.Result, 0) as M8,
+                                   nullif(sof.Total, 0) as Total,
+                                   sof.ShootOffS,
+                                   nullif(sof.Total1, 0) as Total1,
+                                   nullif(sof.Total2, 0) as Total2,
+                                   cps.ResultatCat
+                                   FROM result r
+                                   left join resultdetail d1 on r.ResultId = d1.ResultId and d1.RoundNr = 1
+                                   left join resultdetail d2 on r.ResultId = d2.ResultId and d2.RoundNr = 2
+                                   left join resultdetail d3 on r.ResultId = d3.ResultId and d3.RoundNr = 3
+                                   left join resultdetail d4 on r.ResultId = d4.ResultId and d4.RoundNr = 4
+                                   left join resultdetail d5 on r.ResultId = d5.ResultId and d5.RoundNr = 5
+                                   left join resultdetail d6 on r.ResultId = d6.ResultId and d6.RoundNr = 6
+                                   left join resultdetail d7 on r.ResultId = d7.ResultId and d7.RoundNr = 7
+                                   left join resultdetail d8 on r.ResultId = d8.ResultId and d8.RoundNr = 8
+                                   left join (
+                                       select GROUP_CONCAT(case when d.RoundNr > 8 then d.Result else null end  order by d.RoundNr) as ShootOffS,
+                                               sum(case when d.RoundNr > 8 then d.Result/(10 *( d.RoundNr - 8))  else 0 end ) as ShootOff, 
+                                               sum(case when d.RoundNr <= 8 then d.Result else 0 end ) as Total,
+                                               sum(case when d.RoundNr <= 4 then d.Result else 0 end ) as Total1,
+                                               sum(case when d.RoundNr <= 8 and d.RoundNr > 4 then d.Result else 0 end ) as Total2,
+                                       d.ResultId
+                                       from resultdetail d 
+                                       group by ResultId
+                                       order by d.RoundNr 
+                                   ) sof on sof.ResultId = r.ResultId 
+                                   left join (select concat(loc,' ' , vvv.Code ) as ResultatCat , ResultId from (
+                                       SELECT  
+                                               ROW_NUMBER() OVER (
+                                                 PARTITION BY sc.Code 
+                                                 ORDER BY sof.Total desc, ShootOff desc) as loc ,
+                                                 r.ResultId, sc.Code
+                                                           FROM result r
+                                                           left join (
+                                                               select GROUP_CONCAT(case when d.RoundNr > 8 then d.Result else null end  order by d.RoundNr) as ShootOffS,
+                                                                       sum(case when d.RoundNr > 8 then d.Result/(10 *( d.RoundNr - 8))  else 0 end ) as ShootOff, 
+                                                                       sum(case when d.RoundNr <= 8 then d.Result else 0 end ) as Total,
+                                                               d.ResultId
+                                                               from resultdetail d 
+                                                               group by ResultId
+                                                               order by d.RoundNr 
+                                                           ) sof on sof.ResultId = r.ResultId 
+                                                           left join shootercategory sc on sc.ShooterCategoryId = r.ShooterCategoryId
+                                                           where r.CompetitionId = :CompetitionId 
+                                                           order by sc.Code, loc )vvv
+                                                           where loc < 4) cps on cps.ResultId = r.ResultId
+                                   inner join person p on p.PersonId = r.PersonId
+                                   left join shootercategory sc on sc.ShooterCategoryId = r.ShooterCategoryId
+                                   left join team t on t.TeamId = r.TeamId
+                                   where r.CompetitionId = :CompetitionId 
+                                   order by Position, p.Name
+           
+                                  
+                
+                           ";
 
     public $ClasamentSelectOpen = "
      SELECT rank() over(order by ifnull(sof.Total,0) desc, ifnull(sof.ShootOff, 0) desc)  as Position, 
@@ -853,19 +923,18 @@ class Competition extends BObject{
                 else
                     return DB::select(str_replace(':CompetitionId', $CompetitionId,$this->ClasamentSelect2));
             }
-
-
-
-            if ($Status == 'Progress' && (!$Status->IsStarted))
-                return DB::select(str_replace(':CompetitionId', $CompetitionId,$this->ClasamentSelect));
-            else
-                if (in_array($Status, ['Finished', 'Progress'])){
-                    return DB::select(str_replace(':CompetitionId', $CompetitionId,$this->ClasamentSelectOpen));
-                }
+            
+            if ($Status == 'Progress' ){
+                return DB::select(str_replace(':CompetitionId', $CompetitionId,$this->ClasamentSelectOpenAll));
+            }
+    
+            if ($Status == 'Finished' ){
+                return DB::select(str_replace(':CompetitionId', $CompetitionId,$this->ClasamentSelectOpen));
+            }
 
 
             if ($Status == 'Open' )
-             return DB::select(str_replace(':CompetitionId', $CompetitionId,$this->ClasamentSelect2));
+                return DB::select(str_replace(':CompetitionId', $CompetitionId,$this->ClasamentSelect2));
         }
 
         public function GetClasamentSerii($CompetitionId){
@@ -1143,7 +1212,6 @@ class Competition extends BObject{
                 WHERE
                     ResultDetailId = :ResultDetailId
                 ";
-          
             foreach($detail as $key => $value){
                 $sql = self::paramreplace($key, $value, $sql); 
             }
@@ -1151,8 +1219,6 @@ class Competition extends BObject{
                 if (!is_array($value))
                     $sql = self::paramreplace($key, $value, $sql); 
             }
-            
-        
             return DB::unprepared($sql);
         }
 
@@ -1194,31 +1260,20 @@ class Competition extends BObject{
                 if ($PersonId == -1){
                     $sql = "INSERT INTO person(Name, Code, Email,   SerieNrCI, CNP, SeriePermisArma, DataExpPermis, MarcaArma, SerieArma, CalibruArma, CountryId) 
                         values( ':Name', 'xxx', null,  ':SerieNrCI', ':CNP', ':SeriePermisArma', ':DataExpPermis', ':MarcaArma', ':SerieArma', ':CalibruArma', :CountryId )";
-                      
 
                     // replace parameters
                     foreach($request as $key => $value){
                         if (!is_array($value))
                             $sql = self::paramreplace($key, $value, $sql); 
                     }
-        
-        
                     self::PutNullValues($sql);
-
-
                     DB::select($sql);
-
-
                     $PersonId = DB::select("select LAST_INSERT_ID() as PersonId")[0]->PersonId;
-
-
                     $sql = "insert into shooterxseason (PersonId, SeasonId) select $PersonId , SeasonId from season;";
                     DB::select($sql);
-
                 }
 
                 $sql =  "UPDATE `person` SET
-                    
                         CountryId = :CountryId,
                         SerieNrCI = ':SerieNrCI',
                         CNP = ':CNP',
@@ -1227,50 +1282,28 @@ class Competition extends BObject{
                         MarcaArma = ':MarcaArma',
                         SerieArma = ':SerieArma',
                         CalibruArma = ':CalibruArma'
-
                         WHERE PersonId = :PersonId;";
-
                  // replace parameters
-
-           
-
-
                  foreach($request as $key => $value){
                     if (!is_array($value))
                         $sql = self::paramreplace($key, $value, $sql); 
                 }
-    
-
-    
                 self::PutNullValues($sql);
-
-
                 DB::select($sql);       
-
-
                 if (!($TeamId > 0) &&  ($Team != '')){
                     $sql = "insert into team (Name, IsActive) values ('$Team', 1)"; 
                     DB::select($sql);
-
-
                     $TeamId = DB::select("select LAST_INSERT_ID() as TeamId")[0]->TeamId;
-
-
                 }
 
                 if ($TeamId > 0){
-
                     $sql = "update shooterxseason set TeamId = $TeamId where PersonId = $PersonId;";
                     DB::select($sql); 
-
                 }
                 else
                     $TeamId = 'null';
-
-
                     
                 if ($ShooterCategoryId > 0){
-
                     $sql = "update shooterxseason set ShooterCategoryId = $ShooterCategoryId where PersonId = $PersonId;";
                     DB::select($sql); 
                 }else
@@ -1281,16 +1314,12 @@ class Competition extends BObject{
                     where not exists (select 1 from result where CompetitionId = $CompetitionId and PersonId = $PersonId)";
 
                 DB::select($sql);
-
-
                 DB::Commit();
                 return 'OK';
             } catch (\Exception $e) {
                 DB::Rollback();
                 return $e->getMessage();
             }
-
-
         }
 
         public static function outputFiles($path){
@@ -1343,8 +1372,10 @@ class Competition extends BObject{
                                 ) AS NumeSuperLung,
                                 s.Name as SportField,
                                 r.Link,
-                                CASE WHEN c.EndDate >= NOW() AND c.StartDate <= NOW() THEN 'Rezultate competitie (LIVE)' WHEN c.StartDate > NOW() THEN 'Urmatoarea competitie' WHEN c.EndDate < NOW() THEN 'Rezultate competitie' ELSE ''
-                                END AS Mesaj
+                                CASE WHEN c.EndDate >= NOW() AND c.StartDate <= NOW() THEN 'Rezultate competitie (LIVE)' 
+                                    WHEN c.StartDate > NOW() THEN 'Urmatoarea competitie' WHEN c.EndDate < NOW() THEN 'Rezultate competitie' ELSE ''
+                                END AS Mesaj,
+                                case when  TIMESTAMPDIFF(HOUR, c.EndDate, NOW()) < 9 then 1 else 2 end as CurrentDay
                             FROM
                                 competition c
                             INNER JOIN `range` r ON
@@ -1361,7 +1392,7 @@ class Competition extends BObject{
                             ,
                             'Sfarsit de sezon',
                             NULL, NULL,
-                            ''
+                            '', 1
                         LIMIT 0, 1
             "
                      ;
@@ -1512,20 +1543,13 @@ class Competition extends BObject{
                     return "Nu exista generate seriile";
                    
                 $ScheduleType = $ds[0]->ScheduleType;
-
                 $vars = (array)($ds[0]);
-              
-
                 $lipsa = [];
                 foreach($vars as $key => $v){
-
-
                     if ($v == null){
                         if (!($key == 'MinutePauza' && ($ScheduleType == "Normal")))
                             array_push($lipsa, $key);
                     }
-
-
                 }
 
                 if ($lipsa != null)
@@ -1533,9 +1557,6 @@ class Competition extends BObject{
 
                 if ($ScheduleType !== "Normal" && ($NrSerii % 2 == 1))
                     return "Numarul de serii trebuie sa fie par pentru tipul de tragere condensat";
-
-          
-               
 
                 if (count($ds) == 0)
                     return 'No schedule';
@@ -1550,14 +1571,11 @@ class Competition extends BObject{
                 $sql = "
                         update schedule set serie =  case when  Serie > $NrPoligoane + 1 then  (serie - $NrPoligoane + 1 ) * 2  else  serie * 2 - 1 end
                         where CompetitionId = $CompetitionId and Serie > 0;
-                        
                         update schedule set poligon = case when poligon < $NrPoligoane + 1 then (poligon + $NrPoligoane) else (poligon + $NrPoligoane) mod (2 * $NrPoligoane) end  + 100 where CompetitionId = $CompetitionId and Serie > 0 and Day = 2;
                         update schedule set poligon = poligon - 100 where CompetitionId = $CompetitionId and Serie > 0 and Day = 2;
-                       
                         ";
 
                 DB::select($sql);
-
                 return 'OK';
             } catch (\Exception $e) {
                 return $e->getMessage();
@@ -1569,14 +1587,11 @@ class Competition extends BObject{
         public function MyCompetitionsAPI($PersonId){
             $sql = "SELECT c.`CompetitionId`, c.Name as Competition, `StartDate`, `EndDate`, c.`RangeId`, `Targets`, 
             r.name as `Range`, s.Name as SportField, year(StartDate) as Year,  concat(c.Name , ' ' , r.Name , ' ' , c.StartDate) as NumeLung,
-
-            
             concat(case when month(StartDate) <> month(EndDate) then
                             DATE_FORMAT(StartDate, '%d/%m') else  DATE_FORMAT(StartDate, '%d') end,
                             '-',
                             DATE_FORMAT(EndDate, '%d/%m/%Y') 
                             ) as Perioada, 
-            
             Status, case when rr.PersonId is null then 'Neinscris' else 'Inscris' end as Inscris
             FROM `competition` c
             inner join `range` r on r.RangeId = c.RangeId
@@ -1787,8 +1802,6 @@ class Competition extends BObject{
                 if ($count > $NrSerii * $NrPoligoane * $NrPost)
                     $Done = true;
             }
-
-
         }
 
         public function generateTimetableDay ($CompetitionId, $Day, $ds, $NrSerii){
@@ -2010,7 +2023,6 @@ class Competition extends BObject{
 
                 DB::beginTransaction();
                 DB::select($sql);
-    
                 foreach($Serii as $s){
 
                     $day = $s['day'];
@@ -2019,14 +2031,10 @@ class Competition extends BObject{
                     $ora = $s['ora'];
                     $seria = $s['seria'];
                     $seria = $seria>0?$seria:0;
-
-
                     $sql2 = "INSERT INTO `schedule`(`CompetitionId`, `Day`, `Poligon`, `Post`, `Ora`, `Serie`) VALUES ($CompetitionId, $day, $poligon, $post, '$ora', $seria)";
                     DB::select($sql2);
                 };
-                
                 DB::Commit();
-                
                 return 'OK';
             } catch (\Exception $e) {
                 DB::Rollback();

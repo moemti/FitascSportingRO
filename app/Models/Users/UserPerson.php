@@ -52,8 +52,8 @@ class UserPerson extends BObject{
                     $sql = self::paramreplace($key, $value, $sql);
             }
 
-            if (count(DB::select($sql)) > 0)
-                return 'Already exists a registration with this email';
+     //       if (count(DB::select($sql)) > 0)
+       //         return 'Already exists a registration with this email';
 
 
             $sql = "INSERT INTO register(`Email`, `Name`, `UserName`, `Password`, `Token`) values(
