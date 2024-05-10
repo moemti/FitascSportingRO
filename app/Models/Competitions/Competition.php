@@ -712,11 +712,10 @@ class Competition extends BObject{
                     $S = 3;
 
             $Squads = [];
+            $tip =  DB::select("select c.ScheduleType from competition c where CompetitionId = $CompetitionId");
 
             // vad daca este cu program compact si facem numar par de serii
             if ($S % 2 == 1){
-                $tip =  DB::select("select c.ScheduleType from competition c where CompetitionId = $CompetitionId");
-
                  if ($tip[0]->ScheduleType != 'Normal'){
                     $S = $S + 1;
                  }
@@ -1375,7 +1374,8 @@ class Competition extends BObject{
                                 CASE WHEN c.EndDate >= NOW() AND c.StartDate <= NOW() THEN 'Rezultate competitie (LIVE)' 
                                     WHEN c.StartDate > NOW() THEN 'Urmatoarea competitie' WHEN c.EndDate < NOW() THEN 'Rezultate competitie' ELSE ''
                                 END AS Mesaj,
-                                case when  TIMESTAMPDIFF(HOUR, c.EndDate, NOW()) < 9 then 1 else 2 end as CurrentDay
+                                case when  TIMESTAMPDIFF(HOUR, c.EndDate, NOW()) < 9 then 1 else 2 end as CurrentDay,
+                                case when Oficial then 1 else 0 end as Oficial
                             FROM
                                 competition c
                             INNER JOIN `range` r ON
@@ -1392,7 +1392,7 @@ class Competition extends BObject{
                             ,
                             'Sfarsit de sezon',
                             NULL, NULL,
-                            '', 1
+                            '', 1, NULL
                         LIMIT 0, 1
             "
                      ;
@@ -1568,14 +1568,25 @@ class Competition extends BObject{
                 $this->generateTimetableDay($CompetitionId, 1, $ds[0], $NrSerii);
                 $this->generateTimetableDay($CompetitionId, 2, $ds[0], $NrSerii);
 
-                $sql = "
+                if ($ScheduleType !== "Normal"){
+                    $sql = "
                         update schedule set serie =  case when  Serie > $NrPoligoane + 1 then  (serie - $NrPoligoane + 1 ) * 2  else  serie * 2 - 1 end
                         where CompetitionId = $CompetitionId and Serie > 0;
+                        ";
+                    DB::select($sql);
+
+                    $sql = "
                         update schedule set poligon = case when poligon < $NrPoligoane + 1 then (poligon + $NrPoligoane) else (poligon + $NrPoligoane) mod (2 * $NrPoligoane) end  + 100 where CompetitionId = $CompetitionId and Serie > 0 and Day = 2;
+                        ";
+                    DB::select($sql);
+
+                    $sql = "
                         update schedule set poligon = poligon - 100 where CompetitionId = $CompetitionId and Serie > 0 and Day = 2;
                         ";
+                    DB::select($sql);
+                }
 
-                DB::select($sql);
+
                 return 'OK';
             } catch (\Exception $e) {
                 return $e->getMessage();
@@ -1692,6 +1703,7 @@ class Competition extends BObject{
                                 nullif(sof.Total, 0) as Total,
                                 sof.ShootOffS
                                 FROM result r
+                                inner join competition c on c.CompetitionId = r.CompetitionId
                                 left join (
                                     select GROUP_CONCAT(case when d.RoundNr > 8 then d.Result else null end  order by d.RoundNr) as ShootOffS,
                                             sum(case when d.RoundNr > 8 then d.Result/(10 *( d.RoundNr - 8))  else 0 end ) as ShootOff, 
@@ -1705,7 +1717,7 @@ class Competition extends BObject{
                                 inner join person p on p.PersonId = r.PersonId
                                 left join shootercategory sc on sc.ShooterCategoryId = r.ShooterCategoryId
                                 left join team t on t.TeamId = r.TeamId
-                                where r.CompetitionId = $CompetitionId and ifnull(sc.code, '') <> 'STR'
+                                where r.CompetitionId = $CompetitionId and ifnull(sc.code, '') <> 'STR' and c.Oficial = 1
                                 order by Position, p.Name)YY
                                 where Position <= 10
                 ";

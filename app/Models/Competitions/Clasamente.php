@@ -77,35 +77,26 @@ class Clasamente extends BObject{
                     FROM result r 
                     inner join person p on p.PersonId = r.PersonId 
                     inner join competition c on c.CompetitionId = r.CompetitionId and c.Status = 'Finished'
-
                     inner join season s on Year(c.StartDate) = s.Year
                     left join shooterxseason x on x.PersonId = r.PersonId and x.SeasonId = s.SeasonId 
-
                     left join shootercategory sc on sc.ShooterCategoryId = x.ShooterCategoryId 
                     left join team t on t.TeamId = x.TeamId 
-
                     left join (
                         select avg(PercentR) as Percent, PersonId from (
-
                          SELECT p.PersonId, PercentR, row_number() OVER (
                             PARTITION BY p.PersonId ORDER BY PercentR DESC
-
                             ) AS row_num
                       FROM result r 
                                         inner join person p on p.PersonId = r.PersonId 
                                         inner join competition c on c.CompetitionId = r.CompetitionId and c.Status = 'Finished' and c.Oficial = 1
                                         where year(c.StartDate) =  :Year 
                                         and p.CountryId = 1 and ifNull(r.Aborted,0) = 0 
-
-
                       ORDER BY p.PersonId, PercentR desc
                             ) T where row_num <= 3
                       group by PersonId
                   ) aa on aa.PersonId = p.PersonId
-
-                    
                     where year(c.StartDate) = :Year 
-                    and p.CountryId = 1 and ifNull(r.Aborted,0) = 0 
+                    and p.CountryId = 1 and ifNull(r.Aborted,0) = 0 and c.Oficial = 1
                     group by p.Name, p.PersonId
                     order by ProcentR desc
                 ";
@@ -117,7 +108,6 @@ class Clasamente extends BObject{
             FROM season s 
             inner join shooterxseason x on s.SeasonId = x.SeasonId
             inner join person p on p.PersonId = x.PersonId 
-            
             left join shootercategory sc on sc.ShooterCategoryId = x.ShooterCategoryId 
             left join team t on t.TeamId = x.TeamId  
             where s.Year = :Year  
@@ -152,7 +142,7 @@ class Clasamente extends BObject{
             inner join person p on p.PersonId = r.PersonId 
             inner join competition c on c.CompetitionId = r.CompetitionId and c.Status = 'Finished'  
             inner join `range` rr on rr.RangeId = c.RangeId    
-            where year(c.StartDate) = {$year} and r.PersonId = {$PersonId}
+            where year(c.StartDate) = {$year} and r.PersonId = {$PersonId} and c.Oficial = 1
             order by c.StartDate"
             ;
         
@@ -249,7 +239,7 @@ class Clasamente extends BObject{
            $sql2 = "select r.ResultId, r.CompetitionId
                 from result r 
                 inner join competition c on c.CompetitionId = r.CompetitionId and c.Status = 'Finished'  
-                where r.PersonId = $PersonId order by  c.StartDate  desc                                         
+                where r.PersonId = $PersonId and c.Oficial = 1 order by  c.StartDate  desc                                         
             ";
 
             $result = [];
@@ -311,7 +301,7 @@ class Clasamente extends BObject{
                     )SSC on SSC.PersonId = p.PersonId
 
                     where year(c.StartDate) = $Year 
-                    and p.CountryId = 1 and ifNull(r.Aborted,0) = 0 
+                    and p.CountryId = 1 and ifNull(r.Aborted,0) = 0 and c.Oficial = 1
                     group by p.Name, p.PersonId
                     order by ProcentR desc
                 )Y where PersonId = $PersonId
@@ -360,7 +350,7 @@ class Clasamente extends BObject{
                     inner join person p on p.PersonId = r.PersonId
                     left join shootercategory sc on sc.ShooterCategoryId = r.ShooterCategoryId
                     left join team t on t.TeamId = r.TeamId
-                    where  Ifnull(sc.code, '') <> 'STR' and year(StartDate) = $Year and Status = 'Finished'
+                    where  Ifnull(sc.code, '') <> 'STR' and year(StartDate) = $Year and Status = 'Finished' and c.Oficial = 1
                     order by r.CompetitionId, Position, p.Name
                     )YY where Position <= 10
                 )XX group by Person, PersonId
