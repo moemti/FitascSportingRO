@@ -76,7 +76,7 @@ class Competition extends BObject{
         public $ClasamentSelect2 = "
         SELECT row_number() over(order by p.Name)  as Position, 
             p.PersonId, p.Name as Person, sc.Code as Category, t.Name as Team , r.ResultId, NULL AS BIB, 
-            r.IsInTeam, NULL AS NrSerie,  p.SerieNrCI, p.CNP, p.SeriePermisArma, p.DataExpPermis, p.MarcaArma, p.SerieArma, p.CalibruArma, r.TeamName,
+            r.IsInTeam, NULL AS NrSerie,  p.SerieNrCI, p.CNP, p.SeriePermisArma, p.DataExpPermis, p.MarcaArma, p.SerieArma, p.CalibruArma, case WHEN CAST(TeamName AS DECIMAL) = 0 then  TeamName else concat(t.Name , ' ' , r.TeamName) end as TeamName,
                         Round(Percent,2) as Procent, Round(PercentR,2) as ProcentR,
                         nullif(d1.Result, 0) as M1,
                         nullif(d2.Result, 0) as M2,
@@ -142,7 +142,7 @@ class Competition extends BObject{
             public $ClasamentSelectOpenAll = "
                 SELECT rank() over(order by ifnull(sof.Total,0) desc, ifnull(sof.ShootOff, 0) desc)  as Position, 
                        p.PersonId, p.Name as Person, sc.Code as Category, t.Name as Team , r.ResultId, r.BIB, 
-                       r.IsInTeam, r.NrSerie,  p.SerieNrCI, p.CNP, p.SeriePermisArma, p.DataExpPermis, p.MarcaArma, p.SerieArma, p.CalibruArma, r.TeamName,
+                       r.IsInTeam, r.NrSerie,  p.SerieNrCI, p.CNP, p.SeriePermisArma, p.DataExpPermis, p.MarcaArma, p.SerieArma, p.CalibruArma, case WHEN CAST(TeamName AS DECIMAL) = 0 then  TeamName else concat(t.Name , ' ' , r.TeamName) end  as TeamName,
                                        case when r.Aborted = 1 then null else Round(Percent,2) end as Procent, 
                                        case when r.Aborted = 1 then null else Round(PercentR,2) end as ProcentR, 
                                    nullif(d1.Result, 0) as M1,
@@ -211,7 +211,7 @@ class Competition extends BObject{
     public $ClasamentSelectOpen = "
      SELECT rank() over(order by ifnull(sof.Total,0) desc, ifnull(sof.ShootOff, 0) desc)  as Position, 
             p.PersonId, p.Name as Person, sc.Code as Category, t.Name as Team , r.ResultId, r.BIB, 
-            r.IsInTeam, r.NrSerie,  p.SerieNrCI, p.CNP, p.SeriePermisArma, p.DataExpPermis, p.MarcaArma, p.SerieArma, p.CalibruArma, r.TeamName,
+            r.IsInTeam, r.NrSerie,  p.SerieNrCI, p.CNP, p.SeriePermisArma, p.DataExpPermis, p.MarcaArma, p.SerieArma, p.CalibruArma, case WHEN CAST(TeamName AS DECIMAL) = 0 then  TeamName else concat(t.Name , ' ' , r.TeamName) end as TeamName,
                             case when r.Aborted = 1 then null else Round(Percent,2) end as Procent, 
                             case when r.Aborted = 1 then null else Round(PercentR,2) end as ProcentR, 
                         nullif(d1.Result, 0) as M1,
@@ -354,7 +354,7 @@ class Competition extends BObject{
                     SELECT row_number() over(order by ifnull(sof.Total,0) desc, ifnull(sof.ShootOff, 0) desc, ifnull(d8.Result, 0) desc, ifnull(d7.Result, 0)  desc, ifnull(d6.Result, 0) desc, ifnull(d5.Result, 0) desc, ifnull(d4.Result, 0) desc, ifnull(d3.Result, 0) desc, 
                     ifnull(d2.Result, 0) desc, ifnull(d1.Result, 0) desc, r.BIB)  as Position, 
             p.PersonId, p.Name as Person, sc.Code as Category, t.Name as Team , r.ResultId, r.BIB, 
-            r.IsInTeam, r.NrSerie,  p.SerieNrCI, p.CNP, p.SeriePermisArma, p.DataExpPermis, p.MarcaArma, p.SerieArma, p.CalibruArma, r.TeamName,
+            r.IsInTeam, r.NrSerie,  p.SerieNrCI, p.CNP, p.SeriePermisArma, p.DataExpPermis, p.MarcaArma, p.SerieArma, p.CalibruArma, case WHEN CAST(TeamName AS DECIMAL) = 0 then  TeamName else concat(t.Name , ' ' , r.TeamName) end as TeamName,
                         Round(Percent,2) as Procent, Round(PercentR,2) as ProcentR,
                         
                         nullif(d1.Result, 0) as M1,
@@ -421,7 +421,7 @@ class Competition extends BObject{
                 SELECT row_number() over(order by Total desc, ShootOff desc, d8.Result desc, d7.Result  desc, d6.Result desc, d5.Result desc, d4.Result desc, d3.Result desc, d2.Result desc, d1.Result desc, r.BIB)  as Position, 
                     p.PersonId, p.Name as Person, sc.Code as Category, t.Name as Team , r.ResultId,
                     r.BIB,
-                    r.IsInTeam, r.NrSerie,  p.SerieNrCI, p.CNP, p.SeriePermisArma, p.DataExpPermis, p.MarcaArma, p.SerieArma, p.CalibruArma, r.TeamName,
+                    r.IsInTeam, r.NrSerie,  p.SerieNrCI, p.CNP, p.SeriePermisArma, p.DataExpPermis, p.MarcaArma, p.SerieArma, p.CalibruArma, case WHEN CAST(TeamName AS DECIMAL) = 0 then  TeamName else concat(t.Name , ' ' , r.TeamName) end  as TeamName,
                                 Round(Percent,2) as Procent, Round(PercentR,2) as ProcentR,
                                 d1.Result as M1,
                                 d2.Result as M2,
@@ -1014,16 +1014,16 @@ class Competition extends BObject{
         public function GetClasamentTeams($CompetitionId){
             $sql = "SELECT 1 FROM `result` WHERE TeamName is not null and CompetitionId = $CompetitionId";
 
-            if (count(DB::select($sql)) > 0 )
+            if (count(DB::select($sql)) > 0 ) // daca s-au introdus nume la echipe
 
                     $sql =  "
                     select ROW_NUMBER() OVER ( order by sum(Total) desc ) as Loc, sum(Total) as Total, Team , GROUP_CONCAT(person order by locechipa SEPARATOR ', ') as Members  
                     from   
-                    ( select * from (
+                         ( select * from (
                                                             select    ROW_NUMBER() OVER (
                                                                 Partition by Team
                                                                 order by Team desc ,soft.Total desc
-                                                            ) as locechipa, rr.ResultId, soft.Total, rr.PersonId, p.Name as Person, rr.TeamId, IfNull(TeamName, t.Name) as Team
+                                                            ) as locechipa, rr.ResultId, soft.Total, rr.PersonId, p.Name as Person, rr.TeamId, case WHEN CAST(TeamName AS DECIMAL) = 0 then  TeamName else concat(t.Name , ' ' , rr.TeamName)  end as Team
                                                             FROM result rr
                                                             inner join person p on p.PersonId = rr.PersonId
                                                             inner join (
