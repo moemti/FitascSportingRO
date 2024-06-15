@@ -112,7 +112,7 @@ class LoginController extends Controller
             });
 
             Mail::send('mails.registration', $data, function ($message) use ($Email) {
-                $message->to('admin@fitascsporting.ro', 'User')->from('noreply@fitascsporting.ro')->subject(transex('Inregistrare pe fitascsporting.ro'));
+                $message->to('admin@fitascsporting.ro', 'User')->from('noreply@fitascsporting.ro')->subject(transex('Inregistrare pe fitascsporting.ro COPY'));
             });
 
             return view('auth/login')->with(['mesaj' => ['mesaj' => transex('S-a trimis un email pentru confirmare. Trebuie sa confirmi apasand link-ul din email!')]]);

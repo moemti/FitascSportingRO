@@ -267,7 +267,7 @@
 
         <div class="d-flex text-right">
 
-            @if ((getCompetitionRight($master[0]->CompetitionId)) && (in_array(  $master[0]->Status,  array("Open","Progress"))  ))
+            @if ((getCompetitionRight($master[0]->CompetitionId)) && (in_array(  $master[0]->Status,  array("Open","Preparation", "Progress"))  ))
 
                 <div class='row'>
                     <button id="addCompetitor" class = "btn-add btn btn-sm" >Adauga</button>

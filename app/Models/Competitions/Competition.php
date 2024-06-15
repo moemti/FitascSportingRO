@@ -1568,9 +1568,11 @@ class Competition extends BObject{
                 $this->generateTimetableDay($CompetitionId, 1, $ds[0], $NrSerii);
                 $this->generateTimetableDay($CompetitionId, 2, $ds[0], $NrSerii);
 
+
+
                 if ($ScheduleType !== "Normal"){
                     $sql = "
-                        update schedule set serie =  case when  Serie > $NrPoligoane + 1 then  (serie - $NrPoligoane + 1 ) * 2  else  serie * 2 - 1 end
+                        update schedule set serie =  case when Serie > $NrSerii/2 then  (serie - $NrSerii/2) * 2  else  serie * 2 - 1 end
                         where CompetitionId = $CompetitionId and Serie > 0;
                         ";
                     DB::select($sql);
@@ -1639,16 +1641,24 @@ class Competition extends BObject{
         }
 
         public function currentCompetition($PersonId){
-            $sql = "SELECT r.BIB, r.NrSerie, c.CompetitionId, DATE_ADD(EndDate, INTERVAL 0 DAY) as EndDate 
+            $sql = "SELECT r.BIB, r.NrSerie, c.CompetitionId, DATE_ADD(EndDate, INTERVAL 0 DAY) as EndDate,
+            case when (DATEDIFF(CURDATE(),EndDate) < -1) or (DATEDIFF(CURDATE(),EndDate) = -1 and HOUR(CURRENT_TIME()) < 18 ) then 1 else 2 end as theDay,
+            case when DATEDIFF(CURDATE(),EndDate) = -1 then 1 when DATEDIFF(CURDATE(),EndDate) = 0 then 2 else -1 end as theRealDay
+            
             FROM competition c
             inner join result r on c.CompetitionId = r.CompetitionId
             where 
                 r.PersonId = $PersonId 
-             and Status =  'Progress'
+                and c.Status = 'Progress'
+               
             ";
+    
 
             $competition = DB::select($sql);
 
+  
+            $theDay = null;
+            $theRealDay = null;
             $CompetitionId = null;
             $NrSerie = null;
             $seriaMea = [];
@@ -1657,6 +1667,8 @@ class Competition extends BObject{
             if (count($competition) > 0){
                 $CompetitionId = $competition[0]->CompetitionId;
                 $NrSerie = $competition[0]->NrSerie;
+                $theDay = $competition[0]->theDay;
+                $theRealDay = $competition[0]->theRealDay;
 
                 $sql = "SELECT r.BIB, p.Name, p.PersonId
                 FROM competition c
@@ -1669,16 +1681,16 @@ class Competition extends BObject{
                 $seriaMea = DB::select($sql);
 
                 $sql = "
-                    select  Day, Ora, Poligon, Post, Serie
+                    select  Day, Ora,  CEIL(Poligon/ case when ScheduleType = 'Condensat' then NrPosturiPoligon else 1 end) as Poligon, Post, Serie
                     from schedule s
                     inner join competition c on c.CompetitionId = s.CompetitionId
-                    where s.CompetitionId = {$CompetitionId} and s.Serie = {$NrSerie} 
-                    order by Day, Ora, Poligon , Post, Serie
+                    where s.CompetitionId = {$CompetitionId} and s.Serie = {$NrSerie} and Day = {$theDay}
+                    order by 1, 2, 3, 4, 5
                     ";
                 $orar = DB::select($sql);
             }
 
-            return ["competition" => $competition, "seriaMea" => $seriaMea, "orar" => $orar];
+            return ["competition" => $competition, "seriaMea" => $seriaMea, "orar" => $orar, 'theDay' => $theDay, 'theRealDay' => $theRealDay];
         }
 
 
@@ -1787,6 +1799,7 @@ class Competition extends BObject{
             $count = 0;
             $NrSeriiMax = count($poligoane[$p]);
             $Done = false;
+
             while (!$Done){
                 if (count($poligoane[$p]) < $NrSeriiMax + $NrSerii/ 2 ){
                     if ($p % 2 == $EstePar) // este par si nu trebuie sa fie nimic aici
@@ -1921,18 +1934,13 @@ class Competition extends BObject{
             
             { // anormal :)
                 $Ora = $OraIncepere;
-              
-
                 // initializam arrra-yul de poligoane
                 for ($p = 1; $p <= $NrPoligoane * $NrPost; $p++) {
                     array_push($poligoane, []); // creez toate poligoanele
                     array_push($ADone, false);
                 }
-               
-
                 // incepem cel nou
                     //  --- presupunem ca sunt doua posturi pe poligon
-
                 // ***   1      primele poligoane post 1 - primele serii
                 $SerieBaza = 1;
                 $PoligonBaza = 0;
@@ -1983,17 +1991,14 @@ class Competition extends BObject{
                  $EstePar = 0; // parele
                  $this->DoItBaby($NrPoligoane, $NrPost, $ADone, $poligoane, $NrSerii, $SerieBaza, $PoligonBaza, $Day, $EstePar);
 
-           //  return  $poligoane; // pentru test
 
+                // return  $poligoane; // pentru test
            // scriemm in DB
-
                 $sqls = [];
                 $ora = substr($OraIncepere, 0, 2); 
                 $min = substr($OraIncepere, 3, 2); 
-
                 for ($s = 0; $s <  $NrSerii * $NrPost  ; $s++) {
                     $DeLa = "'1900-01-01 $ora:$min'";
-
                     for ($p = 0; $p < $NrPoligoane  * $NrPost; $p++) {
                         $seria = $poligoane[$p][$s];
                         $polig = $p + 1;
@@ -2002,7 +2007,6 @@ class Competition extends BObject{
                         DB::select($sql);
                         array_push($sqls, $sql);
                     }
-
                     // pun pauza de masa daca este condensat
                     if ($ScheduleType !== "Normal")
                         if ($s == intdiv($NrSerii * $NrPost, 2) - 1){
@@ -2015,7 +2019,6 @@ class Competition extends BObject{
                             $DeLa = "'1900-01-01 $ora:$min'";
                         }
                         else{
-
                             $min = $min * 1 + $Interval;
                             $ora = ($ora * 1 ) + intdiv($min, 60);
                             $min = ($min * 1) % 60;
@@ -2024,8 +2027,6 @@ class Competition extends BObject{
                         }
                 }
             }
-
-
         }
 
         public function saveSchedule($CompetitionId, $Serii)
