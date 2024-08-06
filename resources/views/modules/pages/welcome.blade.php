@@ -59,9 +59,7 @@
                                             <span class="position-relative text-color-light text-6 line-height-5 font-weight-medium custom-secondary-font pe-4 mb-0 welcome-text " data-appear-animation="fadeInDownShorter" data-appear-animation-delay="500" data-plugin-options="{'minWindowWidth': 0}">
                                             <div class="font-weight-bold">
 
-                                                {{
-                                                    
-                                                    ($cur->Oficial == 1)?"Competitie oficiala":"Competitie locala" }}
+                                            {{ ($cur->Oficial == 1)?"Competitie oficiala":"Competitie locala" }}
                                             </div>
                                                     {{$cur->NumeSuperLung}}
                                                       <br> {{$cur->SportField}} 
@@ -265,7 +263,7 @@
 										<h4 class="font-weight-bold">
 											<a href="{{url('/clasament/') .'/'.$comp->CompetitionId}}" class="text-decoration-none custom-secondary-font text-color-dark">	{{$comp->NumeLung}}</a>
 										
-                                       <p> {{$competitions[0]->SportField}}</p>
+                                       <p> {{$comp->SportField}}</p>
                                         
                                         </h4>
 										<p>{{$comp->Perioada}}</p>

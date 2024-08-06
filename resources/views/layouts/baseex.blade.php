@@ -447,6 +447,18 @@
                                     </a>
                               
 						</div>
+						<div class="col-lg-4 custom-sm-margin-bottom-1 pb-4">
+                
+							
+                                    <a href="https://www.tarom.ro/" target="_blank">  
+                                        <img style="    width: 350px;
+                                        float: center;
+                                        margin: 0px;
+										
+                                        padding: 0px;" src=" {{url('img/parteneri/tarom2.jpg')}}">
+                                    </a>
+                              
+						</div>
 					</div>
 
 
