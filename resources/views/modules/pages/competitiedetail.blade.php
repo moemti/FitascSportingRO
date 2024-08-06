@@ -111,6 +111,8 @@
 
                      @if (getCompetitionRight($master[0]->CompetitionId))
                         <a href="{{url('/editattachments/').'/'.$master[0]->CompetitionId}}" class = " btn btn-danger btn-outline ms-2 mb-2" >{{transex('Editeaza atasamente')}}</a>
+
+                        <a id="btnDownloadListaAll" href="{{url('/competitionListDown/').'/'.$master[0]->CompetitionId}}"  class=" btn btn-secondary btn-outline ms-2 mb-2">Download lista</a>
                     @endif
             </div>
                 <div class="btnwrapper m-2">
@@ -178,6 +180,7 @@
                             <button id="btnOngoing"  data-status="Preparation" class="cmpStatusChange btn btn-secondary btn-outline mb-2">Open to preparation</button>
                             <button id="btnFinish"  data-status="Finished" class="cmpStatusChange btn btn-secondary btn-outline mb-2">Finish competition</button>
                             <button id="btnGenTimetable"   class = "btn btn-secondary btn-outline mb-2">Genereaza program</button>
+                            <button id="btnSeeTimetable"  class = " btn btn-secondary btn-outline mb-2">Editeaza program</button>
                             <a id="btnDownloadListaSquad1" href="{{url('/competitionDownSquads/').'/'.$master[0]->CompetitionId}}/1" data-type="Diff" class=" btn btn-secondary btn-outline mb-2">Ziua 1</a>
                             <a id="btnDownloadListaSquad2" href="{{url('/competitionDownSquads/').'/'.$master[0]->CompetitionId}}/2" data-type="Diff" class=" btn btn-secondary btn-outline mb-2">Ziua 2</a>
                             <a id="btnDownloadListaAll" href="{{url('/competitionListDown/').'/'.$master[0]->CompetitionId}}" data-type="Diff" class=" btn btn-secondary btn-outline mb-2">Download lista</a>
@@ -212,10 +215,8 @@
                         @break
 
                 @endswitch
-                        @if (session("PersonId") == 195)
-                                 <button id="btnGenTimetable"   class = "btn btn-secondary btn-outline mb-2">Genereaza program</button>
-                                 <button id="btnSeeTimetable"  class = " btn btn-secondary btn-outline mb-2">Editeaza program</button>
-                         @endif
+
+                    
           
                 </div>
 
