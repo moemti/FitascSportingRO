@@ -2066,7 +2066,8 @@ class Competition extends BObject{
                     $bib = $s['BIB'];
                     $seria = $s['NrSerie'];
                     $sql = "update result set NrSerie = $seria , BIB = $bib where ResultId = $resultid";
-                    DB::select($sql);
+                    if ($seria != '' && $bib != '')
+                        DB::select($sql);
                 };
                 DB::Commit();
                 return 'OK';
