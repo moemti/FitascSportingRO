@@ -1017,7 +1017,7 @@ class Competition extends BObject{
             if (count(DB::select($sql)) > 0 ) // daca s-au introdus nume la echipe
 
                     $sql =  "
-                    select ROW_NUMBER() OVER ( order by sum(Total) desc ) as Loc, sum(Total) as Total, Team , GROUP_CONCAT(person order by locechipa SEPARATOR ', ') as Members  
+                    select ROW_NUMBER() OVER ( order by sum(Total) desc, max(Total) desc ) as Loc, sum(Total) as Total, Team , GROUP_CONCAT(person order by locechipa SEPARATOR ', ') as Members  
                     from   
                          ( select * from (
                                                             select    ROW_NUMBER() OVER (
@@ -1042,11 +1042,11 @@ class Competition extends BObject{
                     order by Total desc , locechipa)
                     table1
                     group by Team
-                    order by Total desc
+                    order by Loc asc
                     limit 0,3 ";
                 else
                     $sql =  "
-                    select ROW_NUMBER() OVER ( order by sum(Total) desc ) as Loc, sum(Total) as Total, Team , GROUP_CONCAT(person order by locechipa SEPARATOR ', ') as Members  
+                    select ROW_NUMBER() OVER ( order by sum(Total) desc, max(Total) desc  ) as Loc, sum(Total) as Total, Team , GROUP_CONCAT(person order by locechipa SEPARATOR ', ') as Members  
                     from   
                     ( select * from (
                                                             select    ROW_NUMBER() OVER (
@@ -1068,10 +1068,10 @@ class Competition extends BObject{
                                                             where rr.CompetitionId = :CompetitionId and ifnull(sc.code, '') <> 'STR'                                                
                                                             order by  Total desc, locechipa
                         ) X where locechipa < 4
-                    order by Total desc , locechipa)
+                    order by  Total desc , locechipa)
                     table1
                     group by Team
-                    order by Total desc
+                    order by Loc asc
                     limit 0,3 ";
 
 
@@ -1640,17 +1640,19 @@ class Competition extends BObject{
 
         }
 
+        // case when (DATEDIFF(CURDATE(),EndDate) < -1) or (DATEDIFF(CURDATE(),EndDate) = -1 and HOUR(CURRENT_TIME()) < 18 ) then 1 else 2 end as theDay,
+        // case when DATEDIFF(CURDATE(),EndDate) = -1 then 1 when DATEDIFF(CURDATE(),EndDate) = 0 then 2 else -1 end as theRealDay
+
         public function currentCompetition($PersonId){
+
             $sql = "SELECT r.BIB, r.NrSerie, c.CompetitionId, DATE_ADD(EndDate, INTERVAL 0 DAY) as EndDate,
             case when (DATEDIFF(CURDATE(),EndDate) < -1) or (DATEDIFF(CURDATE(),EndDate) = -1 and HOUR(CURRENT_TIME()) < 18 ) then 1 else 2 end as theDay,
             case when DATEDIFF(CURDATE(),EndDate) = -1 then 1 when DATEDIFF(CURDATE(),EndDate) = 0 then 2 else -1 end as theRealDay
-            
             FROM competition c
             inner join result r on c.CompetitionId = r.CompetitionId
             where 
                 r.PersonId = $PersonId 
-                and c.Status = 'Progress'
-               
+                and c.Status = 'Progress'         
             ";
     
 
@@ -1725,7 +1727,6 @@ class Competition extends BObject{
                                     group by ResultId
                                     order by d.RoundNr 
                                 ) sof on sof.ResultId = r.ResultId 
-                              
                                 inner join person p on p.PersonId = r.PersonId
                                 left join shootercategory sc on sc.ShooterCategoryId = r.ShooterCategoryId
                                 left join team t on t.TeamId = r.TeamId
@@ -2055,5 +2056,33 @@ class Competition extends BObject{
             }
         }
 
-    
+
+        public function saveSerii($Serii)
+        {
+            try{
+                DB::beginTransaction();
+                foreach($Serii as $s){
+                    $resultid = $s['ResultId'];
+                    $bib = $s['BIB'];
+                    $seria = $s['NrSerie'];
+                    $sql = "update result set NrSerie = $seria , BIB = $bib where ResultId = $resultid";
+                    DB::select($sql);
+                };
+                DB::Commit();
+                return 'OK';
+            } catch (\Exception $e) {
+                DB::Rollback();
+                return $e->getMessage();
+            }
+        }
+
+        public function getSerii($CompetitionId){
+            $sql = "SELECT ResultId, BIB, NrSerie, p.Name 
+            FROM `result` r
+            inner join person p on p.PersonId = r.PersonId
+            where r.CompetitionId = $CompetitionId
+            order by NrSerie, BIB";
+
+            return DB::select($sql);
+        }
 }

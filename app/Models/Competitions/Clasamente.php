@@ -204,6 +204,7 @@ class Clasamente extends BObject{
                                     group by ResultId
                                     order by d.RoundNr 
                                 ) sof on sof.ResultId = r.ResultId 
+
                                 left join (select concat(loc,' ' , vvv.Code ) as ResultatCat , ResultId from (
                                     SELECT  
                                             ROW_NUMBER() OVER (
@@ -224,10 +225,11 @@ class Clasamente extends BObject{
                                                         where r.CompetitionId = $CompetitionId and sc.code <> 'STR'
                                                         order by sc.Code, loc )vvv
                                                         where loc < 4) cps on cps.ResultId = r.ResultId
+
                                 inner join person p on p.PersonId = r.PersonId
                                 left join shootercategory sc on sc.ShooterCategoryId = r.ShooterCategoryId
                                 left join team t on t.TeamId = r.TeamId
-                                where r.CompetitionId = $CompetitionId
+                                where r.CompetitionId = $CompetitionId and IfNull(sc.code,'') <> 'STR'
                                 order by Position, p.Name
                 )Y on r.ResultId = Y.ResultId
                 where r.ResultId = $ResultId";

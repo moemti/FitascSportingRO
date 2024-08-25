@@ -122,7 +122,7 @@
                             <button id="btnOpen" data-status="Open" class = "cmpStatusChange btn btn-primary btn-outline mb-2" >{{transex('Deschide')}}</button>
                             @endif
                             @break
-                        @case('Open')
+                     @case('Open')
 
                         @if (session("PersonId"))
                             @php 
@@ -149,6 +149,9 @@
                               <button id="btnOngoing"  data-status="Closed" class="cmpStatusChange btn btn-secondary btn-outline mb-2">Close competition</button>
                             @endif
                         @endif
+                         @if (session("IsSuperUser") == 1)
+                                <button id="btnEditSerii"  data-type="EditSerii" class="editSerii btn btn-secondary btn-outline mb-2">Editeaza serii</button>
+                            @endIf
                         @break
                     @case('Preparation')
 
@@ -156,6 +159,11 @@
                             <button id="btnClose"  data-status="Closed" class="cmpStatusChange btn btn-secondary btn-outline mb-2">{{transex('Close')}}</button>
                             <button id="btnOpen" data-status="Open" class = "cmpStatusChange btn btn-secondary btn-outline mb-2" >Open</button>
                             <button id="btnOngoing"  data-status="Progress" class="cmpStatusChange btn btn-secondary btn-outline mb-2">Start competition</button>
+
+                            @if (session("IsSuperUser") == 1)
+                                <button id="btnEditSerii"  data-type="EditSerii" class="editSerii btn btn-secondary btn-outline mb-2">Editeaza serii</button>
+                            @endIf
+
                             <button id="btnCreateSquadsAll"  data-type="All" class="createSquads btn btn-secondary btn-outline mb-2">Create squads all</button>
                             <button id="btnCreateSquadsDiff"  data-type="Diff" class="createSquads btn btn-secondary btn-outline mb-2">Create squads diff</button>
                             <button id="btnCreateSquadsEven"  data-type="Even" class="createSquads btn btn-secondary btn-outline mb-2">Create squads even</button>
@@ -193,23 +201,26 @@
                             <a id="btnDownloadProgram" href="{{url('/competitionTimetable/').'/'.$master[0]->CompetitionId}}/2"  class=" btn btn-secondary btn-outline mb-2">{{transex('Download program ziua 2')}}</a>
                         @break
 
+                        @if (session("IsSuperUser") == 1)
+                                <button id="btnEditSerii"  data-type="EditSerii" class="editSerii btn btn-secondary btn-outline mb-2">Editeaza serii</button>
+                            @endIf
 
                     @case('Finished')
                       
                         @if (getCompetitionRight($master[0]->CompetitionId))
                             <button id="btnOngoingR"  data-status="Progress" class="cmpStatusChange btn btn-secondary btn-outline mb-2">Reopen competition</button>
+
+
+                             
+
+
                         @endif
                         
                         <a id="btnDownloadResultsAll" href="{{url('/competitionResultsDown/').'/'.$master[0]->CompetitionId}}" data-type="Diff" class=" btn btn-danger btn-outline mb-2">{{transex('Download clasamente')}}</a>
 
-                            {{-- Se va sterge --}}
-                             {{-- <button id="btnGenTimetable"   class = "btn btn-secondary btn-outline mb-2">Genereaza program</button>
-                              <button id="btnSeeTimetable"   class = "btn btn-secondary btn-outline mb-2">Editeaza program</button>
-                             <button id="btnVeziProgram"  class=" btn btn-secondary btn-outline mb-2">Vezi program</button>
-                              <a id="btnDownloadProgram" href="{{url('/competitionTimetable/').'/'.$master[0]->CompetitionId}}/1"  class=" btn btn-secondary btn-outline mb-2">{{transex('Download program ziua 1')}}</a>
-                            <a id="btnDownloadProgram" href="{{url('/competitionTimetable/').'/'.$master[0]->CompetitionId}}/2"  class=" btn btn-secondary btn-outline mb-2">{{transex('Download program ziua 2')}}</a> --}}
-
-                            {{-- pana aici --}}
+                           
+                            
+                           
 
 
                         @break
@@ -288,5 +299,6 @@
     </div>
     
  </section>
+
 
 @endpush

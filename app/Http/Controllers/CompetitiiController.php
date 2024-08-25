@@ -984,7 +984,6 @@ class CompetitiiController extends MasterController
     }
 
     public function getTimetable(Request $request){
-     //   return 'Bla';
         try{
             $CompetitionId = $request->CompetitionId;
             $dataset1 = $this->BObject()->geCompetitionTimetable($CompetitionId, 1); 
@@ -1170,9 +1169,7 @@ class CompetitiiController extends MasterController
     public function saveSchedule(Request $request){
         $CompetitionId = $request->CompetitionId;
         $Serii = $request->Serii;
-
         return $this->BObject()->saveSchedule($CompetitionId, $Serii);
-
     }
 
     public function MyCompetitionsAPI($PersonId){
@@ -1188,5 +1185,20 @@ class CompetitiiController extends MasterController
         return $this->BObject()->currentCompetition($PersonId);
     }
 
+    public function editSerii(Request $request){
+        try{
+            $CompetitionId = $request->CompetitionId;
+            $serii = $this->BObject()->getSerii($CompetitionId); 
+            return [view('modules.pages.competition.editserii')->render(), $serii];
+        }
+        catch (\Exception $e) {
+           return  $e->getMessage(); 
+        }
+    }
+
+    public function saveSerii(Request $request){
+        $Serii = $request->Serii;
+        return $this->BObject()->saveSerii($Serii); 
+    }
 
 }

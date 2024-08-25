@@ -111,14 +111,10 @@ Route::group(['middleware' => 'options'], function () {
         
         Route::GET('/clasamentAPI/{id}', 'App\Http\Controllers\CompetitiiController@getClasamentAPI');
         Route::GET('/CompetitionsAPI', 'App\Http\Controllers\CompetitiiController@getCompetitiiAPI');
-
         Route::GET('/rangesAPI', 'App\Http\Controllers\PoligonController@getRangesAPI');
-
-
         Route::get('/loginApi', 'App\Http\Controllers\Auth\LoginController@loginApi');
         Route::get('/loginApiToken', 'App\Http\Controllers\Auth\LoginController@loginApiToken');
         Route::get('/logoutApi', 'App\Http\Controllers\Auth\LoginController@logoutApi');
-
         Route::GET('/imregisteredAPI/{CompetitionId}/{PersonId}', 'App\Http\Controllers\CompetitiiController@imregisteredAPI');
         Route::GET('/registermeAPI/{CompetitionId}/{PersonId}', 'App\Http\Controllers\CompetitiiController@registermeAPI');
         Route::GET('/listaParticipantiAPI/{CompetitionId}', 'App\Http\Controllers\CompetitiiController@listaParticipantiAPI');
@@ -128,11 +124,6 @@ Route::group(['middleware' => 'options'], function () {
         Route::GET('/currentCompetition/{PersonId}', 'App\Http\Controllers\CompetitiiController@currentCompetition');
         Route::GET('/myuser/{token}', 'App\Http\Controllers\Auth\LoginController@getmyusertoken');
        
-       
-        
-        
-
-
 
         /******************/
 
@@ -145,6 +136,8 @@ Route::group(['middleware' => 'options'], function () {
         Route::GET('/competitionTimetable/{id}/{day}', 'App\Http\Controllers\CompetitiiController@competitionTimetable');
         Route::POST('/generateTimetable', 'App\Http\Controllers\CompetitiiController@generateTimetable');
         Route::POST('/saveSchedule', 'App\Http\Controllers\CompetitiiController@saveSchedule');
+        Route::POST('/editSerii', 'App\Http\Controllers\CompetitiiController@editSerii');
+        Route::POST('/saveSerii', 'App\Http\Controllers\CompetitiiController@saveSerii');
 
 
         Route::POST('/getTimetable', 'App\Http\Controllers\CompetitiiController@getTimetable');

@@ -21,7 +21,21 @@
 
         }
 
-        
+
+var cellclassSerii = function (row, columnfield, value) {
+    var rowData = $("#jqserii").jqxGrid('getrowdata', row);
+    if (rowData.NrSerie % 2 === 1) {
+        return 'clOrangeRedFont';
+    }
+
+    else return '';
+
+
+}
+
+let Ssource;
+let SdataAdapter;
+
 
         let clClasament = [];
 
@@ -30,12 +44,9 @@
             if (Status == 'Open'){
                 clClasament = [      
                     { text: 'Nr', dataField: 'Position', width: '5%' }, 
-                   
                     { text: translate('Sportiv'), dataField: 'Person', width: (HasCompetitionRight) ?'55%':'60%' , cellclassname: cellclassUser},
                     { text: translate('Cat'), dataField: 'Category', width: '10%' },
                     { text: translate('Echipa'), dataField: 'TeamName', width: '25%' },
-                  
-                   
                 ]
             }  else if (Status == 'Preparation'){
                 clClasament = [      
@@ -46,9 +57,6 @@
                     { text: translate('Echipa'), dataField: 'TeamName', width: '20%' },
                     { text: translate('Club'), dataField: 'Team', width: '15%' },
                 ]
-
-
-
                 }
             else{
                 clClasament = [
@@ -60,9 +68,7 @@
                 ]
             }
         }
-        else{
-
-
+        else {
             if (Status == 'Open'){
                 clClasament = [      
                     { text: 'Nr', dataField: 'Position', width: '5%' },  
@@ -81,12 +87,7 @@
                     { text: translate('Echipa'), dataField: 'TeamName', width: '20%' },
                     { text: translate('Club'), dataField: 'Team', width: '15%' },
                 ]
-
-
-
-                }
-                
-            
+            }
             else{
                 clClasament =
                     [
@@ -108,8 +109,7 @@
                         { text: translate('Procent'), dataField: 'ProcentR', width: '5%'},
                     { text: translate('Proc clasa'), dataField: 'Procent', width: '5%' },
                         { text: 'ShOff', dataField: 'ShootOffS', width: '5%' },  
-                        { text: translate('Cat'), dataField: 'ResultatCat', width: '5%' },  
-                           
+                    { text: translate('Cat'), dataField: 'ResultatCat', width: '5%' },  
                     ];
                 }
         }
@@ -117,8 +117,8 @@
 
         if (HasCompetitionRight){
             clClasament.push(
-                { text: '', dataField: 'ResultId', width: '5%',
-            
+                {
+                    text: '', dataField: 'ResultId', width: '5%',
                 columntype:'button', cellsrenderer: function () {
                     return "...";
 
@@ -360,10 +360,7 @@ function doSaveSchedule() {
         return a;
     }).toArray();
 
-
-
     Data.Serii = Serii;
-
     Data.CompetitionId = $('#CompetitionId').val();
 
     $.ajax({
@@ -374,17 +371,14 @@ function doSaveSchedule() {
         success: function (data) {
             if (data === 'OK') {
                 ShowSuccess('S-a salvat cu succes');
-
             }
             else
                 ShowError(data)
-
         },
         error: function (e) {
             ShowError(e);
         }
     });
-
 }
 
 function veziProgram() {
@@ -434,13 +428,154 @@ function seeTimetabledo(editing) {
     });
 }
 
+function regenereazaBIB() {
+    confirm('Doriti sa regenerati BIB urile?', doregenereazaBIB);
+}
+
+function doregenereazaBIB() {
+
+    Ssource.localdata.sort((a, b) => a.NrSerie - b.NrSerie);
+
+    Ssource.localdata.forEach(
+        function (item, index) {
+            item['BIB'] = index + 1;
+        }
+    );
+
+    $("#jqserii").jqxGrid('updatebounddata');
+
+}
 
 
-    function RetrieveFields(){
+function editSerii(editing) {
+    let Data = {};
+    Data.CompetitionId = $('#CompetitionId').val();
+    $.ajax({
+        type: 'POST',
+        url: baseUrl + '/editSerii',
+        data: Data,
+
+        success: function (data) {
+            $("#popup_body").html(data[0]);
+            if (!editing) {
+                $("#popup_body :input").prop("disabled", !editing);
+            }
+
+            // adaugam buton de generare BIB
+            $('#btnRegenereazaBIB').off().on('click', regenereazaBIB);
 
 
-        var results = {};
-    
+            $("#popupDialog").modal({
+                backdrop: 'static',
+                keyboard: false
+            }).show();
+
+            // sa pun gridul
+
+            Ssource =
+            {
+                datatype: "array",
+                localdata: data[1],
+                dataFields: [
+                    { name: 'NrSerie', type: 'number' },
+                    { name: 'BIB', type: 'number' },
+                    { name: 'Name', type: 'string' },
+                    { name: 'ResultId', type: 'number' },
+                ],
+                updaterow: function (rowid, newdata, commit) {
+                    Ssource.localdata.forEach(
+                        function (item, index) {
+                            if (item['ResultId'] == newdata['ResultId']) {
+                                item['BIB'] = newdata['BIB']
+                                item['NrSerie'] = newdata['NrSerie']
+                            }
+                        });
+                    commit(true);
+                }
+            };
+
+            SdataAdapter = new $.jqx.dataAdapter(Ssource);
+
+            $("#jqserii").jqxGrid(
+                {
+                    width: '100%',
+                    //  height: '100%',
+                    source: SdataAdapter,
+                    pageable: false,
+                    autoheight: true,
+                    sortable: true,
+                    altrows: true,
+                    enabletooltips: true,
+                    editable: true,
+                    autorowheight: false,
+                    showfilterrow: true,
+                    filterable: true,
+                    selectionmode: 'multiplerows',
+                    columns: [
+                        { text: 'Serie', dataField: 'NrSerie', width: '15%', cellclassname: cellclassSerii, },
+                        { text: 'BIB', dataField: 'BIB', width: '15%', cellclassname: cellclassSerii, },
+                        { text: 'Nume', dataField: 'Name', width: '70%', editable: false, cellclassname: cellclassSerii, },
+                        { text: 'ResultId', dataField: 'ResultId', hidden: true },
+                    ],
+                });
+
+
+            $('#btnPopupCloseModal').off().on('click',
+                () => {
+                    $("#popupDialog").modal({
+                        backdrop: 'static',
+                        keyboard: false
+                    }).hide();
+                }
+            );
+            if (editing) {
+                $('#btnPopupSaveModal').off().on('click', saveSerii);
+                $('#btnPopupSaveModal').show();
+            }
+            else
+                $('#btnPopupSaveModal').hide();
+
+        },
+        error: function (e) {
+            ShowError(e);
+        }
+    });
+}
+
+function saveSerii() {
+    confirm('Doriti sa salvati modificarile?', doSaveSerii);
+}
+
+
+function doSaveSerii() {
+    ShowSuccess('Saving...');
+    let Data = {};
+
+    Data.Serii = Ssource.localdata;
+    $.ajax({
+        type: 'POST',
+
+        url: baseUrl + '/saveSerii',
+        data: Data,
+        success: function (data) {
+            if (data === 'OK') {
+                ShowSuccess('S-a salvat cu succes');
+                editSerii(true);// pentru refresh
+                // todo sa facem refresh
+            }
+            else
+                ShowError(data)
+        },
+        error: function (e) {
+            ShowError(e);
+        }
+    });
+
+}
+
+
+function RetrieveFields() {
+    var results = {};
         $("#addcompetitor :input").each(function(){
             var val;
             if ($(this).is(':checkbox'))
@@ -448,32 +583,22 @@ function seeTimetabledo(editing) {
             else
                 val =  $(this).val();
             results[$(this).attr('id')] = val;
-        
         });
-
-
-       
-        return results;
-
-
+    return results;
     }	
 
     function addCompetitorDB(){
         let Data = {};
-     
-
         Data = RetrieveFields();
-
-       
         if ((Data.PersonId === -1) && (Data.Name === '')){
             ShowError('Alegeti o persoana sau introduceti un nume');
             return;
         }
         
-            $("#popupDialog").modal({
-                backdrop: 'static',
-                keyboard: false
-            }).hide();
+        $("#popupDialog").modal({
+            backdrop: 'static',
+            keyboard: false
+        }).hide();
 
         $.ajax({
             type: 'POST',
@@ -571,6 +696,8 @@ function seeTimetabledo(editing) {
         $("#btnGenTimetable").on('click', genereazaTimetable);
         $("#btnSeeTimetable").on('click', seeTimetable);
         $("#btnVeziProgram").on('click', veziProgram);
+
+        $("#btnEditSerii").on('click', editSerii);
 
 
 
@@ -934,7 +1061,8 @@ function seeTimetabledo(editing) {
 
         var dataAdapter = new $.jqx.dataAdapter(sourceStr);
         // initialize jqxGrid
-        $("#jqxGridStr").jqxGrid(
+        if ($("#jqxGridStr").length)
+            $("#jqxGridStr").jqxGrid(
             {
                 width: '100%',
                 //height: '100%',
