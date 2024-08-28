@@ -121,6 +121,57 @@ class LoginController extends Controller
         }
     }
 
+    public function registerUserAPI(Request $request)
+    {
+        
+        try{
+            $password2 = $request->password2;
+            $password = $request->password;
+            $Email = $request->Email;
+
+            if ($password !== $password2) {
+                return ['status' => 'Error', 'Mesaj' => transex('Ai introdus parole diferite. Incearca inca o data')];
+            }
+
+            $password = crypt($password, $password);
+            $request['Password'] = $password;
+            $user = Login::EmailExists($Email);
+
+            if (isset($user) && count($user) > 0) {
+                return ['status' => 'Error', 'Mesaj' =>  transex('Exista deja un utilizator cu acest email!')];
+            }
+
+            $passtoken = uniqid();
+
+            $request['Token'] = $passtoken;
+
+            $data = [
+                'title' => transex('Inregistrare pe fitascsporting.ro'),
+                'content' => transex('Apasa linkul pentru a confirma emailul. Dupa confirmare se va analiza si crea utilizatorul. Veti primi un alt email de confirmare a utilizatorului!'),
+                'link' => url('/confirmregistration?token=' . $passtoken),
+            ];
+
+            $message = UserPerson::registeruser($request->all());
+
+            if ($message == 'OK') {
+                Mail::send('mails.registration', $data, function ($message) use ($Email) {
+                    $message->to($Email, 'User')->from('noreply@fitascsporting.ro')->subject(transex('Inregistrare pe fitascsporting.ro'));
+                });
+
+                Mail::send('mails.registration', $data, function ($message) use ($Email) {
+                    $message->to('admin@fitascsporting.ro', 'User')->from('noreply@fitascsporting.ro')->subject(transex('Inregistrare pe fitascsporting.ro COPY'));
+                });
+
+                return  ['status' => 'OK', 'Mesaj' =>transex('S-a trimis un email pentru confirmare. Trebuie sa confirmi apasand link-ul din email!')];
+            } else {
+                return ['status' => 'Error', 'Mesaj' => $message];
+            }
+        } catch (\Exception $e) {
+            return ['status' => 'Error', 'Mesaj' => transex($e->getMessage())];
+        }
+
+    }
+
     public function confirmregistrationemail(Request $request)
     {
         $passtoken = $request->token;

@@ -30,7 +30,8 @@ Route::group(['middleware' => 'options'], function () {
         Route::get('/changepassword', 'App\Http\Controllers\Auth\LoginController@changepassword');
         Route::post('/changethepassword', 'App\Http\Controllers\Auth\LoginController@changethepassword');
         Route::post('/addtranslation', 'App\Http\Controllers\Controller@addTranslation');
-
+        Route::get('/registerUserAPI', 'App\Http\Controllers\Auth\LoginController@registerUserAPI');
+        
 
         Route::get('/resetform', function (){
             return view('auth/reset');
