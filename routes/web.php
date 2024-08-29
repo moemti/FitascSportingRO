@@ -55,6 +55,8 @@ Route::group(['middleware' => 'options'], function () {
         Route::get('/registeries', 'App\Http\Controllers\Auth\LoginController@getregisteries')->name('registeries');
         Route::get('/registere/{id}', 'App\Http\Controllers\Auth\LoginController@getregistere');
         Route::post('registere/finishuser', 'App\Http\Controllers\Auth\LoginController@finishuser');
+        Route::post('registere/deletecerere', 'App\Http\Controllers\Auth\LoginController@deletecerere');
+        
 
 
 // permisiune de editare competitii

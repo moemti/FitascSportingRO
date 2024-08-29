@@ -96,12 +96,28 @@ class UserPerson extends BObject{
         return  DB::select($sql);
     }
 
+    public static function deletecerere($RegisterId){
+        $sql = "update register set Status = -1  where RegisterId = $RegisterId;";
 
+        try{
+            DB::select($sql);
+
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
+
+
+        return 'Cererea a fost stearsa';
+    }
 
     
     public static function finishuser($RegisterId, $PersonId, $Email, $TeamId, $Team){
 
         // verificam Emailul
+
+        $sql = "select 1 from register where RegisterId = $RegisterId and Status = -1";
+        if (count(DB::select($sql)) > 0 )
+            return 'Cererea a fost stearsa';
 
         $sql = "select 1 from person where Email = '$Email'";
         if (count(DB::select($sql)) > 0 )
@@ -181,7 +197,7 @@ class UserPerson extends BObject{
 
                 if ($TeamId > 0){
 
-                    $sql = "insert into  shooterxseason (PersonId, TeamId, SeasonId ) select $PersonId,  $TeamId, SeasonId from season;";
+                    $sql = "insert into shooterxseason (PersonId, TeamId, SeasonId ) select $PersonId,  $TeamId, SeasonId from season;";
                     DB::select($sql); 
 
                 }

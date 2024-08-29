@@ -86,6 +86,17 @@ class Login
         return $user;
     }
 
+    public static function RegisterExists($email){
+        $sql = "select Token from register where Email = '$email' and Status is null";
+        return DB::select($sql);
+        
+    }
+
+    public static function RegisterExistsToApprove($email){
+        $sql = "select Token from register where Email = '$email' and Status = 0";
+        return DB::select($sql);
+        
+    }
 
     public static function Register($FirstName, $Name, $Email, $password){
        

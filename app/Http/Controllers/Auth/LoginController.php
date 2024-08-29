@@ -94,7 +94,22 @@ class LoginController extends Controller
             return view('auth/register')->with(['mesaj' => ['NotOK' => transex('Exista deja un utilizator cu acest email!')]]);
         }
 
-        $passtoken = uniqid();
+          // verific daca a mai facut o cerere
+
+          $toapprove = Login::RegisterExistsToApprove($Email);
+
+          if (isset($toapprove) and count($toapprove) > 0){
+       
+              return view('auth/register')->with(['mesaj' => ['NotOK' => transex('Utilizatorul cu acest email este in proces de aprobare')]]);
+          }
+
+          $passtoken = Login::RegisterExists($Email);
+
+          if (isset($passtoken) and count($passtoken) > 0){
+              $passtoken = $passtoken[0]->Token;
+          }
+          else
+              $passtoken = uniqid();
 
         $request['Token'] = $passtoken;
 
@@ -123,7 +138,7 @@ class LoginController extends Controller
 
     public function registerUserAPI(Request $request)
     {
-        
+        $IsOld = false;
         try{
             $password2 = $request->password2;
             $password = $request->password;
@@ -141,7 +156,22 @@ class LoginController extends Controller
                 return ['status' => 'Error', 'Mesaj' =>  transex('Exista deja un utilizator cu acest email!')];
             }
 
-            $passtoken = uniqid();
+            // verific daca a mai facut o cerere
+
+            $toapprove = Login::RegisterExistsToApprove($Email);
+
+            if (isset($toapprove) and count($toapprove) > 0){
+                return ['status' => 'Error', 'Mesaj' =>  transex('Utilizatorul cu acest email este in proces de aprobare')];
+            }
+
+            $passtoken = Login::RegisterExists($Email);
+
+            if (isset($passtoken) and count($passtoken) > 0){
+                $passtoken = $passtoken[0]->Token;
+                $IsOld = true;
+            }
+            else
+                $passtoken = uniqid();
 
             $request['Token'] = $passtoken;
 
@@ -151,9 +181,9 @@ class LoginController extends Controller
                 'link' => url('/confirmregistration?token=' . $passtoken),
             ];
 
-            $message = UserPerson::registeruser($request->all());
+            $message =  $IsOld ?  "OK" : UserPerson::registeruser($request->all()) ;
 
-            if ($message == 'OK') {
+            if ($message == 'OK' ) {
                 Mail::send('mails.registration', $data, function ($message) use ($Email) {
                     $message->to($Email, 'User')->from('noreply@fitascsporting.ro')->subject(transex('Inregistrare pe fitascsporting.ro'));
                 });
@@ -162,7 +192,7 @@ class LoginController extends Controller
                     $message->to('admin@fitascsporting.ro', 'User')->from('noreply@fitascsporting.ro')->subject(transex('Inregistrare pe fitascsporting.ro COPY'));
                 });
 
-                return  ['status' => 'OK', 'Mesaj' =>transex('S-a trimis un email pentru confirmare. Trebuie sa confirmi apasand link-ul din email!')];
+                return  ['status' => 'OK', 'Mesaj' =>transex('S-a trimis un email pentru confirmara email-ului. Trebuie sa confirmi apasand link-ul din email!')];
             } else {
                 return ['status' => 'Error', 'Mesaj' => $message];
             }
@@ -329,6 +359,16 @@ class LoginController extends Controller
             return redirect("/registere/$RegisterId")->with('mesaj', $mesaj);
         }
     }
+
+
+    public function deletecerere(Request $request)
+    {
+        $mesaj = '';
+        $RegisterId = $request['RegisterId'];
+        $mesaj = UserPerson::deletecerere($RegisterId);
+        return redirect('/registeries')->with('mesaj', $mesaj);
+    }
+     
 
     public function getregistere($RegisterId)
     {
