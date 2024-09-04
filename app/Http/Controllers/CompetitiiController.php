@@ -769,6 +769,9 @@ class CompetitiiController extends MasterController
         $info = Competition::getCompetitionInfo($CompetitionId);
         
         $dsCategorie = $this->BObject()->GetClasamentCategory($CompetitionId);
+        $clasamentSup = $this->BObject()->GetClasamentSuperCupa($CompetitionId);
+        $clasamentStr = $this->BObject()->GetClasamentStr($CompetitionId);
+
         $dsTeam = $this->BObject()->GetClasamentTeams($CompetitionId);
        
         $status = $info->Status;
@@ -805,18 +808,18 @@ class CompetitiiController extends MasterController
 
         foreach($dsCategorie as $d){
 
-            $sheet->setCellValue(IncColumn($col).$row, strval($d->loc));
-            $sheet->setCellValue(IncColumn($col).$row, strval($d->Category));
-            $sheet->setCellValue(IncColumn($col).$row, strval($d->Person));
-            $sheet->setCellValue(IncColumn($col).$row, strval($d->Total));
-  
-
-            if ($d->Category != $OldCat){
-                $color = ChangeColor($color);
-                $OldCat = $d->Category;
+            if (property_exists($d, 'loc')){
+                $sheet->setCellValue(IncColumn($col).$row, strval($d->loc));
+                $sheet->setCellValue(IncColumn($col).$row, strval($d->Category));
+                $sheet->setCellValue(IncColumn($col).$row, strval($d->Person));
+                $sheet->setCellValue(IncColumn($col).$row, strval($d->Total));
+                
+                if ($d->Category != $OldCat){
+                    $color = ChangeColor($color);
+                    $OldCat = $d->Category;
+                }
+                $sheet->getStyle('B'.$row.':E'.$row)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB($color);
             }
-
-            $sheet->getStyle('B'.$row.':E'.$row)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB($color);
 
             $col = 'B';
             IncRow($row);
@@ -850,6 +853,116 @@ class CompetitiiController extends MasterController
              $col = 'B';
              IncRow($row);
          }
+
+      
+        
+
+         // clasament straini
+
+        if(count($clasamentStr) > 0){
+            $col = 'B';
+            IncRow($row);
+            $sheet->setCellValue($col.$row, 'Clasament Straini');
+            $sheet->getStyle($col.$row)->getFont()->applyFromArray(['bold' => TRUE,]);
+    
+            IncRow($row);
+            $col = 'B';
+            $sheet->getStyle($col.$row.':'.GetCol($col,18).$row)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('76b9f5');
+            $sheet->setCellValue(IncColumn($col).$row, 'Loc'); 
+            $sheet->setCellValue(IncColumn($col).$row, 'Sportiv');
+            $sheet->setCellValue(IncColumn($col).$row, 'Club');
+            $sheet->setCellValue(IncColumn($col).$row, 'Categorie');
+            $sheet->setCellValue(IncColumn($col).$row, 'Echipa');
+    
+            $sheet->setCellValue(IncColumn($col).$row, strval('1'));
+            $sheet->setCellValue(IncColumn($col).$row, strval('2'));
+            $sheet->setCellValue(IncColumn($col).$row, strval('3'));
+            $sheet->setCellValue(IncColumn($col).$row, strval('4'));
+            $sheet->setCellValue(IncColumn($col).$row, strval('Tot 1'));
+            $sheet->setCellValue(IncColumn($col).$row, strval('5'));
+            $sheet->setCellValue(IncColumn($col).$row, strval('6'));
+            $sheet->setCellValue(IncColumn($col).$row, strval('7'));
+            $sheet->setCellValue(IncColumn($col).$row, strval('8'));
+            $sheet->setCellValue(IncColumn($col).$row, strval('Tot 2'));
+            $sheet->setCellValue(IncColumn($col).$row, strval('Total'));
+            $sheet->setCellValue(IncColumn($col).$row, strval('Procent'));
+            $sheet->setCellValue(IncColumn($col).$row, strval('ShOff'));
+            $sheet->setCellValue(IncColumn($col).$row, strval('Rez Cat'));
+         
+    
+    
+    
+            IncRow($row);
+            $col = 'B';
+    
+            foreach($clasamentStr as $i=>$d){
+                if ($i < 3)
+                    $sheet->getStyle($col.$row.':'.GetCol($col,18).$row)->getFont()->getColor()->setARGB('cc6016');
+    
+                $sheet->setCellValue(IncColumn($col).$row, strval($d->Position));
+                $sheet->setCellValue(IncColumn($col).$row, strval($d->Person));
+                $sheet->setCellValue(IncColumn($col).$row, strval($d->Team));
+                $sheet->setCellValue(IncColumn($col).$row, strval($d->Category));
+                $sheet->setCellValue(IncColumn($col).$row, strval($d->TeamName));
+    
+                $d->M1==25? ($sheet->getStyle($col.$row)->getFont()->getColor()->setARGB('ff0000')):'';
+                $sheet->setCellValue(IncColumn($col).$row, strval($d->M1));
+                $d->M2==25? ($sheet->getStyle($col.$row)->getFont()->getColor()->setARGB('ff0000')):'';
+                $sheet->setCellValue(IncColumn($col).$row, strval($d->M2));
+                $d->M3==25? ($sheet->getStyle($col.$row)->getFont()->getColor()->setARGB('ff0000')):'';
+                $sheet->setCellValue(IncColumn($col).$row, strval($d->M3));
+                $d->M4==25? ($sheet->getStyle($col.$row)->getFont()->getColor()->setARGB('ff0000')):'';
+                $sheet->setCellValue(IncColumn($col).$row, strval($d->M4));
+    
+                $sheet->setCellValue(IncColumn($col).$row, strval($d->Total1));
+                $d->M5==25? ($sheet->getStyle($col.$row)->getFont()->getColor()->setARGB('ff0000')):'';
+                $sheet->setCellValue(IncColumn($col).$row, strval($d->M5));
+                $d->M6==25? ($sheet->getStyle($col.$row)->getFont()->getColor()->setARGB('ff0000')):'';
+                $sheet->setCellValue(IncColumn($col).$row, strval($d->M6));
+                $d->M7==25? ($sheet->getStyle($col.$row)->getFont()->getColor()->setARGB('ff0000')):'';
+                $sheet->setCellValue(IncColumn($col).$row, strval($d->M7));
+                $d->M8==25? ($sheet->getStyle($col.$row)->getFont()->getColor()->setARGB('ff0000')):'';
+                $sheet->setCellValue(IncColumn($col).$row, strval($d->M8));
+                $sheet->setCellValue(IncColumn($col).$row, strval($d->Total2));
+                $sheet->setCellValue(IncColumn($col).$row, strval($d->Total));
+                $sheet->getStyle($col.$row)->getNumberFormat()->setFormatCode('0.00');
+                $sheet->setCellValueExplicit(IncColumn($col).$row, $d->Procent, DataType::TYPE_NUMERIC);
+                $sheet->setCellValue(IncColumn($col).$row, strval($d->ShootOffS));
+                $sheet->setCellValue(IncColumn($col).$row, strval($d->ResultatCat));
+     
+                $col = 'B';
+                IncRow($row);
+            }  
+        }
+
+        // Super Cupa
+        $col = 'B';
+        IncRow($row);
+        $sheet->setCellValue($col.$row, 'Puncte supercupa');
+        $sheet->getStyle($col.$row)->getFont()->applyFromArray(['bold' => TRUE,]);
+
+        IncRow($row);
+        $col = 'B';
+        $sheet->getStyle($col.$row.':'.GetCol($col,3).$row)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('76b9f5');
+         $sheet->setCellValue(IncColumn($col).$row, 'Loc'); 
+         $sheet->setCellValue(IncColumn($col).$row, 'Sportiv');
+         $sheet->setCellValue(IncColumn($col).$row, 'Puncte');
+    
+
+ 
+         IncRow($row);
+         $col = 'B';
+ 
+         foreach($clasamentSup as $d){
+             $sheet->setCellValue(IncColumn($col).$row, strval($d->Position));
+             $sheet->setCellValue(IncColumn($col).$row, strval($d->Person));
+             $sheet->setCellValue(IncColumn($col).$row, strval($d->Puncte));
+        
+ 
+             $col = 'B';
+             IncRow($row);
+         }
+         
 
 
         // open
