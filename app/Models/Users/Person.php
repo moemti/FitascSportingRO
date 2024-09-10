@@ -226,6 +226,32 @@ class Person extends BObject{
         return DB::select($sql); 
     }
 
+    public function saveMyInfo($request){
+   
+        $fields = (array) $request->all();
+        
+        $sql = "update person 
+        set 
+      
+        Name = ':Name',
+        SerieNrCI = ':SerieNrCI',
+        CNP = ':CNP',
+        SeriePermisArma = ':SeriePermisArma',
+        DataExpPermis = ':DataExpPermis',
+        MarcaArma = ':MarcaArma',
+        SerieArma = ':SerieArma',
+        CalibruArma = ':CalibruArma'
+     
+        where PersonId = :PersonId";
+        
+        foreach($fields as $key => $value){
+            $sql = self::paramreplace($key, $value, $sql); 
+        }
+      
+        return DB::select($sql); 
+    }
+
+
     public function saveMyUser($request){
 
         $PersonId = $request['PersonId'];

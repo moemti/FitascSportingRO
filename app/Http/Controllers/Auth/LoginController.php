@@ -343,6 +343,7 @@ class LoginController extends Controller
         $Team = $request['Team'];
         $mesaj = UserPerson::finishuser($RegisterId, $PersonId, $Email, $TeamId, $Team);
 
+
         if ($mesaj == '') {
             $data = [
                 'title' => transex('Confirmare cont pe fitascsporting.ro'),

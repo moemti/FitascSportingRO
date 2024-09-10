@@ -18,8 +18,7 @@
     <script type="text/javascript" src="{{asset('js/components/jqwidgets/jqxgrid.edit.js')}}"></script> 
     <script type="text/javascript" src="{{asset('js/components/jqwidgets/jqxgrid.filter.js')}}"></script> 
     <script type="text/javascript" src="{{asset('js/form-components/form-validation.min.js')}}"></script> 
-     {{-- <script type="text/javascript" src="{{asset('js/pages/registere.js')}}"></script>  --}}
-    <script>
+     <script>
             let persons = @Json($persons);
     </script>
     
@@ -34,7 +33,7 @@
         <div class="card mb-4">
             <div class="card-body">
 
-                <form id = "registerform" class="" action="" method="POST">
+                <form  action="finishuser" method="POST">
                     @csrf
                     <div class='row'>
                         
@@ -81,27 +80,44 @@
                         </div>
                     </div>
 
-                     <div class="  text-left u-margin-top-medium">
-                            <button type="submit" formaction="deletecerere" id = "sterge" class="btn-wide btn-pill btn-shadow btn-hover-shine btn btn-danger btn-lg">Sterge cererea</button>
+                 
+                    <div class="  text-left u-margin-top-medium">
+                            <button class="btn-wide btn-pill btn-shadow btn-hover-shine btn btn-primary btn-lg">Inregistreaza</button>
                     </div>
 
-                    <div class="  text-right u-margin-top-medium">
-                            <button type="submit" formaction="finishuser" id = "aproba" class="btn-wide btn-pill btn-shadow btn-hover-shine btn btn-primary btn-lg">Registreaza</button>
+              
+                 <form  action="deletecerere" method="POST">
+                    @csrf
+                    <div class='row'>
+                        
+                        <input Name = "RegisterId" id="RegisterId" value='{{$register->RegisterId}}' hidden>
+
+                        
                     </div>
+
                    
 
+                 
+                    <div class="  text-right u-margin-top-medium">
+                            <button class="btn-wide btn-pill btn-shadow btn-hover-shine btn btn-danger btn-lg">Sterge cerere</button>
+                    </div>
 
 
-
-
-                    @if ((isset($mesaj) &&  $mesaj != '') or (session()->has('message')))
+                      @if (session()->has('mesaj'))
                             <div class="col-md-12">
                                 <span class="text-danger">
-                                    <strong>{{ $mesaj.session()->has('message') }} </strong>
+                                    <strong>{{ session('mesaj') }} </strong>
                                 </span>
                             </div>
                         @endif
                 </form>
+                   
+
+                
+
+
+
+                  
             </div>
         </div>
 

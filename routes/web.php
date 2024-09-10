@@ -126,6 +126,10 @@ Route::group(['middleware' => 'options'], function () {
         Route::GET('/MyPersonalInfo/{PersonId}', 'App\Http\Controllers\CompetitiiController@MyPersonalInfo');
         Route::GET('/currentCompetition/{PersonId}', 'App\Http\Controllers\CompetitiiController@currentCompetition');
         Route::GET('/myuser/{token}', 'App\Http\Controllers\Auth\LoginController@getmyusertoken');
+        Route::GET('/MyInfo/{PersonId}', 'App\Http\Controllers\PersonController@MyInfo');
+    
+        
+        
        
 
         /******************/

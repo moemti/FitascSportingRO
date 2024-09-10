@@ -119,7 +119,7 @@ class UserPerson extends BObject{
         if (count(DB::select($sql)) > 0 )
             return 'Cererea a fost stearsa';
 
-        $sql = "select 1 from person where Email = '$Email'";
+        $sql = "select 1 from person where Email = '$Email' and PersonId <> $PersonId";
         if (count(DB::select($sql)) > 0 )
             return 'Acest email deja exista';
 

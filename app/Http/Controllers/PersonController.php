@@ -50,4 +50,14 @@ class PersonController extends MasterController
         $goodId = $request['goodId'];
         return  $this->BObject()->echivalarepersoana($badId, $goodId);
     }
+
+    public function MyInfo($PersonId){
+        return $this->BObject()->getMyUser($PersonId)[0];
+    }
+
+    
+    public function saveMyInfo(Request $request){
+        return $this->BObject()->saveMyInfo($request);
+    }
+
 }
