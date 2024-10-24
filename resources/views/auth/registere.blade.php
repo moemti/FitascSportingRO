@@ -29,22 +29,16 @@
 <section class="content-termeni section section-tertiary section-no-border m-0">
     <div class="container">
         <h1>Persoana de inregistrat</h1>
-
         <div class="card mb-4">
             <div class="card-body">
-
                 <form  action="finishuser" method="POST">
                     @csrf
                     <div class='row'>
-                        
                         <input Name = "RegisterId" id="RegisterId" value='{{$register->RegisterId}}' hidden>
-
                         <div class="form-group col-lg-12 col">
-                       
                             <input  Name = "Name" id="Name"  type="text" value='{{$register->Name}}' data-msg-required="" maxlength="100" class="form-control text-3 h-auto py-2" name="name" >
                         </div>
                     </div>
-
                     <div class='row'>
                         <div class="form-group col-lg-12">
                             <input   Name = "Email" id="Email"  type="text"  value='{{$register->Email}}' data-msg-required="" maxlength="100" class="form-control text-3 h-auto py-2" name="name" >
@@ -60,7 +54,6 @@
                             </select>
                         </div>
                     </div>
-
                     <div class='row'>
                         <div class="form-group col-lg-12">
                             <input   Name = "Team" id="Team"  type="text"  value='{{$register->UserName}}' data-msg-required="" maxlength="100" class="form-control text-3 h-auto py-2" name="name" >
@@ -68,41 +61,26 @@
                     </div>
                     <div class='row'>
                         <div class="form-group col-lg-6">
-                
                             <select Name='TeamId' id='TeamId' class="form-select form-control h-auto py-2">
                                 <option value = "-1">Club nou</option>
                                     @foreach ($teams as $team)
                                         <option value = "{{$team->TeamId}}">{{ $team->Name}}</option>
                                     @endforeach
-
-
                             </select>
                         </div>
                     </div>
-
-                 
                     <div class="  text-left u-margin-top-medium">
                             <button class="btn-wide btn-pill btn-shadow btn-hover-shine btn btn-primary btn-lg">Inregistreaza</button>
                     </div>
-
-              
+                </form>
                  <form  action="deletecerere" method="POST">
                     @csrf
                     <div class='row'>
-                        
                         <input Name = "RegisterId" id="RegisterId" value='{{$register->RegisterId}}' hidden>
-
-                        
                     </div>
-
-                   
-
-                 
                     <div class="  text-right u-margin-top-medium">
                             <button class="btn-wide btn-pill btn-shadow btn-hover-shine btn btn-danger btn-lg">Sterge cerere</button>
                     </div>
-
-
                       @if (session()->has('mesaj'))
                             <div class="col-md-12">
                                 <span class="text-danger">
@@ -111,19 +89,8 @@
                             </div>
                         @endif
                 </form>
-                   
-
-                
-
-
-
-                  
             </div>
         </div>
-
-        
-     
-
         <a href="{{Route('registeries')}}" target="_blank" class="a a__medium">De inregistrat</a>   
 
     </div>
