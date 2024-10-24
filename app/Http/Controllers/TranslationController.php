@@ -6,10 +6,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Controllers\Controller;
-
+use Storage;
 use App\Models\Dictionaries\BObject;
 use App\Models\Competitions\Competition;
-
+use App\Models\Common\Translate;
 
 
 class TranslationController extends MasterListController
@@ -24,5 +24,15 @@ class TranslationController extends MasterListController
         return transex('Traduceri');
     }
 
+    public function addTranslationDB(Request $request){
+        
+        $base = $request->base;
+   //     Storage::append('file.log', $base); // sa scoatem dupa test
+        Translate::addTranslation($base, '');     
+    }
+
+    public function getTranslationDB(){
+        return Translate::getTranslationDB();
+    }
 
 }

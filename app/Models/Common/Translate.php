@@ -63,9 +63,38 @@ class Translate
     }
 
     public static function addTranslation($base, $locale){
-        $sql = "insert into translation(Base, Locale) select '$base', '$locale' from DUAL where not exists (select 1 from translation where Base = '$base'and Locale = '$locale') ";
-       
-         DB::select($sql);       
+    // nu ma mai uit la locale pun pe cele doua
+
+        $locale = 'EN';
+        $sql = "insert into translation (Base, Locale) select '$base', '$locale' from DUAL where not exists (select 1 from translation where Base  = BINARY '$base' and Locale = '$locale') ";
+        DB::select($sql); 
+         
+        $locale = 'HU';
+        $sql = "insert into translation (Base, Locale) select '$base', '$locale' from DUAL where not exists (select 1 from translation where Base  = BINARY '$base' and Locale = '$locale') ";
+        DB::select($sql); 
+    }
+
+
+
+    public static function getTranslationDB(){
+        $sql = "SELECT  Locale, Base, Translation
+        from translation 
+        where Translation is not null 
+        order by Locale, Base";
+        $r = DB::select($sql);  
+        
+        $result =null;
+        $old_lang = '';
+        $i = 0;
+
+        foreach ($r as $value){
+            $result[$value->Locale][$value->Base] = $value->Translation;
+            if ($value->Locale != $old_lang){
+                $i = $i + 1;
+            }
+        }
+      
+        return $result;
     }
 
 }

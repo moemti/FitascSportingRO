@@ -19,3 +19,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::POST('/saveMyInfo', 'App\Http\Controllers\PersonController@saveMyInfo');
+
+Route::POST('/modificaparola', 'App\Http\Controllers\PersonController@modificaparolaApi');
+
+Route::POST('/stergecont', 'App\Http\Controllers\PersonController@stergecontApi');
+
+Route::POST('/addtranslation', 'App\Http\Controllers\TranslationController@addTranslationDB');
+
+Route::POST('/gettranslationdb', 'App\Http\Controllers\TranslationController@getTranslationDB');
+

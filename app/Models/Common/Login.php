@@ -26,6 +26,20 @@ class Login
          
     }    
 
+
+    public static function CorectPassword($PersonId, $Password){
+       
+        $sql = "select p.PersonId
+                from 
+                user u
+                inner join person p on p.PersonId = u.Personid
+                where p.PersonId = $PersonId and u.Password = '$Password'
+                ";
+            
+        return count(DB::select($sql)) > 0;
+     
+         
+    }    
     public static function getUserToken($PersonId, $device){
         $token =  uniqid();
         $found = false;

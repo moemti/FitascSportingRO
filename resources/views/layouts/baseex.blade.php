@@ -414,6 +414,18 @@
 						<div class="col-lg-3 custom-sm-margin-bottom-1 pb-3">
                             <!-- <a href="{{Route('welcome')}}" class="alternative-font-4 text-decoration-none text-5-5 font-weight-bold">Sporting Romania</a> -->
 							
+                                    <a href="//www.arw.ro/gamebore" target="_blank">  
+                                        <img style="    width: 100px;
+   
+                                        float: center;
+                                        margin: 0px;
+                                        padding: 0px;" src=" {{url('img/parteneri/gamebore.png')}}">
+                                    </a>
+                              
+						</div>
+						<div class="col-lg-3 custom-sm-margin-bottom-1 pb-3">
+                            <!-- <a href="{{Route('welcome')}}" class="alternative-font-4 text-decoration-none text-5-5 font-weight-bold">Sporting Romania</a> -->
+							
                                     <a href="//www.agvps.ro" target="_blank">  
                                         <img style="    width: 160px;
    

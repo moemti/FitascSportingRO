@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Controllers\MasterController;
 use App\Models\Dictionaries\Dictionary;
+use App\Models\Common\Login;
 
 class PersonController extends MasterController
 {
@@ -59,5 +60,35 @@ class PersonController extends MasterController
     public function saveMyInfo(Request $request){
         return $this->BObject()->saveMyInfo($request);
     }
+
+    public function modificaparolaApi(Request $request){
+        $passwordold =  $request['Parola'];
+        $PersonId = $request['PersonId'];
+        $password = $request['Parola1'];
+       
+        $passwordold = crypt($passwordold, $passwordold);
+
+        if (!Login::CorectPassword($PersonId, $passwordold))
+            return 'Parola veche nu este corecta';
+
+        $password = crypt($password, $password);
+        $this->BObject()->setPassword($PersonId, $password);
+        return 'OK';
+    }
+
+    public function stergecontApi(Request $request){
+        $passwordold =  $request['Parola'];
+        $PersonId = $request['PersonId'];
+        $passwordold = crypt($passwordold, $passwordold);
+
+        if (!Login::CorectPassword($PersonId, $passwordold))
+            return 'Parola veche nu este corecta';
+
+
+        $r = $this->BObject()->deleteMyUser($request) ;
+        return $r;
+    }
+
+
 
 }
