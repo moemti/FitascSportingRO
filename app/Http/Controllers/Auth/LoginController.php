@@ -127,9 +127,9 @@ class LoginController extends Controller
             });
 
             $data['content'] = $data['content'] . ' de la email' . $Email.' IP: '. $request->ip();;
-            Mail::send('mails.registration', $data, function ($message) use ($Email) {
-                $message->to('admin@fitascsporting.ro', 'User')->from('noreply@fitascsporting.ro')->subject(transex('Inregistrare pe fitascsporting.ro COPY'));
-            });
+            // Mail::send('mails.registration', $data, function ($message) use ($Email) {
+            //     $message->to('admin@fitascsporting.ro', 'User')->from('noreply@fitascsporting.ro')->subject(transex('Inregistrare pe fitascsporting.ro COPY'));
+            // });
 
             return view('auth/login')->with(['mesaj' => ['mesaj' => transex('S-a trimis un email pentru confirmare. Trebuie sa confirmi apasand link-ul din email!')]]);
         } else {
