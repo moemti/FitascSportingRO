@@ -130,8 +130,10 @@
 													 8:00 AM
 												</li>
 												<li class="text-uppercase">
-													<i class="fas fa-map-marker-alt"></i>
-													{{$competitions[0]->Range}}
+													  <a href='{{$competitions[0]->MapLink}}' target="_blank" class="a a__medium text-decoration-none">
+                                                      <i class="fas fa-map-marker-alt"></i>
+													    {{$competitions[0]->Range}}
+                                                        </a>
 												</li>
 											</ul>
 										</span>
@@ -145,7 +147,7 @@
 												</a>
                                                 <p> {{$competitions[0]->SportField}} </p>
 											</h4>
-											    <a href='{{$competitions[0]->Coordinates}}' target="_blank" class="a a__medium text-decoration-none">
+											    <a href='{{$competitions[0]->MapLink}}' target="_blank" class="a a__medium text-decoration-none">
                                                     <i class="fas fa-map-marker-alt text-color-primary custom-icon-size-1"></i>
                                                     {{transex('Vezi harta')}}
                                                     <p class="custom-text-color-2 alternative-font-4 text-3-5">
@@ -245,7 +247,7 @@
 													8:00 AM
 												</li>
 												<li class="text-uppercase">
-                                                    <a href='{{$comp->Coordinates}}' target="_blank" class="a a__medium text-decoration-none">
+                                                    <a href='{{$comp->MapLink}}' target="_blank" class="a a__medium text-decoration-none">
                                                         <i class="fas fa-map-marker-alt"></i>
                                                         {{$comp->Range}}
                                                     </a>

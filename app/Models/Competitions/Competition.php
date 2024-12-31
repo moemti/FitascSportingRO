@@ -493,7 +493,7 @@ class Competition extends BObject{
                                     '-',
                                     DATE_FORMAT(EndDate, '%d/%m/%Y') 
                                     )as Perioada, Status, 
-            case when re.PersonId is null then 0 else 1 end as Inscris, r.RangeId, r.Coordinates, r.Address, r.Phone, cy.Name as Country,
+            case when re.PersonId is null then 0 else 1 end as Inscris, r.RangeId, r.Coordinates, r.Address, r.Phone, cy.Name as Country, r.MapLink,
             Oficial, IsEtapa, IsFinala, InSupercupa, case when Oficial then 'Oficiala' else 'Locala' end as Tip
             FROM `competition` c
             inner join `range` r on r.RangeId = c.RangeId
