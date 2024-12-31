@@ -155,10 +155,7 @@
                                                 </a>
                                                 <i class="fas fa-phone-volume text-color-primary custom-icon-size-1"></i>
                                                 <a href="tel:+" class="text-decoration-none custom-text-color-2">{{transex('Telefon')}} :  {{$competitions[0]->Phone}}</a></br>
-                                                   
-
 										</span>
-
                                         @php
                                             $attachments = getCompetitionAttachments($competitions[0]->CompetitionId);
                                         @endphp  

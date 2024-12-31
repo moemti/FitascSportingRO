@@ -30,7 +30,7 @@ class Poligon extends BObject{
                                         
 
     public $MasterInsert = "INSERT INTO `range`(`Name`, `Address`, `Contact`, `CountryId`, `Phone`, `Coordinates`, `Link`, MapLink)  
-                                values ( ':Name', ':Address', ':Contact', :CountryId, ':Phone', ':Coordinates', ':Link', 'MapLink')";         
+                                values ( ':Name', ':Address', ':Contact', :CountryId, ':Phone', ':Coordinates', ':Link', ':MapLink')";         
    
 
     public $MasterUpdate = "UPDATE `range` SET
