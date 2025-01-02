@@ -54,9 +54,14 @@
                 </li>
                 <ul>
                     <li>
-                        <a href="https://www.fitasc.com/upload/images/reglements/rglt_pch_20220101_eng.pdf" target="_blank" class="">{{transex('Regulament sporting')}}</a>
+                        <a href="https://www.fitasc.com/upload/images/reglements/2025_rglt_pc_eng.pdf" target="_blank" class="">{{transex('Regulament sporting')}}</a>
                     </li>
                 </ul>
+                <ul>
+                    <li>
+                        <a href=" https://www.fitasc.com/upload/images/cg_inscrip_2025/20241122_cg_en_newsletter/20241122_newsletter_en.pdf" target="_blank" class="">{{transex('Noul regulament pentru inscriere si anulare inscriere la competitii FITASC incepand din 2025')}}</a>
+                </ul>
+               
             </ul>
     </div>
     

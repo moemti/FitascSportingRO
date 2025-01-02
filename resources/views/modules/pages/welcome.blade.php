@@ -12,8 +12,12 @@
 @push('content')
 
     <div class="container">
-      <div style = "background-color: orangered; "class="announcement row alert alert-quaternary alert-sm justify-content-center"><a style=" color: white;" href="{{url('/regulamente')}}">{{transex('ATENTIE - Regulament nou din 23-10-2023')}}</a></div>
-       
+      <div style = "background-color: orangered; "class="announcement row alert alert-quaternary alert-sm justify-content-center">
+            <ul>
+                <li> <a style=" color: white;" href="{{url('/regulamente')}}">{{transex("Regulament nou de inscriere FITASC")}}</a></li>
+                <li> <a style=" color: white;" href="{{url('/utile')}}">{{transex("Calendar competitional 2025")}}</a></li>                  
+        </ul>
+      </div>      
     </div>
 
     <div class="owl-carousel owl-carousel-light owl-carousel-light-init-fadeIn_ owl-theme manual dots-inside dots-horizontal-center show-dots-hover show-dots-xs show-dots-sm show-dots-md full-width nav-inside nav-inside-edge show-nav-hover custom-carousel-arrows-style-1 mb-0" data-plugin-options="{'autoplayTimeout': 9000000}" 

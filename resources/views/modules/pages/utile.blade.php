@@ -11,7 +11,8 @@
                     <ul class="pl-1">
                         <li><a href="http://frts.ro" target="_blank" class="a a__medium pl-2">Federatia Romana de Tip Sportiv</a></li>
                         <ul>
-                            <li><a href="https://frts.ro/index.php/competitii/calendar-competitional/intern-si-international" target="_blank" class="a a__medium ident2">Calendar competitional Romania</a></li>
+                            <li><a href="https://frts.ro/images/articole/2024/20241105/Calendar_competitional_intern_si_international_2025.pdf" target="_blank" class="a a__medium ident2">Calendar competitional 2025 FRTS si international</a></li>
+                            
                         </ul>
                         <li><a href="https://www.fitasc.com/uk/home/view" target="_blank" class="a a__medium">Fitasc</a></li>
                         <li><a href="http://fitascsporting.hu" target="_blank" class="a a__medium">Sporting Ungaria</a></li>
