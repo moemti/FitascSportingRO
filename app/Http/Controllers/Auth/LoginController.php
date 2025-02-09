@@ -82,6 +82,52 @@ class LoginController extends Controller
         $password = $request->password;
         $Email = $request->Email;
 
+
+        $secret_key = '6LcAwtEqAAAAAFfBS3MVrLvyg3_SUMz26vCQ8lIR';
+
+        // Get the token submitted from the form
+        $token = $request->recaptcha_response;
+        
+        // Make and decode POST request:
+        $verify_url = 'https://www.google.com/recaptcha/api/siteverify';
+        $data = [
+            'secret'   => $secret_key,
+            'response' => $token
+        ];
+        
+        // Use cURL to make the POST request
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $verify_url);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($ch);
+        curl_close($ch);
+        
+        $result = json_decode($response, true);
+
+        $data = [
+            'title' => transex('Inregistrare pe fitascsporting.ro log'),
+            'content' => '',
+            'link' => ''
+        ];
+        
+        $data['content'] = $data['content'] . ' de la email' . $Email.' IP: '. $request->ip().' Captcha: '.var_export($result, true);;      //.$result['success']?$result['score']:'Capcha not success';
+
+        Mail::send('mails.registration', $data, function ($message) use ($Email) {
+            $message->to('admin@fitascsporting.ro', 'User')->from('noreply@fitascsporting.ro')->subject(transex('Inregistrare pe fitascsporting.ro log'));
+        });
+
+
+
+        // Evaluate the verification response
+        if(($result['success'] && $result['score'] < 0.5) || !$result['success']) {
+            // The submission is not likely legitimate
+            return view('auth/register')->with(['mesaj' => ['NotOK' => transex('Captcha')]]);
+        };
+
+
+
         if ($password !== $password2) {
             return view('auth/register')->with(['mesaj' => ['NotOK' => transex('Ai introdus parole diferite. Incearca inca o data')]]);
         }

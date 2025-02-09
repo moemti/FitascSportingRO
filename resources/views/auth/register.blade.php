@@ -10,10 +10,11 @@
 
             @csrf
                     
+                    <input type="hidden" name="recaptcha_response" id="recaptchaResponse">
                       
-                            <h1>{{transex('Bine ati venit')}}</h1>
-                            <h2>{{transex('Intruduceti toate datele pentru a va crea un cont')}}</h2>
-                            
+                    <h1>{{transex('Bine ati venit')}}</h1>
+                    <h2>{{transex('Introduceti toate datele pentru a va crea un cont')}}</h2>
+                    
                               
                     <div class="row">
                         <div class="col-md-12">
@@ -83,37 +84,50 @@
                      
 </div>
 </section>
+@endpush
 
-<script>
-    let num1, num2, captchaResult;
+@push('scripts')
+    <script src="https://www.google.com/recaptcha/api.js?render=6LcAwtEqAAAAAMdRPtRM5w0CFJUgCuehUBKZFUKf"></script>
+    <script>
+        let num1, num2, captchaResult;
 
-    // Generate a new CAPTCHA when the page loads
-    window.onload = function() {
-        generateCaptcha();
-    };
+        // Generate a new CAPTCHA when the page loads
+        window.onload = function() {
+            generateCaptcha();
+        };
 
-    // Function to generate the CAPTCHA
-    function generateCaptcha() {
-        num1 = Math.floor(Math.random() * 100);
-        num2 = Math.floor(Math.random() * 100);
-        captchaResult = num1 + num2;
+        // Function to generate the CAPTCHA
+        function generateCaptcha() {
+            num1 = Math.floor(Math.random() * 100);
+            num2 = Math.floor(Math.random() * 100);
+            captchaResult = num1 + num2;
 
-        document.getElementById('captcha').textContent = num1 + " + " + num2 + " = ?";
-    }
-
-    // Function to validate the CAPTCHA
-    function validateCaptcha() {
-        let userAnswer = document.getElementById('captchaInput').value;
-
-        if (parseInt(userAnswer) === captchaResult) {
-          
-            return true;
-        } else {
-            document.getElementById('errorMessage').textContent = "Incorrect answer. Try again!";
-            generateCaptcha(); // Generate a new CAPTCHA if the answer is wrong
-            return false;
+            document.getElementById('captcha').textContent = num1 + " + " + num2 + " = ?";
         }
-    }
-</script>
+
+        // Function to validate the CAPTCHA
+        function validateCaptcha() {
+            let userAnswer = document.getElementById('captchaInput').value;
+
+            if (parseInt(userAnswer) === captchaResult) {
+            
+                return true;
+            } else {
+                document.getElementById('errorMessage').textContent = "Incorrect answer. Try again!";
+                generateCaptcha(); // Generate a new CAPTCHA if the answer is wrong
+                return false;
+            }
+        }
+
+
+           // When the reCAPTCHA API is ready, execute it to get a token for the action "submit"
+        grecaptcha.ready(function() {
+            grecaptcha.execute('6LcAwtEqAAAAAMdRPtRM5w0CFJUgCuehUBKZFUKf', {action: 'submit'}).then(function(token) {
+                // Set the token value in the hidden input so it gets sent with the form data
+                document.getElementById('recaptchaResponse').value = token;
+            });
+        });
+    </script>
+
 @endpush
 

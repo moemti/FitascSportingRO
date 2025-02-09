@@ -60,6 +60,7 @@
                 <ul>
                     <li>
                         <a href=" https://www.fitasc.com/upload/images/cg_inscrip_2025/20241122_cg_en_newsletter/20241122_newsletter_en.pdf" target="_blank" class="">{{transex('Noul regulament pentru inscriere si anulare inscriere la competitii FITASC incepand din 2025')}}</a>
+                    </li>
                 </ul>
                
             </ul>

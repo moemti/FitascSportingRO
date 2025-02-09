@@ -72,7 +72,7 @@ class Login
 
   
 
-    public static function loginApiToken($token){
+    public static function loginApiToken($token){ 
         $sql = "select  p.PersonId, u.Password, p.Name, p.Email,  u.IsSuperUser,
                 GROUP_CONCAT(f.Name SEPARATOR ', ') as Function 
             from 
