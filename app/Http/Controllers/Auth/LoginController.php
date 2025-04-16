@@ -106,17 +106,17 @@ class LoginController extends Controller
         
         $result = json_decode($response, true);
 
-        $data = [
-            'title' => transex('Inregistrare pe fitascsporting.ro log'),
-            'content' => '',
-            'link' => ''
-        ];
+        // $data = [
+        //     'title' => transex('Inregistrare pe fitascsporting.ro log'),
+        //     'content' => '',
+        //     'link' => ''
+        // ];
         
-        $data['content'] = $data['content'] . ' de la email' . $Email.' IP: '. $request->ip().' Captcha: '.var_export($result, true);;      //.$result['success']?$result['score']:'Capcha not success';
+        // $data['content'] = $data['content'] . ' de la email' . $Email.' IP: '. $request->ip().' Captcha: '.var_export($result, true);;      //.$result['success']?$result['score']:'Capcha not success';
 
-        Mail::send('mails.registration', $data, function ($message) use ($Email) {
-            $message->to('admin@fitascsporting.ro', 'User')->from('noreply@fitascsporting.ro')->subject(transex('Inregistrare pe fitascsporting.ro log'));
-        });
+        // Mail::send('mails.registration', $data, function ($message) use ($Email) {
+        //     $message->to('admin@fitascsporting.ro', 'User')->from('noreply@fitascsporting.ro')->subject(transex('Inregistrare pe fitascsporting.ro log'));
+        // });
 
 
 

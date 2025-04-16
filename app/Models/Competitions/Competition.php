@@ -1412,7 +1412,7 @@ class Competition extends BObject{
 
                 if(count($files) > 0){
                     foreach($files as $file){
-                        if ($i == 3)
+                        if ($i == 1)
                             break;
 
                         if(is_file("$path/$file")){
@@ -1425,9 +1425,9 @@ class Competition extends BObject{
                 } 
             }
 
-            for ($j = $i; $j < 3; $j++ ){
-                array_push($res, $r);
-            }
+            // for ($j = $i; $j < 3; $j++ ){
+            //     array_push($res, $r);
+            // }
          
             return $res;
 
@@ -2012,7 +2012,7 @@ class Competition extends BObject{
                     if ($ScheduleType !== "Normal")
                         if ($s == intdiv($NrSerii * $NrPost, 2) - 1){
 
-                            $min = $min * 1 + $MinutePauza;
+                            $min = $min * 1 + $MinutePauza + $Interval;
                             $ora = ($ora * 1 ) + intdiv($min, 60);
                             $min = ($min * 1) % 60;
                             $min = str_pad($min, 2, "0", STR_PAD_LEFT);
