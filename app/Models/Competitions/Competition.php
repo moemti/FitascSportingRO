@@ -1425,9 +1425,9 @@ class Competition extends BObject{
                 } 
             }
 
-            // for ($j = $i; $j < 3; $j++ ){
-            //     array_push($res, $r);
-            // }
+           
+            array_push($res, $r);
+             
          
             return $res;
 
