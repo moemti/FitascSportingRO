@@ -140,6 +140,8 @@ Route::group(['middleware' => 'options'], function () {
         Route::GET('/competitionListDown/{id}', 'App\Http\Controllers\CompetitiiController@getClasamentList');
         Route::GET('/competitionDownSquads/{id}/{day}', 'App\Http\Controllers\CompetitiiController@getClasamentSquads');
         Route::GET('/competitionListDownSerii/{id}', 'App\Http\Controllers\CompetitiiController@getClasamentListSerii');
+        Route::GET('/competitionListVeziSerii/{id}', 'App\Http\Controllers\CompetitiiController@competitionListVeziSerii');
+        
         Route::GET('/competitionTimetable/{id}/{day}', 'App\Http\Controllers\CompetitiiController@competitionTimetable');
         Route::POST('/generateTimetable', 'App\Http\Controllers\CompetitiiController@generateTimetable');
         Route::POST('/saveSchedule', 'App\Http\Controllers\CompetitiiController@saveSchedule');

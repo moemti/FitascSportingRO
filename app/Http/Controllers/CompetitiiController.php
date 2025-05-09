@@ -400,7 +400,11 @@ class CompetitiiController extends MasterController
 
     }
 
-
+    public function competitionListVeziSerii ($CompetitionId){
+        $dataset = $this->BObject()->GetClasamentSerii($CompetitionId);
+        return view('modules.pages.competition.viewserii', ['CompetitionId'=>$CompetitionId,'Serii' => $dataset])->render();
+    }
+    
 
     public function getClasamentListSerii ($CompetitionId){
    

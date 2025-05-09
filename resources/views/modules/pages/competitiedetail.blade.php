@@ -180,6 +180,8 @@
                                 </div>
                             </div>
                             <a id="btnDownloadListaAll" href="{{url('/competitionListDownSerii/').'/'.$master[0]->CompetitionId}}" data-type="Diff" class=" btn btn-secondary btn-outline mb-2">{{transex('Download serii')}}</a>
+                            <a id="btnDownloadListaAll" href="{{url('/competitionListVeziSerii/').'/'.$master[0]->CompetitionId}}" data-type="Diff" class=" btn btn-secondary btn-outline mb-2">{{transex('Vezi serii')}}</a>
+                            
                         @endif
                         @break
                         
@@ -196,6 +198,7 @@
                             <button id="btnSeeTimetable"  class = " btn btn-secondary btn-outline mb-2">Editeaza program</button>
                         @endif
                             <a id="btnDownloadListaAll" href="{{url('/competitionListDownSerii/').'/'.$master[0]->CompetitionId}}" data-type="Diff" class=" btn btn-secondary btn-outline mb-2">{{transex('Download serii')}}</a>
+                            <a id="btnDownloadListaAll" href="{{url('/competitionListVeziSerii/').'/'.$master[0]->CompetitionId}}" data-type="Diff" class=" btn btn-secondary btn-outline mb-2">{{transex('Vezi serii')}}</a>
                             <button id="btnVeziProgram"  class="btnVeziProgram btn btn-secondary btn-outline mb-2">Vezi program</button>
                             <a id="btnDownloadProgram" href="{{url('/competitionTimetable/').'/'.$master[0]->CompetitionId}}/1"  class=" btn btn-secondary btn-outline mb-2">{{transex('Download program ziua 1')}}</a>
                             <a id="btnDownloadProgram" href="{{url('/competitionTimetable/').'/'.$master[0]->CompetitionId}}/2"  class=" btn btn-secondary btn-outline mb-2">{{transex('Download program ziua 2')}}</a>
@@ -276,18 +279,21 @@
             @endswitch
         </div>
 
-
+ <div class='row'>
         <div class="d-flex text-right">
 
             @if ((getCompetitionRight($master[0]->CompetitionId)) && (in_array(  $master[0]->Status,  array("Open","Preparation", "Progress"))  ))
 
-                <div class='row'>
-                    <button id="addCompetitor" class = "btn-add btn btn-sm" >Adauga</button>
-                </div>
-
+               
+                    <button id="addCompetitor" class = "btn-add btn btn-sm btn-danger" >Adauga sportiv</button>
+               
             @endif
-            </div>
-            <button id="exportexcel">Excel</button>
+        </div>
+
+   <div class="d-flex text-right">
+            <button id="exportexcel btn-secondary">Export fisier Excel</button>
+             </div>
+ </div>
 
             <!-- <button id="exportpdf">PDF</button> -->
 
