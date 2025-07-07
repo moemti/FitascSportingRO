@@ -213,19 +213,9 @@
                         @if (getCompetitionRight($master[0]->CompetitionId))
                             <button id="btnOngoingR"  data-status="Progress" class="cmpStatusChange btn btn-secondary btn-outline mb-2">Reopen competition</button>
 
-
-                             
-
-
                         @endif
                         
                         <a id="btnDownloadResultsAll" href="{{url('/competitionResultsDown/').'/'.$master[0]->CompetitionId}}" data-type="Diff" class=" btn btn-danger btn-outline mb-2">{{transex('Download clasamente')}}</a>
-
-                           
-                            
-                           
-
-
                         @break
 
                 @endswitch
@@ -291,7 +281,7 @@
         </div>
 
    <div class="d-flex text-right">
-            <button id="exportexcel btn-secondary">Export fisier Excel</button>
+            <button id="exportexcel" class = "btn-secondary">Export fisier Excel</button>
              </div>
  </div>
 
