@@ -95,7 +95,7 @@ let sourcesup = undefined;
 		return html;
 	}
 
-	function putPersonResults(_data, PersonId){
+	function putPersonResults(_data, PersonId){	
 
 		let Id = 'rezultate_' + PersonId;
 		let _source =
@@ -209,7 +209,7 @@ let sourcesup = undefined;
 					showfilterrow: true,
 					groupable: true,
 					rowdetails: true,
-					rowdetailstemplate: { rowdetails: "<div style='margin: 0px;'> <ul style='margin-left: 30px;'>  <li>Rezultate</li> </ul> <div class='rezultate'></div> </div>", rowdetailsheight: 420 },
+					rowdetailstemplate: { rowdetails: "<div style='margin: 0px;'> <ul style='margin-left: 30px;'>  <li>Rezultate</li> </ul> <div class='rezultate'></div> </div>", rowdetailsheight: 600 },
 					initrowdetails: initrowdetails,
 				});
 		}
@@ -269,7 +269,6 @@ let sourcesup = undefined;
                
                 tabsdiv = $($(parentElement).children()[0]);
                 if (tabsdiv != null) {
-
 					var PersonId = datarecord.PersonId;
 					var item = $('#jqxYear').jqxDropDownList('getSelectedItem');
 					if (item != null) {
@@ -278,9 +277,11 @@ let sourcesup = undefined;
 						rezultate.append(container);
 						getResultPersonYear(PersonId, item.label);
 					}
-                    $(tabsdiv).jqxTabs({ width: '90%', height: '90%'});
+                    $(tabsdiv).jqxTabs({ width: '90%', height: '100%'});
                 }
 	}
+
+	
 
 	$(function () {
 	
